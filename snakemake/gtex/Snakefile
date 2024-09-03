@@ -23,6 +23,11 @@ include: f'{c_dir}formatting.smk'
 include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
 
+rule all:
+    input:
+        config['gtex']['cerberus']['ics'],
+        config['gtex']['ab_fmt']
+
 use rule wget as dl_gtex with:
     params:
         link = config['gtex']['gtf_link']
@@ -95,7 +100,6 @@ rule gtex_fmt_ab:
         format_gtex_abundance(input.ab, output.ab)
 
 
-rule all_gtex:
-    input:
-        expand(config['gtex']['cerberus']['ics'],
-        expand(config['gtex']['ab_fmt'], species='human')
+# rule all_gtex:
+#     input:
+#
