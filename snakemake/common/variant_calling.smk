@@ -1,10 +1,3 @@
-p = os.getcwd()
-sys.path.append(p)
-
-from sm_utils import *
-from utils import *
-from vcf_utils import *
-
 rule ref_make_gatk_dict:
     resources:
         threads = 1,
@@ -53,25 +46,25 @@ rule call_variants_gatk:
             --sample-name {wildcards.dataset}
         """
 
-rule filt_variants:
-    params:
-        qual_thresh = 1000
-    resources:
-        threads = 1,
-        nodes = 1
-    run:
-        df = read_vcf(input.vcf)
-
-        # remove non-ref alleles
-        l1 = len(df.index)
-        df = df.loc[df.ALT!='<NON_REF>']
-        l2 = len(df.index)
-        # assert l1 != l2 # don't need this anymore as we discovered a setting that turns it off
-
-        # remove reads w/ qual under thresh
-        df.QUAL = df.QUAL.astype('float')
-        df = df.loc[df.QUAL>=params.qual_thresh]
-        write_vcf(df, output.vcf, input.vcf)
+# rule filt_variants:
+#     params:
+#         qual_thresh = 1000
+#     resources:
+#         threads = 1,
+#         nodes = 1
+#     run:
+#         df = read_vcf(input.vcf)
+#
+#         # remove non-ref alleles
+#         l1 = len(df.index)
+#         df = df.loc[df.ALT!='<NON_REF>']
+#         l2 = len(df.index)
+#         # assert l1 != l2 # don't need this anymore as we discovered a setting that turns it off
+#
+#         # remove reads w/ qual under thresh
+#         df.QUAL = df.QUAL.astype('float')
+#         df = df.loc[df.QUAL>=params.qual_thresh]
+#         write_vcf(df, output.vcf, input.vcf)
 
 rule intersect_variants_with_bed:
     resources:
