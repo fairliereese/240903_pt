@@ -171,3 +171,6 @@ data/*.bw*
 data/*.tsv
 data/*.gtf*
 data/*.gff*
+
+# snakemake
+*.snakemake*

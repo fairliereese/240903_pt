@@ -15,4 +15,12 @@ snakemake \
     --mail-type=START,END,FAIL \
     --time=4:00:00" \
     -n
+
+snakemake \
+  -s Snakefile \
+  -j 100 \
+  --latency-wait 120 \
+  --use-conda \
+  -n
+
 ```
