@@ -13,7 +13,7 @@ rule gunzip:
         nodes = 1
     shell:
         """
-        gunzip -c {input.ifile} > {output.ofile}
+        gunzip -c {input.gz} > {output.ofile}
         """
 
 rule concat_vcf:
