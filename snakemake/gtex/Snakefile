@@ -68,7 +68,7 @@ use rule gtf_to_ic as gtex_gtf_to_ic with:
         tsv = config['gtex']['cerberus']['ics']
 
 
-use rule dl as dl_gtex_ab with:
+use rule wget as dl_gtex_ab with:
     params:
         link = config['gtex']['ab_link']
     output:

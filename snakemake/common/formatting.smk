@@ -4,7 +4,7 @@ rule gzip:
         nodes = 1
     shell:
         """
-        gzip -c {input.ifile} > {output.ofile}
+        gzip -c {input.gz} > {output.ofile}
         """
 
 rule gunzip:
