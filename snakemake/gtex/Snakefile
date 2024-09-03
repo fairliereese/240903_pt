@@ -25,7 +25,7 @@ include: f'{c_dir}cerberus.smk'
 
 rule all:
     input:
-        config['gtex']['cerberus']['ics'],
+        config['gtex']['cerb']['ics'],
         config['gtex']['ab_fmt']
 
 use rule wget as dl_gtex with:
@@ -38,7 +38,7 @@ use rule gunzip as gz_gtex with:
     input:
         gz = config['gtex']['gtf_gz']
     output:
-        out = config['gtex']['gtf']
+        ofile = config['gtex']['gtf']
 
 # # create gtex gtf only with known genes
 # rule filter_gtex_gtf:
@@ -56,16 +56,16 @@ use rule gunzip as gz_gtex with:
 #     input:
 #         gtf = config['gtex']['filt_gtf']
 #     output:
-#         ends = config['gtex']['cerberus']['ends']
+#         ends = config['gtex']['cerb']['ends']
 #     params:
-#         slack = lambda wc:config['params']['cerberus'][wc.end_mode]['slack'],
-#         dist = lambda wc:config['params']['cerberus'][wc.end_mode]['dist']
+#         slack = lambda wc:config['params']['cerb'][wc.end_mode]['slack'],
+#         dist = lambda wc:config['params']['cerb'][wc.end_mode]['dist']
 
 use rule gtf_to_ic as gtex_gtf_to_ic with:
     input:
         gtf = config['gtex']['gtf']
     output:
-        tsv = config['gtex']['cerberus']['ics']
+        tsv = config['gtex']['cerb']['ics']
 
 
 use rule wget as dl_gtex_ab with:
@@ -78,7 +78,7 @@ use rule gunzip as gz_gtex_ab with:
     input:
         gz = config['gtex']['ab_gz']
     output:
-        out = config['gtex']['ab']
+        ofile = config['gtex']['ab']
 
 def format_gtex_abundance(ifile, ofile):
     df = pd.read_csv(ifile, sep='\t')
