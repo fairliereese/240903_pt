@@ -25,6 +25,7 @@ chess:
 
 lr:
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240906_merged_gtf_missing_2_lyric.gtf # change this eventually
+  gtf_no_spike: ../../data/transcripts_no_spike.gtf
   t_fa: ../../data/transcripts.fa
 
   transdecoder:
@@ -35,3 +36,4 @@ lr:
 
   orfanage:
     cds: ../../data/orfanage/transcripts.cds.gtf
+    gtf_

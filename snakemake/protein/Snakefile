@@ -32,13 +32,24 @@ rule all:
     input:
         config['lr']['orfanage']['cds']
 
+rule rm_sirv_ercc_gtf:
+    input:
+        gtf = config['lr']['gtf']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        gtf = config['lr']['gtf_no_spike']
+    run:
+        rm_sirv_ercc_gtf(ifile, ofile)
+
+
 use rule bed_to_fasta as gtf_to_t_fa with:
     input:
-        bed = config['lr']['gtf'],
+        bed = config['lr']['gtf_no_spike'],
         fa = config['ref']['fa']
     output:
         fa = config['lr']['t_fa']
-
 
 
 # use rule find_orfs as td_find_orfs with:
@@ -56,6 +67,16 @@ use rule orfanage_find_orfs as protein_find_orfs with:
     input:
         fa = config['ref']['fa'],
         annot_gtf = config['ref']['gtf'],
-        gtf = config['lr']['gtf'],
+        gtf = config['lr']['gtf_no_spike'],
     output:
         gtf = config['lr']['orfanage']['cds']
+
+# use rule orfanage_filter as protein_filt_orfs with:
+#     input:
+#         cds = config['lr']['orfanage']['cds'],
+#     output:
+#         gtf_pred = "results/{sample}_cpat_cds_to_be_predicted.gtf",
+#         gtf = "results/{sample}_orfanage_cds_filtered.gtf",
+#     params:
+#         min_orf_len=config["minimum_orf_length_nt"],
+#         scripts_path = p

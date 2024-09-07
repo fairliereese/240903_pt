@@ -399,3 +399,14 @@ def get_valid_seq_len_platforms(seq_lens=get_seq_lens(),
     df['platform'] = [p[0] for p in pairs]
     df['seq_len'] = [p[1] for p in pairs]
     return df
+
+def rm_sirv_ercc_gtf(ifile, ofile):
+    """
+    Remove SIRV and ERCC entries from a GTF
+    """
+    import pyranges as pr
+    df = pr.read_gtf(ifile).df
+    df = df.loc[~df.Chromsome.str.contains('SIRV')]
+    df = df.loc[~df.Chromsome.str.contains('ERCC')]
+    df = pr.PyRanges(df)
+    df.to_gtf(ofile)
