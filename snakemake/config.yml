@@ -1,3 +1,6 @@
+ref:
+    g_fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa # TODO check this is correct
+
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
     gtf_gz: ../../data/gtex/flair_filter_transcripts.gtf.gz
@@ -18,3 +21,7 @@ chess:
 
     cerb:
       ics: ../../data/chess/cerb/ics.tsv
+
+lr:
+  gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240906_merged_gtf_missing_2_lyric.gtf # change this eventually
+  t_fa: ../../data/transcripts.fa

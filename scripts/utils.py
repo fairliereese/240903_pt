@@ -31,12 +31,12 @@ def load_meta():
 def set_col_order(df, col, order):
     """
     Reorders the values in a specified column of a DataFrame according to a given list.
-    
+
     Parameters:
     df (pd.DataFrame): The DataFrame containing the column to reorder.
     col (str): The name of the column to reorder.
     order (list): The list defining the order of the values in the column.
-    
+
     Returns:
     pd.DataFrame: A DataFrame with the reordered column.
     """
@@ -156,17 +156,17 @@ def get_rdna_regions():
 
 def get_rdna_regions_genic_status():
     """
-    Return a dict mapping rdna region names to whether 
+    Return a dict mapping rdna region names to whether
     they're genic or not
     """
-    return {'5_ETS': 'non-genic', 
+    return {'5_ETS': 'non-genic',
             '18S': 'genic',
             'ITS1': 'non-genic',
             '5.8S': 'genic',
-            'ITS2': 'non-genic', 
+            'ITS2': 'non-genic',
             '28S': 'genic',
             '3_ETS': 'non-genic'}
-    
+
 
 def parse_wgs_meta(meta):
     df = pd.read_csv(meta, sep='\t')
