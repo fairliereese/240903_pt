@@ -22,6 +22,8 @@ include: f'{c_dir}variant_calling.smk'
 include: f'{c_dir}formatting.smk'
 include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+
 
 rule all:
     input:
