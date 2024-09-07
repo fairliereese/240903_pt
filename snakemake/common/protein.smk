@@ -17,13 +17,13 @@ rule orfanage_find_orfs:
             {input.annot_gtf}
         """
 
-# rule orfanage_filter:
-#     resources:
-#         threads = 1,
-#         nodes = 2
-#     shell:
-#         """python workflow/scripts/filter_orfanage.py \
-#             --orfanage_gtf_file_path {input.cds} \
-#             --output_path_to_be_predicted {output.gtf_pred} \
-#             --output_path_filtered {output.gtf} \
-#             --minimum_orf_length {params.min_orf_len}"""
+rule orfanage_filter:
+    resources:
+        threads = 1,
+        nodes = 2
+    shell:
+        """python {params.scripts_path}/filter_orfanage.py \
+            --orfanage_gtf_file_path {input.cds} \
+            --output_path_to_be_predicted {output.gtf_pred} \
+            --output_path_filtered {output.gtf} \
+            --minimum_orf_length {params.min_orf_len}"""

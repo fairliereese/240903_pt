@@ -37,4 +37,14 @@ lr:
 
   orfanage:
     cds: ../../data/orfanage/transcripts.cds.gtf
-    # gtf_
+    cds_pred: ../../data/orfanage/transcripts.cds_pred.gtf
+    cds_filt: ../../data/orfanage/transcripts.cds_filt.gtf
+
+
+params:
+  orfanage:
+    min_orf_len_nt: 100
+  top_orf_cpat: 50
+  cpat_first_cutoff_human: 0.725
+  cpat_second_cutoff_human: 0.364
+  blast_e_value: 1.0e-10

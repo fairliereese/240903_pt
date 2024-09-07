@@ -30,7 +30,7 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['orfanage']['cds']
+        config['lr']['orfanage']['cds_filt']
 
 rule rm_sirv_ercc_gtf:
     input:
@@ -71,12 +71,12 @@ use rule orfanage_find_orfs as protein_find_orfs with:
     output:
         gtf = config['lr']['orfanage']['cds']
 
-# use rule orfanage_filter as protein_filt_orfs with:
-#     input:
-#         cds = config['lr']['orfanage']['cds'],
-#     output:
-#         gtf_pred = "results/{sample}_cpat_cds_to_be_predicted.gtf",
-#         gtf = "results/{sample}_orfanage_cds_filtered.gtf",
-#     params:
-#         min_orf_len=config["minimum_orf_length_nt"],
-#         scripts_path = p
+use rule orfanage_filter as protein_filt_orfs with:
+    input:
+        cds = config['lr']['orfanage']['cds'],
+    params:
+        min_orf_len = config['params']['orfanage']['min_orf_len_nt'],
+        scripts_path = p
+    output:
+        gtf_pred = config['lr']['orfanage']['cds_pred'],
+        gtf = config['lr']['orfanage']['cds_filt'],
