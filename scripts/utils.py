@@ -406,7 +406,7 @@ def rm_sirv_ercc_gtf(ifile, ofile):
     """
     import pyranges as pr
     df = pr.read_gtf(ifile).df
-    df = df.loc[~df.Chromsome.str.contains('SIRV')]
-    df = df.loc[~df.Chromsome.str.contains('ERCC')]
+    df = df.loc[~df.Chromosome.str.contains('SIRV')]
+    df = df.loc[~df.Chromosome.str.contains('ERCC')]
     df = pr.PyRanges(df)
     df.to_gtf(ofile)

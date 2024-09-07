@@ -6,7 +6,7 @@ p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
 
 from sm_utils import *
-# from utils import *
+from utils import *
 # from vcf_utils import *
 
 c_dir = '../common/'
@@ -41,7 +41,7 @@ rule rm_sirv_ercc_gtf:
     output:
         gtf = config['lr']['gtf_no_spike']
     run:
-        rm_sirv_ercc_gtf(ifile, ofile)
+        rm_sirv_ercc_gtf(input.gtf, output.gtf)
 
 
 use rule bed_to_fasta as gtf_to_t_fa with:
