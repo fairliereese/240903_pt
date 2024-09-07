@@ -24,7 +24,8 @@ include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
 
 rule all:
-    input = config['lr']['t_fa']
+    input:
+        config['lr']['t_fa']
 
 use rule bed_to_fasta as gtf_to_t_fa with:
     input:
