@@ -1,5 +1,6 @@
 ref:
-    g_fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa # TODO check this is correct
+    fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
+    gtf: /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
 
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
@@ -31,3 +32,6 @@ lr:
     gff3: ../../data/transdecoder/transcripts.fa.transdecoder.gff3
     cds: ../../data/transdecoder/transcripts.fa.transdecoder.cds
     bed: ../../data/transdecoder/transcripts.fa.transdecoder.bed
+
+  orfanage:
+    cds: ../../data/orfanage/transcripts.cds.gtf

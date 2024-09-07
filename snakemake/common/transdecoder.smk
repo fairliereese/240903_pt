@@ -2,6 +2,8 @@ rule find_orfs:
     resources:
         threads = 1,
         nodes = 2
+    conda:
+        'base'
     shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/transdecoder

@@ -24,26 +24,38 @@ include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
 include: f'{c_dir}bedtools.smk'
 include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+
 
 
 rule all:
     input:
-        config['lr']['transdecoder']['pep']
+        config['lr']['orfanage']['cds']
 
 use rule bed_to_fasta as gtf_to_t_fa with:
     input:
         bed = config['lr']['gtf'],
-        fa = config['ref']['g_fa']
+        fa = config['ref']['fa']
     output:
         fa = config['lr']['t_fa']
 
-use rule find_orfs as td_find_orfs with:
+
+
+# use rule find_orfs as td_find_orfs with:
+#     input:
+#         fa = config['lr']['t_fa']
+#     params:
+#         odir = get_odir_from_fname(config['lr']['transdecoder']['pep'])
+#     output:
+#         pep = config['lr']['transdecoder']['pep'],
+#         gff3 = config['lr']['transdecoder']['gff3'],
+#         cds = config['lr']['transdecoder']['cds'],
+#         bed = config['lr']['transdecoder']['bed']
+
+use rule orfanage_find_orfs as protein_find_orfs with:
     input:
-        fa = config['lr']['t_fa']
-    params:
-        odir = get_odir_from_fname(config['lr']['transdecoder']['pep'])
+        fa = config['ref']['fa'],
+        annot_gtf = config['ref']['gtf'],
+        gtf = config['lr']['gtf'],
     output:
-        pep = config['lr']['transdecoder']['pep'],
-        gff3 = config['lr']['transdecoder']['gff3'],
-        cds = config['lr']['transdecoder']['cds'],
-        bed = config['lr']['transdecoder']['bed']
+        gtf = config['lr']['orfanage']['cds']
