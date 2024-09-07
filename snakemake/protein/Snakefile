@@ -31,7 +31,8 @@ rule all:
 
 use rule bed_to_fasta as gtf_to_t_fa with:
     input:
-        bed = config['lr']['gtf']
+        bed = config['lr']['gtf'],
+        fa = config['ref']['g_fa']
     resources:
         nodes = 2,
         threads = 1
