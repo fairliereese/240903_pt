@@ -4,8 +4,8 @@ import sys
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
-#
-# from sm_utils import *
+
+from sm_utils import *
 # from utils import *
 # from vcf_utils import *
 
