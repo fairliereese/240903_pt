@@ -127,3 +127,10 @@ def make_sample_transcript(fa, n_reads, tsv):
     # like by doing a power? or something? ie prop * prop and then multply
     # by some other scaling factor?
     df.to_csv(tsv, index=False, header=None, sep='\t')
+
+def get_odir_from_fname(fname):
+    """
+    For programs that want an output directory.
+    Return the directory name of the output file
+    """
+    return fname.rsplit('/', maxsplit=1)[0]+'/'

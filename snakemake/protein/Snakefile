@@ -23,18 +23,27 @@ include: f'{c_dir}formatting.smk'
 include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
 include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
 
 
 rule all:
     input:
-        config['lr']['t_fa']
+        config['lr']['transdecoder']['pep']
 
 use rule bed_to_fasta as gtf_to_t_fa with:
     input:
         bed = config['lr']['gtf'],
         fa = config['ref']['g_fa']
-    resources:
-        nodes = 2,
-        threads = 1
     output:
         fa = config['lr']['t_fa']
+
+use rule find_orfs as td_find_orfs with:
+    input:
+        fa = config['lr']['t_fa']
+    params:
+        odir = get_odir_from_fname(config['lr']['transdecoder']['pep'])
+    output:
+        pep = config['lr']['transdecoder']['pep'],
+        gff3 = config['lr']['transdecoder']['gff3'],
+        cds = config['lr']['transdecoder']['cds'],
+        bed = config['lr']['transdecoder']['bed']

@@ -25,3 +25,9 @@ chess:
 lr:
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240906_merged_gtf_missing_2_lyric.gtf # change this eventually
   t_fa: ../../data/transcripts.fa
+
+  transdecoder:
+    pep: ../../data/transdecoder/transcripts.fa.transdecoder.pep
+    gff3: ../../data/transdecoder/transcripts.fa.transdecoder.gff3
+    cds: ../../data/transdecoder/transcripts.fa.transdecoder.cds
+    bed: ../../data/transdecoder/transcripts.fa.transdecoder.bed
