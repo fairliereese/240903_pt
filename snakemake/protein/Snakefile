@@ -30,9 +30,8 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['ref']['cpat']['hexamer'],
-        config['ref']['cpat']['model']        
-        # config['lr']['orfanage']['cds_for_cpat']
+        config['lr']['cpat']['prob_best'],
+        
 
 rule rm_sirv_ercc_gtf:
     input:
@@ -124,6 +123,6 @@ use rule cpat as run_cpat with:
         err = config['lr']['cpat']['err'],
         no_orf = config['lr']['cpat']['no_orf'],
     params:
-        min_orf=['params']['orfanage']['top_orf'],
-        top_orf=config['params']['cpat']['top_orf'],
+        min_orf = config['params']['orfanage']['min_orf_len_nt'],
+        top_orf = config['params']['cpat']['top_orf'],
         opref = config['lr']['cpat']['no_orf'].rsplit('_', maxsplit=1)[0]

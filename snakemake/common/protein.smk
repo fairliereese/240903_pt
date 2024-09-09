@@ -65,6 +65,9 @@ rule cds_for_cpat:
         """
 
 rule cpat:
+    resources:
+        threads = 8,
+        nodes = 3
     conda:
         'base'
     shell:
@@ -73,7 +76,7 @@ rule cpat:
         cpat.py \
                 -x {input.hexamer} \
                 -d {input.logit_model} \
-                -g {input.query} \
+                -g {input.fa} \
                 --min-orf={params.min_orf} \
                 --top-orf={params.top_orf} \
                 -o {params.opref} \
