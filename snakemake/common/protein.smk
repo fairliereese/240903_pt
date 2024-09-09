@@ -53,12 +53,30 @@ rule correct_stop_codon:
         """
 
 rule cds_for_cpat:
-    container:
-        f"docker://condaforge/mambaforge:{config['mambaforge_version']}"
+    resources:
+        threads = 1,
+        nodes = 2
     conda:
         'base'
     shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/gffread
         gffread -w {output.fa} -g {input.fa} {input.cds}
+        """
+
+rule cpat:
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/cpat
+        cpat.py \
+                -x {input.hexamer} \
+                -d {input.logit_model} \
+                -g {input.query} \
+                --min-orf={params.min_orf} \
+                --top-orf={params.top_orf} \
+                -o {params.opref} \
+                1> {params.opref}_cpat.output \
+                2> {params.opref}_cpat.error
         """

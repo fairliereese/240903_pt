@@ -2,6 +2,12 @@ ref:
     fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
 
+    cpat:
+      model_link: https://sourceforge.net/projects/rna-cpat/files/prebuilt_models/Human_logitModel.RData/download
+      model: ../../ref/cpat/cpat_model.RData
+      hexamer_link: https://sourceforge.net/projects/rna-cpat/files/prebuilt_models/Human_Hexamer.tsv/download
+      hexamer: ../../ref/hexamer.tsv
+
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
     gtf_gz: ../../data/gtex/flair_filter_transcripts.gtf.gz
@@ -44,12 +50,20 @@ lr:
     cds_for_cpat: ../../data/orfanage/transcripts.cds_for_cpat.fa
 
   cpat:
+    r: ../../data/cpat/transcripts.r
+    orf_fa: ../../data/cpat/transcripts.ORF_seqs.fa
+    prob: ../../data/cpat/transcripts.ORF_prob.tsv
+    prob_best: ../../data/cpat/transcripts.ORF_prob.best.tsv
+    log: ../../data/cpat/transcripts_cpat.output
+    err: ../../data/cpat/transcripts_cpat.error
+    no_orf: ../../data/cpat/transcripts.no_ORF.txt
 
 
 params:
   orfanage:
     min_orf_len_nt: 100
-  top_orf_cpat: 50
+  cpat:
+    top_orf: 50
   cpat_first_cutoff_human: 0.725
   cpat_second_cutoff_human: 0.364
   blast_e_value: 1.0e-10

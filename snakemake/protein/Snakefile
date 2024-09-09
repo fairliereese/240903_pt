@@ -30,7 +30,9 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['orfanage']['cds_for_cpat']
+        config['ref']['cpat']['hexamer'],
+        config['ref']['cpat']['model']        
+        # config['lr']['orfanage']['cds_for_cpat']
 
 rule rm_sirv_ercc_gtf:
     input:
@@ -88,9 +90,40 @@ use rule gtf_cds_gtf_stop_codon as get_stop_codon with:
     output:
         fa = config['lr']['orfanage']['cds_stop']
 
-use rule cds_for_cpat as get_cds_for_cpat:
+use rule cds_for_cpat as get_cds_for_cpat with:
     input:
         fa = config['ref']['fa'],
         cds = config['lr']['orfanage']['cds_pred']
     output:
         fa = config['lr']['orfanage']['cds_for_cpat']
+
+### cpat
+use rule wget as dl_cpat_model with:
+    params:
+        link = config['ref']['cpat']['model_link']
+    output:
+        out = config['ref']['cpat']['model']
+
+use rule wget as dl_cpat_hexamer with:
+    params:
+        link = config['ref']['cpat']['hexamer_link']
+    output:
+        out = config['ref']['cpat']['hexamer']
+
+use rule cpat as run_cpat with:
+    input:
+        hexamer = config['ref']['cpat']['hexamer'],
+        logit_model = config['ref']['cpat']['model'],
+        fa = config['lr']['orfanage']['cds_for_cpat'],
+    output:
+        r = config['lr']['cpat']['r'],
+        orf_fa = config['lr']['cpat']['orf_fa'],
+        prob = config['lr']['cpat']['prob'],
+        prob_best = config['lr']['cpat']['prob_best'],
+        log = config['lr']['cpat']['log'],
+        err = config['lr']['cpat']['err'],
+        no_orf = config['lr']['cpat']['no_orf'],
+    params:
+        min_orf=['params']['orfanage']['top_orf'],
+        top_orf=config['params']['cpat']['top_orf'],
+        opref = config['lr']['cpat']['no_orf'].rsplit('_', maxsplit=1)[0]
