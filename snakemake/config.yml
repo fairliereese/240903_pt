@@ -39,7 +39,11 @@ lr:
     cds: ../../data/orfanage/transcripts.cds.gtf
     cds_pred: ../../data/orfanage/transcripts.cds_pred.gtf
     cds_filt: ../../data/orfanage/transcripts.cds_filt.gtf
-    cds_stop: ../../data/orfanage/transcripts.orfs.fa
+    cds_stop: ../../data/orfanage/transcripts.orfs_stop.fa
+    cds_stop_corr: ../../data/orfanage/transcripts.orfs_stop_corr.gtf
+    cds_for_cpat: ../../data/orfanage/transcripts.cds_for_cpat.fa
+
+  cpat:
 
 
 params:

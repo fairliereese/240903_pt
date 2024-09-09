@@ -30,7 +30,7 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['orfanage']['cds_filt']
+        config['lr']['orfanage']['cds_for_cpat']
 
 rule rm_sirv_ercc_gtf:
     input:
@@ -81,9 +81,16 @@ use rule orfanage_filter as protein_filt_orfs with:
         gtf_pred = config['lr']['orfanage']['cds_pred'],
         gtf = config['lr']['orfanage']['cds_filt'],
 
-use rule rule gtf_cds_gtf_stop_codon as get_stop_codon with:
+use rule gtf_cds_gtf_stop_codon as get_stop_codon with:
     input:
         gtf = config['lr']['orfanage']['cds_filt'],
         fa = config['ref']['fa']
     output:
         fa = config['lr']['orfanage']['cds_stop']
+
+use rule cds_for_cpat as get_cds_for_cpat:
+    input:
+        fa = config['ref']['fa'],
+        cds = config['lr']['orfanage']['cds_pred']
+    output:
+        fa = config['lr']['orfanage']['cds_for_cpat']

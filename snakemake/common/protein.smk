@@ -40,3 +40,25 @@ rule gtf_cds_gtf_stop_codon:
         conda activate /gpfs/projects/bsc83/utils/conda_envs/gffread
         gffread -x {output.fa} -g {input.fa} {input.gtf}
         """
+
+rule correct_stop_codon:
+    resources:
+        threads = 1,
+        nodes = 2
+    shell:
+        """
+        python {params.scripts_path}/correct_stop_codon_orfanage.py \
+            --orfanage_gtf_file_path {input.gtf} \
+            --output_path {output.gtf}
+        """
+
+rule cds_for_cpat:
+    container:
+        f"docker://condaforge/mambaforge:{config['mambaforge_version']}"
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/gffread
+        gffread -w {output.fa} -g {input.fa} {input.cds}
+        """
