@@ -80,3 +80,10 @@ use rule orfanage_filter as protein_filt_orfs with:
     output:
         gtf_pred = config['lr']['orfanage']['cds_pred'],
         gtf = config['lr']['orfanage']['cds_filt'],
+
+use rule rule gtf_cds_gtf_stop_codon as get_stop_codon with:
+    input:
+        gtf = config['lr']['orfanage']['cds_filt'],
+        fa = config['ref']['fa']
+    output:
+        fa = config['lr']['orfanage']['cds_stop']

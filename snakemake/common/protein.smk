@@ -27,3 +27,16 @@ rule orfanage_filter:
             --output_path_to_be_predicted {output.gtf_pred} \
             --output_path_filtered {output.gtf} \
             --minimum_orf_length {params.min_orf_len}"""
+
+
+rule gtf_cds_gtf_stop_codon:
+    resources:
+        threads = 1,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/gffread
+        gffread -x {output.fa} -g {input.fa} {input.gtf}
+        """
