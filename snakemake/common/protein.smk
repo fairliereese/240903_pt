@@ -72,6 +72,8 @@ rule cpat:
         'base'
     shell:
         """
+        module load gcc
+        module load R/4.3.0
         cpat \
             -x {input.hexamer} \
             -d {input.logit_model} \

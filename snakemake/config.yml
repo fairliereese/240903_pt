@@ -51,13 +51,13 @@ lr:
 
   cpat:
     r: ../../data/cpat/transcripts.r
-    orf_fa: ../../data/cpat/transcripts.ORF_seqs.fa
-    prob: ../../data/cpat/transcripts.ORF_prob.tsv
-    prob_best: ../../data/cpat/transcripts.ORF_prob.best.tsv
+    orf_fa: ../../data/cpat/transcripts_ORF_seqs.fa
+    prob: ../../data/cpat/transcripts_ORF_prob.tsv
+    prob_best: ../../data/cpat/transcripts_ORF_prob.best.tsv
     log: ../../data/cpat/transcripts_cpat.output
     err: ../../data/cpat/transcripts_cpat.error
-    no_orf: ../../data/cpat/transcripts.no_ORF.txt
-    filt: ../../data/cpat/transcripts.ORF_remaining.tsv
+    no_orf: ../../data/cpat/transcripts_no_ORF.txt
+    filt: ../../data/cpat/transcripts_ORF_remaining.tsv
 
   novel_gene:
     tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge/novelgene_transcripts.txt
