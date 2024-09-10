@@ -64,6 +64,8 @@ lr:
     gtf: ../../data/novel_gene/novel_genes.gtf
     gtf_built: ../../data/novel_gene/novel_genes_built.gtf
     gtf_fmt: ../../data/novel_gene/novel_genes_fmt.gtf
+    gtf_nov_known_gene: ../../data/transcripts_novel_gene_loci.gtf
+
 
 
 params:

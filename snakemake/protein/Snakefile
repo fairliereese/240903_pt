@@ -134,6 +134,6 @@ use rule filt_cpat as filt_cpat_orfs with:
     output:
         tsv = config['lr']['cpat']['filt']
     params:
-        first_cutoff = config['params']['cutoff_1'],
-        second_cutoff = config['params']['cutoff_2'],
+        first_cutoff = config['params']['cpat']['cutoff_1'],
+        second_cutoff = config['params']['cpat']['cutoff_2'],
         scripts_path = p

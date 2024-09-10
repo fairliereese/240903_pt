@@ -28,7 +28,7 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['novel_gene']['gtf_fmt']
+        config['lr']['gtf_nov_known_gene']
 
 rule get_novel_gene_gtf:
     input:
@@ -92,3 +92,26 @@ rule fmt_gtf:
             {input.gtf} \
             {output.gtf}
         """
+
+rule cat_novel_known_gene_gtfs:
+    input:
+        nov_gtf = config['lr']['novel_gene']['gtf_fmt'],
+        gtf = config['lr']['gtf']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        gtf = config['lr']['gtf_nov_known_gene']
+    run:
+        import pyranges as pr
+        df = pr.read_gtf(input.gtf).df
+        nov_df = pr.read_gtf(input.nov_gtf).df
+        tids = nov_df.transcript_id.unique().tolist()
+
+        # remove novel gene transcripts from original gtf
+        df = df.loc[~(df.transcript_id.isin(tids))]
+
+        # concatenate and save
+        df = pd.concatenate([df, nov_df], axis=0)
+        df = pr.PyRanges(df)
+        df.to_gtf(output.gtf)
