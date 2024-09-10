@@ -112,6 +112,6 @@ rule cat_novel_known_gene_gtfs:
         df = df.loc[~(df.transcript_id.isin(tids))]
 
         # concatenate and save
-        df = pd.concatenate([df, nov_df], axis=0)
+        df = pd.concat([df, nov_df], axis=0)
         df = pr.PyRanges(df)
         df.to_gtf(output.gtf)

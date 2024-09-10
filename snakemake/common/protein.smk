@@ -66,8 +66,8 @@ rule cds_for_cpat:
 
 rule cpat:
     resources:
-        threads = 8,
-        nodes = 3
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
