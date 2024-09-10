@@ -1,0 +1,94 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = 'config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+
+rule all:
+    input:
+        config['lr']['novel_gene']['gtf_fmt']
+
+rule get_novel_gene_gtf:
+    input:
+        tids = config['lr']['novel_gene']['tids'],
+        gtf = config['lr']['gtf']
+    output:
+        gtf = config['lr']['novel_gene']['gtf']
+    resources:
+        threads = 1,
+        nodes = 2
+    run:
+        import pyranges as pr
+        tids = pd.read_csv(input.tids, header=None)[0].tolist()
+        df =  pr.read_gtf(input.gtf).df
+        df = df.loc[df.transcript_id.isin(tids)]
+        df = pr.PyRanges(df)
+        df.to_gtf(output.gtf)
+
+rule buildloci:
+    input:
+        gtf = config['lr']['novel_gene']['gtf']
+    resources:
+        threads = 1,
+        nodes = 1
+    conda:
+        'base'
+    params:
+        buildLoci = config['software']['buildLoci'],
+        prefix = 'novel_gene'
+    output:
+        gtf = config['lr']['novel_gene']['gtf_built']
+    shell:
+        """
+        module load bedtools
+        bedtools intersect \
+            -s \
+            -wao \
+            -a {input.gtf} \
+            -b {input.gtf} | \
+            {params.buildLoci} - \
+                locPrefix {params.prefix} \
+                > {output.gtf}
+        """
+
+# add gene and transcript entries
+rule fmt_gtf:
+    input:
+        gtf =  config['lr']['novel_gene']['gtf_built']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        gtf = config['lr']['novel_gene']['gtf_fmt']
+    params:
+        scripts_path = p
+    conda:
+        'cerberus'
+    shell:
+        """
+        python {params.scripts_path}/refmt_gtf.py \
+            {input.gtf} \
+            {output.gtf}
+        """

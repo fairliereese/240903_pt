@@ -30,8 +30,8 @@ chess:
       ics: ../../data/chess/cerb/ics.tsv
 
 lr:
-  # gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240906_merged_gtf_missing_2_lyric.gtf # change this eventually
-  gtf: /gpfs/home/bsc/bsc083001/mele_lab/projects/240706_pantranscriptome_cerberus_gtf_merge/merge_only_ics/data/flair/raw/GM10492_1.gtf
+  gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf # whole post-merge GTF
+  # gtf: /gpfs/home/bsc/bsc083001/mele_lab/projects/240706_pantranscriptome_cerberus_gtf_merge/merge_only_ics/data/flair/raw/GM10492_1.gtf # test for just one sample
   gtf_no_spike: ../../data/transcripts_no_spike.gtf
   t_fa: ../../data/transcripts.fa
 
@@ -57,6 +57,13 @@ lr:
     log: ../../data/cpat/transcripts_cpat.output
     err: ../../data/cpat/transcripts_cpat.error
     no_orf: ../../data/cpat/transcripts.no_ORF.txt
+    filt: ../../data/cpat/transcripts.ORF_remaining.tsv
+
+  novel_gene:
+    tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge/novelgene_transcripts.txt
+    gtf: ../../data/novel_gene/novel_genes.gtf
+    gtf_built: ../../data/novel_gene/novel_genes_built.gtf
+    gtf_fmt: ../../data/novel_gene/novel_genes_fmt.gtf
 
 
 params:
@@ -64,6 +71,9 @@ params:
     min_orf_len_nt: 100
   cpat:
     top_orf: 50
-  cpat_first_cutoff_human: 0.725
-  cpat_second_cutoff_human: 0.364
+    cutoff_1: 0.725
+    cutoff_2: 0.364
   blast_e_value: 1.0e-10
+
+software:
+  buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl

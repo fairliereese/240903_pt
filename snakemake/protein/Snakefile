@@ -30,8 +30,8 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['cpat']['prob_best'],
-        
+        config['lr']['cpat']['filt']
+
 
 rule rm_sirv_ercc_gtf:
     input:
@@ -126,3 +126,14 @@ use rule cpat as run_cpat with:
         min_orf = config['params']['orfanage']['min_orf_len_nt'],
         top_orf = config['params']['cpat']['top_orf'],
         opref = config['lr']['cpat']['no_orf'].rsplit('_', maxsplit=1)[0]
+
+use rule filt_cpat as filt_cpat_orfs with:
+    input:
+        prob = config['lr']['cpat']['prob'],
+        fa = config['lr']['cpat']['orf_fa']
+    output:
+        tsv = config['lr']['cpat']['filt']
+    params:
+        first_cutoff = config['params']['cutoff_1'],
+        second_cutoff = config['params']['cutoff_2'],
+        scripts_path = p
