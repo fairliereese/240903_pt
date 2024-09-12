@@ -137,5 +137,5 @@ def get_odir_from_fname(fname):
 
 def get_odir_and_pref_from_fname(fname, sep='_', maxsplit=1):
     odir = get_odir_from_fname(fname)
-    pref = fname.rsplit.('/', maxsplit=1)[-1].split(sep, maxsplit=maxsplit)[0]
+    pref = fname.rsplit('/', maxsplit=1)[-1].split(sep, maxsplit=maxsplit)[0]
     return odir+pref

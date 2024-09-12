@@ -58,6 +58,7 @@ lr:
     err: ../../data/cpat/transcripts_cpat.error
     no_orf: ../../data/cpat/transcripts_no_ORF.txt
     filt: ../../data/cpat/transcripts_ORF_remaining.tsv
+    orf_complete: ../../data/cpat/transcripts_ORF_completeness.tsv
 
   novel_gene:
     tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge/novelgene_transcripts.txt

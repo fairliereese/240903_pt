@@ -99,22 +99,23 @@ rule filt_cpat:
             --second_cutoff {params.second_cutoff}
         """
 
-# rule postprocess_check_orf_completeness:
-#     input:
-#         cpat_seqs="results/{sample}.ORF_seqs.fa",
-#         orfanage_seqs="results/{sample}_orfanage_orfs.fa",
-#         cpat_info="results/{sample}.ORF_remaining.tsv",
-#         orfanage_info="results/{sample}_orfanage_cds_filtered_stop_codon_corrected.gtf",
-#     output:
-#         "results/{sample}_ORF_completeness.tsv",
-#     container:
-#         f"docker://condaforge/mambaforge:{config['mambaforge_version']}"
-#     conda:
-#         "envs/default.yml"
-#     shell:
-#         """python workflow/scripts/check_orf_completeness.py \
-#             --cpat_seqs {input.cpat_seqs} \
-#             --orfanage_seqs {input.orfanage_seqs} \
-#             --cpat_info {input.cpat_info} \
-#             --orfanage_info {input.orfanage_info} \
-#             --output_path {output}"""
+rule find_complete_orfs:
+    input:
+        cpat_seqs = config['lr']['cpat']['orf_fa'],
+        orfanage_seqs = config['lr']['orfanage']['cds_stop'],
+        cpat_info=config['lr']['cpat']['filt'],
+        orfanage_info=config['lr']['orfanage']['cds_stop_corr'],
+    output:
+        tsv = config['lr']['cpat']['orf_complete']
+    resources:
+        threads = 1,
+        nodes = 2
+    shell:
+        """
+        python {params.scripts_path}/check_orf_completeness.py \
+            --cpat_seqs {input.cpat_seqs} \
+            --orfanage_seqs {input.orfanage_seqs} \
+            --cpat_info {input.cpat_info} \
+            --orfanage_info {input.orfanage_info} \
+            --output_path {output}
+        """

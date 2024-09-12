@@ -30,7 +30,7 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['cpat']['filt']
+        config['lr']['cpat']['orf_complete']
 
 
 rule rm_sirv_ercc_gtf:
