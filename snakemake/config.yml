@@ -2,6 +2,11 @@ ref:
     fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
 
+    pc_link: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.pc_translations.fa.gz
+    pc_gz: ../../ref/pc_translations.fa.gz
+    pc: ../../ref/pc_translations.fa
+    pc_renamed: ../../ref/pc_translations_renamed.fa
+
     cpat:
       model_link: https://sourceforge.net/projects/rna-cpat/files/prebuilt_models/Human_logitModel.RData/download
       model: ../../ref/cpat/cpat_model.RData
@@ -42,23 +47,67 @@ lr:
     bed: ../../data/transdecoder/transcripts.fa.transdecoder.bed
 
   orfanage:
-    cds: ../../data/orfanage/transcripts.cds.gtf
-    cds_pred: ../../data/orfanage/transcripts.cds_pred.gtf
-    cds_filt: ../../data/orfanage/transcripts.cds_filt.gtf
-    cds_stop: ../../data/orfanage/transcripts.orfs_stop.fa
-    cds_stop_corr: ../../data/orfanage/transcripts.orfs_stop_corr.gtf
-    cds_for_cpat: ../../data/orfanage/transcripts.cds_for_cpat.fa
+    query: ../../data/protein/transcripts_orfanage_ready_query.gtf
+    ready_annot: ../../data/protein/transcripts_orfanage_ready_annotation.gtf
+    cds: ../../data/protein/transcripts_orfanage_cds.gtf
+    cds_to_be_predicted: ../../data/protein/transcripts_cpat_cds_to_be_predicted.gtf
+    cds_filtered: ../../data/protein/transcripts_orfanage_cds_filtered.gtf
+    orfs: ../../data/protein/transcripts_orfanage_orfs.fa
+    stop_codon_orf: ../../data/protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf
+    missing_cds: ../../data/protein/transcripts_missing_cds.fa
 
   cpat:
-    r: ../../data/cpat/transcripts.r
-    orf_fa: ../../data/cpat/transcripts_ORF_seqs.fa
-    prob: ../../data/cpat/transcripts_ORF_prob.tsv
-    prob_best: ../../data/cpat/transcripts_ORF_prob.best.tsv
-    log: ../../data/cpat/transcripts_cpat.output
-    err: ../../data/cpat/transcripts_cpat.error
-    no_orf: ../../data/cpat/transcripts_no_ORF.txt
-    filt: ../../data/cpat/transcripts_ORF_remaining.tsv
-    orf_complete: ../../data/cpat/transcripts_ORF_completeness.tsv
+    r: ../../data/protein/transcripts.r
+    orf_seqs: ../../data/protein/transcripts.ORF_seqs.fa
+    prob_tsv: ../../data/protein/transcripts.ORF_prob.tsv
+    prob_best: ../../data/protein/transcripts.ORF_prob.best.tsv
+    log: ../../data/protein/transcripts_cpat.output
+    err: ../../data/protein/transcripts_cpat.error
+    no_orf: ../../data/protein/transcripts.no_ORF.txt
+    orf_remaining: ../../data/protein/transcripts.ORF_remaining.tsv
+    orf_completeness: ../../data/protein/transcripts_ORF_completeness.tsv
+    cds_coords: ../../data/protein/transcripts_cpat_with_cds.gtf
+    unsourced: ../../data/protein/transcripts_protein_unsourced.gtf
+    protein: ../../data/protein/transcripts_protein.gtf
+    orf: ../../data/protein/transcripts_ORF.fa
+    protein_fa: ../../data/protein/transcripts_protein.fa
+
+  blastp:
+    out: ../../data/protein/transcripts_blastp.out
+    blast_db: ../../data/protein/gencode.pc_translations_renamed.pog
+
+  sqanti_protein:
+      ref_exons: ../../data/protein/transcripts_gencode.transcript_exons_only.gtf
+      ref_cds_renamed: ../../data/protein/transcripts_gencode.cds_renamed_exon.gtf
+      data_exons: ../../data/protein/transcripts.transcript_exons_only.gtf
+      data_cds_renamed: ../../data/protein/transcripts.cds_renamed_exon.gtf
+      best_orf: ../../data/protein/transcripts_best_orf.tsv
+      classified: ../../data/protein/transcripts.sqanti_protein_classification.tsv
+
+  protein:
+    summary: "../../data/protein/transcripts_protein_annotation.tsv"
+
+  #
+  #   cds: ../../data/orfanage/transcripts.cds.gtf
+  #   cds_pred: ../../data/orfanage/transcripts.cds_pred.gtf
+  #   cds_filt: ../../data/orfanage/transcripts.cds_filt.gtf
+  #   cds_stop: ../../data/orfanage/transcripts.orfs_stop.fa
+  #   cds_stop_corr: ../../data/orfanage/transcripts.orfs_stop_corr.gtf
+  #   cds_for_cpat: ../../data/orfanage/transcripts.cds_for_cpat.fa
+  #
+  # cpat:
+  #   r: ../../data/cpat/transcripts.r
+  #   orf_fa: ../../data/cpat/transcripts_ORF_seqs.fa
+  #   prob: ../../data/cpat/transcripts_ORF_prob.tsv
+  #   prob_best: ../../data/cpat/transcripts_ORF_prob.best.tsv
+  #   log: ../../data/cpat/transcripts_cpat.output
+  #   err: ../../data/cpat/transcripts_cpat.error
+  #   no_orf: ../../data/cpat/transcripts_no_ORF.txt
+  #   filt: ../../data/cpat/transcripts_ORF_remaining.tsv
+  #   orf_complete: ../../data/cpat/transcripts_ORF_completeness.tsv
+  #   cds_coords: ../../data/cpat/transcripts_cpat_with_cds.gtf
+  #   protein_unsourced: ../../data/cpat/transcripts_protein_unsourced.gtf
+
 
   novel_gene:
     tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge/novelgene_transcripts.txt
@@ -76,7 +125,8 @@ params:
     top_orf: 50
     cutoff_1: 0.725
     cutoff_2: 0.364
-  blast_e_value: 1.0e-10
+  blast:
+    eval: 1.0e-10
 
 software:
   buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl

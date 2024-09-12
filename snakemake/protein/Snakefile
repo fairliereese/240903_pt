@@ -30,8 +30,7 @@ include: f'{c_dir}protein.smk'
 
 rule all:
     input:
-        config['lr']['cpat']['orf_complete']
-
+        rules.protein_all.input
 
 rule rm_sirv_ercc_gtf:
     input:
@@ -45,95 +44,129 @@ rule rm_sirv_ercc_gtf:
         rm_sirv_ercc_gtf(input.gtf, output.gtf)
 
 
-use rule bed_to_fasta as gtf_to_t_fa with:
-    input:
-        bed = config['lr']['gtf_no_spike'],
-        fa = config['ref']['fa']
-    output:
-        fa = config['lr']['t_fa']
-
-
-# use rule find_orfs as td_find_orfs with:
+# use rule bed_to_fasta as gtf_to_t_fa with:
 #     input:
-#         fa = config['lr']['t_fa']
-#     params:
-#         odir = get_odir_from_fname(config['lr']['transdecoder']['pep'])
+#         bed = config['lr']['gtf_no_spike'],
+#         fa = config['ref']['fa']
 #     output:
-#         pep = config['lr']['transdecoder']['pep'],
-#         gff3 = config['lr']['transdecoder']['gff3'],
-#         cds = config['lr']['transdecoder']['cds'],
-#         bed = config['lr']['transdecoder']['bed']
-
-use rule orfanage_find_orfs as protein_find_orfs with:
-    input:
-        fa = config['ref']['fa'],
-        annot_gtf = config['ref']['gtf'],
-        gtf = config['lr']['gtf_no_spike'],
-    output:
-        gtf = config['lr']['orfanage']['cds']
-
-use rule orfanage_filter as protein_filt_orfs with:
-    input:
-        cds = config['lr']['orfanage']['cds'],
-    params:
-        min_orf_len = config['params']['orfanage']['min_orf_len_nt'],
-        scripts_path = p
-    output:
-        gtf_pred = config['lr']['orfanage']['cds_pred'],
-        gtf = config['lr']['orfanage']['cds_filt'],
-
-use rule gtf_cds_gtf_stop_codon as get_stop_codon with:
-    input:
-        gtf = config['lr']['orfanage']['cds_filt'],
-        fa = config['ref']['fa']
-    output:
-        fa = config['lr']['orfanage']['cds_stop']
-
-use rule cds_for_cpat as get_cds_for_cpat with:
-    input:
-        fa = config['ref']['fa'],
-        cds = config['lr']['orfanage']['cds_pred']
-    output:
-        fa = config['lr']['orfanage']['cds_for_cpat']
-
-### cpat
-use rule wget as dl_cpat_model with:
-    params:
-        link = config['ref']['cpat']['model_link']
-    output:
-        out = config['ref']['cpat']['model']
-
-use rule wget as dl_cpat_hexamer with:
-    params:
-        link = config['ref']['cpat']['hexamer_link']
-    output:
-        out = config['ref']['cpat']['hexamer']
-
-use rule cpat as run_cpat with:
-    input:
-        hexamer = config['ref']['cpat']['hexamer'],
-        logit_model = config['ref']['cpat']['model'],
-        fa = config['lr']['orfanage']['cds_for_cpat'],
-    output:
-        r = config['lr']['cpat']['r'],
-        orf_fa = config['lr']['cpat']['orf_fa'],
-        prob = config['lr']['cpat']['prob'],
-        prob_best = config['lr']['cpat']['prob_best'],
-        log = config['lr']['cpat']['log'],
-        err = config['lr']['cpat']['err'],
-        no_orf = config['lr']['cpat']['no_orf'],
-    params:
-        min_orf = config['params']['orfanage']['min_orf_len_nt'],
-        top_orf = config['params']['cpat']['top_orf'],
-        opref = get_odir_and_pref_from_fname(config['lr']['cpat']['no_orf'])
-
-use rule filt_cpat as filt_cpat_orfs with:
-    input:
-        prob = config['lr']['cpat']['prob'],
-        fa = config['lr']['cpat']['orf_fa']
-    output:
-        tsv = config['lr']['cpat']['filt']
-    params:
-        first_cutoff = config['params']['cpat']['cutoff_1'],
-        second_cutoff = config['params']['cpat']['cutoff_2'],
-        scripts_path = p
+#         fa = config['lr']['t_fa']
+#
+#
+# # use rule find_orfs as td_find_orfs with:
+# #     input:
+# #         fa = config['lr']['t_fa']
+# #     params:
+# #         odir = get_odir_from_fname(config['lr']['transdecoder']['pep'])
+# #     output:
+# #         pep = config['lr']['transdecoder']['pep'],
+# #         gff3 = config['lr']['transdecoder']['gff3'],
+# #         cds = config['lr']['transdecoder']['cds'],
+# #         bed = config['lr']['transdecoder']['bed']
+#
+# use rule orfanage_find_orfs as protein_find_orfs with:
+#     input:
+#         fa = config['ref']['fa'],
+#         annot_gtf = config['ref']['gtf'],
+#         gtf = config['lr']['gtf_no_spike'],
+#     output:
+#         gtf = config['lr']['orfanage']['cds']
+#
+# use rule orfanage_filter as protein_filt_orfs with:
+#     input:
+#         cds = config['lr']['orfanage']['cds'],
+#     params:
+#         min_orf_len = config['params']['orfanage']['min_orf_len_nt'],
+#         scripts_path = p
+#     output:
+#         gtf_pred = config['lr']['orfanage']['cds_pred'],
+#         gtf = config['lr']['orfanage']['cds_filt'],
+#
+# use rule gtf_cds_gtf_stop_codon as get_stop_codon with:
+#     input:
+#         gtf = config['lr']['orfanage']['cds_filt'],
+#         fa = config['ref']['fa']
+#     output:
+#         fa = config['lr']['orfanage']['cds_stop']
+#
+# use rule correct_stop_codon as orf_correct_stop_codon with:
+#     input:
+#         gtf = config['lr']['orfanage']['cds_filt']
+#     params:
+#         scripts_path = p
+#     output:
+#         gtf = config['lr']['orfanage']['cds_stop_corr']
+#
+# use rule cds_for_cpat as get_cds_for_cpat with:
+#     input:
+#         fa = config['ref']['fa'],
+#         cds = config['lr']['orfanage']['cds_pred']
+#     output:
+#         fa = config['lr']['orfanage']['cds_for_cpat']
+#
+# ### cpat
+# use rule wget as dl_cpat_model with:
+#     params:
+#         link = config['ref']['cpat']['model_link']
+#     output:
+#         out = config['ref']['cpat']['model']
+#
+# use rule wget as dl_cpat_hexamer with:
+#     params:
+#         link = config['ref']['cpat']['hexamer_link']
+#     output:
+#         out = config['ref']['cpat']['hexamer']
+#
+# use rule cpat as run_cpat with:
+#     input:
+#         hexamer = config['ref']['cpat']['hexamer'],
+#         logit_model = config['ref']['cpat']['model'],
+#         fa = config['lr']['orfanage']['cds_for_cpat'],
+#     output:
+#         r = config['lr']['cpat']['r'],
+#         orf_fa = config['lr']['cpat']['orf_fa'],
+#         prob = config['lr']['cpat']['prob'],
+#         prob_best = config['lr']['cpat']['prob_best'],
+#         log = config['lr']['cpat']['log'],
+#         err = config['lr']['cpat']['err'],
+#         no_orf = config['lr']['cpat']['no_orf'],
+#     params:
+#         min_orf = config['params']['orfanage']['min_orf_len_nt'],
+#         top_orf = config['params']['cpat']['top_orf'],
+#         opref = get_odir_and_pref_from_fname(config['lr']['cpat']['no_orf'])
+#
+# use rule filt_cpat as filt_cpat_orfs with:
+#     input:
+#         prob = config['lr']['cpat']['prob'],
+#         fa = config['lr']['cpat']['orf_fa']
+#     output:
+#         tsv = config['lr']['cpat']['filt']
+#     params:
+#         first_cutoff = config['params']['cpat']['cutoff_1'],
+#         second_cutoff = config['params']['cpat']['cutoff_2'],
+#         scripts_path = p
+#
+# use rule find_complete_orfs as get_orf_completeness with:
+#     input:
+#         cpat_seqs = config['lr']['cpat']['orf_fa'],
+#         orfanage_seqs = config['lr']['orfanage']['cds_stop'],
+#         cpat_info=config['lr']['cpat']['filt'],
+#         orfanage_info=config['lr']['orfanage']['cds_stop_corr'],
+#     output:
+#         tsv = config['lr']['cpat']['orf_complete']
+#
+# use rule get_cpat_cds_coords as cpat_get_cdswith:
+#     input:
+#         sample_gtf=config['lr']['orfanage']['cds_pred'],
+#         called_orfs=config['lr']['cpat']['filt'],
+#     output:
+#         gtf = config['lr']['cpat']['cds_coords']
+#     params:
+#         scripts_path = p,
+#         opref = get_odir_and_pref_from_fname(config['lr']['cpat']['cds_coords'])
+#
+# use rule postprocess_combine_cds_gtf as cpat_combine_cds_gtf with:
+#     input:
+#         cpat_cds=config['lr']['cpat']['cds_coords'],
+#         orfanage_cds=config['lr']['orfanage']['cds_stop'],
+#     output:
+#         gtf = config['lr']['orfanage']['protein_unsourced'],
