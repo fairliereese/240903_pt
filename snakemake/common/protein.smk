@@ -54,6 +54,9 @@ rule prep_make_query:
     output:
         config['lr']['orfanage']['query']
         config['lr']['gtf_no_spike'],
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -82,8 +85,9 @@ rule prep_make_annotation:
         genome=config['ref']['fa'],
     output:
         config['lr']['orfanage']['ready_annot']
-    container:
-        f"docker://condaforge/mambaforge:{config['mambaforge_version']}"
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -129,6 +133,9 @@ rule orf_prediction_filter_orfanage:
     params:
         min_orf_len=config['params']['orfanage']['min_orf_len_nt'],
         scripts_dir = p
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/filter_orfanage.py \
             --orfanage_gtf_file_path {input.orfanage_cds} \
@@ -143,6 +150,9 @@ rule orf_prediction_orf_sequence_orfanage_with_stop_codon:
         genome=config['ref']['fa'],
     output:
         config['lr']['orfanage']['orfs']
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -156,6 +166,9 @@ rule orf_prediction_correct_stop_codon_orfanage:
         config['lr']['orfanage']['cds_filtered'],
     output:
         "config['lr']['orfanage']['stop_codon_orf']",
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/correct_stop_codon_orfanage.py \
             --orfanage_gtf_file_path {input} \
@@ -168,6 +181,9 @@ rule orf_prediction_extract_sequence_for_cpat:
         query=config['lr']['orfanage']['cds_to_be_predicted'],
     output:
         config['lr']['orfanage']['missing_cds'],
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -192,6 +208,9 @@ rule orf_prediction_run_cpat_human:
         config['lr']['cpat']['no_orf']
     conda:
         'base'
+    resources:
+        threads = 1,
+        nodes = 1
     params:
         min_orf=config['params']['orfanage']['min_orf_len_nt'],
         top_orf=config['params']['cpat']['top_orf'],
@@ -216,8 +235,11 @@ rule orf_prediction_filter_cpat_human:
     output:
         config['lr']['cpat']['orf_remaining'],
     params:
-        first_cutoff=config["cpat_first_cutoff_human"],
-        second_cutoff=config["cpat_second_cutoff_human"],
+        first_cutoff=config['params']['cpat']['cutoff_1'],
+        second_cutoff=config['params']['cpat']['cutoff_2'],
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/filter_cpat.py \
             --input_file_path {input.input_file_path} \
@@ -235,6 +257,9 @@ rule postprocess_check_orf_completeness:
         orfanage_info=config['lr']['orfanage']['stop_codon_orf'],
     output:
         config['lr']['cpat']['orf_completeness'],
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/check_orf_completeness.py \
             --cpat_seqs {input.cpat_seqs} \
@@ -252,6 +277,9 @@ rule postprocess_create_cpat_cds_coordinates:
         config['lr']['cpat']['cds_coords']
     params:
         opref = get_odir_and_pref_from_fname(config['lr']['cpat']['cds_coords'])
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/create_cpat_CDS_coordinates.py \
                                 --name {params.opref} \
@@ -265,6 +293,9 @@ rule postprocess_combine_cds_gtf:
         orfanage_cds="config['lr']['orfanage']['stop_codon_orf']",
     output:
         config['lr']['cpat']['unsourced'],
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -282,6 +313,9 @@ rule postprocess_amend_cds_source:
         orfanage_cds="config['lr']['orfanage']['stop_codon_orf']",
     output:
         config['lr']['cpat']['protein']
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/recover_source.py \
                                 --combined_cds_path {input.cds} \
@@ -297,6 +331,9 @@ rule postprocess_extract_orf_fasta:
         genome=config['ref']['fa'],
     output:
         config['lr']['cpat']['orf'],
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -312,6 +349,9 @@ rule postprocess_extract_protein_fasta:
         genome=config['ref']['fa'],
     output:
         config['lr']['cpat']['protein_fa'],
+    resources:
+        threads = 1,
+        nodes = 1
     conda:
         'base'
     shell:
@@ -332,6 +372,9 @@ rule postprocess_prepare_sqanti_protein_gtf:
         config['lr']['sqanti_protein']['data_cds_renamed'],
     params:
         opref = get_odir_and_pref_from_fname(config['lr']['cpat']['protein'])
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/rename_cds_to_exon.py \
             --sample_gtf {input.protein_gtf} \
@@ -346,6 +389,9 @@ rule postprocess_prepare_sqanti_protein_tsv:
         cds_renamed=config['lr']['sqanti_protein']['data_cds_renamed'],
     output:
         config['lr']['sqanti_protein']['cds_renamed']
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/create_orf_table_for_sqanti_protein.py \
                     --transcript_exons_path {input.transcript_only_exons} \
@@ -364,6 +410,9 @@ rule postprocess_run_sqanti_protein:
         config['lr']['sqanti_protein']['classified'],
     params:
         opref = get_odir_and_pref_from_fname(config['lr']['sqanti_protein']['classified'])
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/sqanti3_protein.py \
                     {input.renamed_exons} \
@@ -386,8 +435,9 @@ rule postprocess_summarize_all:
         blastp=config['lr']['blastp']['out'],
     output:
         config['lr']['protein']['summary'],
-    conda:
-        "envs/default.yml"
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """python {params.scripts_dir}/create_protein_overview_table.py \
             --best_orf_path {input.best_orf} \
@@ -406,6 +456,9 @@ rule postprocess_prepare_protein_fasta_for_blast:
         protein_fasta=config['ref']['pc'],
     output:
         config['ref']['pc_renamed']
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         "sed -r 's/\|[^\|]*//2g' {input.protein_fasta} > {output}"
 
@@ -415,6 +468,9 @@ rule postprocess_create_blast_db:
         protein_fasta=config['ref']['pc_renamed'],
     output:
         config['lr']['blast']['blast_db'],
+    resources:
+        threads = 1,
+        nodes = 1
     shell:
         """
         module load blast
@@ -433,6 +489,9 @@ rule postprocess_run_blast:
         dbs=config['lr']['blast']['blast_db'],
     output:
         config['lr']['blastp']['out'],
+    resources:
+        threads = 8,
+        nodes = 2
     params:
         blast_evalue=config['params']['blast']['eval'],
     shell:
