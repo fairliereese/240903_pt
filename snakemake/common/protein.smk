@@ -9,7 +9,7 @@ rule protein_all:
         config['lr']['sqanti_protein']['best_orf'],
         config['lr']['sqanti_protein']['classified'],
         config['lr']['protein']['summary'],
-        config['lr']['blastp']['out']
+        config['lr']['blast']['out']
 
 
 # rule download_all:
@@ -52,7 +52,7 @@ rule prep_make_query:
         query=config['lr']['gtf_no_spike'],
         genome=config['ref']['fa'],
     output:
-        config['lr']['orfanage']['query']
+        config['lr']['orfanage']['query'],
         config['lr']['gtf_no_spike'],
     resources:
         threads = 1,
@@ -120,8 +120,8 @@ rule orf_prediction_run_orfanage:
                     --output {output} \
                     --threads {threads} \
                     {input.annotation} \
-                    1>../../data/protein/{wildcards.sample}_orfanage.output \
-                    2>../../data/protein/{wildcards.sample}_orfanage.error"""
+                    1>../../data/protein/transcripts_orfanage.output \
+                    2>../../data/protein/transcripts_orfanage.error"""
 
 
 rule orf_prediction_filter_orfanage:
@@ -165,7 +165,7 @@ rule orf_prediction_correct_stop_codon_orfanage:
     input:
         config['lr']['orfanage']['cds_filtered'],
     output:
-        "config['lr']['orfanage']['stop_codon_orf']",
+        config['lr']['orfanage']['stop_codon_orf'],
     resources:
         threads = 1,
         nodes = 1
@@ -228,10 +228,29 @@ rule orf_prediction_run_cpat_human:
                 1> ../../data/protein/{config[queries][0]}_cpat.output \
                 2>../../data/protein/{config[queries][0]}_cpat.error"""
 
+rule postprocess_check_orf_completeness:
+    input:
+        cpat_seqs=config['lr']['cpat']['orf_seqs'],
+        orfanage_seqs=config['lr']['orfanage']['orfs'],
+        cpat_info=config['lr']['cpat']['orf_remaining'],
+        orfanage_info=config['lr']['orfanage']['stop_codon_orf'],
+    output:
+        config['lr']['cpat']['orf_completeness'],
+    resources:
+        threads = 1,
+        nodes = 1
+    shell:
+        """python {params.scripts_dir}/check_orf_completeness.py \
+            --cpat_seqs {input.cpat_seqs} \
+            --orfanage_seqs {input.orfanage_seqs} \
+            --cpat_info {input.cpat_info} \
+            --orfanage_info {input.orfanage_info} \
+            --output_path {output}"""
+
 rule orf_prediction_filter_cpat_human:
     input:
-        input_file_path=fconfig['lr']['cpat']['prob_tsv'],
-        orf_input_seq_path=fconfig['lr']['cpat']['orf_seqs'],
+        input_file_path=config['lr']['cpat']['prob_tsv'],
+        orf_input_seq_path=config['lr']['cpat']['orf_seqs'],
     output:
         config['lr']['cpat']['orf_remaining'],
     params:
@@ -249,30 +268,30 @@ rule orf_prediction_filter_cpat_human:
             --second_cutoff {params.second_cutoff}"""
 
 
-rule postprocess_check_orf_completeness:
-    input:
-        cpat_seqs=config['lr']['cpat']['orf_seqs'],
-        orfanage_seqs=config['lr']['cpat']['orfs'],
-        cpat_info=config['lr']['cpat']['orf_remaining'],
-        orfanage_info=config['lr']['orfanage']['stop_codon_orf'],
-    output:
-        config['lr']['cpat']['orf_completeness'],
-    resources:
-        threads = 1,
-        nodes = 1
-    shell:
-        """python {params.scripts_dir}/check_orf_completeness.py \
-            --cpat_seqs {input.cpat_seqs} \
-            --orfanage_seqs {input.orfanage_seqs} \
-            --cpat_info {input.cpat_info} \
-            --orfanage_info {input.orfanage_info} \
-            --output_path {output}"""
+# rule postprocess_check_orf_completeness:
+#     input:
+#         cpat_seqs=config['lr']['cpat']['orf_seqs'],
+#         orfanage_seqs=config['lr']['orfanage']['orfs'],
+#         cpat_info=config['lr']['cpat']['orf_remaining'],
+#         orfanage_info=config['lr']['orfanage']['stop_codon_orf'],
+#     output:
+#         config['lr']['cpat']['orf_completeness'],
+#     resources:
+#         threads = 1,
+#         nodes = 1
+#     shell:
+#         """python {params.scripts_dir}/check_orf_completeness.py \
+#             --cpat_seqs {input.cpat_seqs} \
+#             --orfanage_seqs {input.orfanage_seqs} \
+#             --cpat_info {input.cpat_info} \
+#             --orfanage_info {input.orfanage_info} \
+#             --output_path {output}"""
 
 
 rule postprocess_create_cpat_cds_coordinates:
     input:
         sample_gtf=config['lr']['orfanage']['cds_to_be_predicted'],
-        called_orfs="config['lr']['cpat']['orf_remaining']",
+        called_orfs=config['lr']['cpat']['orf_remaining'],
     output:
         config['lr']['cpat']['cds_coords']
     params:
@@ -290,7 +309,7 @@ rule postprocess_create_cpat_cds_coordinates:
 rule postprocess_combine_cds_gtf:
     input:
         cpat_cds=config['lr']['cpat']['cds_coords'],
-        orfanage_cds="config['lr']['orfanage']['stop_codon_orf']",
+        orfanage_cds=config['lr']['orfanage']['stop_codon_orf'],
     output:
         config['lr']['cpat']['unsourced'],
     resources:
@@ -310,7 +329,7 @@ rule postprocess_amend_cds_source:
         cds=config['lr']['cpat']['unsourced'],
         source_gtf=config['lr']['gtf_no_spike'],
         cpat_cds=config['lr']['cpat']['cds_coords'],
-        orfanage_cds="config['lr']['orfanage']['stop_codon_orf']",
+        orfanage_cds=config['lr']['orfanage']['stop_codon_orf'],
     output:
         config['lr']['cpat']['protein']
     resources:
@@ -388,7 +407,7 @@ rule postprocess_prepare_sqanti_protein_tsv:
         transcript_only_exons=config['lr']['sqanti_protein']['data_exons'],
         cds_renamed=config['lr']['sqanti_protein']['data_cds_renamed'],
     output:
-        config['lr']['sqanti_protein']['cds_renamed']
+        config['lr']['sqanti_protein']['best_orf']
     resources:
         threads = 1,
         nodes = 1
@@ -432,7 +451,7 @@ rule postprocess_summarize_all:
         original_gtf=config['lr']['gtf_no_spike'],
         gtf_predicted=config['lr']['cpat']['protein'],
         protein_fasta=config['lr']['cpat']['protein_fa'],
-        blastp=config['lr']['blastp']['out'],
+        blastp=config['lr']['blast']['out'],
     output:
         config['lr']['protein']['summary'],
     resources:
@@ -488,7 +507,7 @@ rule postprocess_run_blast:
         protein_reference=config['ref']['pc_renamed'],
         dbs=config['lr']['blast']['blast_db'],
     output:
-        config['lr']['blastp']['out'],
+        config['lr']['blast']['out'],
     resources:
         threads = 8,
         nodes = 2

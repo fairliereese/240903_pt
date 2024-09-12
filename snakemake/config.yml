@@ -72,7 +72,7 @@ lr:
     orf: ../../data/protein/transcripts_ORF.fa
     protein_fa: ../../data/protein/transcripts_protein.fa
 
-  blastp:
+  blast:
     out: ../../data/protein/transcripts_blastp.out
     blast_db: ../../data/protein/gencode.pc_translations_renamed.pog
 
