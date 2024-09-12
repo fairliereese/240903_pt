@@ -258,6 +258,7 @@ rule orf_prediction_filter_cpat_human:
     params:
         first_cutoff=config['params']['cpat']['cutoff_1'],
         second_cutoff=config['params']['cpat']['cutoff_2'],
+        scripts_dir = p
     resources:
         threads = 1,
         nodes = 1
