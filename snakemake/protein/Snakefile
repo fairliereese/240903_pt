@@ -125,7 +125,7 @@ use rule cpat as run_cpat with:
     params:
         min_orf = config['params']['orfanage']['min_orf_len_nt'],
         top_orf = config['params']['cpat']['top_orf'],
-        opref = config['lr']['cpat']['no_orf'].rsplit('_', maxsplit=1)[0]
+        opref = get_odir_and_pref_from_fname(config['lr']['cpat']['no_orf'])
 
 use rule filt_cpat as filt_cpat_orfs with:
     input:
