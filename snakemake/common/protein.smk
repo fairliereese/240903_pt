@@ -166,6 +166,8 @@ rule orf_prediction_correct_stop_codon_orfanage:
         config['lr']['orfanage']['cds_filtered'],
     output:
         config['lr']['orfanage']['stop_codon_orf'],
+    params:
+        scripts_dir = p
     resources:
         threads = 1,
         nodes = 1
