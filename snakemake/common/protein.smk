@@ -141,7 +141,7 @@ rule orf_prediction_filter_orfanage:
             --orfanage_gtf_file_path {input.orfanage_cds} \
             --output_path_to_be_predicted {output.to_be_predicted} \
             --output_path_filtered {output.filtered} \
-            --minimum_orf_length {params.minimum_orf_length}"""
+            --minimum_orf_length {params.min_orf_len}"""
 
 
 rule orf_prediction_orf_sequence_orfanage_with_stop_codon:
