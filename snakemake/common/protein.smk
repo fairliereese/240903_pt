@@ -241,6 +241,8 @@ rule postprocess_check_orf_completeness:
     resources:
         threads = 1,
         nodes = 1
+    params:
+        scripts_dir = p
     shell:
         """python {params.scripts_dir}/check_orf_completeness.py \
             --cpat_seqs {input.cpat_seqs} \
@@ -300,7 +302,6 @@ rule postprocess_create_cpat_cds_coordinates:
     params:
         opref = get_odir_and_pref_from_fname(config['lr']['cpat']['cds_coords']),
         scripts_dir = p
-
     resources:
         threads = 1,
         nodes = 1
