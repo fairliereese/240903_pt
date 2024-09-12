@@ -226,9 +226,9 @@ rule orf_prediction_run_cpat_human:
                 -g {input.query} \
                 --min-orf={params.min_orf} \
                 --top-orf={params.top_orf} \
-                -o ../../data/protein/{config[queries][0]} \
-                1> ../../data/protein/{config[queries][0]}_cpat.output \
-                2>../../data/protein/{config[queries][0]}_cpat.error"""
+                -o ../../data/protein/transcripts \
+                1> ../../data/protein/transcripts_cpat.output \
+                2>../../data/protein/transcripts_cpat.error"""
 
 rule postprocess_check_orf_completeness:
     input:
