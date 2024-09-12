@@ -534,7 +534,7 @@ rule postprocess_run_blast:
             -evalue {params.blast_evalue} \
             -num_threads {resources.threads} \
             -outfmt 6 \
-            -db ../../data/protein/gencode.{wildcards.gencode_vers}.pc_translations_renamed \
+            -db ../../data/protein/gencodepc_translations_renamed \
             -query {input.protein_fasta} > \
             {output}
         """
