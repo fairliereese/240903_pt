@@ -341,6 +341,8 @@ rule postprocess_amend_cds_source:
     resources:
         threads = 1,
         nodes = 1
+    params:
+        scripts_dir = p
     shell:
         """python {params.scripts_dir}/recover_source.py \
                                 --combined_cds_path {input.cds} \
@@ -396,7 +398,8 @@ rule postprocess_prepare_sqanti_protein_gtf:
         config['lr']['sqanti_protein']['data_exons'],
         config['lr']['sqanti_protein']['data_cds_renamed'],
     params:
-        opref = get_odir_and_pref_from_fname(config['lr']['cpat']['protein'])
+        opref = get_odir_and_pref_from_fname(config['lr']['cpat']['protein']),
+        scripts_dir = p
     resources:
         threads = 1,
         nodes = 1
@@ -417,6 +420,8 @@ rule postprocess_prepare_sqanti_protein_tsv:
     resources:
         threads = 1,
         nodes = 1
+    params:
+        scripts_dir=p
     shell:
         """python {params.scripts_dir}/create_orf_table_for_sqanti_protein.py \
                     --transcript_exons_path {input.transcript_only_exons} \
@@ -434,7 +439,8 @@ rule postprocess_run_sqanti_protein:
     output:
         config['lr']['sqanti_protein']['classified'],
     params:
-        opref = get_odir_and_pref_from_fname(config['lr']['sqanti_protein']['classified'])
+        opref = get_odir_and_pref_from_fname(config['lr']['sqanti_protein']['classified']),
+        scripts_dir=p
     resources:
         threads = 1,
         nodes = 1
@@ -460,6 +466,8 @@ rule postprocess_summarize_all:
         blastp=config['lr']['blast']['out'],
     output:
         config['lr']['protein']['summary'],
+    params:
+        scripts_dir=p
     resources:
         threads = 1,
         nodes = 1
