@@ -298,7 +298,9 @@ rule postprocess_create_cpat_cds_coordinates:
     output:
         config['lr']['cpat']['cds_coords']
     params:
-        opref = get_odir_and_pref_from_fname(config['lr']['cpat']['cds_coords'])
+        opref = get_odir_and_pref_from_fname(config['lr']['cpat']['cds_coords']),
+        scripts_dir = p
+
     resources:
         threads = 1,
         nodes = 1
