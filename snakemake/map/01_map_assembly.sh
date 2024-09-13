@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ####### README
-# This script maps fastqs of Q10 without prioritizing annotated junctions 
+# This script maps fastqs of Q10 without prioritizing annotated junctions
 #   and keeps only primary alignments to genome contigs
 #   This are the most similar settings to minimap for lyric
 
@@ -65,4 +65,3 @@ samtools index -@112 -b $OUTSIRVBAM
 
 # Remove SAM
 rm $OUTSAM
-

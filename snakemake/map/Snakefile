@@ -1,0 +1,73 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+
+df = parse_config(meta_file)
+
+
+rule all:
+    input:
+        expand(config['lr']['map']['t2t']['bam'],
+               sample=df['tech_rep'].tolist())
+
+# use rule wget as dl_t2t with:
+#     params:
+#         link = config['ref']['t2t']['link']
+#     output:
+#         out = config['ref']['t2t']['fa_gz']
+#
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+use rule minimap2 as t2t_map with:
+    input:
+        fq = lambda wc: get_df_value(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample})
+        fa = config['ref']['t2t']['fa']
+    output:
+        sam = temporary(config['lr']['map']['t2t']['sam'])
+
+use rule filt_non_prim_unmap_supp as t2t_filt_map with:
+    input:
+        align = config['lr']['map']['t2t']['sam']
+    output:
+        align = temporary(config['lr']['map']['t2t']['sam_filt'])
+
+use rule sam_to_bam as t2t_sam_to_bam with:
+    input:
+        sam = config['lr']['map']['t2t']['sam_filt']
+    output:
+        bam = config['lr']['map']['t2t']['bam']

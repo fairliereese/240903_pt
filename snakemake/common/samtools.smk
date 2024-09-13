@@ -152,6 +152,22 @@ rule primary_mappings_filt:
         samtools view -h -F 256 {input.sam} > {output.out}
         """
 
+# filter out non-primary, unmapped, and supp. alignments
+rule filt_non_prim_unmap_supp:
+    resources:
+        nodes = 4,
+        threads = 64
+    shell:
+        """
+        module load samtools
+        samtools view \
+            -@112 \
+            -F 256 \
+            -F 4 \
+            -F 2048 \
+            {input.align} > {output.align}
+        """
+
 rule cov_filt_read_ids_min_max:
     resources:
         nodes = 2,
