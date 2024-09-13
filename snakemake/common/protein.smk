@@ -426,7 +426,7 @@ rule postprocess_prepare_sqanti_protein_tsv:
         """python {params.scripts_dir}/create_orf_table_for_sqanti_protein.py \
                     --transcript_exons_path {input.transcript_only_exons} \
                     --cds_only_path {input.cds_renamed} \
-                    --output_prefix transcripts"""
+                    --output_prefix ../../data/protein/transcripts"""
 
 
 rule postprocess_run_sqanti_protein:

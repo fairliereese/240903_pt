@@ -29,7 +29,7 @@ from collections.abc import Iterable
 from csv import DictReader, DictWriter
 
 import numpy as np
-from scipy import mean
+from scipy.stats import mean
 
 utilitiesPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "utilities")
 sys.path.insert(0, utilitiesPath)
