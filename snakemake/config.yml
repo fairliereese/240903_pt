@@ -2,7 +2,7 @@ ref:
     t2t:
       link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
       fa_gz: ../../ref/t2t/t2t.fa.gz
-    afr_contigs:
+    afr:
       link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
       fa_gz: ../../ref/afr_contigs/afr_contigs.fa.gz
 
