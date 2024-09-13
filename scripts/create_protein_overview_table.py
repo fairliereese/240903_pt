@@ -62,6 +62,7 @@ def main(
     )
     sqanti_protein = sqanti_protein.copy(deep=True).sort_values("pb")
     gtf = pd.read_csv(f"{gtf_original_path}", sep="\t", header=None)
+    import pdb; pdb.set_trace()
     gtf = gtf.loc[gtf.iloc[:, GTF_TYPE_IX] == "transcript"]
     gtf["transcript_id"] = (
         gtf.iloc[:, GTF_GENE_INFO_IX]

@@ -439,7 +439,7 @@ rule postprocess_run_sqanti_protein:
     output:
         config['lr']['sqanti_protein']['classified'],
     params:
-        opref = get_odir_and_pref_from_fname(config['lr']['sqanti_protein']['classified']),
+        opref = get_odir_and_pref_from_fname(config['lr']['sqanti_protein']['classified'], '.'),
         scripts_dir=p
     resources:
         threads = 1,
