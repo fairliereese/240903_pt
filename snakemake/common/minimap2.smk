@@ -9,8 +9,6 @@ rule minimap2:
             -ax splice \
             -t {resources.threads} \
             --MD \
-            --secondary=no \
-            -L \
             -o {output.sam} \
             {input.fq} \
             {input.fa}
@@ -26,13 +24,10 @@ rule minimap2_with_index:
         minimap2 \
             -ax splice \
             -t {resources.threads} \
-            -a {input.ind} \
             --MD \
-            --secondary=no \
-            -L \
             -o {output.sam} \
-            {input.fq} \
-
+            -a {input.ind} \
+            {input.fq}
         """
 
 rule minimap2_index:
@@ -42,7 +37,5 @@ rule minimap2_index:
     shell:
         """
         module load minimap2
-        minimap2 \
-            -d {output.ind} \
-            {input.fa}
+        minimap2 -x map-ont -t 112 -d {output.ind} {input.fa}
         """

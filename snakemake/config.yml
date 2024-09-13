@@ -54,7 +54,7 @@ enc:
 
 
 lr:
-  fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q10/{lab_sample}_preprocessed_Q10.fastq.gz
+  fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q7/{lab_sample}_preprocessed_Q7.fastq.gz
 
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf # whole post-merge GTF
   # gtf: /gpfs/home/bsc/bsc083001/mele_lab/projects/240706_pantranscriptome_cerberus_gtf_merge/merge_only_ics/data/flair/raw/GM10492_1.gtf # test for just one sample

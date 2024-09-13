@@ -161,7 +161,7 @@ rule filt_non_prim_unmap_supp:
         """
         module load samtools
         samtools view \
-            -@112 \
+            -@{resources.threads} \
             -F 256 \
             -F 4 \
             -F 2048 \
