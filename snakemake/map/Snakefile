@@ -33,7 +33,9 @@ df = parse_config(meta_file)
 rule all:
     input:
         expand(config['lr']['map']['t2t']['bam'],
-               sample=df['tech_rep'].tolist())
+               sample=df['tech_rep'].tolist()),
+        expand(config['lr']['map']['afr']['bam'],
+               sample=df['tech_rep'].tolist()),
 
 # use rule wget as dl_t2t with:
 #     params:
@@ -73,3 +75,27 @@ use rule sam_to_bam as t2t_sam_to_bam with:
         sam = config['lr']['map']['t2t']['sam_filt']
     output:
         bam = config['lr']['map']['t2t']['bam']
+
+
+############# afr contigs
+use rule minimap2 as afr_map with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample})),
+        fa = config['ref']['afr']['fa_gz']
+    output:
+        sam = temporary(config['lr']['map']['afr']['sam'])
+
+use rule filt_non_prim_unmap_supp as afr_filt_map with:
+    input:
+        align = config['lr']['map']['afr']['sam']
+    output:
+        align = temporary(config['lr']['map']['afr']['sam_filt'])
+
+use rule sam_to_bam as afr_sam_to_bam with:
+    input:
+        sam = config['lr']['map']['afr']['sam_filt']
+    output:
+        bam = config['lr']['map']['afr']['bam']

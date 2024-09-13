@@ -2,6 +2,9 @@ ref:
     t2t:
       link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
       fa_gz: ../../ref/t2t/t2t.fa.gz
+    afr_contigs:
+      link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
+      fa_gz: ../../ref/afr_contigs/afr_contigs.fa.gz
 
     fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
@@ -91,13 +94,17 @@ lr:
       classified: ../../data/protein/transcripts.sqanti_protein_classification.tsv
 
   protein:
-    summary: "../../data/protein/transcripts_protein_annotation.tsv"
+    summary: ../../data/protein/transcripts_protein_annotation.tsv
 
   map:
     t2t:
-      sam: '../../data/map/t2t/{sample}.sam'
-      sam_filt: '../../data/map/t2t/{sample}_filt.sam'
-      bam: '../../data/map/t2t/{sample}.bam'
+      sam: ../../data/map/t2t/{sample}.sam
+      sam_filt: ../../data/map/t2t/{sample}_filt.sam
+      bam: ../../data/map/t2t/{sample}.bam
+    afr:
+      sam: ../../data/map/afr/{sample}.sam
+      sam_filt: ../../data/map/afr/{sample}_filt.sam
+      bam: ../../data/map/afr/{sample}.bam
 
 
 
