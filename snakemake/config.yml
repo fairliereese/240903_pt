@@ -2,11 +2,14 @@ ref:
     t2t:
       link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
       fa_gz: ../../ref/t2t/t2t.fa.gz
+      fa_mmi: ../../ref/t2t/t2t.fa.mmi
     afr:
       link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
       fa_gz: ../../ref/afr_contigs/afr_contigs.fa.gz
 
-    fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
+    # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
+    fa: ../../ref/hg38.fa
+    fa_mmi: ../../ref/hg38.fa.mmi
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
 
     pc_link: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.pc_translations.fa.gz
@@ -43,8 +46,8 @@ chess:
 
 enc:
   gtf_link: https://zenodo.org/records/10869841/files/cerberus.gtf?download=1
-  gtf_gz: ../../data/enc/chess.gtf.gz
-  gtf: ../../data/enc/chess.gtf
+  gtf_gz: ../../data/enc/enc.gtf.gz
+  gtf: ../../data/enc/enc.gtf
 
   cerb:
     ics: ../../data/enc/cerb/ics.tsv
