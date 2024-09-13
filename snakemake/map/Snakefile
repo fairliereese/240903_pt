@@ -54,9 +54,10 @@ def get_df_val(df, col1, col_dict):
 
 use rule minimap2 as t2t_map with:
     input:
-        fq = lambda wc: get_df_val(df,
+        fq = expand(config['lr']['fastq'],
+                    lab_sample=lambda wc: get_df_val(df,
                             'lab_rep',
-                            {'tech_rep': wc.sample}),
+                            {'tech_rep': wc.sample})),
         fa = config['ref']['t2t']['fa_gz']
     output:
         sam = temporary(config['lr']['map']['t2t']['sam'])
