@@ -75,7 +75,9 @@ sys.path.insert(0, utilitiesPath)
 GFFREAD_PROG = "gffread"
 
 # importing functions from original sqanti3
-from /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/sqanti3_qc import (
+import sys
+sys.path.append("/gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/")
+from sqanti3_qc import (
     associationOverlapping,
     genePredReader,
     myQueryProteins,
