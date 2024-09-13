@@ -55,7 +55,7 @@ use rule minimap2 as t2t_map with:
     input:
         fq = lambda wc: get_df_value(df,
                             'lab_rep',
-                            {'tech_rep': wc.sample})
+                            {'tech_rep': wc.sample}),
         fa = config['ref']['t2t']['fa']
     output:
         sam = temporary(config['lr']['map']['t2t']['sam'])
