@@ -402,7 +402,7 @@ rule postprocess_prepare_sqanti_protein_gtf:
         scripts_dir = p
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 3
     shell:
         """python {params.scripts_dir}/rename_cds_to_exon.py \
             --sample_gtf {input.protein_gtf} \
