@@ -1,7 +1,7 @@
 rule minimap2:
     resources:
         threads = 16,
-        nodes = 12
+        nodes = 16
     shell:
         """
         module load minimap2
