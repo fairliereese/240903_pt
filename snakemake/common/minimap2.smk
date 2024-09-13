@@ -1,6 +1,6 @@
 rule minimap2:
     resources:
-        threads = 64,
+        threads = 16,
         nodes = 12
     shell:
         """
