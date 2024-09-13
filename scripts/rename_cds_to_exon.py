@@ -120,6 +120,7 @@ def process_gtf_multiprocess(sample, name, num_cores):
 def process_sample_rename(sample_file, name, num_cores):
 
     sample = gtfparse.read_gtf(sample_file)
+    sample = sample.to_pandas()
     process_gtf_multiprocess(sample, name, num_cores)
 
 
