@@ -126,6 +126,7 @@ def process_sample_rename(sample_file, name, num_cores):
 
 def process_reference_rename(reference_file, name, num_cores):
     ref = gtfparse.read_gtf(reference_file)
+    ref = ref.to_pandas()
     process_gtf_multiprocess(ref, name, num_cores)
 
 
