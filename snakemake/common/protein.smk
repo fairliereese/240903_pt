@@ -444,8 +444,12 @@ rule postprocess_run_sqanti_protein:
     resources:
         threads = 1,
         nodes = 1
+    conda:
+        'base'
     shell:
-        """python {params.scripts_dir}/sqanti3_protein.py \
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
+        python {params.scripts_dir}/sqanti3_protein.py \
                     {input.renamed_exons} \
                     {input.cds_only} \
                     {input.best_orfs} \

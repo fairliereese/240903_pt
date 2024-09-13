@@ -61,13 +61,13 @@ except ImportError:
     sys.exit(-1)
 
 
-from cupcake.io.GFF import collapseGFFReader, write_collapseGFF_format
 
 # so gloria can run cupcake and gtf tools on mac
 # cupcake_dir = '/Users/gloriasheynkman/Documents/research_drive/bioinfo_tools/cDNA_Cupcake/'
 # if cupcake_dir not in sys.path:
 #     sys.path.append('/Users/gloriasheynkman/Documents/research_drive/bioinfo_tools/cDNA_Cupcake/')
-from cupcake.tofu.compare_junctions import compare_junctions
+# from cupcake.tofu.compare_junctions import compare_junctions
+from compare_junctions import *
 
 GTF2GENEPRED_PROG = "gtfToGenePred"
 utilitiesPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "utilities")
