@@ -19,7 +19,7 @@ rule minimap2:
 rule minimap2_with_index:
     resources:
         threads = 8,
-        nodes = 16
+        nodes = 32
     shell:
         """
         module load minimap2
