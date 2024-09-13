@@ -68,7 +68,7 @@ use rule minimap2_with_index as t2t_map with:
                     lab_sample=get_df_val(df,
                             'lab_rep',
                             {'tech_rep': wc.sample})),
-        fa = config['ref']['t2t']['fa_mmi']
+        ind = config['ref']['t2t']['fa_mmi']
     resources:
         threads = 8,
         nodes = 32
