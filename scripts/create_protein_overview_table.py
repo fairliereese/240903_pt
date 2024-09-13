@@ -61,58 +61,62 @@ def main(
         .sort_values("transcript_id")
     )
     sqanti_protein = sqanti_protein.copy(deep=True).sort_values("pb")
-    gtf = pd.read_csv(f"{gtf_original_path}", sep="\t", header=None)
-    import pdb; pdb.set_trace()
-    gtf = gtf.loc[gtf.iloc[:, GTF_TYPE_IX] == "transcript"]
-    gtf["transcript_id"] = (
-        gtf.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[10]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
-    gtf = gtf.loc[np.isin(gtf.transcript_id.values, common_transcript_ids)]
-    gtf["gene_id"] = (
-        gtf.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[0]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
-    gtf["gene_name"] = (
-        gtf.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[12]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
+    import pyranges as pr
+
+    gtf = pr.read_gtf(f"{gtf_original_path}").df
+    # gtf = pd.read_csv(f"{gtf_original_path}", sep="\t", header=None)
+    # import pdb; pdb.set_trace()
+    # gtf = gtf.loc[gtf.iloc[:, GTF_TYPE_IX] == "transcript"]
+    # gtf["transcript_id"] = (
+    #     gtf.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit('; transcript_id "', expand=True)[1]
+    #     .str
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
+    # gtf = gtf.loc[np.isin(gtf.transcript_id.values, common_transcript_ids)]
+    # gtf["gene_id"] = (
+    #     gtf.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[0]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
+    # gtf["gene_name"] = (
+    #     gtf.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[12]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
     gtf = gtf.sort_values("transcript_id")
-    gtf_predicted = pd.read_csv(f"{gtf_predicted_path}", sep="\t", header=None)
+    # gtf_predicted = pd.read_csv(f"{gtf_predicted_path}", sep="\t", header=None)
+    gtf_predicted = pr.read_gtf(f"{gtf_predicted_path}").df
     cds_source = gtf_predicted.copy(deep=True)
     cds_source = cds_source.loc[(cds_source.iloc[:, GTF_TYPE_IX] == "CDS")]
-    cds_source["transcript_id"] = (
-        cds_source.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[0]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
+    # cds_source["transcript_id"] = (
+    #     cds_source.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[0]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
     cds_source = cds_source.iloc[:, [GTF_SOURCE_IX, -1]].drop_duplicates()
     cds_source.columns = ["source", "transcript_id"]
     cds_source = cds_source.sort_values("transcript_id")
     cds_positive_start = gtf_predicted.copy(deep=True)
-    cds_positive_start["transcript_id"] = (
-        cds_positive_start.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[0]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
+    # cds_positive_start["transcript_id"] = (
+    #     cds_positive_start.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[0]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
     cds_positive_start = cds_positive_start.loc[
         (cds_positive_start.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_positive_start.iloc[:, GTF_STRAND_IX] == "+")
@@ -127,14 +131,14 @@ def main(
     cds_positive_start.columns = [cds_positive_start.columns[0], "coord"]
 
     cds_positive_end = gtf_predicted.copy(deep=True)
-    cds_positive_end["transcript_id"] = (
-        cds_positive_end.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[0]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
+    # cds_positive_end["transcript_id"] = (
+    #     cds_positive_end.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[0]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
     cds_positive_end = cds_positive_end.loc[
         (cds_positive_end.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_positive_end.iloc[:, GTF_STRAND_IX] == "+")
@@ -149,14 +153,14 @@ def main(
     cds_positive_end.columns = [cds_positive_start.columns[0], "coord"]
 
     cds_negative_start = gtf_predicted.copy(deep=True)
-    cds_negative_start["transcript_id"] = (
-        cds_negative_start.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[0]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
+    # cds_negative_start["transcript_id"] = (
+    #     cds_negative_start.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[0]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
     cds_negative_start = cds_negative_start.loc[
         (cds_negative_start.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_negative_start.iloc[:, GTF_STRAND_IX] == "-")
@@ -172,14 +176,14 @@ def main(
 
     cds_negative_end = gtf_predicted.copy(deep=True)
 
-    cds_negative_end["transcript_id"] = (
-        cds_negative_end.iloc[:, GTF_GENE_INFO_IX]
-        .str.rsplit(";")
-        .str[0]
-        .str.rsplit('"')
-        .str[1]
-        .values
-    )
+    # cds_negative_end["transcript_id"] = (
+    #     cds_negative_end.iloc[:, GTF_GENE_INFO_IX]
+    #     .str.rsplit(";")
+    #     .str[0]
+    #     .str.rsplit('"')
+    #     .str[1]
+    #     .values
+    # )
     cds_negative_end = cds_negative_end.loc[
         (cds_negative_end.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_negative_end.iloc[:, GTF_STRAND_IX] == "-")
