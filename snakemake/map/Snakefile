@@ -59,7 +59,7 @@ use rule minimap2_index as index_t2t with:
     input:
         fa = config['ref']['t2t']['fa_gz']
     output:
-        fa_ind = config['ref']['t2t']['fa_mmi]
+        fa_ind = config['ref']['t2t']['fa_mmi']
 
 #### t2t
 use rule minimap2_with_index as t2t_map with:
