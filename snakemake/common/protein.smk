@@ -199,7 +199,7 @@ rule orf_prediction_run_cpat_human:
     input:
         hexamer=config['ref']['cpat']['hexamer'],
         logit_model=config['ref']['cpat']['model'],
-        query=f"../../data/protein/transcripts_missing_cds.fa",
+        query=config['lr']['orfanage']['missing_cds'],
     output:
         config['lr']['cpat']['r'],
         config['lr']['cpat']['orf_seqs'],
@@ -534,7 +534,7 @@ rule postprocess_run_blast:
             -evalue {params.blast_evalue} \
             -num_threads {resources.threads} \
             -outfmt 6 \
-            -db ../../data/protein/gencodepc_translations_renamed \
+            -db ../../data/protein/gencode.pc_translations_renamed \
             -query {input.protein_fasta} > \
             {output}
         """
