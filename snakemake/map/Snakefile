@@ -54,7 +54,7 @@ def get_df_val(df, col1, col_dict):
 
 use rule minimap2 as t2t_map with:
     input:
-        fq = expand(lambda wc: config['lr']['fastq'],
+        fq = lambda wc: expand(config['lr']['fastq'],
                     lab_sample=get_df_val(df,
                             'lab_rep',
                             {'tech_rep': wc.sample})),
