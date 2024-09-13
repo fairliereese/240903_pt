@@ -61,6 +61,9 @@ use rule minimap2 as t2t_map with:
                             'lab_rep',
                             {'tech_rep': wc.sample})),
         fa = config['ref']['t2t']['fa_gz']
+    resources:
+        threads = 8,
+        nodes = 32
     output:
         sam = temporary(config['lr']['map']['t2t']['sam'])
 

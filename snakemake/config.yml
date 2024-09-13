@@ -41,6 +41,15 @@ chess:
     cerb:
       ics: ../../data/chess/cerb/ics.tsv
 
+enc:
+  gtf_link: https://zenodo.org/records/10869841/files/cerberus.gtf?download=1
+  gtf_gz: ../../data/enc/chess.gtf.gz
+  gtf: ../../data/enc/chess.gtf
+
+  cerb:
+    ics: ../../data/enc/cerb/ics.tsv
+
+
 lr:
   fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q10/{lab_sample}_preprocessed_Q10.fastq.gz
 

@@ -1,0 +1,46 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+#
+# from sm_utils import *
+# from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = 'config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+
+rule all:
+    input:
+        config['enc']['cerb']['ics']
+
+use rule wget as dl_chess with:
+    params:
+        link = config['enc']['gtf_link']
+    output:
+        out = temporary(config['enc']['gtf_gz'])
+
+use rule gunzip as gz_chess with:
+    input:
+        gz = config['enc']['gtf_gz']
+    output:
+        ofile = config['enc']['gtf']
+
+use rule gtf_to_ic as chess_gtf_to_ic with:
+    input:
+        gtf = config['enc']['gtf']
+    output:
+        tsv = config['enc']['cerb']['ics']
