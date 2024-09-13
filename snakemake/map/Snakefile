@@ -25,6 +25,7 @@ include: f'{c_dir}cerberus.smk'
 include: f'{c_dir}bedtools.smk'
 include: f'{c_dir}transdecoder.smk'
 include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
 
 df = parse_config(meta_file)
 
