@@ -94,6 +94,7 @@ def make_pacbio_cds_gtf(sample_gtf, called_orfs, name):
     # import gtf, only exon info.
     # only move forward with representative pb isoform (for same-protein groups)
     gtf = gtfparse.read_gtf(sample_gtf)
+    gtf = gtf.to_pandas()
     gtf_gene_mapping = gtf.loc[gtf["feature"] == "transcript"]
     gtf_gene_mapping = gtf_gene_mapping[["transcript_id", "gene_id"]]
     gtf = gtf[

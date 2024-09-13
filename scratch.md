@@ -13,4 +13,5 @@ cpat             -x ../../ref/hexamer.tsv             -d ../../ref/cpat/cpat_mod
   # 2> ../../data/cpat/transcripts.no_cpat.error
 
   python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//refmt_gtf.py             ../../data/novel_gene/novel_genes_built.gtf             ../../data/novel_gene/novel_genes_fmt.gtf
-```
+
+  python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//create_cpat_CDS_coordinates.py                                 --name ../../data/protein/transcripts                                 --sample_gtf ../../data/protein/transcripts_cpat_cds_to_be_predicted.gtf --called_orfs ../../data/protein/transcripts.ORF_remaining.tsv
