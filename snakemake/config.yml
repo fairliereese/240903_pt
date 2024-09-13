@@ -1,7 +1,7 @@
 ref:
     t2t:
       link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
-      fa_gz: ../../ref/t2t/fa.gz
+      fa_gz: ../../ref/t2t/t2t.fa.gz
 
     fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
