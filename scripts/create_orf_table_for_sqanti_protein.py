@@ -153,7 +153,7 @@ def main(
     )
 
     transcript = pd.read_csv(
-        f"{transcript_exons_path}, sep="\t", header=None
+        f"{transcript_exons_path}", sep="\t", header=None
     )
     transcript = transcript.loc[transcript.iloc[:, GTF_TYPE_IX] != "transcript"]
     transcript["transcript_id"] = (
