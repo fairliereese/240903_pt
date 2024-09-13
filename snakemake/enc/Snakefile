@@ -27,17 +27,12 @@ rule all:
     input:
         config['enc']['cerb']['ics']
 
-use rule wget as dl_enc with:
-    params:
-        link = config['enc']['gtf_link']
-    output:
-        out = temporary(config['enc']['gtf_gz'])
+# use rule wget as dl_enc with:
+#     params:
+#         link = config['enc']['gtf_link']
+#     output:
+#         out = temporary(config['enc']['gtf'])
 
-use rule gunzip as gz_enc with:
-    input:
-        gz = config['enc']['gtf_gz']
-    output:
-        ofile = config['enc']['gtf']
 
 use rule gtf_to_ic as enc_gtf_to_ic with:
     input:
