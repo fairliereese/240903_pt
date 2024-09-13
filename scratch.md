@@ -18,5 +18,5 @@ cpat             -x ../../ref/hexamer.tsv             -d ../../ref/cpat/cpat_mod
 
   python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//create_orf_table_for_sqanti_protein.py                     --transcript_exons_path ../../data/protein/transcripts.transcript_exons_only.gtf                     --cds_only_path ../../data/protein/transcripts.cds_renamed_exon.gtf                     --output_prefix transcripts
 
-  conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
+conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
   python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//sqanti3_protein.py                     ../../data/protein/transcripts.transcript_exons_only.gtf                     ../../data/protein/transcripts.cds_renamed_exon.gtf                     ../../data/protein/transcripts_best_orf.tsv                     ../../data/protein/transcripts_gencode.transcript_exons_only.gtf                     ../../data/protein/transcripts_gencode.cds_renamed_exon.gtf                     -d ./                     -p ../../data/protein/transcripts.sqanti
