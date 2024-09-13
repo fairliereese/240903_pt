@@ -64,6 +64,7 @@ def main(
     import pyranges as pr
 
     gtf = pr.read_gtf(f"{gtf_original_path}").df
+    gtf['gene_name'] = gtf.gene_id
     # gtf = pd.read_csv(f"{gtf_original_path}", sep="\t", header=None)
     # import pdb; pdb.set_trace()
     # gtf = gtf.loc[gtf.iloc[:, GTF_TYPE_IX] == "transcript"]
@@ -95,6 +96,7 @@ def main(
     gtf = gtf.sort_values("transcript_id")
     # gtf_predicted = pd.read_csv(f"{gtf_predicted_path}", sep="\t", header=None)
     gtf_predicted = pr.read_gtf(f"{gtf_predicted_path}").df
+    gtf_predicted['gene_name'] = gtf_predicted['gene_id']
     cds_source = gtf_predicted.copy(deep=True)
     cds_source = cds_source.loc[(cds_source.iloc[:, GTF_TYPE_IX] == "CDS")]
     # cds_source["transcript_id"] = (
