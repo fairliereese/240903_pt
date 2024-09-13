@@ -87,7 +87,7 @@ rule prep_make_annotation:
         config['lr']['orfanage']['ready_annot']
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     conda:
         'base'
     shell:
