@@ -1,11 +1,11 @@
 ref:
-    t2t:
-      link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
-      fa_gz: ../../ref/t2t/t2t.fa.gz
-      fa_mmi: ../../ref/t2t/t2t.fa.mmi
-    afr:
-      link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
-      fa_gz: ../../ref/afr_contigs/afr_contigs.fa.gz
+    alt:
+      fa_gz: ../../ref/{assembly}/{assembly}.fa.gz
+      fa_mmi: ../../ref/{assembly}/{assembly}.fa.mmi
+      t2t:
+        link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
+      afr:
+        link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
 
     # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa
     fa: ../../ref/hg38.fa
@@ -55,6 +55,8 @@ enc:
 
 lr:
   fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q7/{lab_sample}_preprocessed_Q7.fastq.gz
+  fastq_n_reads: ../../data/{sample}_fastq_n_reads.txt
+  fastq_n_reads_summary: ../../data/fastq_n_reads.txt
 
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf # whole post-merge GTF
   # gtf: /gpfs/home/bsc/bsc083001/mele_lab/projects/240706_pantranscriptome_cerberus_gtf_merge/merge_only_ics/data/flair/raw/GM10492_1.gtf # test for just one sample
@@ -109,14 +111,16 @@ lr:
     summary: ../../data/protein/transcripts_protein_annotation.tsv
 
   map:
-    t2t:
-      sam: ../../data/map/t2t/{sample}.sam
-      sam_filt: ../../data/map/t2t/{sample}_filt.sam
-      bam: ../../data/map/t2t/{sample}.bam
-    afr:
-      sam: ../../data/map/afr/{sample}.sam
-      sam_filt: ../../data/map/afr/{sample}_filt.sam
-      bam: ../../data/map/afr/{sample}.bam
+    sam: ../../data/map/{assembly}/{sample}.sam
+    sam_filt: ../../data/map/{assembly}/{sample}_filt.sam
+    bam: ../../data/map/{assembly}/{sample}.bam
+    bam_sort: ../../data/map/{assembly}/{sample}_sorted.bam
+    bam_ind: ../../data/map/{assembly}/{sample}_sorted.bam.bai
+    bam_n_reads: ../../data/map/{assembly}/{sample}_n_reads.txt
+    bam_n_reads_summary: ../../data/map/{assembly}/n_reads_summary.tsv
+    bam_mapqs: ../../data/map/{assembly}/{sample}_mapqs.txt
+    bam_mapqs_summary: ../../data/map/{assembly}/mapqs_summary.txt
+
 
 
 

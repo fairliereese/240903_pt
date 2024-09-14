@@ -162,6 +162,7 @@ rule filt_non_prim_unmap_supp:
         module load samtools
         samtools view \
             -@{resources.threads} \
+            -h \
             -F 256 \
             -F 4 \
             -F 2048 \
@@ -204,18 +205,6 @@ rule cov_filt:
 #         awk -v dataset="{wildcards.dataset}" '$2 > 0.9 && $3 == dataset {{print $1}}' {input.query_cov} > ${{temp_fname}}
 #         samtools view -h --qname-file ${{temp_fname}} {input.sam} > {output.out}
 #         """
-
-rule bam_read_len_summary:
-    resources:
-        threads = 1,
-        nodes = 2,
-    run:
-        df = pd.DataFrame()
-        for f, d in zip(input.tsvs, params.datasets):
-            temp = pd.read_csv(f, sep='\t')
-            temp['dataset'] = d
-            df = pd.concat([df, temp], axis=0)
-        df.to_csv(output.summ, sep='\t', index=False)
 
 rule bam_reads_per_chr:
     resources:
