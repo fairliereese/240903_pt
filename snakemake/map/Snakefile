@@ -34,7 +34,7 @@ df = parse_config(meta_file)
 assemblies = ['t2t', 'afr']
 
 wildcard_constraints:
-    tech_rep='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
+    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
     lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
 
 rule all:
