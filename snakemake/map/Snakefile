@@ -43,69 +43,69 @@ rule all:
               assembly=assemblies),
         expand(config['lr']['map']['bam_mapqs_summary'],
              assembly=assemblies)
-
-
-use rule wget as dl_alt_assembly with:
-    params:
-        link = lambda wc: config['ref'][{wc.assembly}}]['link']
-    output:
-        out = config['ref']['alt']['fa_gz']
+# 
 #
-
-def get_df_val(df, col1, col_dict):
-    temp = df.copy(deep=True)
-
-    for key, item in col_dict.items():
-        temp = temp.loc[temp[key] == item]
-
-    val = temp[col1].unique()
-    assert len(val) == 1
-    return val[0]
-
-### index genome
-use rule minimap2_index as ind_alt_assembly with:
-    input:
-        fa = config['ref']['alt']['fa_gz']
-    output:
-        ind = config['ref']['alt']['fa_mmi']
-
-use rule minimap2_with_index as alt_map with:
-    input:
-        fq = lambda wc: expand(config['lr']['fastq'],
-                    lab_sample=get_df_val(df,
-                            'lab_rep',
-                            {'tech_rep': wc.sample})),
-        ind = config['ref']['alt']['fa_mmi']
-    resources:
-        threads = 8,
-        nodes = 32
-    output:
-        sam = temporary(config['lr']['map']['sam'])
-
-use rule filt_non_prim_unmap_supp as alt_filt_map with:
-    input:
-        align = config['lr']['map']['sam']
-    output:
-        align = temporary(config['lr']['map']['sam_filt'])
-
-use rule sam_to_bam as alt_sam_to_bam with:
-    input:
-        sam = config['lr']['map']['sam_filt']
-    output:
-        bam = temporary(config['lr']['map']['bam'])
-
-# index and sort bam
-use rule sort_bam as alt_sort_bam with:
-    input:
-        bam = config['lr']['map']['bam']
-    output:
-        bam = config['lr']['map']['bam_sort']
-
-use rule index_bam as alt_index_bam with:
-    input:
-        bam = config['lr']['map']['bam_sort']
-    output:
-        ind = config['lr']['map']['bam_ind']
+# use rule wget as dl_alt_assembly with:
+#     params:
+#         link = lambda wc: config['ref'][{wc.assembly}}]['link']
+#     output:
+#         out = config['ref']['alt']['fa_gz']
+# #
+#
+# def get_df_val(df, col1, col_dict):
+#     temp = df.copy(deep=True)
+#
+#     for key, item in col_dict.items():
+#         temp = temp.loc[temp[key] == item]
+#
+#     val = temp[col1].unique()
+#     assert len(val) == 1
+#     return val[0]
+#
+# ### index genome
+# use rule minimap2_index as ind_alt_assembly with:
+#     input:
+#         fa = config['ref']['alt']['fa_gz']
+#     output:
+#         ind = config['ref']['alt']['fa_mmi']
+#
+# use rule minimap2_with_index as alt_map with:
+#     input:
+#         fq = lambda wc: expand(config['lr']['fastq'],
+#                     lab_sample=get_df_val(df,
+#                             'lab_rep',
+#                             {'tech_rep': wc.sample})),
+#         ind = config['ref']['alt']['fa_mmi']
+#     resources:
+#         threads = 8,
+#         nodes = 32
+#     output:
+#         sam = temporary(config['lr']['map']['sam'])
+#
+# use rule filt_non_prim_unmap_supp as alt_filt_map with:
+#     input:
+#         align = config['lr']['map']['sam']
+#     output:
+#         align = temporary(config['lr']['map']['sam_filt'])
+#
+# use rule sam_to_bam as alt_sam_to_bam with:
+#     input:
+#         sam = config['lr']['map']['sam_filt']
+#     output:
+#         bam = temporary(config['lr']['map']['bam'])
+#
+# # index and sort bam
+# use rule sort_bam as alt_sort_bam with:
+#     input:
+#         bam = config['lr']['map']['bam']
+#     output:
+#         bam = config['lr']['map']['bam_sort']
+#
+# use rule index_bam as alt_index_bam with:
+#     input:
+#         bam = config['lr']['map']['bam_sort']
+#     output:
+#         ind = config['lr']['map']['bam_ind']
 
 # ### statistics
 # rule all_stats:
