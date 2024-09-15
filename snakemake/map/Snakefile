@@ -120,7 +120,10 @@ rule all_stats:
 # raw fq counts
 use rule fq_count_reads as count_raw_reads with:
     input:
-        fq = config['lr']['fastq']
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample}))
     output:
         txt = temporary(config['lr']['fastq_n_reads'])
 
