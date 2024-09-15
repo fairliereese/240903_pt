@@ -157,7 +157,7 @@ use rule bam_get_mapqs as alt_get_mapqs with:
     input:
         bam = config['lr']['map']['bam_sort']
     output:
-        txt = temporary(config['lr']['map']['bam_maps'])
+        txt = temporary(config['lr']['map']['bam_mapqs'])
 
 use rule read_id_df_summary as alt_get_mapqs_summary with:
     input:
