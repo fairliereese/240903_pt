@@ -62,12 +62,12 @@ def get_df_val(df, col1, col_dict):
     assert len(val) == 1
     return val[0]
 
-### index genome
-use rule minimap2_index as ind_alt_assembly with:
-    input:
-        fa = config['ref']['alt']['fa_gz']
-    output:
-        ind = config['ref']['alt']['fa_mmi']
+# ### index genome
+# use rule minimap2_index as ind_alt_assembly with:
+#     input:
+#         fa = config['ref']['alt']['fa_gz']
+#     output:
+#         ind = config['ref']['alt']['fa_mmi']
 
 # use rule minimap2_with_index as alt_map with:
 #     input:
