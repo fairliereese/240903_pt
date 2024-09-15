@@ -35,15 +35,14 @@ assemblies = ['t2t', 'afr']
 
 rule all:
     input:
-        'test.txt'
-        # expand(config['lr']['map']['bam'],
-        #        sample=df['tech_rep'].tolist(),
-        #        assembly=assemblies),
-        # config['lr']['fastq_n_reads_summary'],
-        # expand(config['lr']['map']['bam_n_reads_summary'],
-        #       assembly=assemblies),
-        # expand(config['lr']['map']['bam_mapqs_summary'],
-        #      assembly=assemblies)
+        expand(config['lr']['map']['bam'],
+               sample=df['tech_rep'].tolist(),
+               assembly=assemblies),
+        config['lr']['fastq_n_reads_summary'],
+        expand(config['lr']['map']['bam_n_reads_summary'],
+              assembly=assemblies),
+        expand(config['lr']['map']['bam_mapqs_summary'],
+             assembly=assemblies)
 
 
 use rule wget as dl_alt_assembly with:
