@@ -35,6 +35,7 @@ assemblies = ['t2t', 'afr']
 
 rule all:
     input:
+        'test.txt'
         # expand(config['lr']['map']['bam'],
         #        sample=df['tech_rep'].tolist(),
         #        assembly=assemblies),
