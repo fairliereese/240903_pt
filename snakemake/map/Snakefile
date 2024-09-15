@@ -53,118 +53,118 @@ use rule wget as dl_alt_assembly with:
         out = config['ref']['alt']['fa_gz']
 
 
-# def get_df_val(df, col1, col_dict):
-#     temp = df.copy(deep=True)
-#
-#     for key, item in col_dict.items():
-#         temp = temp.loc[temp[key] == item]
-#
-#     val = temp[col1].unique()
-#     assert len(val) == 1
-#     return val[0]
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
 
-# ### index genome
-# use rule minimap2_index as ind_alt_assembly with:
-#     input:
-#         fa = config['ref']['alt']['fa_gz']
-#     output:
-#         ind = config['ref']['alt']['fa_mmi']
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
 
-# use rule minimap2_with_index as alt_map with:
-#     input:
-#         fq = lambda wc: expand(config['lr']['fastq'],
-#                     lab_sample=get_df_val(df,
-#                             'lab_rep',
-#                             {'tech_rep': wc.sample})),
-#         ind = config['ref']['alt']['fa_mmi']
-#     resources:
-#         threads = 8,
-#         nodes = 32
-#     output:
-#         sam = temporary(config['lr']['map']['sam'])
-#
-# use rule filt_non_prim_unmap_supp as alt_filt_map with:
-#     input:
-#         align = config['lr']['map']['sam']
-#     output:
-#         align = temporary(config['lr']['map']['sam_filt'])
-#
-# use rule sam_to_bam as alt_sam_to_bam with:
-#     input:
-#         sam = config['lr']['map']['sam_filt']
-#     output:
-#         bam = temporary(config['lr']['map']['bam'])
-#
-# # index and sort bam
-# use rule sort_bam as alt_sort_bam with:
-#     input:
-#         bam = config['lr']['map']['bam']
-#     output:
-#         bam = config['lr']['map']['bam_sort']
-#
-# use rule index_bam as alt_index_bam with:
-#     input:
-#         bam = config['lr']['map']['bam_sort']
-#     output:
-#         ind = config['lr']['map']['bam_ind']
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
 
-# ### statistics
-# rule all_stats:
-#     input:
-#         config['lr']['fastq_n_reads_summary'],
-#         expand(config['lr']['map']['bam_n_reads_summary'],
-#                assembly=assemblies),
-#         expand(config['lr']['map']['bam_mapqs_summary'],
-#               assembly=assemblies)
-#
-#
-# # raw fq counts
-# use rule fq_count_reads as count_raw_reads with:
-#     input:
-#         fq = config['lr']['fastq']
-#     output:
-#         txt = temporary(config['lr']['fastq_n_reads'])
-#
-# use rule count_reads_summary as fq_count_reads_summary with:
-#     input:
-#         txts = lambda wc: expand(config['lr']['fastq_n_reads'],
-#                                 sample=df['tech_rep'].tolist()),
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['fastq_n_reads_summary']
+### index genome
+use rule minimap2_index as ind_alt_assembly with:
+    input:
+        fa = config['ref']['alt']['fa_gz']
+    output:
+        ind = config['ref']['alt']['fa_mmi']
 
-# # filtered bam counts
-# use rule count_bam as alt_count_mapped_reads with:
-#     input:
-#         align = config['lr']['map']['bam_sort']
-#     output:
-#         txt = temporary(config['lr']['map']['bam_n_reads'])
-#
-#
-# use rule count_reads_summary as fq_count_reads_summary with:
-#     input:
-#         txts = lambda wc: expand(config['lr']['map']['bam_n_reads'],
-#                                 assembly=wc.assembly,
-#                                 sample=df['tech_rep'].tolist()),
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['map']['bam_n_reads_summary']
-#
-# # mapqs per read
-# use rule bam_get_mapqs as alt_get_mapqs with:
-#     input:
-#         bam = config['lr']['map']['bam_sort']
-#     output:
-#         txt = temporary(config['lr']['map']['bam_maps'])
-#
-# use rule read_id_df_summary as alt_get_mapqs_summary with:
-#     input:
-#         txts = lambda wc: expand(config['lr']['map']['bam_mapqs'],
-#                                 assembly=wc.assembly,
-#                                 sample=df['tech_rep'].tolist())
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['map']['bam_mapqs_summary']
+use rule minimap2_with_index as alt_map with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample})),
+        ind = config['ref']['alt']['fa_mmi']
+    resources:
+        threads = 8,
+        nodes = 32
+    output:
+        sam = temporary(config['lr']['map']['sam'])
+
+use rule filt_non_prim_unmap_supp as alt_filt_map with:
+    input:
+        align = config['lr']['map']['sam']
+    output:
+        align = temporary(config['lr']['map']['sam_filt'])
+
+use rule sam_to_bam as alt_sam_to_bam with:
+    input:
+        sam = config['lr']['map']['sam_filt']
+    output:
+        bam = temporary(config['lr']['map']['bam'])
+
+# index and sort bam
+use rule sort_bam as alt_sort_bam with:
+    input:
+        bam = config['lr']['map']['bam']
+    output:
+        bam = config['lr']['map']['bam_sort']
+
+use rule index_bam as alt_index_bam with:
+    input:
+        bam = config['lr']['map']['bam_sort']
+    output:
+        ind = config['lr']['map']['bam_ind']
+
+### statistics
+rule all_stats:
+    input:
+        config['lr']['fastq_n_reads_summary'],
+        expand(config['lr']['map']['bam_n_reads_summary'],
+               assembly=assemblies),
+        expand(config['lr']['map']['bam_mapqs_summary'],
+              assembly=assemblies)
+
+
+# raw fq counts
+use rule fq_count_reads as count_raw_reads with:
+    input:
+        fq = config['lr']['fastq']
+    output:
+        txt = temporary(config['lr']['fastq_n_reads'])
+
+use rule count_reads_summary as fq_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+                                sample=df['tech_rep'].tolist()),
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['fastq_n_reads_summary']
+
+# filtered bam counts
+use rule count_bam as alt_count_mapped_reads with:
+    input:
+        align = config['lr']['map']['bam_sort']
+    output:
+        txt = temporary(config['lr']['map']['bam_n_reads'])
+
+
+use rule count_reads_summary as fq_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['map']['bam_n_reads'],
+                                assembly=wc.assembly,
+                                sample=df['tech_rep'].tolist()),
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['bam_n_reads_summary']
+
+# mapqs per read
+use rule bam_get_mapqs as alt_get_mapqs with:
+    input:
+        bam = config['lr']['map']['bam_sort']
+    output:
+        txt = temporary(config['lr']['map']['bam_maps'])
+
+use rule read_id_df_summary as alt_get_mapqs_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+                                assembly=wc.assembly,
+                                sample=df['tech_rep'].tolist())
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['bam_mapqs_summary']
