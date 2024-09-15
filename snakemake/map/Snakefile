@@ -142,7 +142,7 @@ use rule count_bam as alt_count_mapped_reads with:
         txt = temporary(config['lr']['map']['bam_n_reads'])
 
 
-use rule count_reads_summary as fq_count_reads_summary with:
+use rule count_reads_summary as sam_count_reads_summary with:
     input:
         txts = lambda wc: expand(config['lr']['map']['bam_n_reads'],
                                 assembly=wc.assembly,
