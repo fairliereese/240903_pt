@@ -56,7 +56,7 @@ rule prep_make_query:
         config['lr']['gtf_no_spike'],
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     conda:
         'base'
     shell:
