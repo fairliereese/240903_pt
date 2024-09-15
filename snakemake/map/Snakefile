@@ -52,15 +52,15 @@ use rule wget as dl_alt_assembly with:
         out = config['ref']['alt']['fa_gz']
 #
 
-def get_df_val(df, col1, col_dict):
-    temp = df.copy(deep=True)
-
-    for key, item in col_dict.items():
-        temp = temp.loc[temp[key] == item]
-
-    val = temp[col1].unique()
-    assert len(val) == 1
-    return val[0]
+# def get_df_val(df, col1, col_dict):
+#     temp = df.copy(deep=True)
+#
+#     for key, item in col_dict.items():
+#         temp = temp.loc[temp[key] == item]
+#
+#     val = temp[col1].unique()
+#     assert len(val) == 1
+#     return val[0]
 
 # ### index genome
 # use rule minimap2_index as ind_alt_assembly with:
