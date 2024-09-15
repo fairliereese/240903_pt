@@ -43,32 +43,32 @@ rule all:
               assembly=assemblies),
         expand(config['lr']['map']['bam_mapqs_summary'],
              assembly=assemblies)
-# 
+
+
+use rule wget as dl_alt_assembly with:
+    params:
+        link = lambda wc: config['ref'][{wc.assembly}}]['link']
+    output:
+        out = config['ref']['alt']['fa_gz']
 #
-# use rule wget as dl_alt_assembly with:
-#     params:
-#         link = lambda wc: config['ref'][{wc.assembly}}]['link']
-#     output:
-#         out = config['ref']['alt']['fa_gz']
-# #
-#
-# def get_df_val(df, col1, col_dict):
-#     temp = df.copy(deep=True)
-#
-#     for key, item in col_dict.items():
-#         temp = temp.loc[temp[key] == item]
-#
-#     val = temp[col1].unique()
-#     assert len(val) == 1
-#     return val[0]
-#
-# ### index genome
-# use rule minimap2_index as ind_alt_assembly with:
-#     input:
-#         fa = config['ref']['alt']['fa_gz']
-#     output:
-#         ind = config['ref']['alt']['fa_mmi']
-#
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+### index genome
+use rule minimap2_index as ind_alt_assembly with:
+    input:
+        fa = config['ref']['alt']['fa_gz']
+    output:
+        ind = config['ref']['alt']['fa_mmi']
+
 # use rule minimap2_with_index as alt_map with:
 #     input:
 #         fq = lambda wc: expand(config['lr']['fastq'],

@@ -123,25 +123,6 @@ rule count_lines_summary:
 
 
 
-
-rule count_reads_summary:
-    resources:
-        nodes = 2,
-        threads = 1
-    run:
-        df = pd.DataFrame()
-        for f,d in zip(input.txts, params.datasets):
-            with open(f, 'r') as infile:
-                for i, line in enumerate(infile):
-                    if i == 0:
-                        n = line.strip()
-
-            temp = pd.DataFrame()
-            temp['dataset'] = [d]
-            temp['n_reads'] = [n]
-            df = pd.concat([df, temp], axis=0)
-            df.to_csv(output.summ, sep='\t', index=False)
-
 rule primary_mappings_filt:
     resources:
         threads = 8,
