@@ -49,11 +49,10 @@ rule protein_all:
 
 rule prep_make_query:
     input:
-        query=config['lr']['gtf_no_spike'],
+        query=config['lr']['gtf_no_spike_no_ebv'],
         genome=config['ref']['fa'],
     output:
-        config['lr']['orfanage']['query'],
-        config['lr']['gtf_no_spike'],
+        config['lr']['orfanage']['query']
     resources:
         threads = 1,
         nodes = 2
@@ -99,7 +98,7 @@ rule prep_make_annotation:
 
 rule orf_prediction_run_orfanage:
     input:
-        query=config['lr']['gtf_no_spike'],
+        query=config['lr']['gtf_no_spike_no_ebv'],
         genome=config['ref']['fa'],
         annotation=config['lr']['orfanage']['ready_annot'],
     output:
@@ -333,7 +332,7 @@ rule postprocess_combine_cds_gtf:
 rule postprocess_amend_cds_source:
     input:
         cds=config['lr']['cpat']['unsourced'],
-        source_gtf=config['lr']['gtf_no_spike'],
+        source_gtf=config['lr']['gtf_no_spike_no_ebv'],
         cpat_cds=config['lr']['cpat']['cds_coords'],
         orfanage_cds=config['lr']['orfanage']['stop_codon_orf'],
     output:
@@ -464,7 +463,7 @@ rule postprocess_summarize_all:
         best_orf=config['lr']['sqanti_protein']['best_orf'],
         protein_classification=config['lr']['sqanti_protein']['classified'],
         orf_completeness=config['lr']['cpat']['orf_completeness'],
-        original_gtf=config['lr']['gtf_no_spike'],
+        original_gtf=config['lr']['gtf_no_spike_no_ebv'],
         gtf_predicted=config['lr']['cpat']['protein'],
         protein_fasta=config['lr']['cpat']['protein_fa'],
         blastp=config['lr']['blast']['out'],

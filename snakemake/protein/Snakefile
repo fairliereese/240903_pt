@@ -43,10 +43,23 @@ rule rm_sirv_ercc_gtf:
     run:
         rm_sirv_ercc_gtf(input.gtf, output.gtf)
 
+rule rm_ebv:
+    input:
+        gtf = config['lr']['gtf_no_spike']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        gtf = config['lr']['gtf_no_spike_no_ebv']
+    shell:
+        """
+        awk '$1 != "chrEBV"' {input.gtf} > {output.gtf}
+        """
+
 
 # use rule bed_to_fasta as gtf_to_t_fa with:
 #     input:
-#         bed = config['lr']['gtf_no_spike'],
+#         bed = config['lr']['gtf_no_spike_no_ebv'],
 #         fa = config['ref']['fa']
 #     output:
 #         fa = config['lr']['t_fa']
@@ -67,7 +80,7 @@ rule rm_sirv_ercc_gtf:
 #     input:
 #         fa = config['ref']['fa'],
 #         annot_gtf = config['ref']['gtf'],
-#         gtf = config['lr']['gtf_no_spike'],
+#         gtf = config['lr']['gtf_no_spike_no_ebv'],
 #     output:
 #         gtf = config['lr']['orfanage']['cds']
 #
