@@ -107,31 +107,31 @@ use rule index_bam as alt_index_bam with:
     output:
         ind = config['lr']['map']['bam_ind']
 
-### statistics
-rule all_stats:
-    input:
-        config['lr']['fastq_n_reads_summary'],
-        expand(config['lr']['map']['bam_n_reads_summary'],
-               assembly=assemblies),
-        expand(config['lr']['map']['bam_mapqs_summary'],
-              assembly=assemblies)
-
-
-# raw fq counts
-use rule fq_count_reads as count_raw_reads with:
-    input:
-        fq = config['lr']['fastq']
-    output:
-        txt = temporary(config['lr']['fastq_n_reads'])
-
-use rule count_reads_summary as fq_count_reads_summary with:
-    input:
-        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
-                                sample=df['tech_rep'].tolist()),
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['fastq_n_reads_summary']
+# ### statistics
+# rule all_stats:
+#     input:
+#         config['lr']['fastq_n_reads_summary'],
+#         expand(config['lr']['map']['bam_n_reads_summary'],
+#                assembly=assemblies),
+#         expand(config['lr']['map']['bam_mapqs_summary'],
+#               assembly=assemblies)
+#
+#
+# # raw fq counts
+# use rule fq_count_reads as count_raw_reads with:
+#     input:
+#         fq = config['lr']['fastq']
+#     output:
+#         txt = temporary(config['lr']['fastq_n_reads'])
+#
+# use rule count_reads_summary as fq_count_reads_summary with:
+#     input:
+#         txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+#                                 sample=df['tech_rep'].tolist()),
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['fastq_n_reads_summary']
 
 # # filtered bam counts
 # use rule count_bam as alt_count_mapped_reads with:
