@@ -102,12 +102,12 @@ lr:
     blast_db: ../../data/protein/gencode.pc_translations_renamed.pog
 
   sqanti_protein:
-      ref_exons: ../../data/protein/transcripts_gencode.transcript_exons_only.gtf
-      ref_cds_renamed: ../../data/protein/transcripts_gencode.cds_renamed_exon.gtf
-      data_exons: ../../data/protein/transcripts.transcript_exons_only.gtf
-      data_cds_renamed: ../../data/protein/transcripts.cds_renamed_exon.gtf
-      best_orf: ../../data/protein/transcripts_best_orf.tsv
-      classified: ../../data/protein/transcripts.sqanti_protein_classification.tsv
+    ref_exons: ../../data/protein/transcripts_gencode.transcript_exons_only.gtf
+    ref_cds_renamed: ../../data/protein/transcripts_gencode.cds_renamed_exon.gtf
+    data_exons: ../../data/protein/transcripts.transcript_exons_only.gtf
+    data_cds_renamed: ../../data/protein/transcripts.cds_renamed_exon.gtf
+    best_orf: ../../data/protein/transcripts_best_orf.tsv
+    classified: ../../data/protein/transcripts.sqanti_protein_classification.tsv
 
   protein:
     summary: ../../data/protein/transcripts_protein_annotation.tsv

@@ -30,6 +30,7 @@ def main(
     df = pd.read_csv(f"{input_file_path}", sep="\t")
     df = df.loc[np.isin(df.ID, full_orf_ids)].copy(deep=True)
     df["transcript_id"] = df.ID.str.rsplit("_").str[0]
+    import pdb;pdb.set_trace
     df_first_cutoff = df.loc[df["Coding_prob"] > first_cutoff]
     df_second_cutoff = df.loc[df["Coding_prob"] > second_cutoff]
     pd.concat(

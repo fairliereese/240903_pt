@@ -23,3 +23,11 @@ conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
 
 
   python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//create_protein_overview_table.py             --best_orf_path ../../data/protein/transcripts_best_orf.tsv             --sqanti_protein_path ../../data/protein/transcripts.sqanti_protein_classification.tsv             --orf_completeness_path ../../data/protein/transcripts_ORF_completeness.tsv             --output_name ../../data/protein/transcripts_protein_annotation.tsv --gtf_original_path ../../data/transcripts_no_spike.gtf             --gtf_predicted_path ../../data/protein/transcripts_protein.gtf             --protein_fasta_path ../../data/protein/transcripts_protein.fa             --blastp_path ../../data/protein/transcripts_blastp.out
+
+
+python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/filter_cpat.py \
+          --input_file_path ../../data/protein/transcripts.ORF_prob.tsv \
+          --orf_input_seq_path ../../data/protein/transcripts.ORF_seqs.fa \
+          --output_path ../../data/protein/transcripts.ORF_remaining.tsv \
+          --first_cutoff 0.725 \
+          --second_cutoff 0.364

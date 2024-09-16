@@ -33,7 +33,7 @@ def make_hier_entry(df, how='t'):
     return t_df
 
 gtf = '../../data/transcripts_novel_gene_loci.gtf'
-tsv = '/gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge/240909merge_associatedgene2isoform_noambigousISM_FSM_genic.tsv'
+tsv = '../../data/240909merge_associatedgene2isoform_noambigousISM_FSM_genic.tsv'
 
 df = pd.read_csv(tsv, sep='\t', header=None)
 df.columns = ['tid', 'gid']
@@ -47,9 +47,13 @@ assert l1 != l2
 
 gtf_df = pr.read_gtf(gtf).df
 
-# novel genes separate
+# novel genes separate, remove gene entries
 nov_gene = gtf_df.loc[gtf_df.gene_id.notnull()].copy(deep=True)
 nov_gene['gene_name'] = nov_gene['gene_id']
+nov_gene['Source'] = 'ChatGPT'
+nov_gene = nov_gene.loc[nov_gene.Feature!='gene']
+
+# known genes
 gtf_df = gtf_df.loc[gtf_df.gene_id.isnull()].copy(deep=True)
 
 # filter based on whether transcript is even in the dataset
@@ -78,11 +82,17 @@ g_df['Score'] = '.'
 l2 = len(g_df.loc[g_df.Feature=='gene'].index)
 assert l1 == l2
 
+print(len(gtf_df.index))
 df = pd.concat([gtf_df, g_df], axis=0)
+print(len(df.index))
+
 df = cerberus.sort_gtf(df)
+
+
+assert len(df.loc[df.Feature=='gene']) == len(df.gene_id.unique())
 
 
 # save
 out_gtf = '../../data/novel_gene/transcripts_novel_gene_loci_filt_gene_name.gtf'
-gtf_df = pr.PyRanges(gtf_df)
-gtf_df.to_gtf(out_gtf)
+df = pr.PyRanges(df)
+df.to_gtf(out_gtf)
