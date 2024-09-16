@@ -79,3 +79,9 @@ l2 = len(g_df.loc[g_df.Feature=='gene'].index)
 assert l1 == l2
 df = pd.concat([df, g_df], axis=0)
 df = cerberus.sort_gtf(df)
+
+
+# save
+out_gtf = '../../data/novel_gene/transcripts_novel_gene_loci_filt_gene_name.gtf'
+gtf_df = pr.PyRanges(gtf_df)
+gtf_df.to_gtf(out_gtf)
