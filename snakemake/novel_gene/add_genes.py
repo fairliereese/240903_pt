@@ -64,7 +64,7 @@ gtf_df['gene_id'] = gtf_df.transcript_id.map(tg_dict)
 gtf_df['gene_name'] = gtf_df['gene_id']
 assert len(gtf_df.loc[gtf_df.gene_id.isnull()].index) == 0
 
-# cat the novel and known thing toegehter
+# cat the novel and known thing together
 gtf_df = pd.concat([gtf_df, nov_gene], axis=0)
 assert len(gtf_df.loc[gtf_df.gene_id.isnull()].index) == 0
 
@@ -77,7 +77,8 @@ g_df['Frame'] = '.'
 g_df['Score'] = '.'
 l2 = len(g_df.loc[g_df.Feature=='gene'].index)
 assert l1 == l2
-df = pd.concat([df, g_df], axis=0)
+
+df = pd.concat([gtf_df, g_df], axis=0)
 df = cerberus.sort_gtf(df)
 
 
