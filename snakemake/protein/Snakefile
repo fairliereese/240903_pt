@@ -34,7 +34,7 @@ rule all:
 
 rule rm_sirv_ercc_gtf:
     input:
-        gtf = config['lr']['gtf']
+        gtf = config['lr']['gtf_chr_renamed']
     resources:
         threads = 1,
         nodes = 2
