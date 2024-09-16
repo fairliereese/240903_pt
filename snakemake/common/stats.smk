@@ -58,3 +58,12 @@ rule bam_get_mapqs:
         module load samtools
         samtools view {input.bam} | grep -v ^@ | cut -f1,5 > {output.txt}
         """
+
+rule bam_query_cov:
+    resources:
+        nodes = 1,
+        threads = 16
+    run:
+        df = compute_query_coverage(input.align,
+                                    resources.threads)
+        df.to_csv(output.out, sep='\t', index=False)

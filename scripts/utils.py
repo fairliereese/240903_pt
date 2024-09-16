@@ -1,6 +1,7 @@
 import yaml
 import os
 import pandas as pd
+import pysam
 
 def load_config(config_file=None):
     """
@@ -43,108 +44,6 @@ def set_col_order(df, col, order):
     df[col] = pd.Categorical(df[col], categories=order, ordered=True)
     df = df.sort_values(col)
     return df
-
-
-# def get_vcf_header(fname):
-#     """
-#     Get the comment lines (start with ##)
-#     and the column names from a VCF
-#     """
-#     comments = []
-#     with open(fname, 'r') as ifile:
-#         for line in ifile:
-#             if line.startswith('##'):
-#                 comments.append(line)
-#                 continue
-#             elif line.startswith('#'):
-#                 header = line[1:-1].strip().split('\t')
-#                 break
-#     return comments, header
-
-# def get_vcf_field_name_dict():
-#     """
-#     Return a dict mapping the abbreviation
-#     for each VCF field into a human-readable name
-#     """
-#     d = {'GT':'genotype',
-#          'AD':'allelic_depth',
-#          'DP':'read_depth',
-#          'GQ':'genotype_quality',
-#          'PL':'genotype_phred',
-#          'SB':'strand_bias'}
-#     return d
-
-# def add_vcf_info(df):
-#     """
-#     From a VCF DataFrame, add the metadata from the
-#     FORMAT column as human-readable columns
-#     """
-
-#     # copy so we can just merge results in later
-#     df_back = df.copy(deep=True)
-
-#     len1 = len(df.index)
-
-#     # split the : separated fields
-#     col = df.columns[-1]
-#     df['vcf_field'] = df['FORMAT'].str.split(':')
-#     df['vcf_field_val'] = df[col].str.split(':')
-
-#     # explode out, change to human readable,
-#     # drop unecessary columns, pivot to convert to columns
-#     ind_cols = ['CHROM', 'POS', 'ID', 'REF', 'ALT']
-#     keep_cols = ind_cols + ['vcf_field', 'vcf_field_val']
-#     df = df[keep_cols]
-
-#     df = df.explode(['vcf_field', 'vcf_field_val'])
-#     df['vcf_field'] = df['vcf_field'].map(get_vcf_field_name_dict())
-#     df = df.pivot(index=ind_cols,
-#              columns='vcf_field',
-#              values='vcf_field_val').reset_index()
-#     df.columns.name = ''
-#     len2 = len(df.index)
-
-#     # make sure that nothing got screwed up in the transformation
-#     assert len1 == len2
-
-#     # merge back in with the original thing
-#     df_back = df_back.merge(df, how='left',
-#                             on=ind_cols)
-#     len3 = len(df_back.index)
-#     assert len2 == len3
-
-#     return df_back
-
-# def read_vcf(fname):
-#     """
-#     Read VCF file which doesn't play nice w/ pandas
-#     """
-#     _, header = get_vcf_header(fname)
-#     df = pd.read_csv(fname, sep='\t',
-#                      header=None,
-#                      comment='#')
-#     df.columns = header
-
-#         # drop duplicates b/c we apparently have to do that?
-#     df = df.drop_duplicates()
-
-#     return df
-
-# def write_vcf(df, ofile, template):
-#     """
-#     Write VCF file w/ header from template
-#     """
-#     comments, header = get_vcf_header(template)
-#     with open(ofile, 'w') as out:
-#         for c in comments:
-#             out.write(c)
-#         header[0] = '#'+header[0]
-#         out.write('\t'.join(header)+'\n')
-#     df.to_csv(ofile,
-#               mode='a',
-#               sep='\t',
-#               index=False,
-#               header=False)
 
 def get_rdna_regions():
     """
@@ -204,13 +103,6 @@ def parse_wgs_meta(meta):
                    df.techrep.astype(str)
 
     return df
-
-
-
-import itertools
-import re
-import pysam
-import pandas as pd
 
 def get_mapq(fname, threads):
     if fname.endswith('.bam'):

@@ -58,7 +58,7 @@ lr:
   fastq_n_reads: ../../data/{sample}_fastq_n_reads.txt
   fastq_n_reads_summary: ../../data/fastq_n_reads.txt
 
-  gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf # whole post-merge GTF
+  gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/novelannotations/merged/240909_merged_withoutchrEBV.gtf.gtf # whole post-merge GTF
   # gtf: /gpfs/home/bsc/bsc083001/mele_lab/projects/240706_pantranscriptome_cerberus_gtf_merge/merge_only_ics/data/flair/raw/GM10492_1.gtf # test for just one sample
   gtf_no_spike: ../../data/transcripts_no_spike.gtf
   gtf_no_spike_no_ebv: ../../data/transcripts_no_spike_no_ebv.gtf
@@ -121,6 +121,8 @@ lr:
     bam_n_reads_summary: ../../data/map/{assembly}/n_reads_summary.tsv
     bam_mapqs: ../../data/map/{assembly}/{sample}_mapqs.txt
     bam_mapqs_summary: ../../data/map/{assembly}/mapqs_summary.txt
+    bam_query_covs: ../../data/map/{assembly}/{sample}_query_cov.tsv
+    bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
 
 
 
@@ -153,6 +155,7 @@ lr:
     gtf_built: ../../data/novel_gene/novel_genes_built.gtf
     gtf_fmt: ../../data/novel_gene/novel_genes_fmt.gtf
     gtf_nov_known_gene: ../../data/transcripts_novel_gene_loci.gtf
+
 
 
 

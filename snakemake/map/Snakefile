@@ -46,7 +46,9 @@ rule all:
         expand(config['lr']['map']['bam_n_reads_summary'],
               assembly=assemblies),
         expand(config['lr']['map']['bam_mapqs_summary'],
-             assembly=assemblies)
+             assembly=assemblies),
+        expand(config['lr']['map']['bam_query_covs_summary'],
+              assembly=assemblies)
 
 
 use rule wget as dl_alt_assembly with:
@@ -174,3 +176,20 @@ use rule read_id_df_summary as alt_get_mapqs_summary with:
         samples = df['tech_rep'].tolist()
     output:
         summ = config['lr']['map']['bam_mapqs_summary']
+
+# query coverage and read length per read
+use rule bam_get_query_cov as alt_get_qcov with:
+    input:
+        align = config['lr']['map']['bam_sort']
+    output:
+        out = config['lr']['map']['bam_query_covs']
+
+use rule read_id_df_summary as alt_get_qcov_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['map']['bam_query_covs'],
+                                assembly=wc.assembly,
+                                sample=df['tech_rep'].tolist())
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['bam_query_covs_summary']
