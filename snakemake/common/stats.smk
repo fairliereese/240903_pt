@@ -59,7 +59,7 @@ rule bam_get_mapqs:
         samtools view {input.bam} | grep -v ^@ | cut -f1,5 > {output.txt}
         """
 
-rule bam_query_cov:
+rule bam_get_query_cov:
     resources:
         nodes = 1,
         threads = 16

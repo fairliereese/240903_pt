@@ -37,6 +37,14 @@ tsv = '/gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_
 
 df = pd.read_csv(tsv, sep='\t', header=None)
 df.columns = ['tid', 'gid']
+# remove "novelGenes" from sqanti mappings
+df = pd.read_csv(tsv, sep='\t', header=None)
+df.columns = ['tid', 'gid']
+l1 = len(df.index)
+df = df.loc[~df.gid.str.startswith('novelGene')]
+l2 = len(df.index)
+assert l1 != l2
+
 gtf_df = pr.read_gtf(gtf).df
 
 # novel genes separate
@@ -61,7 +69,6 @@ gtf_df = pd.concat([gtf_df, nov_gene], axis=0)
 assert len(gtf_df.loc[gtf_df.gene_id.isnull()].index) == 0
 
 # add gene entries
-import pdb; pdb.set_trace()
 df = gtf_df.copy(deep=True)
 l1 = len(df.gene_id.unique().tolist())
 g_df = make_hier_entry(df, how='g')
