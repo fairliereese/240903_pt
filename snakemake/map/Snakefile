@@ -169,7 +169,7 @@ use rule bam_get_mapqs as alt_get_mapqs with:
 
 use rule read_id_df_summary as alt_get_mapqs_summary with:
     input:
-        txts = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+        tsvs = lambda wc: expand(config['lr']['map']['bam_mapqs'],
                                 assembly=wc.assembly,
                                 sample=df['tech_rep'].tolist())
     params:
@@ -186,7 +186,7 @@ use rule bam_get_query_cov as alt_get_qcov with:
 
 use rule read_id_df_summary as alt_get_qcov_summary with:
     input:
-        txts = lambda wc: expand(config['lr']['map']['bam_query_covs'],
+        tsvs = lambda wc: expand(config['lr']['map']['bam_query_covs'],
                                 assembly=wc.assembly,
                                 sample=df['tech_rep'].tolist())
     params:
