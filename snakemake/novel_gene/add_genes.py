@@ -37,13 +37,22 @@ tsv = '/gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_
 
 df = pd.read_csv(tsv, sep='\t', header=None)
 df.columns = ['tid', 'gid']
-# remove "novelGenes" from sqanti mappings
-df = pd.read_csv(tsv, sep='\t', header=None)
-df.columns = ['tid', 'gid']
+print(len(df.index))
+print(len(df.tid.unique()))
+# remove novel intergenic things
+import pdb; pdb.set_trace()
 l1 = len(df.index)
-df = df.loc[~df.gid.str.startswith('novelGene')]
+df = df.loc[~(df.gid.str.startswith('novel'))|(df.gid.str.endswith('AS'))]
 l2 = len(df.index)
+# # remove "novelGenes" from sqanti mappings
+# df = pd.read_csv(tsv, sep='\t', header=None)
+# df.columns = ['tid', 'gid']
+# l1 = len(df.index)
+# df = df.loc[~df.gid.str.startswith('novelGene')]
+# l2 = len(df.index)
 assert l1 != l2
+print(len(df.index))
+print(len(df.tid.unique()))
 
 gtf_df = pr.read_gtf(gtf).df
 
