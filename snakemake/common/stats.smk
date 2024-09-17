@@ -42,12 +42,15 @@ rule read_id_df_summary:
         threads = 1,
         nodes = 2,
     run:
-        df = pd.DataFrame()
+        i = 0
         for f, d in zip(input.tsvs, params.samples):
             temp = pd.read_csv(f, sep='\t')
             temp['dataset'] = d
-            df = pd.concat([df, temp], axis=0)
-        df.to_csv(output.summ, sep='\t', index=False)
+            if i == 0:
+                temp.to_csv(output.summ, sep='\t', index=False)
+            else:
+                temp.to_csv(output.summ, sep='\t', index=False, header=None, mode='a')
+            i+=1
 
 rule bam_get_mapqs:
     resources:
