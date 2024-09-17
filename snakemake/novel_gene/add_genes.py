@@ -32,8 +32,9 @@ def make_hier_entry(df, how='t'):
 
     return t_df
 
-gtf = '../../data/transcripts_novel_gene_loci.gtf'
+nov_gtf = '../../data/transcripts_novel_gene_loci.gtf'
 tsv = '../../data/240909merge_associatedgene2isoform_noambigousISM_FSM_genic.tsv'
+known_gtf = '/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged_withoutchrEBV.gtf'
 
 df = pd.read_csv(tsv, sep='\t', header=None)
 df.columns = ['tid', 'gid']
@@ -45,15 +46,16 @@ df = df.loc[~df.gid.str.startswith('novelGene')]
 l2 = len(df.index)
 assert l1 != l2
 
-gtf_df = pr.read_gtf(gtf).df
+nov_gtf_df = pr.read_gtf(nov_gtf).df
 
 # novel genes separate, remove gene entries
-nov_gene = gtf_df.loc[gtf_df.gene_id.notnull()].copy(deep=True)
+nov_gene = nov_gtf_df.loc[nov_gtf_df.gene_id.notnull()].copy(deep=True)
 nov_gene['gene_name'] = nov_gene['gene_id']
 nov_gene['Source'] = 'ChatGPT'
 nov_gene = nov_gene.loc[nov_gene.Feature!='gene']
 
 # known genes
+gtf_df = pr.read_gtf(known_gtf).df
 gtf_df = gtf_df.loc[gtf_df.gene_id.isnull()].copy(deep=True)
 
 # filter based on whether transcript is even in the dataset
