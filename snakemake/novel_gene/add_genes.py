@@ -33,7 +33,7 @@ def make_hier_entry(df, how='t'):
     return t_df
 
 gtf = '../../data/transcripts_novel_gene_loci.gtf'
-tsv = '../../data/240909merge_associatedgene2isoform_noambigousISM_FSM_genic.tsv'
+tsv = '/gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge_withoutchrEBV_mastertable/240909merge_transcript_associatedgene_correspondence.tsv'
 
 df = pd.read_csv(tsv, sep='\t', header=None)
 df.columns = ['tid', 'gid']
