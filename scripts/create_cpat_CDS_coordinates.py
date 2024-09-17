@@ -139,6 +139,8 @@ def make_pacbio_cds_gtf(sample_gtf, called_orfs, name):
     with open(f"{name}_cpat_with_cds.gtf", "w") as ofile:
         for i, row in ranges.iterrows():
             acc, orf_start, orf_end = row
+            acc = acc.lower()
+
             # remove stop exon
             orf_end = orf_end - 3
             if acc in pbs:

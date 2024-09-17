@@ -2,6 +2,7 @@ import yaml
 import os
 import pandas as pd
 import pysam
+import re
 
 def load_config(config_file=None):
     """

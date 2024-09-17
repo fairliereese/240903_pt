@@ -31,3 +31,10 @@ python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/
           --output_path ../../data/protein/transcripts.ORF_remaining.tsv \
           --first_cutoff 0.725 \
           --second_cutoff 0.364
+
+python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//recover_source.py \
+  --combined_cds_path ../../data/protein/transcripts_protein_unsourced.gtf \
+  --source_gtf_path ../../data/transcripts_no_spike_no_ebv.gtf \
+  --cpat_cds_path ../../data/protein/transcripts_cpat_with_cds.gtf \
+  --orfanage_cds_path ../../data/protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf \
+  --output_path ../../data/protein/transcripts_protein.gtf
