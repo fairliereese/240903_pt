@@ -49,13 +49,12 @@ def main(
     common_transcript_ids = sqanti_protein.pb.values
 
     orfs = (
-        orfs.loc[np.isin(orfs.transcript_id, common_transcript_ids)]
+        orfs.loc[orfs.transcript_id.isin(common_transcript_ids)]
         .copy(deep=True)
         .sort_values("transcript_id")
     )
     orf_completeness = (
-        orf_completeness.loc[
-            np.isin(orf_completeness.transcript_id, common_transcript_ids)
+        orf_completeness.loc[orf_completeness.transcript_id.isin(common_transcript_ids))
         ]
         .copy(deep=True)
         .sort_values("transcript_id")

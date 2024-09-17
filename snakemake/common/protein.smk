@@ -473,7 +473,7 @@ rule postprocess_summarize_all:
         scripts_dir=p
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 4
     shell:
         """python {params.scripts_dir}/create_protein_overview_table.py \
             --best_orf_path {input.best_orf} \
