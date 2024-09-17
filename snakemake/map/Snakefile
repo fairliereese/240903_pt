@@ -174,7 +174,7 @@ use rule read_id_df_summary as alt_get_mapqs_summary with:
                                 sample=df['tech_rep'].tolist())
     resources:
         threads = 1,
-        nodes = 3
+        nodes = 4
     params:
         samples = df['tech_rep'].tolist()
     output:
