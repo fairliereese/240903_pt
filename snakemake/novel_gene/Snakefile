@@ -33,7 +33,7 @@ rule all:
 rule get_novel_gene_gtf:
     input:
         tids = config['lr']['novel_gene']['tids'],
-        gtf = config['lr']['gtf']
+        gtf = config['lr']['gtf_chr_renamed']
     output:
         gtf = config['lr']['novel_gene']['gtf']
     resources:
@@ -96,7 +96,7 @@ rule fmt_gtf:
 rule cat_novel_known_gene_gtfs:
     input:
         nov_gtf = config['lr']['novel_gene']['gtf_fmt'],
-        gtf = config['lr']['gtf']
+        gtf = config['lr']['gtf_chr_renamed']
     resources:
         threads = 1,
         nodes = 2
