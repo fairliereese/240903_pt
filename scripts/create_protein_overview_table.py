@@ -64,7 +64,7 @@ def main(
     import pyranges as pr
 
     gtf = pr.read_gtf(f"{gtf_original_path}").df
-    gtf['gene_name'] = gtf.gene_id
+    # gtf['gene_name'] = gtf.gene_id
     # gtf = pd.read_csv(f"{gtf_original_path}", sep="\t", header=None)
     # import pdb; pdb.set_trace()
     # gtf = gtf.loc[gtf.iloc[:, GTF_TYPE_IX] == "transcript"]
@@ -96,7 +96,7 @@ def main(
     gtf = gtf.sort_values("transcript_id")
     # gtf_predicted = pd.read_csv(f"{gtf_predicted_path}", sep="\t", header=None)
     gtf_predicted = pr.read_gtf(f"{gtf_predicted_path}").df
-    gtf_predicted['gene_name'] = gtf_predicted['gene_id']
+    # gtf_predicted['gene_name'] = gtf_predicted['gene_id']
     cds_source = gtf_predicted.copy(deep=True)
     cds_source = cds_source.loc[(cds_source.iloc[:, GTF_TYPE_IX] == "CDS")]
     # cds_source["transcript_id"] = (
@@ -252,8 +252,7 @@ def main(
         }
     ).sort_values("transcript_id")
 
-    gtf['gene_name'] = gtf['gene_id']
-    import pdb; pdb.set_trace()
+    # gtf['gene_name'] = gtf['gene_id']
     pd.DataFrame(
         {
             "Chromosome": gtf.iloc[:, 0].values,
@@ -264,8 +263,8 @@ def main(
             "CDS_Source": cds_source["source"].values,
             "CDS_Start": cds_start.coord.values,
             "CDS_Stop": cds_end.coord.values,
-            "gid": gtf["gene_id"].values,
-            "gene_name": gtf["gene_name"].values,
+            # "gid": gtf["gene_id"].values,
+            # "gene_name": gtf["gene_name"].values,
             "tid": orfs["transcript_id"].values,
             "pid": [i.rsplit("|")[0] for i in blast_table["sseqid"].astype(str).values],
             "blastp_identity": blast_table["pident"].values,
