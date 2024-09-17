@@ -63,6 +63,7 @@ nov_gene['Source'] = 'ChatGPT'
 nov_gene = nov_gene.loc[nov_gene.Feature!='gene']
 
 # known genes
+import pdb; pdb.set_trace()
 gtf_df = gtf_df.loc[gtf_df.gene_id.isnull()].copy(deep=True)
 
 # filter based on whether transcript is even in the dataset
