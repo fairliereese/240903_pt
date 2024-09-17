@@ -41,7 +41,7 @@ rule get_novel_gene_gtf:
         nodes = 2
     run:
         import pyranges as pr
-        tids = pd.read_csv(input.tids, header=None)[0].tolist()
+        tids = pd.read_csv(input.tids, header=None, sep='\t')[1].tolist()
         df =  pr.read_gtf(input.gtf).df
         df = df.loc[df.transcript_id.isin(tids)]
         df = pr.PyRanges(df)
