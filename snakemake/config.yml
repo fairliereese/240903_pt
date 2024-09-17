@@ -151,7 +151,7 @@ lr:
 
 
   novel_gene:
-    tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge/novelgene_transcripts.txt
+    tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/02_sqanti/data/240909merge_withoutchrEBV_mastertable/240909merge_novelgene_transcripts.tsv
     gtf: ../../data/novel_gene/novel_genes.gtf
     gtf_built: ../../data/novel_gene/novel_genes_built.gtf
     gtf_fmt: ../../data/novel_gene/novel_genes_fmt.gtf
