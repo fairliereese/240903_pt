@@ -54,7 +54,7 @@ def main(
         .sort_values("transcript_id")
     )
     orf_completeness = (
-        orf_completeness.loc[orf_completeness.transcript_id.isin(common_transcript_ids))
+        orf_completeness.loc[orf_completeness.transcript_id.isin(common_transcript_ids)
         ]
         .copy(deep=True)
         .sort_values("transcript_id")
