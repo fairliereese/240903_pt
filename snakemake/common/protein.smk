@@ -483,7 +483,7 @@ rule postprocess_summarize_all:
             --gtf_original_path {input.original_gtf} \
             --gtf_predicted_path {input.gtf_predicted} \
             --protein_fasta_path {input.protein_fasta} \
-            --blastp_path {input.blastp}
+            --blastp_path {input.blastp} 2> wha_happen.txt
             """
 
 
