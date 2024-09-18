@@ -252,7 +252,6 @@ def main(
     ).sort_values("transcript_id")
 
     # gtf['gene_name'] = gtf['gene_id']
-    import pdb; pdb.set_trace()
     pd.DataFrame(
         {
             "Chromosome": gtf.iloc[:, 0].values,
