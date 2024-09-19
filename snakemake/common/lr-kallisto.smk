@@ -8,6 +8,9 @@ rule kallisto_build_ind:
         ind = config['ref']['kallisto']['ind'],
         fa = config['ref']['kallisto']['t_fa'],
         t2g = config['ref']['kallisto']['t2g'],
+    resources:
+        threads = 8,
+        nodes = 4
     conda:
         'base'
     shell:
