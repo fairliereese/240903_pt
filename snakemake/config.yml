@@ -23,6 +23,11 @@ ref:
       hexamer_link: https://sourceforge.net/projects/rna-cpat/files/prebuilt_models/Human_Hexamer.tsv/download
       hexamer: ../../ref/hexamer.tsv
 
+    kallisto:
+      ind: ../../ref/kallisto/hg38_v47_k-63.idx
+      t_fa: ../../ref/kallisto/hg38_v47_transcripts.fa
+      t2g: ../../ref/kallisto/hg38_v47.t2g
+
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
     gtf_gz: ../../data/gtex/flair_filter_transcripts.gtf.gz

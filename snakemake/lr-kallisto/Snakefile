@@ -1,0 +1,29 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+#
+# from sm_utils import *
+# from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = 'config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+rule all:
+    input:
+        config['ref']['kallisto']['ind']
