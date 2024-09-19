@@ -5,7 +5,7 @@ rule kallisto_build_ind:
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto'
     output:
-        ind = config['ref']['kalllisto']['ind'],
+        ind = config['ref']['kallisto']['ind'],
         fa = config['ref']['kallisto']['t_fa'],
         t2g = config['ref']['kallisto']['t2g'],
     conda:
