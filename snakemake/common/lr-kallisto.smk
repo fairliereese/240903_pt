@@ -1,7 +1,7 @@
 rule kallisto_build_ind:
     input:
         fa = config['ref']['fa'],
-        gtf = config['lr']['gtf_chr_renamed']
+        gtf = config['lr']['novel_gene']['gtf_added_gene_entries']
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto'
     output:
