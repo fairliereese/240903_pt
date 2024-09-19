@@ -14,7 +14,7 @@ rule kallisto_build_ind:
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
         kb ref \
-            --kallisto {parmas.kallisto_path} \
+            --kallisto {params.kallisto_path} \
             -i {output.ind} \
             -k 63 \
             -f1 {output.fa} \
