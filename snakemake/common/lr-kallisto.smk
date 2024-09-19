@@ -1,6 +1,6 @@
 rule kallisto_build_ind:
     input:
-        fa = config['ref']['fa']
+        fa = config['ref']['fa'],
         gtf = config['lr']['gtf_chr_renamed']
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto'
