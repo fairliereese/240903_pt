@@ -101,7 +101,8 @@ rule bustools_count:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
         count_pref = config['lr']['kallisto']['count_pref']
     output:
-        mtx = config['lr']['kallisto']['count_mtx']
+        mtx = config['lr']['kallisto']['count_mtx'],
+        ec = onfig['lr']['kallisto']['count_ec']
     resources:
         threads = 32,
         nodes = 4
@@ -123,6 +124,9 @@ rule bustools_count:
 rule lr_kallisto:
     input:
         flens = config['lr']['kallisto']['flens'],
+        mtx = config['lr']['kallisto']['count_mtx'],
+        ind = config['ref']['kallisto']['ind'],
+        ec = config['lr']['kallisto']['count_ec']
     resources:
         threads = 32,
         nodes = 8
@@ -131,7 +135,7 @@ rule lr_kallisto:
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
     output:
-
+        quant = config['lr']['kallisto']['quant_temp']
     shell:
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
@@ -140,10 +144,10 @@ rule lr_kallisto:
             --long \
             -P ONT \
             -f {input.flens} \
-            # 	${output}/count.mtx -i ${ref}_k-63.idx \
-            # 	-e ${output}/count.ec.txt \
-            # 	-o ${output}
-
+            {input.mtx} \
+            -i {input.ind} \
+            -e {input.ec} \
+            -o {output.quant}
         """
 
 

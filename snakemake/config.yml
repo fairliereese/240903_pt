@@ -131,15 +131,15 @@ lr:
     bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
 
   kallisto:
-    pseudoalign: ../../data/kallisto/{sample}
     bus: ../../data/kallisto/{sample}/output.bus
     transcripts: ../../data/kallisto/{sample}/transcripts.txt
     matrix: ../../data/kallisto/{sample}/matrix.ec
     flens: ../../data/kallisto/{sample}/flens.txt
     bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
-
     count_pref: ../../data/kallisto/{sample}/count
     count_mtx: ../../data/kallisto/{sample}/count.mtx
+    count_ec: ../../data/kallisto/{sample}/count.ec.txt
+    quant_temp: ../../data/kallisto/{sample}/bepis
 
 
 
