@@ -38,3 +38,41 @@ python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/
   --cpat_cds_path ../../data/protein/transcripts_cpat_with_cds.gtf \
   --orfanage_cds_path ../../data/protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf \
   --output_path ../../data/protein/transcripts_protein.gtf
+
+  python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//create_protein_overview_table.py \
+               --best_orf_path ../../data/protein/transcripts_best_orf.tsv \
+               --sqanti_protein_path ../../data/protein/transcripts.sqanti_protein_classification.tsv \
+               --orf_completeness_path ../../data/protein/transcripts_ORF_completeness.tsv \
+               --output_name ../../data/protein/transcripts_protein_annotation.tsv \
+               --gtf_original_path ../../data/transcripts_no_spike_no_ebv.gtf \
+               --gtf_predicted_path ../../data/protein/transcripts_protein.gtf \
+               --protein_fasta_path ../../data/protein/transcripts_protein.fa \
+               --blastp_path ../../data/protein/transcripts_blastp.out
+
+# to run locally
+ python /Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/scripts/create_protein_overview_table.py \
+              --best_orf_path ../../data/protein/transcripts_best_orf.tsv \
+              --sqanti_protein_path ../../data/protein/transcripts.sqanti_protein_classification.tsv \
+              --orf_completeness_path ../../data/protein/transcripts_ORF_completeness.tsv \
+              --output_name ../../data/protein/transcripts_protein_annotation.tsv \
+              --gtf_original_path ../../data/transcripts_no_spike_no_ebv.gtf \
+              --gtf_predicted_path ../../data/protein/transcripts_protein.gtf \
+              --protein_fasta_path ../../data/protein/transcripts_protein.fa \
+              --blastp_path ../../data/protein/transcripts_blastp.out
+
+```bash
+cd ~/mele_lab/bin/kallisto/build
+rm -r *
+cmake .. -DBUILD_FUNCTESTING=ON -DENABLE_AVX2=OFF -DCOMPLIATION_ARCH=OFF -DMAX_KMER_SIZE=64
+make
+make install
+```
+
+```bash
+python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/check_orf_completeness.py \
+  --cpat_seqs ../../data/protein/transcripts.ORF_seqs.fa \
+  --orfanage_seqs ../../data/protein/transcripts_orfanage_orfs.fa \
+  --cpat_info ../../data/protein/transcripts.ORF_remaining.tsv \
+  --orfanage_info ../../data/protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf \
+  --output_path test
+```

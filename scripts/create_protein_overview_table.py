@@ -36,10 +36,8 @@ def main(
         f"{best_orf_path}",
         sep="\t",
     ).sort_values("transcript_id")
-    orf_completeness = pd.read_csv(
-        f"{orf_completeness_path}",
-        sep="\t",
-    ).sort_values("transcript_id")
+    orf_completeness = pd.read_csv(f"{orf_completeness_path}", sep="\t",).sort_values("transcript_id")
+
 
     sqanti_protein = pd.read_csv(
         f"{sqanti_protein_path}",
@@ -53,6 +51,8 @@ def main(
         .copy(deep=True)
         .sort_values("transcript_id")
     )
+    import pdb; pdb.set_trace()
+
     orf_completeness = (
         orf_completeness.loc[orf_completeness.transcript_id.isin(common_transcript_ids)
         ]
@@ -63,6 +63,7 @@ def main(
     import pyranges as pr
 
     gtf = pr.read_gtf(f"{gtf_original_path}").df
+    gtf = gtf.loc[gtf.Feature=='transcript']
     # gtf['gene_name'] = gtf.gene_id
     # gtf = pd.read_csv(f"{gtf_original_path}", sep="\t", header=None)
     # import pdb; pdb.set_trace()
@@ -95,6 +96,10 @@ def main(
     gtf = gtf.sort_values("transcript_id")
     # gtf_predicted = pd.read_csv(f"{gtf_predicted_path}", sep="\t", header=None)
     gtf_predicted = pr.read_gtf(f"{gtf_predicted_path}").df
+
+    # limit to things w/ predicted cds from og gtf
+    gtf = gtf.loc[gtf.transcript_id.isin(gtf_predicted.transcript_id.tolist())]
+
     # gtf_predicted['gene_name'] = gtf_predicted['gene_id']
     cds_source = gtf_predicted.copy(deep=True)
     cds_source = cds_source.loc[(cds_source.iloc[:, GTF_TYPE_IX] == "CDS")]
@@ -220,9 +225,7 @@ def main(
         "evalue",
         "bitscore",
     ]
-    blast_missing_set = np.setdiff1d(
-        gtf["transcript_id"].values, np.unique(blast_table.qseqid.values)
-    )
+    blast_missing_set = np.array(list(set(gtf["transcript_id"].tolist())-set(blast_table.qseqid.unique().tolist())))
 
     if blast_missing_set.shape[0] >= 1:
         blast_table_missing = pd.DataFrame(
@@ -252,6 +255,7 @@ def main(
     ).sort_values("transcript_id")
 
     # gtf['gene_name'] = gtf['gene_id']
+    import pdb; pdb.set_trace()
     pd.DataFrame(
         {
             "Chromosome": gtf.iloc[:, 0].values,

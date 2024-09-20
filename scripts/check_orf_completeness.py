@@ -23,6 +23,7 @@ def main(
     orfanage_info: str,
     output_path: str,
 ) -> int:
+    import pdb ; pdb.set_trace()
     df_cpat = pd.read_csv(cpat_info, sep="\t")
     df_orfanage = pd.read_csv(orfanage_info, sep="\t", header=None)
     df_orfanage["transcript_id"] = (
