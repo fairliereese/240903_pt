@@ -4,15 +4,18 @@ import sys
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
-#
-# from sm_utils import *
-# from utils import *
-# from vcf_utils import *
 
 c_dir = '../common/'
 
 meta_file = 'config.tsv'
 configfile: '../config.yml'
+
+df = parse_config(meta_file)
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
+    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
+
 
 include: f'{c_dir}download.smk'
 include: f'{c_dir}samtools.smk'
@@ -26,4 +29,6 @@ include: f'{c_dir}lr-kallisto.smk'
 
 rule all:
     input:
-        config['ref']['kallisto']['ind']
+        config['ref']['kallisto']['ind'],
+        expand(config['lr']['kallisto']['pseudoalign'],
+               sample=df.tech_rep.tolist()[0])

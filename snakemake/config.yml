@@ -130,6 +130,9 @@ lr:
     bam_query_covs: ../../data/map/{assembly}/{sample}_query_cov.tsv
     bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
 
+  kallisto:
+    pseudoalign: ../../data/kallisto/{sample}
+
 
 
 
