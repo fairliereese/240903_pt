@@ -99,10 +99,10 @@ rule bustools_count:
         matrix = config['lr']['kallisto']['matrix'],
         t2g = config['ref']['kallisto']['t2g']
     params:
-        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
+        count_pref = config['lr']['kallisto']['count_pref']
     output:
-        # bus = directory(config['lr']['kallisto']['bus_count']),
-        bus = directory(config['lr']['kallisto']['count_temp']),
+        mtx = config['lr']['kallisto']['count_mtx']
     resources:
         threads = 32,
         nodes = 4
@@ -115,7 +115,7 @@ rule bustools_count:
             {input.bus} \
              -t {input.transcripts} \
              -e {input.matrix} \
-             -o {output.bus} \
+             -o {params.count_pref} \
             --cm \
             -m \
             -g {input.t2g}

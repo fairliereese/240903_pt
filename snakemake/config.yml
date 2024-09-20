@@ -137,9 +137,9 @@ lr:
     matrix: ../../data/kallisto/{sample}/matrix.ec
     flens: ../../data/kallisto/{sample}/flens.txt
     bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
-    bus_count: ../../data/kallisto/{sample}/count/
-    count_temp: ../../data/kallisto/count/{sample}
 
+    count_pref: ../../data/kallisto/{sample}/count
+    count_mtx: ../../data/kallisto/{sample}/count.mtx
 
 
 
