@@ -115,7 +115,7 @@ rule bustools_count:
             {input.bus} \
              -t {input.transcripts} \
              -e {input.matrix} \
-             -o {output.bus_count} \
+             -o {output.bus} \
             --cm \
             -m \
             -g {input.t2g}
