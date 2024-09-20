@@ -102,7 +102,7 @@ rule bustools_count:
         count_pref = config['lr']['kallisto']['count_pref']
     output:
         mtx = config['lr']['kallisto']['count_mtx'],
-        ec = onfig['lr']['kallisto']['count_ec']
+        ec = config['lr']['kallisto']['count_ec']
     resources:
         threads = 32,
         nodes = 4
