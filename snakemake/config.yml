@@ -131,6 +131,7 @@ lr:
     bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
 
   kallisto:
+    odir: ../../data/kallisto/{sample}/ 
     bus: ../../data/kallisto/{sample}/output.bus
     transcripts: ../../data/kallisto/{sample}/transcripts.txt
     matrix: ../../data/kallisto/{sample}/matrix.ec

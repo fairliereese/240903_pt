@@ -46,7 +46,7 @@ rule kallisto_pseudoalign:
                             {'tech_rep': wc.sample})),
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
-        odir = config['lr']['kallisto']['pseudoalign']
+        odir = config['lr']['kallisto']['odir']
     output:
         bus = config['lr']['kallisto']['bus'],
         flens = config['lr']['kallisto']['flens'],
