@@ -133,7 +133,7 @@ rule lr_kallisto:
     conda:
         'base'
     params:
-        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',,
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['quant']['odir']
     output:
         quant = config['lr']['kallisto']['matrix']
