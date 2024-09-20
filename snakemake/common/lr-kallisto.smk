@@ -77,7 +77,7 @@ rule bustools_sort:
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
     output:
-        bus = config['lr']['kallisto']['bus_sorted']
+        bus = config['lr']['kallisto']['bus_sort']
     resources:
         threads = 32,
         nodes = 4
@@ -94,7 +94,7 @@ rule bustools_sort:
 
 rule bustools_count:
     input:
-        bus = config['lr']['kallisto']['bus_sorted'],
+        bus = config['lr']['kallisto']['bus_sort'],
         transcripts = config['lr']['kallisto']['transcripts'],
         matrix = config['lr']['kallisto']['matrix'],
         t2g = config['ref']['kallisto']['t2g']

@@ -136,7 +136,7 @@ lr:
     transcripts: ../../data/kallisto/{sample}/transcripts.txt
     matrix: ../../data/kallisto/{sample}/matrix.ec
     flens: ../../data/kallisto/{sample}/flens.txt
-    bus_sorted: ../../data/kallisto/{sample}/output_sorted.bus
+    bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
     bus_count: ../../data/kallisto/{sample}/count/
 
 
