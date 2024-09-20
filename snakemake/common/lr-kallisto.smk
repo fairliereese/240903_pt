@@ -101,7 +101,8 @@ rule bustools_count:
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
     output:
-        bus = directory(config['lr']['kallisto']['bus_count']),
+        # bus = directory(config['lr']['kallisto']['bus_count']),
+        bus = directory(config['lr']['kallisto']['count_temp']),
     resources:
         threads = 32,
         nodes = 4

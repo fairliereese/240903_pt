@@ -138,6 +138,7 @@ lr:
     flens: ../../data/kallisto/{sample}/flens.txt
     bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
     bus_count: ../../data/kallisto/{sample}/count/
+    count_temp: ../../data/kallisto/count/{sample}
 
 
 
