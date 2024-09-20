@@ -53,7 +53,7 @@ python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/
  python /Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/scripts/create_protein_overview_table.py \
               --best_orf_path ../../data/protein/transcripts_best_orf.tsv \
               --sqanti_protein_path ../../data/protein/transcripts.sqanti_protein_classification.tsv \
-              --orf_completeness_path ../../data/protein/transcripts_ORF_completeness.tsv \
+              --orf_completeness_path test \
               --output_name ../../data/protein/transcripts_protein_annotation.tsv \
               --gtf_original_path ../../data/transcripts_no_spike_no_ebv.gtf \
               --gtf_predicted_path ../../data/protein/transcripts_protein.gtf \
@@ -69,7 +69,7 @@ make install
 ```
 
 ```bash
-python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/check_orf_completeness.py \
+python /Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/scripts/check_orf_completeness.py \
   --cpat_seqs ../../data/protein/transcripts.ORF_seqs.fa \
   --orfanage_seqs ../../data/protein/transcripts_orfanage_orfs.fa \
   --cpat_info ../../data/protein/transcripts.ORF_remaining.tsv \

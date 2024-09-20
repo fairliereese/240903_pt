@@ -36,7 +36,7 @@ def main(
         f"{best_orf_path}",
         sep="\t",
     ).sort_values("transcript_id")
-    orf_completeness = pd.read_csv(f"{orf_completeness_path}", sep="\t",).sort_values("transcript_id")
+    orf_completeness = pd.read_csv(f"{orf_completeness_path}", sep="\t").sort_values("transcript_id")
 
 
     sqanti_protein = pd.read_csv(
@@ -51,8 +51,6 @@ def main(
         .copy(deep=True)
         .sort_values("transcript_id")
     )
-    import pdb; pdb.set_trace()
-
     orf_completeness = (
         orf_completeness.loc[orf_completeness.transcript_id.isin(common_transcript_ids)
         ]
@@ -255,7 +253,6 @@ def main(
     ).sort_values("transcript_id")
 
     # gtf['gene_name'] = gtf['gene_id']
-    import pdb; pdb.set_trace()
     pd.DataFrame(
         {
             "Chromosome": gtf.iloc[:, 0].values,
