@@ -10,7 +10,7 @@ from utils import *
 
 c_dir = '../common/'
 
-meta_file = 'config.tsv'
+meta_file = '../config.tsv'
 configfile: '../config.yml'
 
 df = parse_config(meta_file)
