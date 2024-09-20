@@ -48,7 +48,6 @@ rule kallisto_pseudoalign:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['pseudoalign']
     output:
-        pseudoalign = directory(config['lr']['kallisto']['pseudoalign']),
         bus = config['lr']['kallisto']['bus'],
         flens = config['lr']['kallisto']['flens'],
         transcripts = config['lr']['kallisto']['transcripts'],
