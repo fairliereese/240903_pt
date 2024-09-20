@@ -48,7 +48,11 @@ rule kallisto_pseudoalign:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['pseudoalign']
     output:
-        pseudoalign = directory(config['lr']['kallisto']['pseudoalign'])
+        pseudoalign = directory(config['lr']['kallisto']['pseudoalign']),
+        bus = config['lr']['kallisto']['bus'],
+        flens = config['lr']['kallisto']['flens'],
+        transcripts = config['lr']['kallisto']['transcripts'],
+        matrix = config['lr']['kallisto']['matrix'],
     resources:
         threads = 32,
         nodes = 8
@@ -58,7 +62,7 @@ rule kallisto_pseudoalign:
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
         {params.kallisto_path} bus \
-            -t 32 \
+            -t {resources.threads} \
             --long \
             --threshold 0.8 \
             -x bulk \
@@ -66,14 +70,83 @@ rule kallisto_pseudoalign:
             -o {params.odir} \
             {input.fq}
         """
-# conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
-# ${path_to_bustools} sort -t 32 ${output}/output.bus \
-#  -o ${output}/sorted.bus; \
-#  ${path_to_bustools} count ${output}/sorted.bus \
-#  -t ${output}/transcripts.txt \
-#  -e ${output}/matrix.ec \
-#  -o ${output}/count --cm -m \
-#  -g ${ref}.t2g; \
+
+rule bustools_sort:
+    input:
+        bus = config['lr']['kallisto']['bus']
+    params:
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
+    output:
+        bus = config['lr']['kallisto']['bus_sorted']
+    resources:
+        threads = 32,
+        nodes = 4
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
+        {params.bustools_path} sort \
+            -t {resources.threads} \
+            {input.bus} \
+            -o {output.bus}
+        """
+
+rule bustools_count:
+    input:
+        bus = config['lr']['kallisto']['bus_sorted'],
+        transcripts = config['lr']['kallisto']['transcripts'],
+        matrix = config['lr']['kallisto']['matrix'],
+        t2g = config['ref']['kallisto']['t2g']
+    params:
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
+    output:
+        bus = directory(config['lr']['kallisto']['bus_count']),
+    resources:
+        threads = 32,
+        nodes = 4
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
+        {params.bustools_path} count \
+            {input.bus} \
+             -t {input.transcripts} \
+             -e {input.matrix} \
+             -o {output.bus_count} \
+            --cm \
+            -m \
+            -g {input.t2g}
+        """
+
+rule lr_kallisto:
+    input:
+        flens = config['lr']['kallisto']['flens'],
+    resources:
+        threads = 32,
+        nodes = 8
+    conda:
+        'base'
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
+    output:
+
+    shell:
+        """
+        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
+        {params.kallisto_path} quant-tcc \
+            -t {resources.threads} \
+            --long \
+            -P ONT \
+            -f {input.flens} \
+            # 	${output}/count.mtx -i ${ref}_k-63.idx \
+            # 	-e ${output}/count.ec.txt \
+            # 	-o ${output}
+
+        """
+
+
 # ${path_to_lr_kallisto} quant-tcc -t 32 \
 # 	--long -P ONT -f ${output}/flens.txt \
 # 	${output}/count.mtx -i ${ref}_k-63.idx \

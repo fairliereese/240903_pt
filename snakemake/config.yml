@@ -132,6 +132,12 @@ lr:
 
   kallisto:
     pseudoalign: ../../data/kallisto/{sample}
+    bus: ../../data/kallisto/{sample}/output.bus
+    transcripts: ../../data/kallisto/{sample}/transcripts.txt
+    matrix: ../../data/kallisto/{sample}/matrix.ec
+    flens: ../../data/kallisto/{sample}/flens.txt
+    bus_sorted: ../../data/kallisto/{sample}/output_sorted.bus
+    bus_count: ../../data/kallisto/{sample}/count/
 
 
 
