@@ -48,7 +48,7 @@ rule kallisto_pseudoalign:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['pseudoalign']
     output:
-        pseudoalign = config['lr']['kallisto']['pseudoalign']
+        pseudoalign = directory(config['lr']['kallisto']['pseudoalign'])
     resources:
         threads = 32,
         nodes = 8
@@ -66,9 +66,7 @@ rule kallisto_pseudoalign:
             -o {params.odir} \
             {input.fq}
         """
-#         ${path_to_lr_kallisto} bus -t 32 --long --threshold 0.8 -x ${tech} -i ${ref}_k-63.idx -o ${output}_${tech} ${reads}
-# output=${output}_${tech}
-
+# conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
 # ${path_to_bustools} sort -t 32 ${output}/output.bus \
 #  -o ${output}/sorted.bus; \
 #  ${path_to_bustools} count ${output}/sorted.bus \
