@@ -136,7 +136,7 @@ rule lr_kallisto:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['quant']['odir']
     output:
-        quant = config['lr']['kallisto']['matrix']
+        quant = config['lr']['kallisto']['quant']['matrix']
     shell:
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
