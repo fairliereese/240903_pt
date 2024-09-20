@@ -23,7 +23,6 @@ def main(
     orfanage_info: str,
     output_path: str,
 ) -> int:
-    import pdb ; pdb.set_trace()
     df_cpat = pd.read_csv(cpat_info, sep="\t")
     df_orfanage = pd.read_csv(orfanage_info, sep="\t", header=None)
     df_orfanage["transcript_id"] = (
@@ -53,6 +52,8 @@ def main(
     cpat_cds = np.unique(df_cpat.ID.values)
     for record in SeqIO.parse(cpat_seqs, "fasta"):
         if record.id in cpat_cds:
+            import pdb ; pdb.set_trace()
+
             transcript_id.append(record.id.rsplit("_", maxsplit=2)[0].to_lower())
             source.append("CPAT")
             has_stop_codon.append(
