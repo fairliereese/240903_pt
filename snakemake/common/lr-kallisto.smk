@@ -156,8 +156,8 @@ rule fmt_mtx_transcripts:
         nodes = 2,
         threads = 1
     run:
-        import fast_matrix_market as fmm
-        count = fmm.mmread({input.mtx})
+        import scipy
+        count = scipy.io.mmread({input.mtx})
         labels = pd.read_csv({input.ts}, header=None, sep='\t')
         kallisto_df = pd.DataFrame(count.todense().T, columns=[{params.col}])
         kallisto_df['transcript_id'] = [labels.values[i][0] for i in range(np.shape(labels.values)[0])]
