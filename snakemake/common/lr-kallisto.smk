@@ -44,7 +44,7 @@ rule kallisto_get_t2t:
         t2t = config['ref']['kallisto']['t2t']
     shell:
         """
-        awk '{print $1"\t"$1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8}' {input.t2g} > {output.t2t}
+        awk '{{print $1"\\t"$1"\\t"$3"\\t"$4"\\t"$5"\\t"$6"\\t"$7"\\t"$8}}' {input.t2g} > {output.t2t}
         """
 
 rule kallisto_pseudoalign:
