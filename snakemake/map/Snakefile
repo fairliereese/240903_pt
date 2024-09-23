@@ -31,7 +31,7 @@ include: f'{c_dir}stats.smk'
 
 df = parse_config(meta_file)
 
-assemblies = ['t2t', 'afr']
+assemblies = ['t2t', 'afr', 'hg38']
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),

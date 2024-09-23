@@ -118,7 +118,6 @@ rule bustools_count:
              -e {input.matrix} \
              -o {params.count_pref} \
             --cm \
-            -m \
             -g {input.t2g}
         """
 
@@ -182,3 +181,12 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_tpm with:
         col = 'counts'
     output:
         tsv = config['lr']['kallisto']['quant']['matrix_tpm_tsv']
+
+use rule fmt_mtx_transcripts as fmt_mtx_transcripts_uniq with:
+    input:
+        mtx = config['lr']['kallisto']['count_mtx'],
+        ts = config['lr']['kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['lr']['kallisto']['matrix_tsv']

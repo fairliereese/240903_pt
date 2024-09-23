@@ -6,6 +6,8 @@ ref:
         link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
       afr:
         link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
+      hg38:
+          link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
 
     # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
     fa: ../../ref/hg38.fa
@@ -140,6 +142,8 @@ lr:
     count_pref: ../../data/kallisto/{sample}/count
     count_mtx: ../../data/kallisto/{sample}/count.mtx
     count_ec: ../../data/kallisto/{sample}/count.ec.txt
+    matrix_tsv: ../../data/kallisto/{sample}/matrix.abundance.tsv
+
     quant:
       odir: ../../data/kallisto_quant/{sample}
       matrix: ../../data/kallisto_quant/{sample}/matrix.abundance.mtx
