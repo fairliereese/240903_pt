@@ -118,6 +118,7 @@ rule bustools_count:
              -e {input.matrix} \
              -o {params.count_pref} \
             --cm \
+            -m \
             -g {input.t2g}
         """
 
