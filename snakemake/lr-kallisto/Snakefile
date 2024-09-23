@@ -40,6 +40,6 @@ rule all:
         expand(config['lr']['kallisto']['quant']['matrix_tsv'],
                sample=df.tech_rep.tolist()),
         expand(config['lr']['kallisto']['quant']['matrix_tsv_uniq'],
-               sample=df.tech_rep.tolist()),)
+               sample=df.tech_rep.tolist())
         # expand(config['lr']['kallisto']['matrix_tsv'],
         #        sample=df.tech_rep.tolist()),
