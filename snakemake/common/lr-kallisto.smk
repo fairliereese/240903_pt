@@ -157,6 +157,7 @@ rule fmt_mtx_transcripts:
         threads = 1
     run:
         import scipy
+        import numpy as np
         count = scipy.io.mmread(input.mtx)
         labels = pd.read_csv(input.ts, header=None, sep='\t')
         kallisto_df = pd.DataFrame(count.todense().T, columns=[{params.col}])
