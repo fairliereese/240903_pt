@@ -111,8 +111,8 @@ rule bustools_count_uniq:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
         count_pref = config['lr']['kallisto']['count_pref_uniq']
     output:
-        mtx = config['lr']['kallisto']['count_uniq_mtx'],
-        ec = config['lr']['kallisto']['count_uniq_ec']
+        mtx = config['lr']['kallisto']['count_mtx_uniq'],
+        ec = config['lr']['kallisto']['count_ec_uniq']
     resources:
         threads = 32,
         nodes = 4
