@@ -34,6 +34,6 @@ rule all:
     input:
         config['ref']['kallisto']['ind'],
         expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
-               sample=df.tech_rep.tolist()),
-        expand(config['lr']['kallisto']['quant']['matrix_tsv'],
-               sample=df.tech_rep.tolist()),
+               sample=df.tech_rep.tolist())[0],
+        # expand(config['lr']['kallisto']['quant']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
