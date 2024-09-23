@@ -160,9 +160,9 @@ rule fmt_mtx_transcripts:
         import numpy as np
         count = scipy.io.mmread(input.mtx)
         labels = pd.read_csv(input.ts, header=None, sep='\t')
-        kallisto_df = pd.DataFrame(count.todense().T, columns=[{params.col}])
+        kallisto_df = pd.DataFrame(count.todense().T, columns=[params.col])
         kallisto_df['transcript_id'] = [labels.values[i][0] for i in range(np.shape(labels.values)[0])]
-        kallisto_df.to_csv({output.tsv}, sep="\t", columns=['transcript_id',{params.col}], header=1, index=0)
+        kallisto_df.to_csv(output.tsv, sep="\t", columns=['transcript_id',params.col], header=1, index=0)
 
 use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
     input:
