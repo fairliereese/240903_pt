@@ -109,6 +109,7 @@ rule bustools_count:
     conda:
         'base'
     shell:
+        # i took out the -m option, which leaves in reads that multimap
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
         {params.bustools_path} count \
@@ -117,7 +118,6 @@ rule bustools_count:
              -e {input.matrix} \
              -o {params.count_pref} \
             --cm \
-            -m \
             -g {input.t2g}
         """
 
@@ -171,7 +171,7 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
     params:
         col = 'counts'
     output:
-        tsv = config['lr']['kallisto_quant']['matrix_tsv']
+        tsv = config['lr']['kallisto']['quant']['matrix_tsv']
 
 use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
     input:
@@ -180,4 +180,4 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
     params:
         col = 'counts'
     output:
-        tsv = config['lr']['kallisto_quant']['matrix_tpm_tsv']
+        tsv = config['lr']['kallisto']['quant']['matrix_tpm_tsv']
