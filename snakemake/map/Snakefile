@@ -51,11 +51,11 @@ rule all:
               assembly=assemblies)
 
 
-use rule wget as dl_alt_assembly with:
-    params:
-        link = lambda wc: config['ref']['alt'][wc.assembly]['link']
-    output:
-        out = config['ref']['alt']['fa_gz']
+# use rule wget as dl_alt_assembly with:
+#     params:
+#         link = lambda wc: config['ref']['alt'][wc.assembly]['link']
+#     output:
+#         out = config['ref']['alt']['fa_gz']
 
 
 def get_df_val(df, col1, col_dict):

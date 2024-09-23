@@ -37,6 +37,16 @@ rule kallisto_build_ind:
             {input.gtf}
         """
 
+rule kallisto_get_t2t:
+    input:
+        t2g = config['ref']['kallisto']['t2g']
+    output:
+        t2t = config['ref']['kallisto']['t2t']
+    shell:
+        """
+        awk '{print $1"\t"$1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8}' {input.t2g} > {output.t2t}
+        """
+
 rule kallisto_pseudoalign:
     input:
         ind = config['ref']['kallisto']['ind'],
@@ -89,6 +99,35 @@ rule bustools_sort:
             -t {resources.threads} \
             {input.bus} \
             -o {output.bus}
+        """
+
+rule bustools_count_uniq:
+    input:
+        bus = config['lr']['kallisto']['bus_sort'],
+        transcripts = config['lr']['kallisto']['transcripts'],
+        matrix = config['lr']['kallisto']['matrix'],
+        t2t = config['ref']['kallisto']['t2t']
+    params:
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
+        count_pref = config['lr']['kallisto']['count_pref_uniq']
+    output:
+        mtx = config['lr']['kallisto']['count_uniq_mtx'],
+        ec = config['lr']['kallisto']['count_uniq_ec']
+    resources:
+        threads = 32,
+        nodes = 4
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
+        {params.bustools_path} count \
+            {input.bus} \
+             -t {input.transcripts} \
+             -e {input.matrix} \
+             -o {params.count_pref} \
+            --genecounts  \
+            -g {input.t2t}
         """
 
 rule bustools_count:
@@ -184,9 +223,9 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_tpm with:
 
 use rule fmt_mtx_transcripts as fmt_mtx_transcripts_uniq with:
     input:
-        mtx = config['lr']['kallisto']['count_mtx'],
+        mtx = config['lr']['kallisto']['count_mtx_uniq'],
         ts = config['lr']['kallisto']['transcripts']
     params:
         col = 'counts'
     output:
-        tsv = config['lr']['kallisto']['matrix_tsv']
+        tsv = config['lr']['kallisto']['matrix_tsv_uniq']

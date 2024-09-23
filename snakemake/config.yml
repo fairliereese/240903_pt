@@ -29,6 +29,7 @@ ref:
       ind: ../../ref/kallisto/hg38_v47_k-63.idx
       t_fa: ../../ref/kallisto/hg38_v47_transcripts.fa
       t2g: ../../ref/kallisto/hg38_v47.t2g
+      t2t: ../../ref/kallisto/hg38_v47.t2t
 
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
@@ -139,6 +140,13 @@ lr:
     matrix: ../../data/kallisto/{sample}/matrix.ec
     flens: ../../data/kallisto/{sample}/flens.txt
     bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
+
+    count_pref_uniq: ../../data/kallisto/{sample}/count_uniq
+    count_mtx_uniq: ../../data/kallisto/{sample}/count_uniq.mtx
+    count_ec_uniq: ../../data/kallisto/{sample}/count_uniq.ec.txt
+    matrix_tsv_uniq: ../../data/kallisto/{sample}/matrix_uniq.abundance.tsv
+
+
     count_pref: ../../data/kallisto/{sample}/count
     count_mtx: ../../data/kallisto/{sample}/count.mtx
     count_ec: ../../data/kallisto/{sample}/count.ec.txt

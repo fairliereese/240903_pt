@@ -30,7 +30,7 @@ include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
 include: f'{c_dir}lr-kallisto.smk'
 
-# df = df.loc[df.tech_rep=='GM19240_1']
+df = df.loc[df.tech_rep=='GM19240_1']
 
 rule all:
     input:
@@ -39,5 +39,7 @@ rule all:
                sample=df.tech_rep.tolist()),
         expand(config['lr']['kallisto']['quant']['matrix_tsv'],
                sample=df.tech_rep.tolist()),
-        expand(config['lr']['kallisto']['matrix_tsv'],
-               sample=df.tech_rep.tolist())
+        expand(config['lr']['kallisto']['quant']['matrix_tsv_uniq'],
+               sample=df.tech_rep.tolist()),)
+        # expand(config['lr']['kallisto']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
