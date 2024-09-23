@@ -33,5 +33,7 @@ include: f'{c_dir}lr-kallisto.smk'
 rule all:
     input:
         config['ref']['kallisto']['ind'],
-        expand(config['lr']['kallisto']['quant']['matrix'],
-               sample=df.tech_rep.tolist())
+        expand(config['lr']['kallisto_quant']['matrix_tpm_tsv'],
+               sample=df.tech_rep.tolist()),
+        expand(config['lr']['kallisto_quant']['matrix_tsv'],
+               sample=df.tech_rep.tolist()),
