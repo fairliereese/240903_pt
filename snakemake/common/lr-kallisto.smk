@@ -42,6 +42,9 @@ rule kallisto_get_t2t:
         t2g = config['ref']['kallisto']['t2g']
     output:
         t2t = config['ref']['kallisto']['t2t']
+    resources:
+        nodes = 1,
+        threads = 1
     shell:
         """
         awk '{{print $1"\\t"$1"\\t"$3"\\t"$4"\\t"$5"\\t"$6"\\t"$7"\\t"$8}}' {input.t2g} > {output.t2t}
