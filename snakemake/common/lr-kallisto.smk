@@ -173,7 +173,7 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
     output:
         tsv = config['lr']['kallisto']['quant']['matrix_tsv']
 
-use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
+use rule fmt_mtx_transcripts as fmt_mtx_transcripts_tpm with:
     input:
         mtx = config['lr']['kallisto']['quant']['matrix_tpm'],
         ts = config['lr']['kallisto']['transcripts']
