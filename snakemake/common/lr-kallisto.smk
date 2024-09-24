@@ -130,7 +130,6 @@ rule bustools_count_uniq:
              -e {input.matrix} \
              -o {params.count_pref} \
             --genecounts  \
-            -m \
             -g {input.t2g}
         """
 
