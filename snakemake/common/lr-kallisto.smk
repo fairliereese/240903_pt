@@ -109,7 +109,7 @@ rule bustools_count_uniq:
         bus = config['lr']['kallisto']['bus_sort'],
         transcripts = config['lr']['kallisto']['transcripts'],
         matrix = config['lr']['kallisto']['matrix'],
-        t2t = config['ref']['kallisto']['t2t']
+        t2g = config['ref']['kallisto']['t2g']
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
         count_pref = config['lr']['kallisto']['count_pref_uniq']
@@ -131,7 +131,7 @@ rule bustools_count_uniq:
              -o {params.count_pref} \
             --genecounts  \
             -m \
-            -g {input.t2t}
+            -g {input.t2g}
         """
 
 rule bustools_count:
