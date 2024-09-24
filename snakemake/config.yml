@@ -133,6 +133,20 @@ lr:
     bam_query_covs: ../../data/map/{assembly}/{sample}_query_cov.tsv
     bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
 
+  map_personal:
+    sam: ../../data/map/{assembly}/{sample}.sam
+    sam_filt: ../../data/map/{assembly}/{sample}_filt.sam
+    bam: ../../data/map/{assembly}/{sample}.bam
+    bam_sort: ../../data/map/{assembly}/{sample}_sorted.bam
+    bam_ind: ../../data/map/{assembly}/{sample}_sorted.bam.bai
+    bam_n_reads: ../../data/map/{assembly}/{sample}_n_reads.txt
+    bam_n_reads_summary: ../../data/map/{assembly}/n_reads_summary.tsv
+    bam_mapqs: ../../data/map/{assembly}/{sample}_mapqs.txt
+    bam_mapqs_summary: ../../data/map/{assembly}/mapqs_summary.txt
+    bam_query_covs: ../../data/map/{assembly}/{sample}_query_cov.tsv
+    bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
+
+
   kallisto:
     odir: ../../data/kallisto/{sample}/
     bus: ../../data/kallisto/{sample}/output.bus

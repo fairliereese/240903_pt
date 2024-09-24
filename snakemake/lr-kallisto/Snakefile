@@ -30,7 +30,7 @@ include: f'{c_dir}phasing.smk'
 include: f'{c_dir}cerberus.smk'
 include: f'{c_dir}lr-kallisto.smk'
 
-# df = df.loc[df.tech_rep=='GM19240_1']
+df = df.loc[df.tech_rep=='GM19240_1']
 
 rule all:
     input:
