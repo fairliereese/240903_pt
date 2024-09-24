@@ -20,3 +20,13 @@ rule wget:
         """
         wget "{params.link}" -O {output.out}
         """
+rule dl_aws:
+    resources:
+        nodes = 1,
+        threads = 1
+    shell:
+        """
+        # /home/bsc/bsc083001/.bin/
+        # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+        aws s3 cp {params.link} {output.out}
+        """

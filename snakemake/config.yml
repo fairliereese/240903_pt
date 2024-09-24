@@ -7,7 +7,12 @@ ref:
       afr:
         link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
       hg38:
-          link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
+        link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
+      personal:
+        fa_gz: ../../ref/{assembly}/{assembly}.fa.gz
+        fa_mmi: ../../ref/{assembly}/{assembly}.fa.mmi
+
+
 
     # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
     fa: ../../ref/hg38.fa

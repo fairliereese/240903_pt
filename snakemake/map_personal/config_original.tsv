@@ -1,0 +1,7 @@
+lab_number_sample	lab_sampleid	cell_line_id	sample	sex	pangenome_code	same_population_sample	european_sample	afr_sample
+40	IS6	GM24385	AJI6	Male	HG002	itself	itself	HG02717_maternal
+8	NI3	GM18906	YRI3	Female	NA18906	NA19240_maternal	HG002_maternal	HG02717_maternal
+12	NI7	GM19240	YRI7	Female	NA19240	NA18906_maternal	HG002_maternal	HG02717_maternal
+18	CH6	HG00621	HAC6	Male	HG00621	HG00673_maternal	HG002_maternal	HG02717_maternal
+30	PE2	HG01928	PEL2	Male	HG01928	HG01952_maternal	HG002_maternal	HG02717_maternal
+31	PE3	HG01952	PEL3	Male	HG01952	HG01928_maternal	HG002_maternal	HG02717_maternal
