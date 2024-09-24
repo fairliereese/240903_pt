@@ -142,8 +142,8 @@ lr:
     bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
 
     count_pref_uniq: ../../data/kallisto/{sample}/count_uniq/count
-    count_mtx_uniq: ../../data/kallisto/{sample}/count_uniq/count_uniq.mtx
-    count_ec_uniq: ../../data/kallisto/{sample}/count_uniq/count_uniq.ec.txt
+    count_mtx_uniq: ../../data/kallisto/{sample}/count_uniq/count.mtx
+    count_transcripts_uniq: ../../data/kallisto/{sample}/count_uniq/count.genes.txt
     matrix_tsv_uniq: ../../data/kallisto/{sample}/count_uniq/matrix_uniq.abundance.tsv
 
 

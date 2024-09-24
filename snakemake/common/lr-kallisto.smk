@@ -115,7 +115,7 @@ rule bustools_count_uniq:
         count_pref = config['lr']['kallisto']['count_pref_uniq']
     output:
         mtx = config['lr']['kallisto']['count_mtx_uniq'],
-        ec = config['lr']['kallisto']['count_ec_uniq']
+        t = config['lr']['kallisto']['count_transcripts_uniq']
     resources:
         threads = 32,
         nodes = 4
@@ -227,7 +227,7 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_tpm with:
 use rule fmt_mtx_transcripts as fmt_mtx_transcripts_uniq with:
     input:
         mtx = config['lr']['kallisto']['count_mtx_uniq'],
-        ts = config['lr']['kallisto']['transcripts']
+        ts = config['lr']['kallisto']['count_transcripts_uniq']
     params:
         col = 'counts'
     output:
