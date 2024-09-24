@@ -141,10 +141,10 @@ lr:
     flens: ../../data/kallisto/{sample}/flens.txt
     bus_sort: ../../data/kallisto/{sample}/output_sorted.bus
 
-    count_pref_uniq: ../../data/kallisto/{sample}/count_uniq
-    count_mtx_uniq: ../../data/kallisto/{sample}/count_uniq.mtx
-    count_ec_uniq: ../../data/kallisto/{sample}/count_uniq.ec.txt
-    matrix_tsv_uniq: ../../data/kallisto/{sample}/matrix_uniq.abundance.tsv
+    count_pref_uniq: ../../data/kallisto/{sample}/count_uniq/count
+    count_mtx_uniq: ../../data/kallisto/{sample}/count_uniq/count_uniq.mtx
+    count_ec_uniq: ../../data/kallisto/{sample}/count_uniq/count_uniq.ec.txt
+    matrix_tsv_uniq: ../../data/kallisto/{sample}/count_uniq/matrix_uniq.abundance.tsv
 
 
     count_pref: ../../data/kallisto/{sample}/count
