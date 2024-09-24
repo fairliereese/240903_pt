@@ -35,11 +35,11 @@ df = df.loc[df.tech_rep=='GM19240_1']
 rule all:
     input:
         config['ref']['kallisto']['ind'],
-        expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
-               sample=df.tech_rep.tolist()),
-        expand(config['lr']['kallisto']['quant']['matrix_tsv'],
-               sample=df.tech_rep.tolist()),
         expand(config['lr']['kallisto']['matrix_tsv_uniq'],
-               sample=df.tech_rep.tolist())
+               sample=df.tech_rep.tolist()),
+                       # expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
+                       #        sample=df.tech_rep.tolist()),
+                       # expand(config['lr']['kallisto']['quant']['matrix_tsv'],
+                       #        sample=df.tech_rep.tolist()),
         # expand(config['lr']['kallisto']['matrix_tsv'],
         #        sample=df.tech_rep.tolist()),
