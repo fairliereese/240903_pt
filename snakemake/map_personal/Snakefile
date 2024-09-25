@@ -59,7 +59,7 @@ wildcard_constraints:
 rule all:
     input:
         expand(config['ref']['alt']['personal']['fa_gz'],
-               assembly=g_df['sample'].tolist())
+               assembly=g_df['sample'].tolist()[0])
         # expand(config['lr']['map']['bam'],
         #        sample=df['tech_rep'].tolist(),
         #        assembly=assemblies),
