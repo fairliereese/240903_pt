@@ -122,7 +122,7 @@ rule bustools_count_uniq:
         bus = config['lr']['kallisto']['bus_sort'],
         transcripts = config['lr']['kallisto']['transcripts'],
         matrix = config['lr']['kallisto']['matrix'],
-        t2t = config['ref']['kallisto']['t2t']
+        t2t = config['ref']['kallisto']['t2g_8col'] # TODO
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
         count_pref = config['lr']['kallisto']['count_pref_uniq']
