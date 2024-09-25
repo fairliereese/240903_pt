@@ -51,7 +51,7 @@ def fmt_gtf(ifile, ofile):
     g_df = make_hier_entry(df, how='g')
 
     g_df['Source'] = 'Cerberus'
-    g_df.loc[~g_df.gene_id.str.startswith('ENSG'), 'Source'] = 'Cerberus'
+    g_df.loc[g_df.gene_id.str.startswith('ENSG'), 'Source'] = 'HAVANA'
     g_df['Frame'] = '.'
     g_df['Score'] = '.'
     l2 = len(g_df.loc[g_df.Feature=='gene'].index)
