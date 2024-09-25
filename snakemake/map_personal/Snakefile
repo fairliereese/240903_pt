@@ -35,20 +35,29 @@ df = parse_config(meta_file)
 df2 = pd.read_csv(meta_file_2, sep='\t')
 df2['tech_rep'] = df2.cell_line_id+'_1'
 
-# limit just to the samples where we'll do this
-df = df.loc[df.tech_rep.isin(df2.tech_rep.tolist())]
+# TODO test
+df2 = df2.loc[df2.cell_line_id == 'GM24385']
 
-# process the genomes file
+# get the genomes to download
 g_df = pd.read_csv(genomes_file, sep='\t')
 g_df['aws_mat_link'] = g_df['hap2_aws_fasta']
 g_df = g_df.loc[g_df['aws_mat_link'].notnull()]
 assert len(g_df.loc[g_df['aws_mat_link'].str.contains('maternal')].index) == len(g_df.index)
-
-# get the genomes to download
 genome_cols = ['same_population_sample', 'european_sample',	'afr_sample']
 g_df = g_df.loc[(g_df['sample'].isin(df2[genome_cols[0]]))|
                 (g_df['sample'].isin(df2[genome_cols[1]]))|
                 (g_df['sample'].isin(df2[genome_cols[2]]))]
+
+# a little more df2 formatting
+df2 = df2[['tech_rep', 'same_population_sample',
+           'european_sample', 'afr_sample']].melt(id_vars='tech_rep')
+df2 = df2.reset_index()
+df2 = df2.rename({'variable':'assembly_status',
+                  'value': 'assembly_sample'},
+                  axis=1)
+
+# limit just to the samples where we'll do this
+df = df.loc[df.tech_rep.isin(df2.tech_rep.tolist())]
 
 
 wildcard_constraints:
@@ -58,17 +67,23 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['ref']['alt']['personal']['fa_gz'],
-               assembly=g_df['sample'].tolist())
-        # expand(config['lr']['map']['bam'],
+        expand(config['lr']['map_personal']['sam'],
+               zip,
+               assembly_status=df2.assembly_status.tolist(),
+               assembly_sample=df2.assembly_sample.tolist(),
+               sample=df2.tech_rep.tolist())
+        # expand(config['ref']['alt']['personal']['personal']['fa_gz'],
+        #        assembly=g_df['sample'].tolist())
+
+        # expand(config['lr']['map_personal']['bam'],
         #        sample=df['tech_rep'].tolist(),
         #        assembly=assemblies),
         # config['lr']['fastq_n_reads_summary'],
-        # expand(config['lr']['map']['bam_n_reads_summary'],
+        # expand(config['lr']['map_personal']['bam_n_reads_summary'],
         #       assembly=assemblies),
-        # expand(config['lr']['map']['bam_mapqs_summary'],
+        # expand(config['lr']['map_personal']['bam_mapqs_summary'],
         #      assembly=assemblies),
-        # expand(config['lr']['map']['bam_query_covs_summary'],
+        # expand(config['lr']['map_personal']['bam_query_covs_summary'],
         #       assembly=assemblies)
 
 def get_df_val(df, col1, col_dict):
@@ -81,66 +96,66 @@ def get_df_val(df, col1, col_dict):
     assert len(val) == 1
     return val[0]
 
-use rule dl_aws as dl_personal_assembly with:
-    params:
-        link = lambda wc: get_df_val(g_df, 'aws_mat_link',
-                            {'sample': wc.assembly})
+# use rule dl_aws as dl_personal_assembly with:
+#     params:
+#         link = lambda wc: get_df_val(g_df, 'aws_mat_link',
+#                             {'sample': wc.assembly})
+#     output:
+#         out = config['ref']['alt']['personal']['personal']['fa_gz']
+
+
+### index genome
+use rule minimap2_index as ind_alt_assembly with:
+    input:
+        fa = config['ref']['alt']['personal']['fa_gz']
     output:
-        out = config['ref']['alt']['personal']['fa_gz']
+        ind = config['ref']['alt']['personal']['fa_mmi']
 
+use rule minimap2_with_index as alt_map with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample})),
+        ind = config['ref']['alt']['personal']['fa_mmi']
+    resources:
+        threads = 8,
+        nodes = 32
+    output:
+        sam = temporary(config['lr']['map_personal']['sam'])
 
-# ### index genome
-# use rule minimap2_index as ind_alt_assembly with:
-#     input:
-#         fa = config['ref']['alt']['fa_gz']
-#     output:
-#         ind = config['ref']['alt']['fa_mmi']
-#
-# use rule minimap2_with_index as alt_map with:
-#     input:
-#         fq = lambda wc: expand(config['lr']['fastq'],
-#                     lab_sample=get_df_val(df,
-#                             'lab_rep',
-#                             {'tech_rep': wc.sample})),
-#         ind = config['ref']['alt']['fa_mmi']
-#     resources:
-#         threads = 8,
-#         nodes = 32
-#     output:
-#         sam = temporary(config['lr']['map']['sam'])
-#
 # use rule filt_non_prim_unmap_supp as alt_filt_map with:
 #     input:
-#         align = config['lr']['map']['sam']
+#         align = config['lr']['map_personal']['sam']
 #     output:
-#         align = temporary(config['lr']['map']['sam_filt'])
+#         align = temporary(config['lr']['map_personal']['sam_filt'])
 #
 # use rule sam_to_bam as alt_sam_to_bam with:
 #     input:
-#         sam = config['lr']['map']['sam_filt']
+#         sam = config['lr']['map_personal']['sam_filt']
 #     output:
-#         bam = temporary(config['lr']['map']['bam'])
+#         bam = temporary(config['lr']['map_personal']['bam'])
 #
 # # index and sort bam
 # use rule sort_bam as alt_sort_bam with:
 #     input:
-#         bam = config['lr']['map']['bam']
+#         bam = config['lr']['map_personal']['bam']
 #     output:
-#         bam = config['lr']['map']['bam_sort']
+#         bam = config['lr']['map_personal']['bam_sort']
 #
 # use rule index_bam as alt_index_bam with:
 #     input:
-#         bam = config['lr']['map']['bam_sort']
+#         bam = config['lr']['map_personal']['bam_sort']
 #     output:
-#         ind = config['lr']['map']['bam_ind']
+#         ind = config['lr']['map_personal']['bam_ind']
 #
 # ### statistics
 # rule all_stats:
 #     input:
 #         config['lr']['fastq_n_reads_summary'],
-#         expand(config['lr']['map']['bam_n_reads_summary'],
+#         expand(config['lr']['map_personal']['bam_n_reads_summary'],
 #                assembly=assemblies),
-#         expand(config['lr']['map']['bam_mapqs_summary'],
+#         expand(config['lr']['map_personal']['bam_mapqs_summary'],
 #               assembly=assemblies)
 #
 #
@@ -166,31 +181,31 @@ use rule dl_aws as dl_personal_assembly with:
 # # filtered bam counts
 # use rule count_bam as alt_count_mapped_reads with:
 #     input:
-#         align = config['lr']['map']['bam_sort']
+#         align = config['lr']['map_personal']['bam_sort']
 #     output:
-#         txt = temporary(config['lr']['map']['bam_n_reads'])
+#         txt = temporary(config['lr']['map_personal']['bam_n_reads'])
 #
 #
 # use rule count_reads_summary as sam_count_reads_summary with:
 #     input:
-#         txts = lambda wc: expand(config['lr']['map']['bam_n_reads'],
+#         txts = lambda wc: expand(config['lr']['map_personal']['bam_n_reads'],
 #                                 assembly=wc.assembly,
 #                                 sample=df['tech_rep'].tolist()),
 #     params:
 #         samples = df['tech_rep'].tolist()
 #     output:
-#         summ = config['lr']['map']['bam_n_reads_summary']
+#         summ = config['lr']['map_personal']['bam_n_reads_summary']
 #
 # # mapqs per read
 # use rule bam_get_mapqs as alt_get_mapqs with:
 #     input:
-#         bam = config['lr']['map']['bam_sort']
+#         bam = config['lr']['map_personal']['bam_sort']
 #     output:
-#         txt = temporary(config['lr']['map']['bam_mapqs'])
+#         txt = temporary(config['lr']['map_personal']['bam_mapqs'])
 #
 # use rule read_id_df_summary as alt_get_mapqs_summary with:
 #     input:
-#         tsvs = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+#         tsvs = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
 #                                 assembly=wc.assembly,
 #                                 sample=df['tech_rep'].tolist())
 #     resources:
@@ -199,21 +214,21 @@ use rule dl_aws as dl_personal_assembly with:
 #     params:
 #         samples = df['tech_rep'].tolist()
 #     output:
-#         summ = config['lr']['map']['bam_mapqs_summary']
+#         summ = config['lr']['map_personal']['bam_mapqs_summary']
 #
 # # query coverage and read length per read
 # use rule bam_get_query_cov as alt_get_qcov with:
 #     input:
-#         align = config['lr']['map']['bam_sort']
+#         align = config['lr']['map_personal']['bam_sort']
 #     output:
-#         out = config['lr']['map']['bam_query_covs']
+#         out = config['lr']['map_personal']['bam_query_covs']
 #
 # use rule read_id_df_summary as alt_get_qcov_summary with:
 #     input:
-#         tsvs = lambda wc: expand(config['lr']['map']['bam_query_covs'],
+#         tsvs = lambda wc: expand(config['lr']['map_personal']['bam_query_covs'],
 #                                 assembly=wc.assembly,
 #                                 sample=df['tech_rep'].tolist())
 #     params:
 #         samples = df['tech_rep'].tolist()
 #     output:
-#         summ = config['lr']['map']['bam_query_covs_summary']
+#         summ = config['lr']['map_personal']['bam_query_covs_summary']
