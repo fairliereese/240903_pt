@@ -42,6 +42,9 @@ rule kallisto_t2g_8col:
         t2g = config['ref']['kallisto']['t2g']
     output:
         t2g = config['ref']['kallisto']['t2g_8col']
+    resources:
+        nodes = 1,
+        threads = 1
     shell:
         """
         awk '{{print $1, $2, $3, $1, $4, $5, $6, $7}}' {input.t2g} > {output.t2g}
