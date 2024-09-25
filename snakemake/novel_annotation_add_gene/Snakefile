@@ -1,0 +1,54 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+df = parse_config(meta_file)
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
+    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
+
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+rule all:
+    input:
+        config['lr']['gtf_filt_with_genes']
+
+rule add_gene_entries:
+    input:
+        gtf = config['lr']['gtf_filt']
+    output:
+        gtf = config['lr']['gtf_filt_with_genes']
+    resources:
+        threads = 1,
+        nodes = 2
+    params:
+        scripts_path = p
+    conda:
+        'cerberus'
+    shell:
+        """
+        python {params.scripts_path}/refmt_gtf_add_genes.py \
+            {input.gtf} \
+            {output.gtf}
+        """
