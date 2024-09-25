@@ -37,9 +37,19 @@ rule kallisto_build_ind:
             {input.gtf}
         """
 
-rule kallisto_get_t2t:
+rule kallisto_t2g_8col:
     input:
         t2g = config['ref']['kallisto']['t2g']
+    output:
+        t2g = config['ref']['kallisto']['t2g_8col']
+    shell:
+        """
+        awk '{{print $1, $2, $3, $1, $4, $5, $6, $7}}' {input.t2g} > {output.t2g}
+        """
+
+rule kallisto_get_t2t:
+    input:
+        t2g = config['ref']['kallisto']['t2g_8col']
     output:
         t2t = config['ref']['kallisto']['t2t']
     resources:
@@ -109,7 +119,7 @@ rule bustools_count_uniq:
         bus = config['lr']['kallisto']['bus_sort'],
         transcripts = config['lr']['kallisto']['transcripts'],
         matrix = config['lr']['kallisto']['matrix'],
-        t2g = config['ref']['kallisto']['t2g']
+        t2t = config['ref']['kallisto']['t2t']
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
         count_pref = config['lr']['kallisto']['count_pref_uniq']
@@ -130,7 +140,7 @@ rule bustools_count_uniq:
              -e {input.matrix} \
              -o {params.count_pref} \
             --genecounts  \
-            -g {input.t2g}
+            -g {input.t2t}
         """
 
 rule bustools_count:
