@@ -36,7 +36,7 @@ df2 = pd.read_csv(meta_file_2, sep='\t')
 df2['tech_rep'] = df2.cell_line_id+'_1'
 
 # TODO test
-df2 = df2.loc[df2.cell_line_id == 'GM24385']
+# df2 = df2.loc[df2.cell_line_id == 'GM24385']
 
 # get the genomes to download
 g_df = pd.read_csv(genomes_file, sep='\t')
