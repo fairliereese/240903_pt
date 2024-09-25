@@ -28,5 +28,5 @@ rule dl_aws:
         """
         # /home/bsc/bsc083001/.bin/
         # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-        aws s3 cp {params.link} {output.out}
+        aws s3 cp {params.link} {output.out} --no-sign-request
         """
