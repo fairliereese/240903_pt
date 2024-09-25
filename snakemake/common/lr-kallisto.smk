@@ -136,7 +136,7 @@ rule bustools_count_uniq:
         'base'
     shell:
         """
-        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustool
+        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
         {params.bustools_path} count \
             {input.bus} \
              -t {input.transcripts} \
