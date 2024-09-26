@@ -41,9 +41,8 @@ def fmt_gtf(ifile, ofile):
 
     df = pr.read_gtf(ifile).df
 
-    # overwrite gene names cause we have dupes
-    df['gene_name'] = df['gene_id']
-
+    # remove gene names because we have dupes
+    df.drop('gene_name', axis=1, inplace=True)
 
     # make new gene entries for everything
     l1 = len(df.gene_id.unique().tolist())
@@ -51,7 +50,6 @@ def fmt_gtf(ifile, ofile):
     g_df = make_hier_entry(df, how='g')
 
     g_df['Source'] = 'Cerberus'
-    g_df.loc[g_df.gene_id.str.startswith('ENSG'), 'Source'] = 'HAVANA'
     g_df['Frame'] = '.'
     g_df['Score'] = '.'
     l2 = len(g_df.loc[g_df.Feature=='gene'].index)
