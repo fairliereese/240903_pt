@@ -59,6 +59,10 @@ df2 = df2.rename({'variable':'assembly_status',
 # limit just to the samples where we'll do this
 df = df.loc[df.tech_rep.isin(df2.tech_rep.tolist())]
 
+# get a key for assembly status, assembly sample, and actual sample
+df2['dataset_key'] = df2.assembly_status+'_'+\
+                     df2.assembly_sample+'_'+\
+                     df2.tech_rep
 
 wildcard_constraints:
     assembly='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),
@@ -67,24 +71,30 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map_personal']['sam'],
+        expand(config['lr']['map_personal']['bam_ind'],
                zip,
                assembly_status=df2.assembly_status.tolist(),
                assembly_sample=df2.assembly_sample.tolist(),
-               sample=df2.tech_rep.tolist())
+               sample=df2.tech_rep.tolist()),
+        config['lr']['fastq_n_reads_summary'],
+        expand(config['lr']['map_personal']['bam_n_reads_summary'],
+               zip,
+               assembly_status=df2.assembly_status.tolist(),
+               assembly_sample=df2.assembly_sample.tolist(),
+               sample=df2.tech_rep.tolist()),
+        expand(config['lr']['map_personal']['bam_mapqs_summary'],
+            zip,
+            assembly_status=df2.assembly_status.tolist(),
+            assembly_sample=df2.assembly_sample.tolist(),
+            sample=df2.tech_rep.tolist()),
+        expand(config['lr']['map_personal']['bam_query_covs_summary'],
+             zip,
+             assembly_status=df2.assembly_status.tolist(),
+             assembly_sample=df2.assembly_sample.tolist(),
+             sample=df2.tech_rep.tolist()),
+
         # expand(config['ref']['alt']['personal']['personal']['fa_gz'],
         #        assembly=g_df['sample'].tolist())
-
-        # expand(config['lr']['map_personal']['bam'],
-        #        sample=df['tech_rep'].tolist(),
-        #        assembly=assemblies),
-        # config['lr']['fastq_n_reads_summary'],
-        # expand(config['lr']['map_personal']['bam_n_reads_summary'],
-        #       assembly=assemblies),
-        # expand(config['lr']['map_personal']['bam_mapqs_summary'],
-        #      assembly=assemblies),
-        # expand(config['lr']['map_personal']['bam_query_covs_summary'],
-        #       assembly=assemblies)
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
@@ -124,31 +134,31 @@ use rule minimap2_with_index as alt_map with:
     output:
         sam = temporary(config['lr']['map_personal']['sam'])
 
-# use rule filt_non_prim_unmap_supp as alt_filt_map with:
-#     input:
-#         align = config['lr']['map_personal']['sam']
-#     output:
-#         align = temporary(config['lr']['map_personal']['sam_filt'])
-#
-# use rule sam_to_bam as alt_sam_to_bam with:
-#     input:
-#         sam = config['lr']['map_personal']['sam_filt']
-#     output:
-#         bam = temporary(config['lr']['map_personal']['bam'])
-#
-# # index and sort bam
-# use rule sort_bam as alt_sort_bam with:
-#     input:
-#         bam = config['lr']['map_personal']['bam']
-#     output:
-#         bam = config['lr']['map_personal']['bam_sort']
-#
-# use rule index_bam as alt_index_bam with:
-#     input:
-#         bam = config['lr']['map_personal']['bam_sort']
-#     output:
-#         ind = config['lr']['map_personal']['bam_ind']
-#
+use rule filt_non_prim_unmap_supp as alt_filt_map with:
+    input:
+        align = config['lr']['map_personal']['sam']
+    output:
+        align = temporary(config['lr']['map_personal']['sam_filt'])
+
+use rule sam_to_bam as alt_sam_to_bam with:
+    input:
+        sam = config['lr']['map_personal']['sam_filt']
+    output:
+        bam = temporary(config['lr']['map_personal']['bam'])
+
+# index and sort bam
+use rule sort_bam as alt_sort_bam with:
+    input:
+        bam = config['lr']['map_personal']['bam']
+    output:
+        bam = config['lr']['map_personal']['bam_sort']
+
+use rule index_bam as alt_index_bam with:
+    input:
+        bam = config['lr']['map_personal']['bam_sort']
+    output:
+        ind = config['lr']['map_personal']['bam_ind']
+
 # ### statistics
 # rule all_stats:
 #     input:
@@ -157,78 +167,84 @@ use rule minimap2_with_index as alt_map with:
 #                assembly=assemblies),
 #         expand(config['lr']['map_personal']['bam_mapqs_summary'],
 #               assembly=assemblies)
-#
-#
-# # raw fq counts
-# use rule fq_count_reads as count_raw_reads with:
-#     input:
-#         fq = lambda wc: expand(config['lr']['fastq'],
-#                     lab_sample=get_df_val(df,
-#                             'lab_rep',
-#                             {'tech_rep': wc.sample}))
-#     output:
-#         txt = temporary(config['lr']['fastq_n_reads'])
-#
-# use rule count_reads_summary as fq_count_reads_summary with:
-#     input:
-#         txts = lambda wc: expand(config['lr']['fastq_n_reads'],
-#                                 sample=df['tech_rep'].tolist()),
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['fastq_n_reads_summary']
-#
-# # filtered bam counts
-# use rule count_bam as alt_count_mapped_reads with:
-#     input:
-#         align = config['lr']['map_personal']['bam_sort']
-#     output:
-#         txt = temporary(config['lr']['map_personal']['bam_n_reads'])
-#
-#
-# use rule count_reads_summary as sam_count_reads_summary with:
-#     input:
-#         txts = lambda wc: expand(config['lr']['map_personal']['bam_n_reads'],
-#                                 assembly=wc.assembly,
-#                                 sample=df['tech_rep'].tolist()),
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['map_personal']['bam_n_reads_summary']
-#
-# # mapqs per read
-# use rule bam_get_mapqs as alt_get_mapqs with:
-#     input:
-#         bam = config['lr']['map_personal']['bam_sort']
-#     output:
-#         txt = temporary(config['lr']['map_personal']['bam_mapqs'])
-#
-# use rule read_id_df_summary as alt_get_mapqs_summary with:
-#     input:
-#         tsvs = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
-#                                 assembly=wc.assembly,
-#                                 sample=df['tech_rep'].tolist())
-#     resources:
-#         threads = 1,
-#         nodes = 3
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['map_personal']['bam_mapqs_summary']
-#
-# # query coverage and read length per read
-# use rule bam_get_query_cov as alt_get_qcov with:
-#     input:
-#         align = config['lr']['map_personal']['bam_sort']
-#     output:
-#         out = config['lr']['map_personal']['bam_query_covs']
-#
-# use rule read_id_df_summary as alt_get_qcov_summary with:
-#     input:
-#         tsvs = lambda wc: expand(config['lr']['map_personal']['bam_query_covs'],
-#                                 assembly=wc.assembly,
-#                                 sample=df['tech_rep'].tolist())
-#     params:
-#         samples = df['tech_rep'].tolist()
-#     output:
-#         summ = config['lr']['map_personal']['bam_query_covs_summary']
+
+
+# raw fq counts
+use rule fq_count_reads as count_raw_reads with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample}))
+    output:
+        txt = temporary(config['lr']['fastq_n_reads'])
+
+use rule count_reads_summary as fq_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+                                sample=df2['tech_rep'].tolist()),
+    params:
+        samples = df2['tech_rep'].tolist()
+    output:
+        summ = config['lr']['fastq_n_reads_summary']
+
+# filtered bam counts
+use rule count_bam as alt_count_mapped_reads with:
+    input:
+        align = config['lr']['map_personal']['bam_sort']
+    output:
+        txt = temporary(config['lr']['map_personal']['bam_n_reads'])
+
+
+use rule count_reads_summary as sam_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['map_personal']['bam_n_reads'],
+                                       zip,
+                                       assembly_status=df2.assembly_status.tolist(),
+                                       assembly_sample=df2.assembly_sample.tolist(),
+                                       sample=df2.tech_rep.tolist())
+    params:
+        samples = df2['dataset_key'].tolist()
+    output:
+        summ = config['lr']['map_personal']['bam_n_reads_summary']
+
+# mapqs per read
+use rule bam_get_mapqs as alt_get_mapqs with:
+    input:
+        bam = config['lr']['map_personal']['bam_sort']
+    output:
+        txt = temporary(config['lr']['map_personal']['bam_mapqs'])
+
+use rule read_id_df_summary as alt_get_mapqs_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
+                               zip,
+                               assembly_status=df2.assembly_status.tolist(),
+                               assembly_sample=df2.assembly_sample.tolist(),
+                               sample=df2.tech_rep.tolist())
+    params:
+        samples = df2['dataset_key'].tolist()
+    resources:
+        threads = 1,
+        nodes = 3
+    output:
+        summ = config['lr']['map_personal']['bam_mapqs_summary']
+
+# query coverage and read length per read
+use rule bam_get_query_cov as alt_get_qcov with:
+    input:
+        align = config['lr']['map_personal']['bam_sort']
+    output:
+        out = config['lr']['map_personal']['bam_query_covs']
+
+use rule read_id_df_summary as alt_get_qcov_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map_personal']['bam_query_covs'],
+                               zip,
+                               assembly_status=df2.assembly_status.tolist(),
+                               assembly_sample=df2.assembly_sample.tolist(),
+                               sample=df2.tech_rep.tolist())
+    params:
+        samples = df2['dataset_key'].tolist()
+    output:
+        summ = config['lr']['map_personal']['bam_query_covs_summary']
