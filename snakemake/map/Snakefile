@@ -39,9 +39,6 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map']['bam'],
-               sample=df['tech_rep'].tolist(),
-               assembly=assemblies),
         config['lr']['fastq_n_reads_summary'],
         expand(config['lr']['map']['bam_n_reads_summary'],
               assembly=assemblies),
