@@ -10,15 +10,6 @@ def get_df_val(df, col1, col_dict):
 
 
 rule kallisto_build_ind:
-    input:
-        fa = config['ref']['fa'],
-        gtf = config['lr']['novel_gene']['gtf_added_gene_entries']
-    params:
-        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto'
-    output:
-        ind = config['ref']['kallisto']['ind'],
-        fa = config['ref']['kallisto']['t_fa'],
-        t2g = config['ref']['kallisto']['t2g'],
     resources:
         threads = 8,
         nodes = 4
@@ -64,20 +55,9 @@ rule kallisto_get_t2t:
         """
 
 rule kallisto_pseudoalign:
-    input:
-        ind = config['ref']['kallisto']['ind'],
-        fq = lambda wc: expand(config['lr']['fastq'],
-                    lab_sample=get_df_val(df,
-                            'lab_rep',
-                            {'tech_rep': wc.sample})),
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['odir']
-    output:
-        bus = config['lr']['kallisto']['bus'],
-        flens = config['lr']['kallisto']['flens'],
-        transcripts = config['lr']['kallisto']['transcripts'],
-        matrix = config['lr']['kallisto']['matrix'],
     resources:
         threads = 32,
         nodes = 8
@@ -97,12 +77,8 @@ rule kallisto_pseudoalign:
         """
 
 rule bustools_sort:
-    input:
-        bus = config['lr']['kallisto']['bus']
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
-    output:
-        bus = config['lr']['kallisto']['bus_sort']
     resources:
         threads = 32,
         nodes = 4
@@ -147,17 +123,9 @@ rule bustools_count_uniq:
         """
 
 rule bustools_count:
-    input:
-        bus = config['lr']['kallisto']['bus_sort'],
-        transcripts = config['lr']['kallisto']['transcripts'],
-        matrix = config['lr']['kallisto']['matrix'],
-        t2g = config['ref']['kallisto']['t2g']
     params:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
         count_pref = config['lr']['kallisto']['count_pref']
-    output:
-        mtx = config['lr']['kallisto']['count_mtx'],
-        ec = config['lr']['kallisto']['count_ec']
     resources:
         threads = 32,
         nodes = 4
@@ -177,11 +145,6 @@ rule bustools_count:
         """
 
 rule lr_kallisto:
-    input:
-        flens = config['lr']['kallisto']['flens'],
-        mtx = config['lr']['kallisto']['count_mtx'],
-        ind = config['ref']['kallisto']['ind'],
-        ec = config['lr']['kallisto']['count_ec']
     resources:
         threads = 32,
         nodes = 8
@@ -190,9 +153,6 @@ rule lr_kallisto:
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
         odir = config['lr']['kallisto']['quant']['odir']
-    output:
-        quant = config['lr']['kallisto']['quant']['matrix'],
-        tpm = config['lr']['kallisto']['quant']['matrix_tpm'],
     shell:
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
@@ -220,14 +180,14 @@ rule fmt_mtx_transcripts:
         kallisto_df['transcript_id'] = [labels.values[i][0] for i in range(np.shape(labels.values)[0])]
         kallisto_df.to_csv(output.tsv, sep="\t", columns=['transcript_id',params.col], header=1, index=0)
 
-use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
-    input:
-        mtx = config['lr']['kallisto']['quant']['matrix'],
-        ts = config['lr']['kallisto']['transcripts']
-    params:
-        col = 'counts'
-    output:
-        tsv = config['lr']['kallisto']['quant']['matrix_tsv']
+# use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
+#     input:
+#         mtx = config['lr']['kallisto']['quant']['matrix'],
+#         ts = config['lr']['kallisto']['transcripts']
+#     params:
+#         col = 'counts'
+#     output:
+#         tsv = config['lr']['kallisto']['quant']['matrix_tsv']
 
 # use rule fmt_mtx_transcripts as fmt_mtx_transcripts_tpm with:
 #     input:
@@ -238,11 +198,11 @@ use rule fmt_mtx_transcripts as fmt_mtx_transcripts_counts with:
 #     output:
 #         tsv = config['lr']['kallisto']['quant']['matrix_tpm_tsv']
 
-use rule fmt_mtx_transcripts as fmt_mtx_transcripts_uniq with:
-    input:
-        mtx = config['lr']['kallisto']['count_mtx_uniq'],
-        ts = config['lr']['kallisto']['count_transcripts_uniq']
-    params:
-        col = 'counts'
-    output:
-        tsv = config['lr']['kallisto']['matrix_tsv_uniq']
+# use rule fmt_mtx_transcripts as fmt_mtx_transcripts_uniq with:
+#     input:
+#         mtx = config['lr']['kallisto']['count_mtx_uniq'],
+#         ts = config['lr']['kallisto']['count_transcripts_uniq']
+#     params:
+#         col = 'counts'
+#     output:
+#         tsv = config['lr']['kallisto']['matrix_tsv_uniq']
