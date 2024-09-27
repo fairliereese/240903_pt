@@ -164,7 +164,6 @@ rule bustools_count:
     conda:
         'base'
     shell:
-        # i took out the -m option, which leaves in reads that multimap
         """
         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
         {params.bustools_path} count \
@@ -173,6 +172,7 @@ rule bustools_count:
              -e {input.matrix} \
              -o {params.count_pref} \
             --cm \
+            -m \
             -g {input.t2g}
         """
 
