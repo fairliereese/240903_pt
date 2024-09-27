@@ -177,7 +177,7 @@ use rule fq_count_reads as count_raw_reads with:
                             'lab_rep',
                             {'tech_rep': wc.sample}))
     output:
-        txt = temporary(config['lr']['fastq_n_reads'])
+        txt = config['lr']['fastq_n_reads']
 
 use rule count_reads_summary as fq_count_reads_summary with:
     input:
@@ -193,7 +193,7 @@ use rule count_bam as alt_count_mapped_reads with:
     input:
         align = config['lr']['map_personal']['bam_sort']
     output:
-        txt = temporary(config['lr']['map_personal']['bam_n_reads'])
+        txt = config['lr']['map_personal']['bam_n_reads']
 
 
 use rule count_reads_summary as sam_count_reads_summary with:
@@ -213,7 +213,7 @@ use rule bam_get_mapqs as alt_get_mapqs with:
     input:
         bam = config['lr']['map_personal']['bam_sort']
     output:
-        txt = temporary(config['lr']['map_personal']['bam_mapqs'])
+        txt = config['lr']['map_personal']['bam_mapqs']
 
 use rule read_id_df_summary as alt_get_mapqs_summary with:
     input:
