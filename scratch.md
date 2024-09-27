@@ -76,3 +76,25 @@ python /Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/scr
   --orfanage_info ../../data/protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf \
   --output_path test
 ```
+
+```python
+!conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto
+import ngs_tools as ngs
+gtf_file = '/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240926_filtered_with_genes.gtf'
+gtf = ngs.gtf.genes_and_transcripts_from_gtf(gtf_file)
+
+```
+
+<!-- ```python
+r'''
+ 29         ^(?P<chromosome>.+?)\s+ # chromosome
+
+ 30         .*?\t                   # source
+ 31         (?P<feature>.+?)\s+     # feature: transcript, exon, etc.
+ 32         (?P<start>[0-9]+?)\s+   # start position (1-indexed)
+ 33         (?P<end>[0-9]+?)\s+     # end position (1-indexed, inclusive)
+ 34         .*?\s+                  # score
+ 35         (?P<strand>\+|-|\.)\s+  # +, -, . indicating strand
+ 36         .*?\s+                  # frame
+ 37         (?P<attributes>.*)      # attributes
+``` -->

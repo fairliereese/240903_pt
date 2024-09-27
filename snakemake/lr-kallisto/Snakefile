@@ -130,3 +130,8 @@ use rule fmt_mtx_transcripts as get_tpm_mtx with:
         col = 'counts'
     output:
         tsv = config['lr']['kallisto']['quant']['matrix_tpm_tsv']
+
+rule merge_matrices:
+    input:
+        tsvs = expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
+                      sample=df.tech_rep.tolist())
