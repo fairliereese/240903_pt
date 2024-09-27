@@ -34,8 +34,8 @@ include: f'{c_dir}lr-kallisto.smk'
 
 rule all:
     input:
-        config['lr']['kallisto']['merge_matrix_tpm_tsv'],
-        config['lr']['kallisto']['merge_matrix_tsv']
+        config['lr']['kallisto']['quant']['merge_matrix_tpm_tsv'],
+        config['lr']['kallisto']['quant']['merge_matrix_tsv']
         # expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
         #        sample=df.tech_rep.tolist()),
         # expand(config['lr']['kallisto']['quant']['matrix_tsv'],

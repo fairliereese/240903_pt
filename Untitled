@@ -1,0 +1,12 @@
+map_personal:
+  sam: ../../data/map_personal/{population_status}/{ref_sample}_{sample}.sam
+  sam_filt: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_filt.sam
+  bam: ../../data/map_personal/{assembly}/{ref_sample}_{sample}.bam
+  bam_sort: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_sorted.bam
+  bam_ind: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_sorted.bam.bai
+  bam_n_reads: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_n_reads.txt
+  bam_n_reads_summary: ../../data/map_personal/{assembly}/n_reads_summary.tsv
+  bam_mapqs: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_mapqs.txt
+  bam_mapqs_summary: ../../data/map_personal/{assembly}/mapqs_summary.txt
+  bam_query_covs: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_query_cov.tsv
+  bam_query_covs_summary: ../../data/map_personal/{assembly}/query_cov_summary.tsv
