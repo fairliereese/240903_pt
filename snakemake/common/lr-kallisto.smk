@@ -10,6 +10,8 @@ def get_df_val(df, col1, col_dict):
 
 
 rule kallisto_build_ind:
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
     resources:
         threads = 8,
         nodes = 4
