@@ -156,7 +156,7 @@ use rule merge_matrices as merge_matrices_tpm with:
     output:
         tsv = config['lr']['kallisto']['quant']['merge_matrix_tpm_tsv']
 
-use rule merge_matrices as merge_matrices_tpm with:
+use rule merge_matrices as merge_matrices_counts with:
     input:
         tsvs = expand(config['lr']['kallisto']['quant']['matrix_tsv'],
                       sample=df.tech_rep.tolist())
