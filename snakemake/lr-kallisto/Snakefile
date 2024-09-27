@@ -152,7 +152,7 @@ use rule merge_matrices as merge_matrices_tpm with:
         tsvs = expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
                       sample=df.tech_rep.tolist())
     params:
-        samples = sample=df.tech_rep.tolist()
+        samples = df.tech_rep.tolist()
     output:
         tsv = config['lr']['kallisto']['merge_matrix_tpm_tsv']
 
