@@ -59,7 +59,8 @@ rule bam_get_mapqs:
     shell:
         """
         module load samtools
-        samtools view {input.bam} | grep -v ^@ | cut -f1,5 > {output.txt}
+        echo -e 'read_id\tmapq'> {output.txt}
+        samtools view {input.bam} | grep -v ^@ | cut -f1,5 >> {output.txt}
         """
 
 rule bam_get_query_cov:
