@@ -143,7 +143,7 @@ rule merge_matrices:
         i = 0
         for t, s in zip(list(input.tsvs), samples):
             temp = pd.read_csv(t, sep='\t')
-            temp.rename({'counts': 'sample'}, axis=1, inplace=True)
+            temp.rename({'counts': s}, axis=1, inplace=True)
             if i == 0:
                 merge_df = temp.copy(deep=True)
             else:
