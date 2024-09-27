@@ -140,11 +140,16 @@ rule merge_matrices:
     run:
         merge_df = pd.DataFrame()
         samples = list(params.samples)
+        i = 0
         for t, s in zip(list(input.tsvs), samples):
             temp = pd.read_csv(t, sep='\t')
             temp.rename({'counts': 'sample'}, axis=1)
-            merge_df = merge_df.merge(temp, how='outer',
-                        on='transcript_id')
+            if i == 0:
+                merge_df = temp.copy(deep=True)
+            else:
+                merge_df = merge_df.merge(temp, how='outer',
+                            on='transcript_id')
+            i+=1
         merge_df.to_csv(output.tsv, sep='\t', index=False)
 
 use rule merge_matrices as merge_matrices_tpm with:
