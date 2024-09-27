@@ -154,7 +154,7 @@ use rule merge_matrices as merge_matrices_tpm with:
     params:
         samples = df.tech_rep.tolist()
     output:
-        tsv = config['lr']['kallisto']['merge_matrix_tpm_tsv']
+        tsv = config['lr']['kallisto']['quant']['merge_matrix_tpm_tsv']
 
 use rule merge_matrices as merge_matrices_tpm with:
     input:
@@ -163,4 +163,4 @@ use rule merge_matrices as merge_matrices_tpm with:
     params:
         samples = df.tech_rep.tolist()
     output:
-        tsv = config['lr']['kallisto']['merge_matrix_tsv']
+        tsv = config['lr']['kallisto']['quant']['merge_matrix_tsv']
