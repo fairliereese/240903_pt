@@ -78,7 +78,7 @@ lr:
   gtf_no_spike: ../../data/transcripts_no_spike.gtf
   gtf_no_spike_no_ebv: ../../data/transcripts_no_spike_no_ebv.gtf
   gtf_filt: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240925_filtered.gtf
-  gtf_filt_with_genes: ../../data/transcripts_filt_with_gene.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240926_filtered_with_genes.gtf 
+  gtf_filt_with_genes: ../../data/transcripts_filt_with_gene.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240926_filtered_with_genes.gtf
   t_fa: ../../data/transcripts.fa
 
   transdecoder:
@@ -179,6 +179,8 @@ lr:
       matrix_tpm: ../../data/kallisto_quant/{sample}/matrix.abundance.tpm.mtx
       matrix_tsv: ../../data/kallisto_quant/{sample}/matrix.abundance.tsv
       matrix_tpm_tsv: ../../data/kallisto_quant/{sample}/matrix.abundance.tpm.tsv
+      merge_matrix_tsv: ../../data/kallisto_quant/matrix.abundance.tsv
+      merge_matrix_tpm_tsv: ../../data/kallisto_quant/matrix.abundance.tpm.tsv
 
 
 

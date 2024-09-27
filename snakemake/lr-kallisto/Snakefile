@@ -34,10 +34,12 @@ include: f'{c_dir}lr-kallisto.smk'
 
 rule all:
     input:
-        expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
-               sample=df.tech_rep.tolist()),
-        expand(config['lr']['kallisto']['quant']['matrix_tsv'],
-               sample=df.tech_rep.tolist()),
+        config['lr']['kallisto']['merge_matrix_tpm_tsv'],
+        config['lr']['kallisto']['merge_matrix_tsv']
+        # expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
+        #        sample=df.tech_rep.tolist()),
+        # expand(config['lr']['kallisto']['quant']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
                        # expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
                        #        sample=df.tech_rep.tolist()),
                        # expand(config['lr']['kallisto']['quant']['matrix_tsv'],
@@ -132,6 +134,33 @@ use rule fmt_mtx_transcripts as get_tpm_mtx with:
         tsv = config['lr']['kallisto']['quant']['matrix_tpm_tsv']
 
 rule merge_matrices:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        merge_df = pd.DataFrame()
+        samples = list(params.samples)
+        for t, s in zip(list(input.tsvs), samples):
+            temp = df.read(t, sep='\t')
+            temp.rename({'counts': 'sample'}, axis=1)
+            merge_df = merge_df.merge(temp, how='outer',
+                        on='transcript_id')
+        merge_df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule merge_matrices as merge_matrices_tpm with:
     input:
         tsvs = expand(config['lr']['kallisto']['quant']['matrix_tpm_tsv'],
                       sample=df.tech_rep.tolist())
+    params:
+        samples = sample=df.tech_rep.tolist()
+    output:
+        tsv = config['lr']['kallisto']['merge_matrix_tpm_tsv']
+
+use rule merge_matrices as merge_matrices_tpm with:
+    input:
+        tsvs = expand(config['lr']['kallisto']['quant']['matrix_tsv'],
+                      sample=df.tech_rep.tolist())
+    params:
+        samples = sample=df.tech_rep.tolist()
+    output:
+        tsv = config['lr']['kallisto']['merge_matrix_tsv']
