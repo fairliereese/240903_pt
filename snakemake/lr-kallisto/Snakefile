@@ -85,7 +85,7 @@ use rule bustools_sort as bt_sort with:
     output:
         bus = config['lr']['kallisto']['bus_sort']
 
-rule bustools_count:
+use rule bustools_count as bt_count with:
     input:
         bus = config['lr']['kallisto']['bus_sort'],
         transcripts = config['lr']['kallisto']['transcripts'],

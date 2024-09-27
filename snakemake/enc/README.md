@@ -16,6 +16,9 @@ snakemake \
     --time=4:00:00" \
     -n
 
+    snakemake --forceall --dag | dot -Tpdf > dag.pdf
+
+
 snakemake \
   -s Snakefile \
   -j 100 \
