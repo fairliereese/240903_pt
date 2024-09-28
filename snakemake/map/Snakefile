@@ -40,6 +40,8 @@ wildcard_constraints:
 rule all:
     input:
         config['lr']['fastq_n_reads_summary'],
+        expand(config['lr']['fastq_n_reads_summary'],
+               sample=df.tech_rep.tolist()),
         expand(config['lr']['map']['bam_n_reads_summary'],
               assembly=assemblies),
         expand(config['lr']['map']['bam_mapqs_summary'],
