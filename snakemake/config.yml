@@ -69,6 +69,7 @@ enc:
 
 lr:
   fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q7/{lab_sample}_preprocessed_Q7.fastq.gz
+  fastq_reads: ../../data/{sample}_fastq_read_ids.txt
   fastq_n_reads: ../../data/{sample}_fastq_n_reads.txt
   fastq_n_reads_summary: ../../data/fastq_n_reads.txt
 

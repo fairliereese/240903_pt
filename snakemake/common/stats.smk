@@ -9,6 +9,15 @@ rule fq_count_reads:
             echo $((${{n}} / ${{n2}})) > {output.txt}
         """
 
+rule fq_get_read_ids:
+    resources:
+        nodes = 1,
+        threads = 1
+    shell:
+        """
+        grep '^@' {input.fq} | cut -d ' ' -f 1 > {output.txt}
+        """
+
 rule count_reads_summary:
     resources:
         nodes = 2,

@@ -39,6 +39,8 @@ wildcard_constraints:
 
 rule all:
     input:
+        expand(config['lr']['fastq_reads'],
+               sample=df['tech_rep'].tolist()),
         config['lr']['fastq_n_reads_summary'],
         expand(config['lr']['fastq_n_reads'],
                sample=df.tech_rep.tolist()),
@@ -121,6 +123,15 @@ rule all_stats:
         expand(config['lr']['map']['bam_mapqs_summary'],
               assembly=assemblies)
 
+# raw fq read ids
+use rule fq_get_read_ids as fq_read_ids with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample}))
+    output:
+        txt = config['lr']['fastq_reads']
 
 # raw fq counts
 use rule fq_count_reads as count_raw_reads with:
