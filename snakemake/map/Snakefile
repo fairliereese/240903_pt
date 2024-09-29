@@ -44,12 +44,12 @@ rule all:
         config['lr']['fastq_n_reads_summary'],
         expand(config['lr']['fastq_n_reads'],
                sample=df.tech_rep.tolist()),
-        expand(config['lr']['map']['bam_n_reads_summary'],
-              assembly=assemblies),
-        expand(config['lr']['map']['bam_mapqs_summary'],
-             assembly=assemblies),
-        expand(config['lr']['map']['bam_query_covs_summary'],
-              assembly=assemblies)
+        # expand(config['lr']['map']['bam_n_reads_summary'],
+        #       assembly=assemblies),
+        # expand(config['lr']['map']['bam_mapqs_summary'],
+        #      assembly=assemblies),
+        # expand(config['lr']['map']['bam_query_covs_summary'],
+        #       assembly=assemblies)
 
 
 # use rule wget as dl_alt_assembly with:
