@@ -30,6 +30,14 @@ ref:
       hexamer_link: https://sourceforge.net/projects/rna-cpat/files/prebuilt_models/Human_Hexamer.tsv/download
       hexamer: ../../ref/hexamer.tsv
 
+    v47_kallisto:
+      ind: ../../ref/v47_kallisto/hg38_v47_k-63.idx
+      t_fa: ../../ref/v47_kallisto/hg38_v47_transcripts.fa
+      t2g: ../../ref/v47_kallisto/hg38_v47.t2g
+      t2g_8col: ../../ref/v47_kallisto/hg38_v47_8col.t2g
+      t2t: ../../ref/v47_kallisto/hg38_v47.t2t
+
+
     kallisto:
       ind: ../../ref/kallisto/hg38_v47_k-63.idx
       t_fa: ../../ref/kallisto/hg38_v47_transcripts.fa
@@ -68,6 +76,7 @@ enc:
 
 
 lr:
+  meta: ../../data/pantranscriptome_samples_metadata.tsv
   fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q7/{lab_sample}_preprocessed_Q7.fastq.gz
   fastq_reads: ../../data/{sample}_fastq_read_ids.txt
   fastq_n_reads: ../../data/{sample}_fastq_n_reads.txt
@@ -154,6 +163,35 @@ lr:
     bam_mapqs_summary: ../../data/map_personal/{assembly_status}/mapqs_summary.txt
     bam_query_covs: ../../data/map_personal/{assembly_status}/{assembly_sample}_{sample}_query_cov.tsv
     bam_query_covs_summary: ../../data/map_personal/{assembly_status}/query_cov_summary.tsv
+    
+  v47_kallisto:
+    odir: ../../data/v47_kallisto/{sample}/
+    bus: ../../data/v47_kallisto/{sample}/output.bus
+    transcripts: ../../data/v47_kallisto/{sample}/transcripts.txt
+    matrix: ../../data/v47_kallisto/{sample}/matrix.ec
+    flens: ../../data/v47_kallisto/{sample}/flens.txt
+    bus_sort: ../../data/v47_kallisto/{sample}/output_sorted.bus
+
+    count_pref_uniq: ../../data/v47_kallisto/{sample}/count_uniq/count
+    count_mtx_uniq: ../../data/v47_kallisto/{sample}/count_uniq/count.mtx
+    count_transcripts_uniq: ../../data/v47_kallisto/{sample}/count_uniq/count.genes.txt
+    matrix_tsv_uniq: ../../data/v47_kallisto/{sample}/count_uniq/matrix_uniq.abundance.tsv
+
+
+    count_pref: ../../data/v47_kallisto/{sample}/count
+    count_mtx: ../../data/v47_kallisto/{sample}/count.mtx
+    count_ec: ../../data/v47_kallisto/{sample}/count.ec.txt
+    matrix_tsv: ../../data/v47_kallisto/{sample}/matrix.abundance.tsv
+
+    quant:
+      odir: ../../data/v47_kallisto_quant/{sample}
+      matrix: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.mtx
+      matrix_tpm: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tpm.mtx
+      matrix_tsv: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tsv
+      matrix_tpm_tsv: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
+      merge_matrix_tsv: ../../data/v47_kallisto_quant/matrix.abundance.tsv
+      merge_matrix_tpm_tsv: ../../data/v47_kallisto_quant/matrix.abundance.tpm.tsv
+
 
   kallisto:
     odir: ../../data/kallisto/{sample}/

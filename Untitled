@@ -1,12 +1,27 @@
-map_personal:
-  sam: ../../data/map_personal/{population_status}/{ref_sample}_{sample}.sam
-  sam_filt: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_filt.sam
-  bam: ../../data/map_personal/{assembly}/{ref_sample}_{sample}.bam
-  bam_sort: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_sorted.bam
-  bam_ind: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_sorted.bam.bai
-  bam_n_reads: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_n_reads.txt
-  bam_n_reads_summary: ../../data/map_personal/{assembly}/n_reads_summary.tsv
-  bam_mapqs: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_mapqs.txt
-  bam_mapqs_summary: ../../data/map_personal/{assembly}/mapqs_summary.txt
-  bam_query_covs: ../../data/map_personal/{assembly}/{ref_sample}_{sample}_query_cov.tsv
-  bam_query_covs_summary: ../../data/map_personal/{assembly}/query_cov_summary.tsv
+v47_kallisto:
+  odir: ../../data/v47_kallisto/{sample}/
+  bus: ../../data/v47_kallisto/{sample}/output.bus
+  transcripts: ../../data/v47_kallisto/{sample}/transcripts.txt
+  matrix: ../../data/v47_kallisto/{sample}/matrix.ec
+  flens: ../../data/v47_kallisto/{sample}/flens.txt
+  bus_sort: ../../data/v47_kallisto/{sample}/output_sorted.bus
+
+  count_pref_uniq: ../../data/v47_kallisto/{sample}/count_uniq/count
+  count_mtx_uniq: ../../data/v47_kallisto/{sample}/count_uniq/count.mtx
+  count_transcripts_uniq: ../../data/v47_kallisto/{sample}/count_uniq/count.genes.txt
+  matrix_tsv_uniq: ../../data/v47_kallisto/{sample}/count_uniq/matrix_uniq.abundance.tsv
+
+
+  count_pref: ../../data/v47_kallisto/{sample}/count
+  count_mtx: ../../data/v47_kallisto/{sample}/count.mtx
+  count_ec: ../../data/v47_kallisto/{sample}/count.ec.txt
+  matrix_tsv: ../../data/v47_kallisto/{sample}/matrix.abundance.tsv
+
+  quant:
+    odir: ../../data/v47_kallisto_quant/{sample}
+    matrix: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.mtx
+    matrix_tpm: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tpm.mtx
+    matrix_tsv: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tsv
+    matrix_tpm_tsv: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
+    merge_matrix_tsv: ../../data/v47_kallisto_quant/matrix.abundance.tsv
+    merge_matrix_tpm_tsv: ../../data/v47_kallisto_quant/matrix.abundance.tpm.tsv

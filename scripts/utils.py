@@ -18,6 +18,10 @@ def load_config(config_file=None):
 
     return config
 
+def proc_cfg(entry, od):
+    entry = entry.replace('../../', '')
+    entry = od+entry
+    return entry
 
 def load_meta():
     """
@@ -27,7 +31,7 @@ def load_meta():
     od = f'{d}/../'
 
     config = load_config()
-    df = pd.read_csv(od+config['ref']['meta'], sep='\t')
+    df = pd.read_csv(proc_cfg(config['lr']['meta'], od), sep='\t')
     return df
 
 def set_col_order(df, col, order):

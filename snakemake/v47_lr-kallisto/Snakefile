@@ -1,0 +1,171 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+df = parse_config(meta_file)
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
+    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
+
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+# df = df.loc[df.tech_rep=='GM19240_1']
+
+rule all:
+    input:
+        config['lr']['v47_kallisto']['quant']['merge_matrix_tpm_tsv'],
+        config['lr']['v47_kallisto']['quant']['merge_matrix_tsv']
+        # expand(config['lr']['v47_kallisto']['quant']['matrix_tpm_tsv'],
+        #        sample=df.tech_rep.tolist()),
+        # expand(config['lr']['v47_kallisto']['quant']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
+                       # expand(config['lr']['v47_kallisto']['quant']['matrix_tpm_tsv'],
+                       #        sample=df.tech_rep.tolist()),
+                       # expand(config['lr']['v47_kallisto']['quant']['matrix_tsv'],
+                       #        sample=df.tech_rep.tolist()),
+        # expand(config['lr']['v47_kallisto']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+use rule kallisto_build_ind as kallisto_ind with:
+    input:
+        fa = config['ref']['fa'],
+        gtf = config['ref']['gtf']
+    output:
+        ind = config['ref']['v47_kallisto']['ind'],
+        fa = config['ref']['v47_kallisto']['t_fa'],
+        t2g = config['ref']['v47_kallisto']['t2g'],
+
+
+use rule kallisto_pseudoalign as pseudoalign with:
+    input:
+        ind = config['ref']['v47_kallisto']['ind'],
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample})),
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
+        odir = config['lr']['v47_kallisto']['odir']
+    output:
+        bus = config['lr']['v47_kallisto']['bus'],
+        flens = config['lr']['v47_kallisto']['flens'],
+        transcripts = config['lr']['v47_kallisto']['transcripts'],
+        matrix = config['lr']['v47_kallisto']['matrix']
+
+use rule bustools_sort as bt_sort with:
+    input:
+        bus = config['lr']['v47_kallisto']['bus']
+    output:
+        bus = config['lr']['v47_kallisto']['bus_sort']
+
+use rule bustools_count as bt_count with:
+    input:
+        bus = config['lr']['v47_kallisto']['bus_sort'],
+        transcripts = config['lr']['v47_kallisto']['transcripts'],
+        matrix = config['lr']['v47_kallisto']['matrix'],
+        t2g = config['ref']['v47_kallisto']['t2g']
+    params:
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
+        count_pref = config['lr']['v47_kallisto']['count_pref']
+    output:
+        mtx = config['lr']['v47_kallisto']['count_mtx'],
+        ec = config['lr']['v47_kallisto']['count_ec']
+
+use rule lr_kallisto as run_lr_kallisto with:
+    input:
+        flens = config['lr']['v47_kallisto']['flens'],
+        mtx = config['lr']['v47_kallisto']['count_mtx'],
+        ind = config['ref']['v47_kallisto']['ind'],
+        ec = config['lr']['v47_kallisto']['count_ec']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
+        odir = config['lr']['v47_kallisto']['quant']['odir']
+    output:
+        quant = config['lr']['v47_kallisto']['quant']['matrix'],
+        tpm = config['lr']['v47_kallisto']['quant']['matrix_tpm'],
+
+use rule fmt_mtx_transcripts as get_counts_mtx with:
+    input:
+        mtx = config['lr']['v47_kallisto']['quant']['matrix'],
+        ts = config['lr']['v47_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['lr']['v47_kallisto']['quant']['matrix_tsv']
+
+use rule fmt_mtx_transcripts as get_tpm_mtx with:
+    input:
+        mtx = config['lr']['v47_kallisto']['quant']['matrix_tpm'],
+        ts = config['lr']['v47_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['lr']['v47_kallisto']['quant']['matrix_tpm_tsv']
+
+rule merge_matrices:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        merge_df = pd.DataFrame()
+        samples = list(params.samples)
+        i = 0
+        for t, s in zip(list(input.tsvs), samples):
+            temp = pd.read_csv(t, sep='\t')
+            temp.rename({'counts': s}, axis=1, inplace=True)
+            if i == 0:
+                merge_df = temp.copy(deep=True)
+            else:
+                merge_df = merge_df.merge(temp, how='outer',
+                            on='transcript_id')
+            i+=1
+        merge_df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule merge_matrices as merge_matrices_tpm with:
+    input:
+        tsvs = expand(config['lr']['v47_kallisto']['quant']['matrix_tpm_tsv'],
+                      sample=df.tech_rep.tolist())
+    params:
+        samples = df.tech_rep.tolist()
+    output:
+        tsv = config['lr']['v47_kallisto']['quant']['merge_matrix_tpm_tsv']
+
+use rule merge_matrices as merge_matrices_counts with:
+    input:
+        tsvs = expand(config['lr']['v47_kallisto']['quant']['matrix_tsv'],
+                      sample=df.tech_rep.tolist())
+    params:
+        samples = df.tech_rep.tolist()
+    output:
+        tsv = config['lr']['v47_kallisto']['quant']['merge_matrix_tsv']
