@@ -123,7 +123,7 @@ use rule dl_aws as dl_personal_assembly_mat with:
         link = lambda wc: get_df_val(g_df, 'aws_mat_link',
                             {'sample': wc.assembly})
     output:
-        out = config['ref']['alt']['personal']['personal']['fa_gz']
+        out = config['ref']['alt']['personal']['fa_gz']
 
 use rule dl_aws as dl_personal_assembly_pat with:
     params:
