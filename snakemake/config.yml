@@ -95,7 +95,7 @@ lr:
   t_fa: ../../data/transcripts.fa
 
   unmerged:
-    fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/unmerged/{lab_rep}_preprocessed_Q7.fastq.gz
+    fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/unmerged/{sample}_preprocessed_Q7.fastq.gz
 
   transdecoder:
     pep: ../../data/transdecoder/transcripts.fa.transdecoder.pep
