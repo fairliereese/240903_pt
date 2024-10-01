@@ -1,19 +1,19 @@
 ref:
-    alt:
-      fa_gz: ../../ref/{assembly}/{assembly}.fa.gz
-      fa_mmi: ../../ref/{assembly}/{assembly}.fa.mmi
-      t2t:
-        link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
-      afr:
-        link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
-      hg38:
-        link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
-      personal:
-        fa_gz: ../../ref/{assembly_sample}/{assembly_sample}.fa.gz
-        fa_mmi: ../../ref/{assembly_sample}/{assembly_sample}.fa.mmi
+  alt:
+    fa_gz: ../../ref/{assembly}/{assembly}.fa.gz
+    fa_mmi: ../../ref/{assembly}/{assembly}.fa.mmi
+    t2t:
+      link: https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.fa.gz
+    afr:
+      link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
+    hg38:
+      link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
+    personal:
+      fa_gz: ../../ref/{assembly_sample}/{assembly_sample}.fa.gz
+      fa_mmi: ../../ref/{assembly_sample}/{assembly_sample}.fa.mmi
 
-        pat_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat.fa.gz
-        pat_y_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat_y.fa.gz # only the y chrom
+      pat_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat.fa.gz
+      pat_y_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat_y.fa.gz # only the y chrom
 
 
 
