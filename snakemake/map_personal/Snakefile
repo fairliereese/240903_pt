@@ -81,9 +81,9 @@ wildcard_constraints:
 rule all:
     input:
         expand(config['ref']['alt']['personal']['fa_gz'],
-               assembly=g_df['sample'].tolist()),
+               assembly_sample=g_df['sample'].tolist()),
         expand(config['ref']['alt']['personal']['pat_fa_gz'],
-               assembly=g_df['sample'].tolist())
+               assembly_sample=g_df['sample'].tolist())
         # expand(config['lr']['map_personal']['bam_ind'],
         #        zip,
         #        assembly_status=df2.assembly_status.tolist(),
