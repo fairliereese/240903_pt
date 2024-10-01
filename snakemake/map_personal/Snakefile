@@ -40,9 +40,18 @@ df2['tech_rep'] = df2.cell_line_id+'_1'
 
 # get the genomes to download
 g_df = pd.read_csv(genomes_file, sep='\t')
+
+# maternal haplotypes
 g_df['aws_mat_link'] = g_df['hap2_aws_fasta']
 g_df = g_df.loc[g_df['aws_mat_link'].notnull()]
 assert len(g_df.loc[g_df['aws_mat_link'].str.contains('maternal')].index) == len(g_df.index)
+
+# paternal haplotypes
+g_df['aws_pat_link'] = g_df['hap1_aws_fasta']
+g_df = g_df.loc[g_df['aws_pat_link'].notnull()]
+assert len(g_df.loc[g_df['aws_pat_link'].str.contains('paternal')].index) == len(g_df.index)
+
+
 genome_cols = ['same_population_sample', 'european_sample',	'afr_sample']
 g_df = g_df.loc[(g_df['sample'].isin(df2[genome_cols[0]]))|
                 (g_df['sample'].isin(df2[genome_cols[1]]))|
@@ -71,30 +80,33 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map_personal']['bam_ind'],
-               zip,
-               assembly_status=df2.assembly_status.tolist(),
-               assembly_sample=df2.assembly_sample.tolist(),
-               sample=df2.tech_rep.tolist()),
-        config['lr']['fastq_n_reads_summary'],
-        expand(config['lr']['map_personal']['bam_n_reads_summary'],
-               zip,
-               assembly_status=df2.assembly_status.tolist(),
-               assembly_sample=df2.assembly_sample.tolist(),
-               sample=df2.tech_rep.tolist()),
-        expand(config['lr']['map_personal']['bam_mapqs_summary'],
-            zip,
-            assembly_status=df2.assembly_status.tolist(),
-            assembly_sample=df2.assembly_sample.tolist(),
-            sample=df2.tech_rep.tolist()),
-        expand(config['lr']['map_personal']['bam_query_covs_summary'],
-             zip,
-             assembly_status=df2.assembly_status.tolist(),
-             assembly_sample=df2.assembly_sample.tolist(),
-             sample=df2.tech_rep.tolist()),
+        expand(config['ref']['alt']['personal']['fa_gz'],
+               assembly=g_df['sample'].tolist()),
+        expand(config['ref']['alt']['personal']['pat_fa_gz'],
+               assembly=g_df['sample'].tolist())
+        # expand(config['lr']['map_personal']['bam_ind'],
+        #        zip,
+        #        assembly_status=df2.assembly_status.tolist(),
+        #        assembly_sample=df2.assembly_sample.tolist(),
+        #        sample=df2.tech_rep.tolist()),
+        # config['lr']['fastq_n_reads_summary'],
+        # expand(config['lr']['map_personal']['bam_n_reads_summary'],
+        #        zip,
+        #        assembly_status=df2.assembly_status.tolist(),
+        #        assembly_sample=df2.assembly_sample.tolist(),
+        #        sample=df2.tech_rep.tolist()),
+        # expand(config['lr']['map_personal']['bam_mapqs_summary'],
+        #     zip,
+        #     assembly_status=df2.assembly_status.tolist(),
+        #     assembly_sample=df2.assembly_sample.tolist(),
+        #     sample=df2.tech_rep.tolist()),
+        # expand(config['lr']['map_personal']['bam_query_covs_summary'],
+        #      zip,
+        #      assembly_status=df2.assembly_status.tolist(),
+        #      assembly_sample=df2.assembly_sample.tolist(),
+        #      sample=df2.tech_rep.tolist()),
 
-        # expand(config['ref']['alt']['personal']['personal']['fa_gz'],
-        #        assembly=g_df['sample'].tolist())
+
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
@@ -106,12 +118,34 @@ def get_df_val(df, col1, col_dict):
     assert len(val) == 1
     return val[0]
 
-# use rule dl_aws as dl_personal_assembly with:
-#     params:
-#         link = lambda wc: get_df_val(g_df, 'aws_mat_link',
-#                             {'sample': wc.assembly})
-#     output:
-#         out = config['ref']['alt']['personal']['personal']['fa_gz']
+use rule dl_aws as dl_personal_assembly_mat with:
+    params:
+        link = lambda wc: get_df_val(g_df, 'aws_mat_link',
+                            {'sample': wc.assembly})
+    output:
+        out = config['ref']['alt']['personal']['personal']['fa_gz']
+
+use rule dl_aws as dl_personal_assembly_pat with:
+    params:
+        link = lambda wc: get_df_val(g_df, 'aws_pat_link',
+                            {'sample': wc.assembly})
+    output:
+        out = config['ref']['alt']['personal']['pat_fa_gz']
+
+# rule get_y_chr_fa:
+    # input:
+    #     fa = config['ref']['alt']['personal']['pat_fa_gz']
+    # resources:
+    #     threads = 1,
+    #     nodes = 1
+    # output:
+    #     fa = config['ref']['alt']['personal']['pat_y_fa_gz']
+    # shell:
+    #     """
+    #     module load intel/2023.0
+    #     module load samtools
+    #     samtools faidx <(zcat {input.fa}) chrX | gzip > {output.fa}
+    #     """
 
 
 ### index genome

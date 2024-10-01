@@ -12,6 +12,9 @@ ref:
         fa_gz: ../../ref/{assembly_sample}/{assembly_sample}.fa.gz
         fa_mmi: ../../ref/{assembly_sample}/{assembly_sample}.fa.mmi
 
+        pat_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat.fa.gz
+        pat_y_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat_y.fa.gz # only the y chrom
+
 
 
     # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
@@ -163,7 +166,7 @@ lr:
     bam_mapqs_summary: ../../data/map_personal/{assembly_status}/mapqs_summary.txt
     bam_query_covs: ../../data/map_personal/{assembly_status}/{assembly_sample}_{sample}_query_cov.tsv
     bam_query_covs_summary: ../../data/map_personal/{assembly_status}/query_cov_summary.tsv
-    
+
   v47_kallisto:
     odir: ../../data/v47_kallisto/{sample}/
     bus: ../../data/v47_kallisto/{sample}/output.bus
