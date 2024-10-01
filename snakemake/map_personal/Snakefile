@@ -78,8 +78,6 @@ wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
     lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
 
-import pdb; pdb.set_trace()
-
 rule all:
     input:
         expand(config['ref']['alt']['personal']['fa_gz'],
