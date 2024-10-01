@@ -121,14 +121,14 @@ def get_df_val(df, col1, col_dict):
 use rule dl_aws as dl_personal_assembly_mat with:
     params:
         link = lambda wc: get_df_val(g_df, 'aws_mat_link',
-                            {'sample': wc.assembly})
+                            {'sample': wc.assembly_sample})
     output:
         out = config['ref']['alt']['personal']['fa_gz']
 
 use rule dl_aws as dl_personal_assembly_pat with:
     params:
         link = lambda wc: get_df_val(g_df, 'aws_pat_link',
-                            {'sample': wc.assembly})
+                            {'sample': wc.assembly_sample})
     output:
         out = config['ref']['alt']['personal']['pat_fa_gz']
 
