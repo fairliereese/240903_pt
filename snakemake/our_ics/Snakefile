@@ -62,7 +62,7 @@ rule get_novel_gtf:
         gtf_df = pr.PyRanges(gtf_df)
         gtf_df.to_gtf(output.gtf)
 
-use rule gtf_to_ic as our_gtf_to_ic with:
+use rule gtf_to_ic as our_gtf_to_ic_nov with:
     input:
         gtf = config['lr']['nov_gtf_filt_with_genes']
     output:
