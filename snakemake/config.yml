@@ -95,7 +95,7 @@ lr:
   t_fa: ../../data/transcripts.fa
 
   cerb:
-    ics: ../../data/enc/cerb/ics.tsv
+    ics: ../../data/cerb/ics.tsv
 
   unmerged:
     fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/unmerged/{sample}_preprocessed_Q7.fastq.gz
