@@ -25,7 +25,8 @@ include: f'{c_dir}cerberus.smk'
 
 rule all:
     input:
-        config['lr']['cerb']['ics']
+        config['lr']['cerb']['ics'],
+        config['lr']['cerb']['nov_ics'],
 
 # use rule wget as dl_our with:
 #     params:
@@ -39,3 +40,30 @@ use rule gtf_to_ic as our_gtf_to_ic with:
         gtf = config['lr']['gtf_filt_with_genes']
     output:
         tsv = config['lr']['cerb']['ics']
+
+rule get_novel_gtf:
+    input:
+        gtf = config['lr']['gtf_filt_with_genes'],
+        tids = config['lr']['nov_tids']
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        gtf = config['lr']['nov_gtf_filt_with_genes']
+    run:
+        import pyranges as pr
+        import pandas as pd
+        tids = pd.read_csv(input.tids, header=None, names=['tid']).tid.tolist()
+        gtf_df = pr.read_gtf(input.gtf).df
+        l1 = len(gtf_df.index)
+        gtf_df = gtf_df.loc[gtf_df.transcript_id.isin(tids)]
+        l2 = len(gtf_df.index)
+        assert l1 != l2
+        gtf_df = pr.PyRanges(gtf_df)
+        gtf_df.to_gtf(output.gtf)
+
+use rule gtf_to_ic as our_gtf_to_ic with:
+    input:
+        gtf = config['lr']['nov_gtf_filt_with_genes']
+    output:
+        tsv = config['lr']['cerb']['nov_ics']
