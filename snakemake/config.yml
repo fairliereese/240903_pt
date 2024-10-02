@@ -94,6 +94,9 @@ lr:
   gtf_filt_with_genes: ../../data/transcripts_filt_with_gene.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240926_filtered_with_genes.gtf
   t_fa: ../../data/transcripts.fa
 
+  cerb:
+    ics: ../../data/enc/cerb/ics.tsv
+
   unmerged:
     fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/unmerged/{sample}_preprocessed_Q7.fastq.gz
 
