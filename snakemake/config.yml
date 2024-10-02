@@ -92,7 +92,7 @@ lr:
   gtf_no_spike_no_ebv: ../../data/transcripts_no_spike_no_ebv.gtf
   gtf_filt: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240925_filtered.gtf
   gtf_filt_with_genes: ../../data/transcripts_filt_with_gene.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240926_filtered_with_genes.gtf
-  nov_gtf_filt_with_genes: ../../data/transcripts_filt_with_gene.gtf
+  nov_gtf_filt_with_genes: ../../data/transcripts_nov_filt_with_gene.gtf
   nov_tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/05_mastertable/data/240909merge_filtered_novel_transcriptid.tsv
   t_fa: ../../data/transcripts.fa
 
