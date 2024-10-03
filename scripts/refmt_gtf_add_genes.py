@@ -59,6 +59,9 @@ def fmt_gtf(ifile, ofile):
     df = pd.concat([df, g_df], axis=0)
     df = cerberus.sort_gtf(df)
 
+    # add gene name
+    df['gene_name'] = df.gene_id
+
     # convert + save
     df = pr.PyRanges(df)
     df.to_gtf(ofile)

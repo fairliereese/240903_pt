@@ -103,5 +103,5 @@ r'''
 module load intel/2023.0
 module load samtools
 fa=/gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/ref/HG002/HG002.fa.gz
-samtools faidx <(zcat $fa) chrX | gzip > test
+samtools faidx $fa chrX > test
 ```
