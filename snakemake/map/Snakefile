@@ -39,14 +39,16 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['fastq_reads'],
-               sample=df['tech_rep'].tolist()),
-        config['lr']['fastq_n_reads_summary'],
-        expand(config['lr']['fastq_n_reads'],
-               sample=df.tech_rep.tolist()),
         expand(config['lr']['map']['mapq_tsv'],
-               sample=df.tech_rep.tolist(),
-               thresh=[0,10])
+               sample=df.tech_rep.tolist()[0],
+               thresh=0)
+               # thresh=[0,10])
+        # expand(config['lr']['fastq_reads'],
+        #        sample=df['tech_rep'].tolist()),
+        # config['lr']['fastq_n_reads_summary'],
+        # expand(config['lr']['fastq_n_reads'],
+        #        sample=df.tech_rep.tolist()),
+        #
         # expand(config['lr']['map']['bam_n_reads_summary'],
         #       assembly=assemblies),
         # expand(config['lr']['map']['bam_mapqs_summary'],

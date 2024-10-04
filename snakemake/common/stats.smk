@@ -149,6 +149,7 @@ rule bool_mapq_summary:
 
         df.reset_index(inplace=True)
         df.set_index(assemblies, inplace=True)
+        import pdb; pdb.set_trace()
 
         # make the upset plot
         ax_dict = upsetplot.UpSet(df, subset_size='count',
