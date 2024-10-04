@@ -7,7 +7,6 @@ sys.path.append(p)
 
 from sm_utils import *
 from utils import *
-from plotting import *
 # from vcf_utils import *
 
 c_dir = '../common/'
