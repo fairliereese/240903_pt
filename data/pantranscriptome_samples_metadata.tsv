@@ -1,0 +1,46 @@
+sample	hapmap_DNA_ID	hapmap	1000G	pangenome	GEUVADIS	GIAB	MAGE	rDNA	extra_info	population _description	two_letter_pop	population	color	sex	Member	Family	link
+GM22299		no	no	no	no	no	no	no	Human Variation panel	Israeli Populations - Ashkenazi Jewish	IS	AJI	#46bff0	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM22299&PgId=166 
+GM22304		no	no	no	no	no	no	no	Human Variation panel	Israeli Populations - Ashkenazi Jewish	IS	AJI	#46bff0	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM22304&PgId=166 
+GM22300		no	no	no	no	no	no	no	Human Variation panel	Israeli Populations - Ashkenazi Jewish	IS	AJI	#46bff0	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM22300&PgId=166 
+GM22305		no	no	no	no	no	no	no	Human Variation panel	Israeli Populations - Ashkenazi Jewish	IS	AJI	#46bff0	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM22305&PgId=166 
+GM24385		no	no	yes	no	yes	no	no	Personal Genome Project	Israeli Populations - Ashkenazi Jewish	IS	AJI	#46bff0	Male	Child	3140	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM24385&Product=CC
+GM22234		no	no	no	no	no	no	no	Human Variation panel	Israeli Populations - Ashkenazi Jewish	IS	AJI	#46bff0	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM22234&PgId=166 
+GM18774	NA18774	yes	no	no	no	no	no	no	1000G pilot3 but not in 1000G 30x	Han Chinese in Beijing	CH	HAC	#4cb33e	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18774&Product=CC
+GM18772	NA18772	yes	no	no	no	no	no	no		Han Chinese in Beijing	CH	HAC	#4cb33e	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18772&Product=CC
+GM18631	NA18631	yes	yes	no	no	no	no	no		Han Chinese in Beijing	CH	HAC	#4cb33e	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18631&Product=CC
+GM18561	NA18561	yes	yes	no	no	no	yes	no		Han Chinese in Beijing	CH	HAC	#4cb33e	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18561&Product=CC 
+GM18542	NA18542	yes	yes	no	no	no	yes	no		Han Chinese in Beijing	CH	HAC	#4cb33e	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18542&Product=CC
+HG00621		no	yes	yes	no	no	no	no		Han Chinese South	CH	HAC	#4cb33e	Male	Child	SH066	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG00621&Product=CC
+HG03732		no	yes	no	no	no	no	no		Indian Telugu in the UK	IN	ITU	#db72f2	Male	Child	IT3	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG03732&product=CC 
+HG03719		no	yes	no	no	no	no	no		Indian Telugu in the UK	IN	ITU	#db72f2	Female	Child	IT2	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG03719&product=CC 
+HG04217		no	yes	no	no	no	no	no		Indian Telugu in the UK	IN	ITU	#db72f2	Female	Child	IT220	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG04217&product=CC 
+HG04216		no	yes	no	no	no	yes	no		Indian Telugu in the UK	IN	ITU	#db72f2	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG04216&Product=CC 
+HG03729		no	yes	no	no	no	no	no		Indian Telugu in the UK	IN	ITU	#db72f2	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG03729&Product=CC 
+GM19307	NA19307	yes	yes	no	no	no	no	no		Luya in Webuye, Kenya	KE	LWK	#A09136	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19307&Product=CC 
+GM19446	NA19446	yes	yes	no	no	no	no	no		Luya in Webuye, Kenya	KE	LWK	#A09136	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19446&Product=CC 
+GM19328	NA19328	yes	yes	no	no	no	no	no		Luya in Webuye, Kenya	KE	LWK	#A09136	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19328&Product=CC 
+GM19352	NA19352	yes	yes	no	no	no	no	no		Luya in Webuye, Kenya	KE	LWK	#A09136	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19352&Product=CC 
+GM19390	NA19390	yes	yes	no	no	no	no	no		Luya in Webuye, Kenya	KE	LWK	#A09136	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19390&Product=CC 
+GM10492		no	no	no	no	no	no	no	NIGMS Human Genetic Cell Repository Human Variation panel	Mbuti Pygmy Population	PY	MPC	#eb9d0c	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM10492&PgId=166 
+GM10493		no	no	no	no	no	no	no	NIGMS Human Genetic Cell Repository Human Variation panel	Mbuti Pygmy Population	PY	MPC	#eb9d0c	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM10493&PgId=166 
+GM10494		no	no	no	no	no	no	no	NIGMS Human Genetic Cell Repository Human Variation panel	Mbuti Pygmy Population	PY	MPC	#eb9d0c	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM10494&PgId=166 
+GM10495		no	no	no	no	no	no	no	NIGMS Human Genetic Cell Repository Human Variation panel	Mbuti Pygmy Population	PY	MPC	#eb9d0c	Male	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM10495&PgId=166 
+GM10496		no	no	no	no	no	no	no	NIGMS Human Genetic Cell Repository Human Variation panel	Mbuti Pygmy Population	PY	MPC	#eb9d0c	Female	Unrelated	Unrelated	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM10496&PgId=166 
+HG01567		no	yes	no	no	no	no	no		Peruvian in Lima	PE	PEL	#ff3a33	Female	Child	PEL001	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG01567&product=CC
+HG01928		no	yes	yes	no	no	no	no		Peruvian in Lima	PE	PEL	#ff3a33	Male	Child	PEL011	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG01928&product=CC
+HG01975		no	yes	no	no	no	no	no		Peruvian in Lima	PE	PEL	#ff3a33	Female	Child	PEL025	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG01975&product=CC
+HG02261		no	yes	no	no	no	no	no		Peruvian in Lima	PE	PEL	#ff3a33	Male	Child	PEL042	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG02261&product=CC
+HG02293		no	yes	no	no	no	no	no		Peruvian in Lima	PE	PEL	#ff3a33	Female	Child	PEL051	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG02293&product=CC
+HG01952		no	yes	yes	no	no	no	no		Peruvian in Lima	PE	PEL	#ff3a33	Male	Child	PEL019	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=HG01952&product=CC
+GM19129	NA19129	yes	yes	no	yes	no	yes	no		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Female	Child	Y077	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19129&Product=CC 
+GM18486	NA18486	yes	yes	no	yes	no	yes	yes		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Male	Father	Y001	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18486&Product=CC 
+GM18489	NA18489	yes	yes	no	yes	no	no	no		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Female	Mother	Y002	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18489&Product=CC 
+GM19093	NA19093	yes	yes	no	yes	no	no	no		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Female	Mother	Y040	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19093&Product=CC 
+GM19117	NA19117	yes	yes	no	yes	no	yes	no		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Male	Father	Y100	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19117&Product=CC 
+GM18906	NA18906	yes	yes	yes	no	no	no	no		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Female	Child	Y020	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM18906&Product=CC
+GM19240	NA19240	yes	yes	yes	no	no	no	no		Yoruba in Ibadan, Nigeria	NI	YRI	#DFBD00	Female	Child	Y117	https://www.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM19240&Product=CC
+GM12878	NA12878	yes	yes	no	no	yes	yes	no		Utah residents (CEPH) with Northern and Western European	EU	CEU	#347eed	Female	Child	1463	https://catalog.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM12878&Product=CC
+GM12778	NA12778	yes	yes	no	yes	no	yes	no		Utah residents (CEPH) with Northern and Western European	EU	CEU	#347eed	Female	Maternal Grandmother	1451	https://catalog.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM12778&Product=CC
+GM12812	NA12812	yes	yes	no	yes	no	yes	no		Utah residents (CEPH) with Northern and Western European	EU	CEU	#347eed	Male	Paternal Grandfather	1454	https://catalog.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM12812&Product=CC
+GM12273	NA12273	yes	yes	no	yes	no	no	no	SNP 500 panel	Utah residents (CEPH) with Northern and Western European	EU	CEU	#347eed	Female	Paternal Grandmother	1418	https://catalog.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM12273&Product=CC
+GM12829	NA12829	yes	yes	no	yes	no	no	no		Utah residents (CEPH) with Northern and Western European	EU	CEU	#347eed	Male	Maternal Grandfather	1456	https://catalog.coriell.org/0/Sections/Search/Sample_Detail.aspx?Ref=GM12829&Product=CC
