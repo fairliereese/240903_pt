@@ -95,7 +95,7 @@ def rm_color_cats(palette, order, cats):
             del palette[p]
         order = [o for o in order if o in cats]
     return palette, order
-    
+
 def get_population_colors(cats=None):
     palette = {'ITU': '#db72f2',
                  'PEL': '#ff3a33',
@@ -119,7 +119,7 @@ rule bool_mapq_summary:
     run:
         files = list(input.files)
         assemblies = params.assemblies
-        thresh = params.mapq_thresh
+        thresh = float(params.mapq_thresh)
 
         # get the color (v important)
         sample_1 = wildcards.sample.split('_')[0]
