@@ -32,7 +32,7 @@ include: f'{c_dir}stats.smk'
 df = parse_config(meta_file)
 
 # TODO
-df = df.loc[df['sample']=='HG00621_1'
+df = df.loc[df['sample']=='HG00621_1']
 
 assemblies = ['t2t', 'afr', 'hg38']
 
