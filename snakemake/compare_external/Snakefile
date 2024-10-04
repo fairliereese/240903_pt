@@ -29,7 +29,9 @@ rule all:
         config['chess']['cerb']['ics'],
         config['gtex']['cerb']['ics'],
         config['lr']['cerb']['ics'],
-        config['ref']['cerb']['ics']
+        config['ref']['cerb']['ics'],
+        expand(config['lr']['sqanti']['gff'],
+               annot=['gtex', 'enc', 'chess'])
 
 ########### gencode
 use rule gtf_to_ic as gc_gtf_to_ic with:
@@ -100,7 +102,7 @@ use rule gtf_to_ic as our_gtf_to_ic with:
 #############
 ##### sqanti
 ############
-annot = ['gtex', 'enc', 'chess']
+
 
 rule sqanti:
     input:
