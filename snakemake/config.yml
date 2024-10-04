@@ -166,6 +166,16 @@ lr:
     bam_query_covs: ../../data/map/{assembly}/{sample}_query_cov.tsv
     bam_query_covs_summary: ../../data/map/{assembly}/query_cov_summary.tsv
 
+    # using mapq thresh to say if something mapped or not
+    mapq_tsv: ../../data/map/{sample}/mapq_{thresh}_bool.tsv
+    mapq_uniq_afr_reads: ../../data/map/{sample}/mapq_{thresh}_bool_uniq_afr_reads.txt
+    mapq_upset: ../../data/map/{sample}/mapq_{thresh}_bool_upset.pdf
+
+    # taking the maximum mapq from mappings
+    max_mapq_tsv: ../../data/map/{sample}/max_mapq_{thresh}_bool.tsv
+    max_mapq_uniq_afr_reads: ../../data/map/{sample}/max_mapq_{thresh}_bool_uniq_afr_reads.txt
+    max_mapq_upset: ../../data/map/{sample}/max_mapq_{thresh}_bool_upset.pdf
+
   map_personal:
     sam: ../../data/map_personal/{assembly_status}/{assembly_sample}_{sample}.sam
     sam_filt: ../../data/map_personal/{assembly_status}/{assembly_sample}_{sample}_filt.sam

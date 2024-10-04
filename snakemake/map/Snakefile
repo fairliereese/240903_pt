@@ -44,6 +44,9 @@ rule all:
         config['lr']['fastq_n_reads_summary'],
         expand(config['lr']['fastq_n_reads'],
                sample=df.tech_rep.tolist()),
+        expand(config['lr']['map']['mapq_tsv'],
+               sample=df.tech_rep.tolist(),
+               thresh=[0,10])
         # expand(config['lr']['map']['bam_n_reads_summary'],
         #       assembly=assemblies),
         # expand(config['lr']['map']['bam_mapqs_summary'],
@@ -206,3 +209,19 @@ use rule read_id_df_summary as alt_get_qcov_summary with:
         samples = df['tech_rep'].tolist()
     output:
         summ = config['lr']['map']['bam_query_covs_summary']
+
+################################
+#### mapping summary statistics that aren't so heavy
+################################
+use rule bool_mapq_summary as get_bool_mapq_summary with:
+    input:
+        files = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+                              sample=wc.sample,
+                              assembly=assemblies)
+    params:
+        assemblies = assemblies,
+        mapq_thresh = lambda wc: wc.thresh
+    output:
+        tsv = config['lr']['map']['mapq_tsv'],
+        afr_reads = config['lr']['map']['mapq_uniq_afr_reads'],
+        upset = config['lr']['map']['mapq_upset']
