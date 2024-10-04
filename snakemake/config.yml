@@ -292,6 +292,10 @@ lr:
       merge_matrix_tsv: ../../data/v47_unmerged_kallisto_quant/matrix.abundance.tsv
       merge_matrix_tpm_tsv: ../../data/v47_unmerged_kallisto_quant/matrix.abundance.tpm.tsv
 
+  sqanti:
+    gff: ../../data/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
+
+
 
 
   #
@@ -338,3 +342,4 @@ params:
 
 software:
   buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl
+  sqanti_path: /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/

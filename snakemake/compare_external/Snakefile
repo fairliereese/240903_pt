@@ -96,3 +96,40 @@ use rule gtf_to_ic as our_gtf_to_ic with:
         gtf = config['lr']['gtf_filt_with_genes']
     output:
         tsv = config['lr']['cerb']['ics']
+
+#############
+##### sqanti
+############
+annot = ['gtex', 'enc', 'chess']
+
+rule sqanti:
+    input:
+        gtf = config['lr']['gtf_filt_with_genes'],
+        fa = config['ref']['fa'],
+        annot = lambda wc: config[wc.annot]['gtf']
+    resources:
+        nodes = 2,
+        threads = 8
+    conda:
+        'base'
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['data']['sqanti_gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['data']['sqanti_gff'].split('/')[:-1])+'/'
+    output:
+        gff = temporary(config['lr']['data']['sqanti_gff'])
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
+        mkdir -p {params.odir}
+        python {params.sq_path}sqanti3_qc.py \
+            {input.gtf} \
+            {input.annot} \
+            {input.fa} \
+            -d {params.odir} \
+            --report skip \
+            --force_id_ignore \
+            --aligner_choice minimap2 \
+            --skipORF \
+            -o {params.opref}
+        """
