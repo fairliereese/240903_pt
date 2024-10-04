@@ -29,31 +29,31 @@ def get_population_colors(cats=None):
                  'YRI': '#DFBD00',
                  'CEU': '#347eed',
                  'MPC': '#eb9d0c'}
-    
+
     order = list(palette.keys())
     order.sort()
-    
+
     palette, order = rm_color_cats(palette, order, cats)
     return palette, order
 
 def get_sex_colors(cats=None):
     palette = {'Female': '#ff69b4',
                'Male': '#1e90ff'}
-    
+
     order = list(palette.keys())
     order.sort()
-    
+
     palette, order = rm_color_cats(palette, order, cats)
     return palette, order
-    
+
 def get_cell_line_colors(cats=None):
     palette = {'panc1': '#2b9b81',
          'hepg2': '#fe9b00',
          'k562': '#f4c40f'}
-    
+
     order = list(palette.keys())
     order.sort()
-    
+
     palette, order = rm_color_cats(palette, order, cats)
     return palette, order
 
@@ -65,9 +65,9 @@ def get_rdna_region_colors(cats=None):
                'ITS2': '#255a57',
                '28S': '#60d395',
                '3_ETS': '#d9d6d5'}
-    
+
     order = get_rdna_regions()
-    
+
     palette, order = rm_color_cats(palette, order, cats)
     return palette, order
 
@@ -112,5 +112,3 @@ def get_dataset_colors(cats):
     return palette, order
 
     return c_dict, order
-    
-    

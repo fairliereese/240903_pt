@@ -84,6 +84,33 @@ rule bam_get_query_cov:
 ##################
 #### mapping summary statistics
 ##################
+def rm_color_cats(palette, order, cats):
+    if cats:
+        keys = palette.keys()
+        pop_list = []
+        for key in keys:
+            if key not in cats:
+                pop_list.append(key)
+        for p in pop_list:
+            del palette[p]
+        order = [o for o in order if o in cats]
+    return palette, order
+    
+def get_population_colors(cats=None):
+    palette = {'ITU': '#db72f2',
+                 'PEL': '#ff3a33',
+                 'HAC': '#4cb33e',
+                 'AJI': '#46bff0',
+                 'LWK': '#A09136',
+                 'YRI': '#DFBD00',
+                 'CEU': '#347eed',
+                 'MPC': '#eb9d0c'}
+
+    order = list(palette.keys())
+    order.sort()
+
+    palette, order = rm_color_cats(palette, order, cats)
+    return palette, order
 
 rule bool_mapq_summary:
     resources:
