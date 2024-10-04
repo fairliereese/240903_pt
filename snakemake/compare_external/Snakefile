@@ -119,7 +119,7 @@ rule sqanti:
         opref = config['lr']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
         odir = '/'.join(config['lr']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
-        gff = temporary(config['lr']['sqanti']['gff'])
+        gff = config['lr']['sqanti']['gff']
     shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
