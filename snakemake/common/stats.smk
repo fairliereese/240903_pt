@@ -132,12 +132,14 @@ rule bool_mapq_summary:
         plt.savefig(output.upset, dpi=500)
 
         # get the afr only reads
-        # TODO this could use generalizing based on assemblies
         afr_reads = df.copy(deep=True)
         afr_reads.reset_index(inplace=True)
-        afr_reads = afr_reads.loc[(afr_reads.afr==True)&\
-                                  (afr_reads.t2t==False)&\
-                                  (afr_reads.hg38==False)]
+
+        non_afr_assemblies = list(set(assemblies)-set(['afr']))
+
+        afr_reads = afr_reads.loc[(afr_reads.afr==True)]
+        for a in non_afr_assemblies:
+            afr_reads = afr_reads.loc[afr_reads[a]==False]
         afr_reads = afr_reads[['read_id']]
         afr_reads.to_csv(output.afr_reads, index=False)
 
