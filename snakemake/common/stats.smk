@@ -117,6 +117,7 @@ rule bool_mapq_summary:
         nodes = 3,
         threads = 1
     run:
+        import upsetplot
         files = list(input.files)
         assemblies = params.assemblies
         thresh = float(params.mapq_thresh)
