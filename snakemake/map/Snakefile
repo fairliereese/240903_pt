@@ -41,7 +41,7 @@ rule all:
     input:
         expand(config['lr']['map']['mapq_tsv'],
                sample=df.tech_rep.tolist(),
-               thresh=0)
+               thresh=[0,10])
                # thresh=[0,10])
         # expand(config['lr']['fastq_reads'],
         #        sample=df['tech_rep'].tolist()),
