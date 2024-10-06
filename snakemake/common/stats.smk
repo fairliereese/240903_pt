@@ -231,9 +231,8 @@ rule max_mapq_summary:
         df['assembly'] = df.assembly.str.split(',')
         df = df.explode('assembly')
         df['val'] = True
-        df.pivot(index='read_id', columns='assembly', values='val')
-        # df = df.fillna(False, inplace=True)
-        # df = upsetplot.from_memberships(df.assembly)
+        df = df.pivot(index='read_id', columns='assembly', values='val')
+        df = df.fillna(False)
 
         # make the upset plot
         ax_dict = upsetplot.UpSet(df, subset_size='count', facecolor=color, sort_by='cardinality', show_counts=False, show_percentages=True).plot()
