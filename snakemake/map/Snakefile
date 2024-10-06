@@ -40,8 +40,8 @@ wildcard_constraints:
 rule all:
     input:
         expand(config['lr']['map']['max_mapq_tsv'],
-               sample=df.tech_rep.tolist()[0],
-               thresh=[0]),
+               sample=df.tech_rep.tolist(),
+               thresh=[0, 10]),
         # expand(config['lr']['map']['mapq_tsv'],
         #        sample=df.tech_rep.tolist(),
         #        thresh=[0,10]),
