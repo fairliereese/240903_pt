@@ -39,8 +39,9 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map']['max_mapq_tsv'],
-               sample=df.tech_rep.tolist(),
+        expand(config['lr']['map']['mapq_tsv_summary'],
+               thresh=[0, 10]),
+        expand(config['lr']['map']['max_mapq_tsv_summary'],
                thresh=[0, 10]),
         # expand(config['lr']['map']['mapq_tsv'],
         #        sample=df.tech_rep.tolist(),
@@ -244,3 +245,31 @@ use rule max_mapq_summary as get_max_mapq_summary with:
         tsv = config['lr']['map']['max_mapq_tsv'],
         afr_reads = config['lr']['map']['max_mapq_uniq_afr_reads'],
         upset = config['lr']['map']['max_mapq_upset']
+
+
+
+use rule read_id_df_summary as get_mapq_summary_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map']['mapq_tsv'],
+               sample=df.tech_rep.tolist(),
+               thresh=wc.thresh)
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['mapq_tsv_summary']
+
+use rule read_id_df_summary as get_max_mapq_summary_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map']['max_mapq_tsv'],
+               sample=df.tech_rep.tolist(),
+               thresh=wc.thresh)
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['max_mapq_tsv_summary']

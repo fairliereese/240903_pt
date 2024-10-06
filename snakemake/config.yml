@@ -170,11 +170,13 @@ lr:
     mapq_tsv: ../../data/map/{sample}/mapq_{thresh}_bool.tsv
     mapq_uniq_afr_reads: ../../data/map/{sample}/mapq_{thresh}_bool_uniq_afr_reads.txt
     mapq_upset: ../../data/map/{sample}/mapq_{thresh}_bool_upset.pdf
+    mapq_tsv_summary: ../../data/map/mapq_{thresh}_bool_summary.tsv
 
     # taking the maximum mapq from mappings
     max_mapq_tsv: ../../data/map/{sample}/max_mapq_{thresh}_bool.tsv
     max_mapq_uniq_afr_reads: ../../data/map/{sample}/max_mapq_{thresh}_bool_uniq_afr_reads.txt
     max_mapq_upset: ../../data/map/{sample}/max_mapq_{thresh}_bool_upset.pdf
+    mapq_tsv_summary: ../../data/map/max_mapq_{thresh}_bool_summary.tsv
 
   map_personal:
     sam: ../../data/map_personal/{assembly_status}/{assembly_sample}_{sample}.sam
