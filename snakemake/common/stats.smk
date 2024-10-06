@@ -175,6 +175,7 @@ rule bool_mapq_summary:
         afr_reads.to_csv(output.afr_reads, index=False)
 
         # get the summary table
+        import pdb; pdb.set_trace()
         df['total_reads'] = df.n_reads.sum()
         df['perc'] = (df.n_reads/df.total_reads)*100
         df['sample'] = sample
