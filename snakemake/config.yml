@@ -176,7 +176,7 @@ lr:
     max_mapq_tsv: ../../data/map/{sample}/max_mapq_{thresh}_bool.tsv
     max_mapq_uniq_afr_reads: ../../data/map/{sample}/max_mapq_{thresh}_bool_uniq_afr_reads.txt
     max_mapq_upset: ../../data/map/{sample}/max_mapq_{thresh}_bool_upset.pdf
-    mapq_tsv_summary: ../../data/map/max_mapq_{thresh}_bool_summary.tsv
+    max_mapq_tsv_summary: ../../data/map/max_mapq_{thresh}_bool_summary.tsv
 
   map_personal:
     sam: ../../data/map_personal/{assembly_status}/{assembly_sample}_{sample}.sam
