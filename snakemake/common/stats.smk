@@ -221,7 +221,6 @@ rule max_mapq_summary:
         df = df.groupby(['read_id', 'mapq']).agg({
             'assembly': lambda x: ','.join(x)})
 
-        import pdb; pdb.set_trace()
         # sort by mapq and dedupe by keeping max
         df.reset_index(inplace=True)
         df = df.sort_values(by='mapq', ascending=False)
@@ -233,6 +232,8 @@ rule max_mapq_summary:
         df['val'] = True
         df = df.pivot(index='read_id', columns='assembly', values='val')
         df = df.fillna(False)
+        df = df.reset_index()
+        df.set_index(assemblies, inplace=True)
 
         # make the upset plot
         ax_dict = upsetplot.UpSet(df, subset_size='count', facecolor=color, sort_by='cardinality', show_counts=False, show_percentages=True).plot()
@@ -243,9 +244,6 @@ rule max_mapq_summary:
         #                   show_percentages=True).plot()
         plt.suptitle(f'% of best-mapping {sample} reads w/ mapq>{thresh}')
         plt.savefig(output.upset, dpi=500)
-
-
-        # TODO
 
         # get the afr only reads
         afr_reads = df.copy(deep=True)
