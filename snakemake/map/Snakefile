@@ -39,9 +39,13 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map']['mapq_tsv'],
-               sample=df.tech_rep.tolist(),
-               thresh=[0,10])
+        expand(config['lr']['map']['max_mapq_tsv'],
+               sample=df.tech_rep.tolist()[0],
+               thresh=[0]),
+        # expand(config['lr']['map']['mapq_tsv'],
+        #        sample=df.tech_rep.tolist(),
+        #        thresh=[0,10]),
+        #
                # thresh=[0,10])
         # expand(config['lr']['fastq_reads'],
         #        sample=df['tech_rep'].tolist()),
@@ -227,3 +231,16 @@ use rule bool_mapq_summary as get_bool_mapq_summary with:
         tsv = config['lr']['map']['mapq_tsv'],
         afr_reads = config['lr']['map']['mapq_uniq_afr_reads'],
         upset = config['lr']['map']['mapq_upset']
+
+use rule max_mapq_summary as get_max_mapq_summary with:
+    input:
+        files = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+                              sample=wc.sample,
+                              assembly=assemblies)
+    params:
+        assemblies = assemblies,
+        mapq_thresh = lambda wc: wc.thresh
+    output:
+        tsv = config['lr']['map']['max_mapq_tsv'],
+        afr_reads = config['lr']['map']['max_mapq_uniq_afr_reads'],
+        upset = config['lr']['map']['max_mapq_upset']
