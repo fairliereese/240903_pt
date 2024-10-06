@@ -122,9 +122,10 @@ rule bool_mapq_summary:
         files = list(input.files)
         assemblies = params.assemblies
         thresh = float(params.mapq_thresh)
+        sample = wildcards.sample
 
         # get the color (v important)
-        sample_1 = wildcards.sample.split('_')[0]
+        sample_1 = sample.split('_')[0]
         meta = load_meta()
         pop = meta.loc[meta['sample'] == sample_1, 'population'].values[0]
         c_dict, _ = get_population_colors()
