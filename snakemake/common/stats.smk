@@ -201,34 +201,35 @@ rule max_mapq_summary:
         c_dict, _ = get_population_colors()
         color = c_dict[pop]
 
-        # get the upset plot table
+        # get upset plot table
         i = 0
         for f, a in zip(files, assemblies):
             temp = pd.read_csv(f, sep='\t')
-            temp.rename({'mapq':a}, axis=1, inplace=True)
+            # temp.rename({'mapq':a}, axis=1, inplace=True)
             assert len(temp.index) == len(temp.read_id.unique())
-
+            temp['assembly']=a
             if i == 0:
                 df = temp.copy(deep=True)
             else:
-                df = df.merge(temp, how='outer', on='read_id')
+                df = pd.concat([df, temp], axis=0)
             i += 1
 
-        # convert to binary based on max mapq
+        # assert min mapq
+        df = df.loc[df.mapq>thresh]
+
+        # groupby read id and mapq to find reads that map equally as well
+        df = df.groupby(['read_id', 'mapq']).agg({
+            'assembly': lambda x: ','.join(x)})
+
         import pdb; pdb.set_trace()
-        df = df.melt(id_vars='read_id', var_name='assembly', value_name='mapq')
-        df = df.loc[df.mapq.notnull()]
-        df = df.sort_values(by='mapq', ascending=False)
-        df = df.drop_duplicates(subset=['read_id', 'mapq'],
-            keep='first')
-
-
-
-        df.set_index('read_id', inplace=True)
-        df = df>thresh
-
+        # sort by mapq and dedupe by keeping max
         df.reset_index(inplace=True)
-        df.set_index(assemblies, inplace=True)
+        df = df.sort_values(by='mapq', ascending=False)
+        df = df.drop_duplicates(subset=['read_id'], keep='first')
+
+        # process out using the upset plot stuff
+        df['assembly'] = df.assembly.str.split(',')
+        df = upsetplot.from_memberships(df.assembly)
 
         # make the upset plot
         ax_dict = upsetplot.UpSet(df, subset_size='count', facecolor=color, sort_by='cardinality', show_counts=False, show_percentages=True).plot()
@@ -237,8 +238,11 @@ rule max_mapq_summary:
         #                   sort_by='cardinality',
         #                   show_counts=False,
         #                   show_percentages=True).plot()
-        plt.suptitle(f'% of {sample} reads w/ mapq>{thresh}')
+        plt.suptitle(f'% of best-mapping {sample} reads w/ mapq>{thresh}')
         plt.savefig(output.upset, dpi=500)
+
+
+        # TODO
 
         # get the afr only reads
         afr_reads = df.copy(deep=True)
