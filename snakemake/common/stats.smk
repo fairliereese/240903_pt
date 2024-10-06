@@ -118,6 +118,7 @@ rule bool_mapq_summary:
         threads = 1
     run:
         import upsetplot
+        import matplotlib.pyplot as plt
         files = list(input.files)
         assemblies = params.assemblies
         thresh = float(params.mapq_thresh)
@@ -149,14 +150,14 @@ rule bool_mapq_summary:
 
         df.reset_index(inplace=True)
         df.set_index(assemblies, inplace=True)
-        import pdb; pdb.set_trace()
 
         # make the upset plot
-        ax_dict = upsetplot.UpSet(df, subset_size='count',
-                          facecolor=color,
-                          sort_by='cardinality',
-                          show_counts=False,
-                          show_percentages=True).plot()
+        ax_dict = upsetplot.UpSet(df, subset_size='count', facecolor=color, sort_by='cardinality', show_counts=False, show_percentages=True).plot()
+        # ax_dict = upsetplot.UpSet(df, subset_size='count',
+        #                   facecolor=color,
+        #                   sort_by='cardinality',
+        #                   show_counts=False,
+        #                   show_percentages=True).plot()
         plt.suptitle(f'% of {sample} reads w/ mapq>{thresh}')
         plt.savefig(output.upset, dpi=500)
 
