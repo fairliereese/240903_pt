@@ -53,6 +53,7 @@ assert len(g_df.loc[g_df['aws_pat_link'].str.contains('paternal')].index) == len
 
 
 genome_cols = ['same_population_sample', 'european_sample',	'afr_sample']
+assemblies = genome_cols
 g_df = g_df.loc[(g_df['sample'].isin(df2[genome_cols[0]]))|
                 (g_df['sample'].isin(df2[genome_cols[1]]))|
                 (g_df['sample'].isin(df2[genome_cols[2]]))]
@@ -80,10 +81,14 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['ref']['alt']['personal']['fa_gz'],
-               assembly_sample=g_df['sample'].tolist()),
-        expand(config['ref']['alt']['personal']['pat_fa_gz'],
-               assembly_sample=g_df['sample'].tolist())
+        expand(config['lr']['map_personal']['mapq_tsv_summary'],
+                   thresh=[0, 10]),
+        expand(config['lr']['map_personal']['max_mapq_tsv_summary'],
+               thresh=[0, 10]),
+        # expand(config['ref']['alt']['personal']['fa_gz'],
+        #        assembly_sample=g_df['sample'].tolist()),
+        # expand(config['ref']['alt']['personal']['pat_fa_gz'],
+        #        assembly_sample=g_df['sample'].tolist())
         # expand(config['lr']['map_personal']['bam_ind'],
         #        zip,
         #        assembly_status=df2.assembly_status.tolist(),
@@ -282,3 +287,72 @@ use rule read_id_df_summary as alt_get_qcov_summary with:
         samples = df2['dataset_key'].tolist()
     output:
         summ = config['lr']['map_personal']['bam_query_covs_summary']
+
+################################
+#### mapping summary statistics that aren't so heavy
+################################
+use rule bool_mapq_summary as get_bool_mapq_summary with:
+    input:
+        files = lambda wc: expand(expand(config['lr']['map_personal']['bam_mapqs'],
+                           zip,
+                           assembly_status=assemblies,
+                           assembly_sample=df2.assembly_sample.tolist(),
+                           allow_missing=True),
+                           sample=wc.sample)
+    params:
+        assemblies = assemblies,
+        mapq_thresh = lambda wc: wc.thresh
+    output:
+        tsv = config['lr']['map_personal']['mapq_tsv'],
+        afr_reads = config['lr']['map_personal']['mapq_uniq_afr_reads'],
+        upset = config['lr']['map_personal']['mapq_upset']
+
+use rule max_mapq_summary as get_max_mapq_summary with:
+    input:
+        files = lambda wc: expand(expand(config['lr']['map_personal']['bam_mapqs'],
+                           zip,
+                           assembly_status=assemblies,
+                           assembly_sample=df2.assembly_sample.tolist(),
+                           allow_missing=True),
+                           sample=wc.sample)
+    params:
+        assemblies = assemblies,
+        mapq_thresh = lambda wc: wc.thresh
+    output:
+        tsv = config['lr']['map_personal']['max_mapq_tsv'],
+        afr_reads = config['lr']['map_personal']['max_mapq_uniq_afr_reads'],
+        upset = config['lr']['map_personal']['max_mapq_upset']
+
+
+
+use rule read_id_df_summary as get_mapq_summary_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map_personal']['mapq_tsv'],
+                               zip,
+                               assembly_status=df2.assembly_status.tolist(),
+                               assembly_sample=df2.assembly_sample.tolist(),
+                               sample=df2.tech_rep.tolist(),
+                               thresh=wc.thresh)
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df2['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map_personal']['mapq_tsv_summary']
+
+use rule read_id_df_summary as get_max_mapq_summary_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map_personal']['max_mapq_tsv'],
+                               zip,
+                               assembly_status=df2.assembly_status.tolist(),
+                               assembly_sample=df2.assembly_sample.tolist(),
+                               sample=df2.tech_rep.tolist(),
+                               thresh=wc.thresh)
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df2['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map_personal']['max_mapq_tsv_summary']
