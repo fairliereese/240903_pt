@@ -214,9 +214,14 @@ rule max_mapq_summary:
                 df = df.merge(temp, how='outer', on='read_id')
             i += 1
 
-        # convert to binary
+        # convert to binary based on max mapq
         import pdb; pdb.set_trace()
-        df.fillna(0, inplace=True)
+        df = df.melt(id_vars='read_id', var_name='assembly', value_name='mapq')
+        df = df.loc[df.mapq.notnull()]
+        df = df.sort_values(by='mapq', ascending=False)
+        
+
+
         df.set_index('read_id', inplace=True)
         df = df>thresh
 
