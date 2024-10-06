@@ -219,7 +219,9 @@ rule max_mapq_summary:
         df = df.melt(id_vars='read_id', var_name='assembly', value_name='mapq')
         df = df.loc[df.mapq.notnull()]
         df = df.sort_values(by='mapq', ascending=False)
-        
+        df = df.drop_duplicates(subset=['read_id', 'mapq'],
+            keep='first')
+
 
 
         df.set_index('read_id', inplace=True)
