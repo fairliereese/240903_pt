@@ -264,3 +264,158 @@ rule max_mapq_summary:
         df['perc'] = (df.n_reads/df.total_reads)*100
         df['sample'] = sample
         df.to_csv(output.tsv, sep='\t', index=False)
+
+#### for personal mappings
+
+rule bool_mapq_personal_mappings_summary:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        import upsetplot
+        import matplotlib.pyplot as plt
+        files = list(input.files)
+        assemblies = params.assemblies
+        thresh = float(params.mapq_thresh)
+        sample = wildcards.sample
+
+        # get the color (v important)
+        sample_1 = sample.split('_')[0]
+        meta = load_meta()
+        pop = meta.loc[meta['sample'] == sample_1, 'population'].values[0]
+        c_dict, _ = get_population_colors()
+        color = c_dict[pop]
+
+        # get the upset plot table
+        i = 0
+        for f, a in zip(files, assemblies):
+            temp = pd.read_csv(f, sep='\t')
+            temp.rename({'mapq':a}, axis=1, inplace=True)
+            assert len(temp.index) == len(temp.read_id.unique())
+
+            if i == 0:
+                df = temp.copy(deep=True)
+            else:
+                df = df.merge(temp, how='outer', on='read_id')
+            i += 1
+
+        # convert to binary
+        df.fillna(0, inplace=True)
+        df.set_index('read_id', inplace=True)
+        df = df>thresh
+
+        df.reset_index(inplace=True)
+        df.set_index(assemblies, inplace=True)
+
+        # make the upset plot
+        ax_dict = upsetplot.UpSet(df, subset_size='count', facecolor=color, sort_by='cardinality', show_counts=False, show_percentages=True).plot()
+        # ax_dict = upsetplot.UpSet(df, subset_size='count',
+        #                   facecolor=color,
+        #                   sort_by='cardinality',
+        #                   show_counts=False,
+        #                   show_percentages=True).plot()
+        plt.suptitle(f'% of {sample} reads w/ mapq>{thresh}')
+        plt.savefig(output.upset, dpi=500)
+
+        # get the same sample only reads
+        same_samp_reads = df.copy(deep=True)
+        same_samp_reads.reset_index(inplace=True)
+
+        non_samp_assemblies = list(set(assemblies)-set(['same_population_sample']))
+
+        same_samp_reads = same_samp_reads.loc[(same_samp_reads['same_population_sample']==True)]
+        for a in non_samp_assemblies:
+            same_samp_reads = same_samp_reads.loc[same_samp_reads[a]==False]
+        same_samp_reads = same_samp_reads[['read_id']]
+        same_samp_reads.to_csv(output.same_samp_reads, index=False)
+
+        # get the summary table
+        df.reset_index(inplace=True)
+        df = df.groupby(assemblies).count().reset_index().rename({'read_id':'n_reads'},axis=1)
+        df['total_reads'] = df.n_reads.sum()
+        df['perc'] = (df.n_reads/df.total_reads)*100
+        df['sample'] = sample
+        df.to_csv(output.tsv, sep='\t', index=False)
+
+rule max_mapq_personal_mappings_summary:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        import upsetplot
+        import matplotlib.pyplot as plt
+        files = list(input.files)
+        assemblies = params.assemblies
+        thresh = float(params.mapq_thresh)
+        sample = wildcards.sample
+
+        # get the color (v important)
+        sample_1 = sample.split('_')[0]
+        meta = load_meta()
+        pop = meta.loc[meta['sample'] == sample_1, 'population'].values[0]
+        c_dict, _ = get_population_colors()
+        color = c_dict[pop]
+
+        # get upset plot table
+        i = 0
+        for f, a in zip(files, assemblies):
+            temp = pd.read_csv(f, sep='\t')
+            # temp.rename({'mapq':a}, axis=1, inplace=True)
+            assert len(temp.index) == len(temp.read_id.unique())
+            temp['assembly']=a
+            if i == 0:
+                df = temp.copy(deep=True)
+            else:
+                df = pd.concat([df, temp], axis=0)
+            i += 1
+
+        # assert min mapq
+        df = df.loc[df.mapq>thresh]
+
+        # groupby read id and mapq to find reads that map equally as well
+        df = df.groupby(['read_id', 'mapq']).agg({
+            'assembly': lambda x: ','.join(x)})
+
+        # sort by mapq and dedupe by keeping max
+        df.reset_index(inplace=True)
+        df = df.sort_values(by='mapq', ascending=False)
+        df = df.drop_duplicates(subset=['read_id'], keep='first')
+
+        # process out using the upset plot stuff
+        df['assembly'] = df.assembly.str.split(',')
+        df = df.explode('assembly')
+        df['val'] = True
+        df = df.pivot(index='read_id', columns='assembly', values='val')
+        df = df.fillna(False)
+        df = df.reset_index()
+        df.set_index(assemblies, inplace=True)
+
+        # make the upset plot
+        ax_dict = upsetplot.UpSet(df, subset_size='count', facecolor=color, sort_by='cardinality', show_counts=False, show_percentages=True).plot()
+        # ax_dict = upsetplot.UpSet(df, subset_size='count',
+        #                   facecolor=color,
+        #                   sort_by='cardinality',
+        #                   show_counts=False,
+        #                   show_percentages=True).plot()
+        plt.suptitle(f'% of best-mapping {sample} reads w/ mapq>{thresh}')
+        plt.savefig(output.upset, dpi=500)
+
+        # get the same sample only reads
+        same_samp_reads = df.copy(deep=True)
+        same_samp_reads.reset_index(inplace=True)
+
+        non_samp_assemblies = list(set(assemblies)-set(['same_population_sample']))
+
+        same_samp_reads = same_samp_reads.loc[(same_samp_reads['same_population_sample']==True)]
+        for a in non_samp_assemblies:
+            same_samp_reads = same_samp_reads.loc[same_samp_reads[a]==False]
+        same_samp_reads = same_samp_reads[['read_id']]
+        same_samp_reads.to_csv(output.same_samp_reads, index=False)
+
+        # get the summary table
+        df.reset_index(inplace=True)
+        df = df.groupby(assemblies).count().reset_index().rename({'read_id':'n_reads'},axis=1)
+        df['total_reads'] = df.n_reads.sum()
+        df['perc'] = (df.n_reads/df.total_reads)*100
+        df['sample'] = sample
+        df.to_csv(output.tsv, sep='\t', index=False)

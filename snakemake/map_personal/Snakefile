@@ -66,13 +66,13 @@ df2 = df2.rename({'variable':'assembly_status',
                   'value': 'assembly_sample'},
                   axis=1)
 
-# limit just to the samples where we'll do this
-df = df.loc[df.tech_rep.isin(df2.tech_rep.tolist())]
-
-# get a key for assembly status, assembly sample, and actual sample
-df2['dataset_key'] = df2.assembly_status+'_'+\
-                     df2.assembly_sample+'_'+\
-                     df2.tech_rep
+# # limit just to the samples where we'll do this
+# df = df.loc[df.tech_rep.isin(df2.tech_rep.tolist())]
+#
+# # get a key for assembly status, assembly sample, and actual sample
+# df2['dataset_key'] = df2.assembly_status+'_'+\
+#                      df2.assembly_sample+'_'+\
+#                      df2.tech_rep
 
 wildcard_constraints:
     assembly='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),
@@ -294,7 +294,7 @@ use rule read_id_df_summary as alt_get_qcov_summary with:
 ################################
 #### mapping summary statistics that aren't so heavy
 ################################
-use rule bool_mapq_summary as get_bool_mapq_summary with:
+use rule bool_mapq_summary as bool_mapq_personal_mappings_summary with:
     input:
         files = lambda wc: expand(expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,
@@ -304,13 +304,13 @@ use rule bool_mapq_summary as get_bool_mapq_summary with:
                            sample=wc.sample)
     params:
         assemblies = assemblies,
-        mapq_thresh = lambda wc: wc.thresh
+        mapq_thresh = lambda wc: wc.thresh,
     output:
         tsv = config['lr']['map_personal']['mapq_tsv'],
-        afr_reads = config['lr']['map_personal']['mapq_uniq_afr_reads'],
+        same_pop_uniq_reads = config['lr']['map_personal']['same_pop_uniq_reads'],
         upset = config['lr']['map_personal']['mapq_upset']
 
-use rule max_mapq_summary as get_max_mapq_summary with:
+use rule max_mapq_summary as max_mapq_personal_mappings_summary with:
     input:
         files = lambda wc: expand(expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,

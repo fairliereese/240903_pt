@@ -193,7 +193,7 @@ lr:
 
     # using mapq thresh to say if something mapped or not
     mapq_tsv: ../../data/map_personal/{sample}/mapq_{thresh}_bool.tsv
-    mapq_uniq_afr_reads: ../../data/map_personal/{sample}/mapq_{thresh}_bool_uniq_afr_reads.txt
+    same_pop_uniq_reads: ../../data/map_personal/{sample}/mapq_{thresh}_bool_uniq_same_pop_reads.txt
     mapq_upset: ../../data/map_personal/{sample}/mapq_{thresh}_bool_upset.pdf
     mapq_tsv_summary: ../../data/map_personal/mapq_{thresh}_bool_summary.tsv
 
