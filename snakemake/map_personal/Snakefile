@@ -84,9 +84,9 @@ rule all:
         expand(expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,
                            assembly_status=assemblies,
-                           assembly_sample=df2.assembly_sample.tolist()[0],
+                           assembly_sample=HG02717,
                            allow_missing=True),
-                           sample=df.tech_rep.tolist()[0],
+                           sample='GM24385_1',
                            thresh=0)
         # expand(config['lr']['map_personal']['mapq_tsv_summary'],
         #            thresh=[0, 10]),
