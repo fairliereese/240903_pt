@@ -327,7 +327,7 @@ rule bool_mapq_personal_mappings_summary:
         for a in non_samp_assemblies:
             same_samp_reads = same_samp_reads.loc[same_samp_reads[a]==False]
         same_samp_reads = same_samp_reads[['read_id']]
-        same_samp_reads.to_csv(output.same_samp_reads, index=False)
+        same_samp_reads.to_csv(output.same_pop_uniq_reads, index=False)
 
         # get the summary table
         df.reset_index(inplace=True)
@@ -410,7 +410,7 @@ rule max_mapq_personal_mappings_summary:
         for a in non_samp_assemblies:
             same_samp_reads = same_samp_reads.loc[same_samp_reads[a]==False]
         same_samp_reads = same_samp_reads[['read_id']]
-        same_samp_reads.to_csv(output.same_samp_reads, index=False)
+        same_samp_reads.to_csv(output.same_pop_uniq_reads, index=False)
 
         # get the summary table
         df.reset_index(inplace=True)
