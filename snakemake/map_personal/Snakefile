@@ -82,13 +82,13 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map_personal']['mapq_tsv'],
-                           sample='GM24385_1',
-                           thresh=0)
-        # expand(config['lr']['map_personal']['mapq_tsv_summary'],
-        #            thresh=[0, 10]),
-        # expand(config['lr']['map_personal']['max_mapq_tsv_summary'],
-        #        thresh=[0, 10]),
+        expand(config['lr']['map_personal']['mapq_tsv_summary'],
+                   thresh=[0, 10]),
+        expand(config['lr']['map_personal']['max_mapq_tsv_summary'],
+               thresh=[0, 10]),
+        # expand(config['lr']['map_personal']['mapq_tsv'],
+        #                    sample='GM24385_1',
+        #                    thresh=0)
         # expand(config['ref']['alt']['personal']['fa_gz'],
         #        assembly_sample=g_df['sample'].tolist()),
         # expand(config['ref']['alt']['personal']['pat_fa_gz'],
