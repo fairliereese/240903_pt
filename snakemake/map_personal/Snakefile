@@ -81,7 +81,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(expand(config['lr']['map_personal']['bam_mapqs'],
+        expand(expand(config['lr']['map_personal']['mapq_tsv'],
                            zip,
                            assembly_status='afr_sample',
                            assembly_sample='HG02717',
