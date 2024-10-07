@@ -83,7 +83,7 @@ rule all:
     input:
         expand(expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,
-                           assembly_status=assemblies,
+                           assembly_status='afr_sample',
                            assembly_sample='HG02717',
                            allow_missing=True),
                            sample='GM24385_1',
