@@ -81,10 +81,17 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['map_personal']['mapq_tsv_summary'],
-                   thresh=[0, 10]),
-        expand(config['lr']['map_personal']['max_mapq_tsv_summary'],
-               thresh=[0, 10]),
+        expand(expand(config['lr']['map_personal']['bam_mapqs'],
+                           zip,
+                           assembly_status=assemblies,
+                           assembly_sample=df2.assembly_sample.tolist()[0],
+                           allow_missing=True),
+                           sample=df.tech_rep.tolist()[0],
+                           thresh=0)
+        # expand(config['lr']['map_personal']['mapq_tsv_summary'],
+        #            thresh=[0, 10]),
+        # expand(config['lr']['map_personal']['max_mapq_tsv_summary'],
+        #        thresh=[0, 10]),
         # expand(config['ref']['alt']['personal']['fa_gz'],
         #        assembly_sample=g_df['sample'].tolist()),
         # expand(config['ref']['alt']['personal']['pat_fa_gz'],
