@@ -84,7 +84,7 @@ rule all:
         expand(expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,
                            assembly_status=assemblies,
-                           assembly_sample=HG02717,
+                           assembly_sample='HG02717',
                            allow_missing=True),
                            sample='GM24385_1',
                            thresh=0)
