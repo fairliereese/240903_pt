@@ -81,7 +81,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(expand(config['lr']['map_personal']['mapq_tsv'],
+        expand(config['lr']['map_personal']['mapq_tsv'],
                            sample='GM24385_1',
                            thresh=0)
         # expand(config['lr']['map_personal']['mapq_tsv_summary'],
