@@ -39,7 +39,7 @@ rule all:
 
 ##### reference dl
 use rule wget as wget_pfam_db with:
-    input:
+    params:
         link = config['ref']['pfam']
     output:
         out = temporary(config['ref']['pfam']['db_gz'])
