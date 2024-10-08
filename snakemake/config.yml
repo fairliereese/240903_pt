@@ -30,11 +30,6 @@ ref:
   pc: ../../ref/pc_translations.fa
   pc_renamed: ../../ref/pc_translations_renamed.fa
 
-  pfam:
-    hmmer_out: ../../ref/pc_translations_renamed_pfam_domtblout.txt
-    hmmer_out_align: ../../ref/pc_translations_renamed_pfam_domtblout_align.txt
-
-
   cpat:
     model_link: https://sourceforge.net/projects/rna-cpat/files/prebuilt_models/Human_logitModel.RData/download
     model: ../../ref/cpat/cpat_model.RData
@@ -60,6 +55,9 @@ ref:
     link: https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
     db_gz: ../../ref/pfam/Pfam-A.hmm.gz
     db: ../../ref/pfam/Pfam-A.hmm
+    hmmer_out: ../../ref/pc_translations_renamed_pfam_domtblout.txt
+    hmmer_out_align: ../../ref/pc_translations_renamed_pfam_domtblout_align.txt
+
 
 
 gtex:
