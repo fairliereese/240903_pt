@@ -47,7 +47,7 @@ rule prot_table_to_prot_fa:
     run:
         df = pd.read_csv(input.tsv, sep='\t')
         df = df[['tid', 'protein_sequence']]
-        with open({output.fa}, 'w') as out:
+        with open(output.fa, 'w') as out:
             for ind, entry in df.iterrows():
                 out.write(f'>{entry.tid}\n')
                 out.write(f'{entry.protein_sequence}\n')
