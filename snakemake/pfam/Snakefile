@@ -34,7 +34,21 @@ include: f'{c_dir}lr-kallisto.smk'
 
 rule all:
     input:
-        config['lr']['pfam']['pc_fa']
+        config['ref']['pfam']['db']
+        # config['lr']['pfam']['pc_fa']
+
+##### reference dl
+use rule wget as wget_pfam_db with:
+    input:
+        link = config['ref']['pfam']
+    output:
+        out = temporary(config['ref']['pfam']['db_gz'])
+
+use rule gunzip as gunzip_pfam_db with:
+    input:
+        gz = config['ref']['pfam']['db_gz']
+    output:
+        ofile = config['ref']['pfam']['db']
 
 rule filt_prot_table:
     input:
@@ -71,3 +85,14 @@ rule prot_table_to_prot_fa:
             for ind, entry in df.iterrows():
                 out.write(f'>{entry.tid}\n')
                 out.write(f'{entry.protein_sequence}\n')
+
+rule run_hmmer:
+    shell:
+        """
+        {params.hmmer_path}hmmscan \
+            --domtblout "${transcript_id}-pfam-domtblout.txt" \
+    		-E ${sequence_evalue_thres} \
+    		--cpu ${pfam_cpu} \
+    		${pfam_db} \
+    		${protein_fasta} > "${transcript_id}-pfam-domtblout-with-alignment.txt"
+        """
