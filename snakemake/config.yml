@@ -153,6 +153,10 @@ lr:
   protein:
     summary: ../../data/protein/transcripts_protein_annotation.tsv
 
+  pfam:
+    pc_fa: ../../data/pfam/transcripts_pc.fa
+
+
   map:
     sam: ../../data/map/{assembly}/{sample}.sam
     sam_filt: ../../data/map/{assembly}/{sample}_filt.sam

@@ -1,0 +1,53 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+df = parse_config(meta_file)
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
+    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
+
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+# df = df.loc[df.tech_rep=='GM19240_1']
+
+rule all:
+    input:
+        config['lr']['pfam']['pc_fa']
+
+rule prot_table_to_prot_fa:
+    input:
+        tsv = config['lr']['protein']['summary']
+    resources:
+        threads =  1,
+        nodes = 2
+    output:
+        fa = config['lr']['pfam']['pc_fa']
+    run:
+        df = pd.read_csv(input.tsv, sep='\t')
+        df = df[['tid', 'protein_sequence']]
+        with open({output.fa}, 'w') as out:
+            for ind, entry in df.iterrows():
+                out.write(f'>{entry.tid}\n')
+                out.write(f'{entry.protein_sequence}\n')

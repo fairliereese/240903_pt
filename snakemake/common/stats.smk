@@ -369,6 +369,8 @@ rule max_mapq_personal_mappings_summary:
                 df = pd.concat([df, temp], axis=0)
             i += 1
 
+        import pdb; pdb.set_trace()
+        
         # assert min mapq
         df = df.loc[df.mapq>thresh]
 
