@@ -324,7 +324,7 @@ use rule max_mapq_personal_mappings_summary as get_max_mapq_personal_mappings_su
         mapq_thresh = lambda wc: wc.thresh
     output:
         tsv = config['lr']['map_personal']['max_mapq_tsv'],
-        afr_reads = config['lr']['map_personal']['max_mapq_uniq_afr_reads'],
+        same_pop_uniq_reads = config['lr']['map_personal']['max_same_pop_uniq_reads'],
         upset = config['lr']['map_personal']['max_mapq_upset']
 
 

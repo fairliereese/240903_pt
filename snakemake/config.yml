@@ -199,7 +199,7 @@ lr:
 
     # taking the maximum mapq from mappings
     max_mapq_tsv: ../../data/map_personal/{sample}/max_mapq_{thresh}_bool.tsv
-    max_mapq_uniq_afr_reads: ../../data/map_personal/{sample}/max_mapq_{thresh}_bool_uniq_afr_reads.txt
+    max_same_pop_uniq_reads: ../../data/map_personal/{sample}/max_mapq_{thresh}_bool_uniq_same_pop_reads.txt
     max_mapq_upset: ../../data/map_personal/{sample}/max_mapq_{thresh}_bool_upset.pdf
     max_mapq_tsv_summary: ../../data/map_personal/max_mapq_{thresh}_bool_summary.tsv
 
