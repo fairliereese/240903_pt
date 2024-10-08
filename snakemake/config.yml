@@ -383,8 +383,8 @@ params:
   hmmer:
     eval: 1
 
-#
-# software:
-#   buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl
-#   sqanti_path: /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/
-#   hmmer_path: /gpfs/projects/bsc83/utils/conda_envs/hmmer/bin/
+
+software:
+  buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl
+  sqanti_path: /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/
+  hmmer_path: /gpfs/projects/bsc83/utils/conda_envs/hmmer/bin/
