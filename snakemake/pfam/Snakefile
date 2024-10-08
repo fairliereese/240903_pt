@@ -32,6 +32,8 @@ include: f'{c_dir}lr-kallisto.smk'
 
 # df = df.loc[df.tech_rep=='GM19240_1']
 
+import pdb; pdb.set_trace()
+
 rule all:
     input:
         config['ref']['pfam']['hmmer_out_align'],
