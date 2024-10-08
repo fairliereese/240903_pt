@@ -378,8 +378,6 @@ rule max_mapq_personal_mappings_summary:
             'assembly': lambda x: ','.join(x)})
 
         # sort by mapq and dedupe by keeping max
-        import pdb; pdb.set_trace()
-
         df.reset_index(inplace=True)
         df = df.sort_values(by='mapq', ascending=False)
         df = df.drop_duplicates(subset=['read_id'], keep='first')
