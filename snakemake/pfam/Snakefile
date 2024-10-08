@@ -36,9 +36,29 @@ rule all:
     input:
         config['lr']['pfam']['pc_fa']
 
+rule filt_prot_table:
+    input:
+        gtf = config['lr']['nov_gtf_filt_with_genes'],
+        tsv = config['lr']['protein']['summary']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        tsv = config['lr']['protein']['summary_filt']
+    run:
+        import pyranges as pr
+        df = pr.read_gtf(input.gtf).df
+        tids = df.transcript_id.unique().tolist()
+        df = pd.read_csv(input.tsv, sep='\t')
+        l1 = len(df.index)
+        df = df.loc[df.tid.isin(tids)]
+        l2 = len(df.index)
+        assert l1 != l2
+        df.to_csv(output.tsv, sep='\t', index=False)
+
 rule prot_table_to_prot_fa:
     input:
-        tsv = config['lr']['protein']['summary']
+        tsv = config['lr']['protein']['summary_filt']
     resources:
         threads =  1,
         nodes = 2
