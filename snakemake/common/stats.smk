@@ -369,12 +369,12 @@ rule max_mapq_personal_mappings_summary:
                 df = pd.concat([df, temp], axis=0)
             i += 1
 
-        import pdb; pdb.set_trace()
-        
+
         # assert min mapq
         df = df.loc[df.mapq>thresh]
 
         # groupby read id and mapq to find reads that map equally as well
+        import pdb; pdb.set_trace()
         df = df.groupby(['read_id', 'mapq']).agg({
             'assembly': lambda x: ','.join(x)})
 
