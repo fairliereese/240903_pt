@@ -91,6 +91,26 @@ rule prot_table_to_prot_fa:
                 out.write(f'>{entry.tid}\n')
                 out.write(f'{entry.protein_sequence}\n')
 
+rule hmmpress:
+    resources:
+        threads = 8,
+        nodes = 4
+    params:
+        hmmer_path = config['software']['hmmer_path']
+    shell:
+        """
+        {params.hmmer_path}hmmpress {input.db}
+        """
+
+use rule hmmpress as pfam_hmmpress with:
+    input:
+        db = config['ref']['pfam']['db']
+    output:
+        db_h3m = config['ref']['pfam']['db_h3m'],
+        db_h3i = config['ref']['pfam']['db_h3i'],
+        db_h3f = config['ref']['pfam']['db_h3f'],
+        db_h3p = config['ref']['pfam']['db_h3p'],
+
 rule run_hmmer:
     resources:
         threads = 8,
@@ -108,7 +128,8 @@ rule run_hmmer:
 use rule run_hmmer as run_hmmer_poder with:
     input:
         fa = config['lr']['pfam']['pc_fa'],
-        db = config['ref']['pfam']['db']
+        db = config['ref']['pfam']['db'],
+        db_h3m = config['ref']['pfam']['db_h3m'],
     params:
         eval = config['params']['hmmer']['eval'],
         hmmer_path = config['software']['hmmer_path']
@@ -119,7 +140,8 @@ use rule run_hmmer as run_hmmer_poder with:
 use rule run_hmmer as run_hmmer_gc with:
     input:
         fa = config['ref']['pc_renamed'],
-        db = config['ref']['pfam']['db']
+        db = config['ref']['pfam']['db'],
+        db_h3m = config['ref']['pfam']['db_h3m'],
     params:
         eval = config['params']['hmmer']['eval'],
         hmmer_path = config['software']['hmmer_path']

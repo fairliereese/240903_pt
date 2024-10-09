@@ -55,6 +55,11 @@ ref:
     link: https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
     db_gz: ../../ref/pfam/Pfam-A.hmm.gz
     db: ../../ref/pfam/Pfam-A.hmm
+    db_h3m: ../../ref/pfam/Pfam-A.h3m
+    db_h3i: ../../ref/pfam/Pfam-A.h3i
+    db_h3f: ../../ref/pfam/Pfam-A.h3f
+    db_h3p: ../../ref/pfam/Pfam-A.h3p
+
     hmmer_out: ../../ref/pc_translations_renamed_pfam_domtblout.txt
     hmmer_out_align: ../../ref/pc_translations_renamed_pfam_domtblout_align.txt
 
