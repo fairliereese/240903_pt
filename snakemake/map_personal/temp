@@ -1,79 +1,79 @@
 Building DAG of jobs...
 Job stats:
-job                     count    min threads    max threads
---------------------  -------  -------------  -------------
-all                         1              1              1
-dl_personal_assembly        7              1              1
-total                       8              1              1
+job                         count    min threads    max threads
+------------------------  -------  -------------  -------------
+all                             1              1              1
+dl_personal_assembly_mat        7              1              1
+total                           8              1              1
 
 
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
-    output: ../../ref/HG01952/HG01952.fa.gz
-    jobid: 3
-    wildcards: assembly=HG01952
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
-
-
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
-    output: ../../ref/HG02717/HG02717.fa.gz
-    jobid: 4
-    wildcards: assembly=HG02717
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
-
-
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
-    output: ../../ref/HG002/HG002.fa.gz
-    jobid: 5
-    wildcards: assembly=HG002
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
-
-
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
     output: ../../ref/NA18906/NA18906.fa.gz
     jobid: 6
-    wildcards: assembly=NA18906
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+    wildcards: assembly_sample=NA18906
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
 
 
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
     output: ../../ref/NA19240/NA19240.fa.gz
     jobid: 7
-    wildcards: assembly=NA19240
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+    wildcards: assembly_sample=NA19240
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
 
 
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
     output: ../../ref/HG00673/HG00673.fa.gz
     jobid: 1
-    wildcards: assembly=HG00673
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+    wildcards: assembly_sample=HG00673
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
 
 
-[Tue Sep 24 18:59:56 2024]
-rule dl_personal_assembly:
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
     output: ../../ref/HG01928/HG01928.fa.gz
     jobid: 2
-    wildcards: assembly=HG01928
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+    wildcards: assembly_sample=HG01928
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
 
 
-[Tue Sep 24 18:59:56 2024]
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
+    output: ../../ref/HG01952/HG01952.fa.gz
+    jobid: 3
+    wildcards: assembly_sample=HG01952
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+
+
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
+    output: ../../ref/HG02717/HG02717.fa.gz
+    jobid: 4
+    wildcards: assembly_sample=HG02717
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+
+
+[Tue Oct  8 17:33:05 2024]
+rule dl_personal_assembly_mat:
+    output: ../../ref/HG002/HG002.fa.gz
+    jobid: 5
+    wildcards: assembly_sample=HG002
+    resources: mem_mb=1000, disk_mb=1000, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T, nodes=1, threads=1
+
+
+[Tue Oct  8 17:33:05 2024]
 localrule all:
     input: ../../ref/HG00673/HG00673.fa.gz, ../../ref/HG01928/HG01928.fa.gz, ../../ref/HG01952/HG01952.fa.gz, ../../ref/HG02717/HG02717.fa.gz, ../../ref/HG002/HG002.fa.gz, ../../ref/NA18906/NA18906.fa.gz, ../../ref/NA19240/NA19240.fa.gz
     jobid: 0
-    resources: tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T
+    resources: mem_mb=<TBD>, disk_mb=<TBD>, tmpdir=/var/folders/ch/bc1lrgbd1fn_3gxz886mxjz00000gn/T
 
 Job stats:
-job                     count    min threads    max threads
---------------------  -------  -------------  -------------
-all                         1              1              1
-dl_personal_assembly        7              1              1
-total                       8              1              1
+job                         count    min threads    max threads
+------------------------  -------  -------------  -------------
+all                             1              1              1
+dl_personal_assembly_mat        7              1              1
+total                           8              1              1
 
 This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.

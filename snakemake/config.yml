@@ -58,8 +58,6 @@ ref:
     hmmer_out: ../../ref/pc_translations_renamed_pfam_domtblout.txt
     hmmer_out_align: ../../ref/pc_translations_renamed_pfam_domtblout_align.txt
 
-
-
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
     gtf_gz: ../../data/gtex/flair_filter_transcripts.gtf.gz
