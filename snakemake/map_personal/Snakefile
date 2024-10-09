@@ -31,9 +31,14 @@ include: f'{c_dir}minimap2.smk'
 include: f'{c_dir}stats.smk'
 
 
+meta_file = '../config.tsv'
+meta_file_2 = 'config.tsv'
+genomes_file = 'genomes_config.tsv'
+
 df = parse_config(meta_file)
 df2 = pd.read_csv(meta_file_2, sep='\t')
 df2['tech_rep'] = df2.cell_line_id+'_1'
+df2['same_sample'] = df2['pangenome_code']
 
 # TODO test
 # df2 = df2.loc[df2.cell_line_id == 'GM24385']
@@ -52,19 +57,20 @@ g_df = g_df.loc[g_df['aws_pat_link'].notnull()]
 assert len(g_df.loc[g_df['aws_pat_link'].str.contains('paternal')].index) == len(g_df.index)
 
 
-genome_cols = ['same_population_sample', 'european_sample',	'afr_sample']
+genome_cols = ['same_population_sample', 'european_sample',	'afr_sample', 'same_sample']
 assemblies = genome_cols
 g_df = g_df.loc[(g_df['sample'].isin(df2[genome_cols[0]]))|
                 (g_df['sample'].isin(df2[genome_cols[1]]))|
-                (g_df['sample'].isin(df2[genome_cols[2]]))]
+                (g_df['sample'].isin(df2[genome_cols[2]]))|
+                (g_df['sample'].isin(df2[genome_cols[3]]))]
 
 # a little more df2 formatting
-df2 = df2[['tech_rep', 'same_population_sample',
-           'european_sample', 'afr_sample']].melt(id_vars='tech_rep')
+df2 = df2[['tech_rep']+assemblies].melt(id_vars='tech_rep')
 df2 = df2.reset_index()
 df2 = df2.rename({'variable':'assembly_status',
                   'value': 'assembly_sample'},
                   axis=1)
+
 
 # limit just to the samples where we'll do this
 df = df.loc[df.tech_rep.isin(df2.tech_rep.tolist())]
