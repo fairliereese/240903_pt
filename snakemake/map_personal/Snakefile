@@ -332,11 +332,12 @@ use rule max_mapq_personal_mappings_summary as get_max_mapq_personal_mappings_su
 
 use rule read_id_df_summary as get_mapq_summary_summary with:
     input:
-        tsvs = lambda wc: expand(config['lr']['map_personal']['mapq_tsv'],
+        tsvs = lambda wc: expand(expand(config['lr']['map_personal']['mapq_tsv'],
                                zip,
                                assembly_status=df2.assembly_status.tolist(),
                                assembly_sample=df2.assembly_sample.tolist(),
                                sample=df2.tech_rep.tolist(),
+                               allow_missing=True),
                                thresh=wc.thresh)
     resources:
         threads = 1,
@@ -348,11 +349,12 @@ use rule read_id_df_summary as get_mapq_summary_summary with:
 
 use rule read_id_df_summary as get_max_mapq_summary_summary with:
     input:
-        tsvs = lambda wc: expand(config['lr']['map_personal']['max_mapq_tsv'],
+        tsvs = lambda wc: expand(expand(config['lr']['map_personal']['max_mapq_tsv'],
                                zip,
                                assembly_status=df2.assembly_status.tolist(),
                                assembly_sample=df2.assembly_sample.tolist(),
                                sample=df2.tech_rep.tolist(),
+                               allow_missing=True),
                                thresh=wc.thresh)
     resources:
         threads = 1,
