@@ -118,15 +118,22 @@ rule all:
 
 
 
-def get_df_val(df, col1, col_dict):
+def get_df_val(df, col1, col_dict, uniq_val=True):
+    """
+    uniq_val (b0ool) needs to return a uniq val rather
+        than a list
+    """
     temp = df.copy(deep=True)
 
     for key, item in col_dict.items():
         temp = temp.loc[temp[key] == item]
 
-    val = temp[col1].unique()
-    assert len(val) == 1
-    return val[0]
+    if uniq_val:
+        val = temp[col1].unique()
+        assert len(val) == 1
+        return val[0]
+    else:
+        return temp[col1].tolist()
 
 use rule dl_aws as dl_personal_assembly_mat with:
     params:
@@ -298,12 +305,11 @@ use rule read_id_df_summary as alt_get_qcov_summary with:
 ################################
 use rule bool_mapq_personal_mappings_summary as get_bool_mapq_personal_mappings_summary with:
     input:
-        files = lambda wc: expand(expand(config['lr']['map_personal']['bam_mapqs'],
+        files = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,
-                           assembly_status=assemblies,
-                           assembly_sample=df2.assembly_sample.tolist(),
-                           allow_missing=True),
-                           sample=wc.sample)
+                           assembly_status=get_df_val(df2, 'assembly_status', {'tech_rep':wc.sample}, uniq_val=False),
+                           assembly_sample=get_df_val(df2, 'assembly_sample', {'tech_rep':wc.sample}, uniq_val=False),
+                           sample=get_df_val(df2, 'tech_rep', {'tech_rep':wc.sample}, uniq_val=False))
     params:
         assemblies = assemblies,
         mapq_thresh = lambda wc: wc.thresh,
@@ -314,12 +320,11 @@ use rule bool_mapq_personal_mappings_summary as get_bool_mapq_personal_mappings_
 
 use rule max_mapq_personal_mappings_summary as get_max_mapq_personal_mappings_summary with:
     input:
-        files = lambda wc: expand(expand(config['lr']['map_personal']['bam_mapqs'],
+        files = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
                            zip,
-                           assembly_status=assemblies,
-                           assembly_sample=df2.assembly_sample.tolist(),
-                           allow_missing=True),
-                           sample=wc.sample)
+                           assembly_status=get_df_val(df2, 'assembly_status', {'tech_rep':wc.sample}, uniq_val=False),
+                           assembly_sample=get_df_val(df2, 'assembly_sample', {'tech_rep':wc.sample}, uniq_val=False),
+                           sample=get_df_val(df2, 'tech_rep', {'tech_rep':wc.sample}, uniq_val=False))
     params:
         assemblies = assemblies,
         mapq_thresh = lambda wc: wc.thresh
