@@ -307,3 +307,27 @@ def rm_sirv_ercc_gtf(ifile, ofile):
     df = df.loc[~df.Chromosome.str.contains('ERCC')]
     df = pr.PyRanges(df)
     df.to_gtf(ofile)
+
+def write_parsed_hmmer(ifile, ofile):
+    infile = open(ifile, 'r')
+    outfile = open(ofile, 'w')
+
+    # write header to file first
+    header = ['transcript_id', 'accession', 'bias',
+              'bitscore', 'description',
+              'evalue', 'id']
+    outfile.write('\t'.join(header)+'\n')
+    for record in SearchIO.parse(infile, 'hmmscan3-domtab'):
+        tid = record.id
+        for hit in record.hits:
+            new_line = []
+            new_line.append(tid)
+            new_line.append(str(hit.accession))
+            new_line.append(str(hit.bias))
+            new_line.append(str(hit.bitscore))
+            new_line.append(str(hit.description))
+            new_line.append(str(hit.evalue))
+            new_line.append(str(hit.id))
+            outfile.write('\t'.join(new_line)+'\n')
+    infile.close()
+    outfile.close()

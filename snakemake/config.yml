@@ -62,6 +62,7 @@ ref:
 
     hmmer_out: ../../ref/pc_translations_renamed_pfam_domtblout.txt
     hmmer_out_align: ../../ref/pc_translations_renamed_pfam_domtblout_align.txt
+    hmmer_parsed: ../../ref/pc_translations_renamed_pfam_domtblout_parsed.tsv
 
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
@@ -169,6 +170,7 @@ lr:
     pc_fa: ../../data/pfam/transcripts_pc.fa
     hmmer_out: ../../data/pfam/transcripts_pc_pfam_domtblout.txt
     hmmer_out_align: ../../data/pfam/transcripts_pc_pfam_domtblout_align.txt
+    hmmer_parsed: ../../data/pfam/transcripts_pc_pfam_domtblout_parsed.tsv
 
 
   map:

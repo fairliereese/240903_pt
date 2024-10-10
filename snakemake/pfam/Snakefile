@@ -36,8 +36,8 @@ include: f'{c_dir}lr-kallisto.smk'
 
 rule all:
     input:
-        config['ref']['pfam']['hmmer_out_align'],
-        config['lr']['pfam']['hmmer_out_align']
+        config['ref']['pfam']['hmmer_parsed'],
+        config['lr']['pfam']['hmmer_parsed']
         # config['ref']['pfam']['db']
         # config['lr']['pfam']['pc_fa']
 
@@ -148,3 +148,32 @@ use rule run_hmmer as run_hmmer_gc with:
     output:
         txt = config['ref']['pfam']['hmmer_out'],
         txt_align = config['ref']['pfam']['hmmer_out_align']
+
+rule parse_hmmer:
+    resources:
+        threads = 1,
+        nodes = 1
+    run:
+        from Bio import SearchIO
+        write_parsed_hmmer(input.txt, output.tsv)
+
+use rule parse_hmmer as gc_parse_hmmer with:
+    input:
+        txt = config['ref']['pfam']['hmmer_out']
+    output:
+        tsv = config['ref']['pfam']['hmmer_parsed']
+
+use rule parse_hmmer as poder_parse_hmmer with:
+    input:
+        txt = config['lr']['pfam']['hmmer_out']
+    output:
+        tsv = config['lr']['pfam']['hmmer_parsed']
+
+# rule filt_pfam:
+#     input:
+#     params:
+#     output:
+#     shell:
+#         """
+#
+#         """
