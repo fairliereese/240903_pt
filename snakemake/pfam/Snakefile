@@ -154,7 +154,6 @@ rule parse_hmmer:
         threads = 1,
         nodes = 1
     run:
-        from Bio import SearchIO
         write_parsed_hmmer(input.txt, output.tsv)
 
 use rule parse_hmmer as gc_parse_hmmer with:

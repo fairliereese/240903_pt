@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import pysam
 import re
+from Bio import SearchIO
+
 
 def load_config(config_file=None):
     """
