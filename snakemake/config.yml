@@ -9,11 +9,15 @@ ref:
     hg38:
       link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
     personal:
-      fa_gz: ../../ref/{assembly_sample}/{assembly_sample}.fa.gz
-      fa_mmi: ../../ref/{assembly_sample}/{assembly_sample}.fa.mmi
+      fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_{assembly_haplotype}.fa.gz
+      fa_mmi: ../../ref/{assembly_sample}/{assembly_sample}_{assembly_haplotype}.fa.mmi
 
-      pat_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat.fa.gz
-      pat_y_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat_y.fa.gz # only the y chrom
+      kallisto:
+        ind: ../../ref/{assembly_sample}/{assembly_sample}_k-63.idx
+        t_fa: ../../ref/{assembly_sample}/{assembly_sample}_transcripts.fa
+        t2g: ../../ref/{assembly_sample}/{assembly_sample}.t2g
+        t2g_8col: ../../ref/{assembly_sample}/{assembly_sample}.t2g
+        t2t: ../../ref/{assembly_sample}/{assembly_sample}.t2t
 
   # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
   fa: ../../ref/hg38.fa
@@ -40,7 +44,6 @@ ref:
     t2g: ../../ref/v47_kallisto/hg38_v47.t2g
     t2g_8col: ../../ref/v47_kallisto/hg38_v47_8col.t2g
     t2t: ../../ref/v47_kallisto/hg38_v47.t2t
-
 
   kallisto:
     ind: ../../ref/kallisto/hg38_v47_k-63.idx

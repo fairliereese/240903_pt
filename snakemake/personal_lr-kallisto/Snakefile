@@ -78,48 +78,25 @@ df2['dataset_key'] = df2.assembly_status+'_'+\
                      df2.assembly_sample+'_'+\
                      df2.tech_rep
 
+g_df = g_df[['sample', 'aws_mat_link', 'aws_pat_link']]
+g_df = g_df = pd.melt(g_df, id_vars=['sample'],
+                  value_vars=['aws_mat_link', 'aws_pat_link'],
+                  var_name='haplotype', value_name='link')
+
+# Map 'haplotype' column to 'maternal' or 'paternal' based on the column name
+g_df['haplotype'] = g_df['haplotype'].map({
+    'aws_mat_link': 'maternal',
+    'aws_pat_link': 'paternal'
+})
+
 wildcard_constraints:
     assembly='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),
 
 rule all:
     input:
-        expand(config['ref']['alt']['personal']['pat_fa_gz'],
-               assembly_sample=g_df['sample'].tolist()),
         expand(config['ref']['alt']['personal']['fa_gz'],
-                  assembly_sample=g_df['sample'].tolist())
-        # expand(config['lr']['map_personal']['mapq_tsv_summary'],
-        #            thresh=[0, 10]),
-        # expand(config['lr']['map_personal']['max_mapq_tsv_summary'],
-        #        thresh=[0, 10]),
-
-                # expand(config['lr']['map_personal']['max_mapq_tsv'],
-                #                    sample='GM24385_1',
-                #                    thresh=0)
-
-
-
-        # expand(config['lr']['map_personal']['bam_ind'],
-        #        zip,
-        #        assembly_status=df2.assembly_status.tolist(),
-        #        assembly_sample=df2.assembly_sample.tolist(),
-        #        sample=df2.tech_rep.tolist()),
-        # config['lr']['fastq_n_reads_summary'],
-        # expand(config['lr']['map_personal']['bam_n_reads_summary'],
-        #        zip,
-        #        assembly_status=df2.assembly_status.tolist(),
-        #        assembly_sample=df2.assembly_sample.tolist(),
-        #        sample=df2.tech_rep.tolist()),
-        # expand(config['lr']['map_personal']['bam_mapqs_summary'],
-        #     zip,
-        #     assembly_status=df2.assembly_status.tolist(),
-        #     assembly_sample=df2.assembly_sample.tolist(),
-        #     sample=df2.tech_rep.tolist()),
-        # expand(config['lr']['map_personal']['bam_query_covs_summary'],
-        #      zip,
-        #      assembly_status=df2.assembly_status.tolist(),
-        #      assembly_sample=df2.assembly_sample.tolist(),
-        #      sample=df2.tech_rep.tolist()),
-
+               assembly_sample=g_df['sample'].tolist(),
+               assembly_haplotype=g_df['haplotype'].tolist())
 
 
 def get_df_val(df, col1, col_dict, uniq_val=True):
@@ -141,234 +118,15 @@ def get_df_val(df, col1, col_dict, uniq_val=True):
 
 use rule dl_aws as dl_personal_assembly_mat with:
     params:
-        link = lambda wc: get_df_val(g_df, 'aws_mat_link',
-                            {'sample': wc.assembly_sample})
+        link = lambda wc: get_df_val(g_df, 'link',
+                            {'sample': wc.assembly_sample,
+                             'haplotype': wc.assembly_haplotype})
     output:
         out = config['ref']['alt']['personal']['fa_gz']
-
-use rule dl_aws as dl_personal_assembly_pat with:
-    params:
-        link = lambda wc: get_df_val(g_df, 'aws_pat_link',
-                            {'sample': wc.assembly_sample})
-    output:
-        out = config['ref']['alt']['personal']['pat_fa_gz']
-
-# rule get_y_chr_fa:
-    # input:
-    #     fa = config['ref']['alt']['personal']['pat_fa_gz']
-    # resources:
-    #     threads = 1,
-    #     nodes = 1
-    # output:
-    #     fa = config['ref']['alt']['personal']['pat_y_fa_gz']
-    # shell:
-    #     """
-    #     module load intel/2023.0
-    #     module load samtools
-    #     samtools faidx <(zcat {input.fa}) chrX | gzip > {output.fa}
-    #     """
-
-
-### index genome
-use rule minimap2_index as ind_alt_assembly with:
-    input:
-        fa = config['ref']['alt']['personal']['fa_gz']
-    output:
-        ind = config['ref']['alt']['personal']['fa_mmi']
-
-use rule minimap2_with_index as alt_map with:
-    input:
-        fq = lambda wc: expand(config['lr']['fastq'],
-                    lab_sample=get_df_val(df,
-                            'lab_rep',
-                            {'tech_rep': wc.sample})),
-        ind = config['ref']['alt']['personal']['fa_mmi']
-    resources:
-        threads = 8,
-        nodes = 32
-    output:
-        sam = temporary(config['lr']['map_personal']['sam'])
-
-use rule filt_non_prim_unmap_supp as alt_filt_map with:
-    input:
-        align = config['lr']['map_personal']['sam']
-    output:
-        align = temporary(config['lr']['map_personal']['sam_filt'])
-
-use rule sam_to_bam as alt_sam_to_bam with:
-    input:
-        sam = config['lr']['map_personal']['sam_filt']
-    output:
-        bam = temporary(config['lr']['map_personal']['bam'])
-
-# index and sort bam
-use rule sort_bam as alt_sort_bam with:
-    input:
-        bam = config['lr']['map_personal']['bam']
-    output:
-        bam = config['lr']['map_personal']['bam_sort']
-
-use rule index_bam as alt_index_bam with:
-    input:
-        bam = config['lr']['map_personal']['bam_sort']
-    output:
-        ind = config['lr']['map_personal']['bam_ind']
-
-# ### statistics
-# rule all_stats:
-#     input:
-#         config['lr']['fastq_n_reads_summary'],
-#         expand(config['lr']['map_personal']['bam_n_reads_summary'],
-#                assembly=assemblies),
-#         expand(config['lr']['map_personal']['bam_mapqs_summary'],
-#               assembly=assemblies)
-
-
-# raw fq counts
-use rule fq_count_reads as count_raw_reads with:
-    input:
-        fq = lambda wc: expand(config['lr']['fastq'],
-                    lab_sample=get_df_val(df,
-                            'lab_rep',
-                            {'tech_rep': wc.sample}))
-    output:
-        txt = config['lr']['fastq_n_reads']
-
-use rule count_reads_summary as fq_count_reads_summary with:
-    input:
-        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
-                                sample=df2['tech_rep'].tolist()),
-    params:
-        samples = df2['tech_rep'].tolist()
-    output:
-        summ = config['lr']['fastq_n_reads_summary']
-
-# filtered bam counts
-use rule count_bam as alt_count_mapped_reads with:
-    input:
-        align = config['lr']['map_personal']['bam_sort']
-    output:
-        txt = config['lr']['map_personal']['bam_n_reads']
-
-
-use rule count_reads_summary as sam_count_reads_summary with:
-    input:
-        txts = lambda wc: expand(config['lr']['map_personal']['bam_n_reads'],
-                                       zip,
-                                       assembly_status=df2.assembly_status.tolist(),
-                                       assembly_sample=df2.assembly_sample.tolist(),
-                                       sample=df2.tech_rep.tolist())
-    params:
-        samples = df2['dataset_key'].tolist()
-    output:
-        summ = config['lr']['map_personal']['bam_n_reads_summary']
-
-# mapqs per read
-use rule bam_get_mapqs as alt_get_mapqs with:
-    input:
-        bam = config['lr']['map_personal']['bam_sort']
-    output:
-        txt = config['lr']['map_personal']['bam_mapqs']
-
-use rule read_id_df_summary as alt_get_mapqs_summary with:
-    input:
-        tsvs = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
-                               zip,
-                               assembly_status=df2.assembly_status.tolist(),
-                               assembly_sample=df2.assembly_sample.tolist(),
-                               sample=df2.tech_rep.tolist())
-    params:
-        samples = df2['dataset_key'].tolist()
-    resources:
-        threads = 1,
-        nodes = 3
-    output:
-        summ = config['lr']['map_personal']['bam_mapqs_summary']
-
-# query coverage and read length per read
-use rule bam_get_query_cov as alt_get_qcov with:
-    input:
-        align = config['lr']['map_personal']['bam_sort']
-    output:
-        out = config['lr']['map_personal']['bam_query_covs']
-
-use rule read_id_df_summary as alt_get_qcov_summary with:
-    input:
-        tsvs = lambda wc: expand(config['lr']['map_personal']['bam_query_covs'],
-                               zip,
-                               assembly_status=df2.assembly_status.tolist(),
-                               assembly_sample=df2.assembly_sample.tolist(),
-                               sample=df2.tech_rep.tolist())
-    params:
-        samples = df2['dataset_key'].tolist()
-    output:
-        summ = config['lr']['map_personal']['bam_query_covs_summary']
-
-################################
-#### mapping summary statistics that aren't so heavy
-################################
-use rule bool_mapq_personal_mappings_summary as get_bool_mapq_personal_mappings_summary with:
-    input:
-        files = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
-                           zip,
-                           assembly_status=get_df_val(df2, 'assembly_status', {'tech_rep':wc.sample}, uniq_val=False),
-                           assembly_sample=get_df_val(df2, 'assembly_sample', {'tech_rep':wc.sample}, uniq_val=False),
-                           sample=get_df_val(df2, 'tech_rep', {'tech_rep':wc.sample}, uniq_val=False))
-    params:
-        assemblies = assemblies,
-        mapq_thresh = lambda wc: wc.thresh,
-    output:
-        tsv = config['lr']['map_personal']['mapq_tsv'],
-        same_pop_uniq_reads = config['lr']['map_personal']['same_pop_uniq_reads'],
-        upset = config['lr']['map_personal']['mapq_upset']
-
-use rule max_mapq_personal_mappings_summary as get_max_mapq_personal_mappings_summary with:
-    input:
-        files = lambda wc: expand(config['lr']['map_personal']['bam_mapqs'],
-                           zip,
-                           assembly_status=get_df_val(df2, 'assembly_status', {'tech_rep':wc.sample}, uniq_val=False),
-                           assembly_sample=get_df_val(df2, 'assembly_sample', {'tech_rep':wc.sample}, uniq_val=False),
-                           sample=get_df_val(df2, 'tech_rep', {'tech_rep':wc.sample}, uniq_val=False))
-    params:
-        assemblies = assemblies,
-        mapq_thresh = lambda wc: wc.thresh
-    output:
-        tsv = config['lr']['map_personal']['max_mapq_tsv'],
-        same_pop_uniq_reads = config['lr']['map_personal']['max_same_pop_uniq_reads'],
-        upset = config['lr']['map_personal']['max_mapq_upset']
-
-
-
-use rule read_id_df_summary as get_mapq_summary_summary with:
-    input:
-        tsvs = lambda wc: expand(expand(config['lr']['map_personal']['mapq_tsv'],
-                               zip,
-                               assembly_status=df2.assembly_status.tolist(),
-                               assembly_sample=df2.assembly_sample.tolist(),
-                               sample=df2.tech_rep.tolist(),
-                               allow_missing=True),
-                               thresh=wc.thresh)
-    resources:
-        threads = 1,
-        nodes = 3
-    params:
-        samples = df2['tech_rep'].tolist()
-    output:
-        summ = config['lr']['map_personal']['mapq_tsv_summary']
-
-use rule read_id_df_summary as get_max_mapq_summary_summary with:
-    input:
-        tsvs = lambda wc: expand(expand(config['lr']['map_personal']['max_mapq_tsv'],
-                               zip,
-                               assembly_status=df2.assembly_status.tolist(),
-                               assembly_sample=df2.assembly_sample.tolist(),
-                               sample=df2.tech_rep.tolist(),
-                               allow_missing=True),
-                               thresh=wc.thresh)
-    resources:
-        threads = 1,
-        nodes = 3
-    params:
-        samples = df2['tech_rep'].tolist()
-    output:
-        summ = config['lr']['map_personal']['max_mapq_tsv_summary']
+#
+# use rule dl_aws as dl_personal_assembly_pat with:
+#     params:
+#         link = lambda wc: get_df_val(g_df, 'aws_pat_link',
+#                             {'sample': wc.assembly_sample})
+#     output:
+#         out = config['ref']['alt']['personal']['pat_fa_gz']
