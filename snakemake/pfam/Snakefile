@@ -153,8 +153,18 @@ rule parse_hmmer:
     resources:
         threads = 1,
         nodes = 1
-    run:
-        write_parsed_hmmer(input.txt, output.tsv)
+    params:
+        scripts_dir = p
+    shell:
+        """
+        module load R/4.3.2
+        python {params.scripts_dir}/Hmmscan-dmtblout-Parser.R \
+            -i {input.txt} \
+            -r {params.scripts_dir}/rhmmer.R \
+            -o {output.tsv}
+        """
+    # run:
+    #     write_parsed_hmmer(input.txt, output.tsv)
 
 use rule parse_hmmer as gc_parse_hmmer with:
     input:
