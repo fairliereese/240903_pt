@@ -35,21 +35,21 @@ opt <- parse_args(OptionParser(option_list=option_list))
 suppressPackageStartupMessages(require(magrittr))
 
 # 2) Coerce tbl to df
-tbl.to.df <- function(tb){
+tbl.to.df <- function(tb, transcript_id){
   ## Coerce hmmscan parsed tbl (from 'read_domtblout()') to df. Replenish with NAs if tb is empty
   # If empty tb
   if(nrow(tb) == 0){
     # create empty df
     df <- as.data.frame(setNames(rep(list(NA), length(names(tb))), names(tb)))
     df[["pfam_match"]] <- FALSE
-  } else {
+} else {
     df <- data.frame(tb)
     df[["pfam_match"]] <- TRUE
   }
   return(df)
 }
 
-# 3) [NOT RUNNING FOR NOW - NOT CLEAR, Some fractions are above 1, Potential wrong formula] Calculate domain coverage
+# 3)  [NOT RUNNING FOR NOW - NOT CLEAR, Some fractions are above 1, Potential wrong formula] Calculate domain coverage
 ## In addition, this can be included in a data analysis step, it is out of the scope of a simple 'parser'
 frac.alig.domain <- function(df){
   ## Calculate the fraction of AA of the HMM model spanned by the PFAM alignment
@@ -63,9 +63,9 @@ frac.alig.domain <- function(df){
 source(opt$rhmmer_path)
 # 1. Parser HMMScan Output Table
 hmmscan.tb <- read_domtblout(opt$hmmscan_tbl)
-# 2. Coerce to df without filtering for transcript_id
+# 2. Coerce to df
 hmmscan.df <- tbl.to.df(hmmscan.tb)
 # 3. Add fraction of alignment
 hmmscan.df <- frac.alig.domain(hmmscan.df)
-# 4. Save the concatenated results as TSV
-write.table(hmmscan.df, file = opt$output_table, quote = F, sep = "\t", row.names = F)
+# 4. Save TSV
+write.table(hmmscan.df, file = opt$output_table, quote = F, sep = "\t")
