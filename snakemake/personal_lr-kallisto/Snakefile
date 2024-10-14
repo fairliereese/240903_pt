@@ -35,8 +35,6 @@ meta_file = '../config.tsv'
 meta_file_2 = 'config.tsv'
 genomes_file = 'genomes_config.tsv'
 
-import pdb; pdb.set_trace()
-
 df = parse_config(meta_file)
 df2 = pd.read_csv(meta_file_2, sep='\t')
 df2['tech_rep'] = df2.cell_line_id+'_1'
@@ -60,10 +58,10 @@ assert len(g_df.loc[g_df['aws_pat_link'].str.contains('paternal')].index) == len
 
 genome_cols = ['same_population_sample', 'european_sample',	'afr_sample', 'same_sample']
 assemblies = genome_cols
-g_df = g_df.loc[(g_df['sample'].isin(df2[genome_cols[0]]))|
-                (g_df['sample'].isin(df2[genome_cols[1]]))|
-                (g_df['sample'].isin(df2[genome_cols[2]]))|
-                (g_df['sample'].isin(df2[genome_cols[3]]))]
+# g_df = g_df.loc[(g_df['sample'].isin(df2[genome_cols[0]]))|
+#                 (g_df['sample'].isin(df2[genome_cols[1]]))|
+#                 (g_df['sample'].isin(df2[genome_cols[2]]))|
+#                 (g_df['sample'].isin(df2[genome_cols[3]]))]
 
 # a little more df2 formatting
 df2 = df2[['tech_rep']+assemblies].melt(id_vars='tech_rep')
@@ -80,11 +78,8 @@ df2['dataset_key'] = df2.assembly_status+'_'+\
                      df2.assembly_sample+'_'+\
                      df2.tech_rep
 
-
 wildcard_constraints:
     assembly='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),
-    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
-    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
 
 rule all:
     input:

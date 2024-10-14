@@ -15,8 +15,6 @@ ref:
       pat_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat.fa.gz
       pat_y_fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_pat_y.fa.gz # only the y chrom
 
-
-
   # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
   fa: ../../ref/hg38.fa
   fa_mmi: ../../ref/hg38.fa.mmi
