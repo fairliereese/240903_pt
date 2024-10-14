@@ -337,6 +337,35 @@ lr:
       merge_matrix_tsv: ../../data/v47_unmerged_kallisto_quant/matrix.abundance.tsv
       merge_matrix_tpm_tsv: ../../data/v47_unmerged_kallisto_quant/matrix.abundance.tpm.tsv
 
+  personal_kallisto:
+    odir: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/
+    bus: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/output.bus
+    transcripts: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/transcripts.txt
+    matrix: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/matrix.ec
+    flens: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/flens.txt
+    bus_sort: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/output_sorted.bus
+
+    count_pref_uniq: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/count
+    count_mtx_uniq: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/count.mtx
+    count_transcripts_uniq: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/count.genes.txt
+    matrix_tsv_uniq: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/matrix_uniq.abundance.tsv
+
+
+    count_pref: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count
+    count_mtx: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count.mtx
+    count_ec: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count.ec.txt
+    matrix_tsv: ../../data/personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/matrix.abundance.tsv
+
+    quant:
+      odir: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/{sample}
+      matrix: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/{sample}/matrix.abundance.mtx
+      matrix_tpm: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/{sample}/matrix.abundance.tpm.mtx
+      matrix_tsv: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/{sample}/matrix.abundance.tsv
+      matrix_tpm_tsv: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/{sample}/matrix.abundance.tpm.tsv
+      merge_matrix_tsv: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/matrix.abundance.tsv
+      merge_matrix_tpm_tsv: ../../data/personal_kallisto_quant/{assembly_sample}_{assembly_haplotype}/matrix.abundance.tpm.tsv
+
+
   sqanti:
     gff: ../../data/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
 
