@@ -9,15 +9,15 @@ ref:
     hg38:
       link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
     personal:
-      fa_gz: ../../ref/{assembly_sample}/{assembly_sample}_{assembly_haplotype}.fa.gz
-      fa_mmi: ../../ref/{assembly_sample}/{assembly_sample}_{assembly_haplotype}.fa.mmi
+      fa_gz: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.gz
+      fa_mmi: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.mmi
 
       kallisto:
-        ind: ../../ref/{assembly_sample}/{assembly_sample}_k-63.idx
-        t_fa: ../../ref/{assembly_sample}/{assembly_sample}_transcripts.fa
-        t2g: ../../ref/{assembly_sample}/{assembly_sample}.t2g
-        t2g_8col: ../../ref/{assembly_sample}/{assembly_sample}.t2g
-        t2t: ../../ref/{assembly_sample}/{assembly_sample}.t2t
+        ind: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
+        t_fa: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
+        t2g: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
+        t2g_8col: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
+        t2t: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2t
 
   # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
   fa: ../../ref/hg38.fa
