@@ -157,8 +157,8 @@ use rule kallisto_build_ind as kallisto_ind with:
                                      'assembly_haplotype': wc.assembly_haplotype})
         # gtf = config['lr']['gtf_filt_with_genes'] # TODO fabiens GTF
     output:
-        # ind = config['ref']['alt']['personal']['kallisto']['ind'],
-        fa = config['ref']['alt']['personal']['kallisto']['t_fa'],
+        ind = config['ref']['alt']['personal']['kallisto']['ind'],
+        # fa = config['ref']['alt']['personal']['kallisto']['t_fa'],
         t2g = config['ref']['alt']['personal']['kallisto']['t2g'],
 
 use rule kallisto_pseudoalign as pseudoalign with:
