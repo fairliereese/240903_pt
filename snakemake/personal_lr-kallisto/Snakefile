@@ -94,8 +94,8 @@ g_df['haplotype'] = g_df['haplotype'].map({
 gtf_df = pd.read_csv(gtfs_file, sep='\t')
 
 wildcard_constraints:
-    assembly_sample='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),,
-    assembly_haplotype='|'.join([re.escape(x) for x in g_df['haplotype'].tolist()]),,
+    assembly_sample='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),
+    assembly_haplotype='|'.join([re.escape(x) for x in g_df['haplotype'].tolist()]),
     sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
     lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
 
