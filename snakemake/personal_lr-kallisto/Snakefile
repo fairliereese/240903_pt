@@ -101,14 +101,14 @@ wildcard_constraints:
 
 rule all:
     input:
-    expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tpm_tsv'],
-           zip,
-           assembly_sample=gtf_df['assembly_sample'].tolist(),
-           assembly_haplotype=gtf_df['assembly_haplotype'].tolist()),
-    expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tsv'],
-           zip,
-           assembly_sample=gtf_df['assembly_sample'].tolist(),
-           assembly_haplotype=gtf_df['assembly_haplotype'].tolist())
+        expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tpm_tsv'],
+               zip,
+               assembly_sample=gtf_df['assembly_sample'].tolist(),
+               assembly_haplotype=gtf_df['assembly_haplotype'].tolist()),
+        expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tsv'],
+               zip,
+               assembly_sample=gtf_df['assembly_sample'].tolist(),
+               assembly_haplotype=gtf_df['assembly_haplotype'].tolist())
 
         # expand(config['ref']['alt']['personal']['fa_gz'],
         #        assembly_sample=g_df['sample'].tolist(),
