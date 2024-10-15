@@ -73,14 +73,14 @@ rule all:
 
 use rule wget as dl_r1_fq with:
     params:
-        link = lambda wc: get_df_val(df, 'fastq_ftp',
+        link = lambda wc: get_df_val(df, 'r1_fq_link',
                                      {'sample': wc.sample})
     output:
         out = config['mage']['r1_fq']
 
 use rule wget as dl_r2_fq with:
     params:
-        link = lambda wc: get_df_val(df, 'fastq_ftp',
+        link = lambda wc: get_df_val(df, 'r2_fq_link',
                                      {'sample': wc.sample})
     output:
         out = config['mage']['r2_fq']
