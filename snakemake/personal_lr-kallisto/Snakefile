@@ -94,6 +94,8 @@ g_df['haplotype'] = g_df['haplotype'].map({
 gtf_df = pd.read_csv(gtfs_file, sep='\t')
 gtf_df = gtf_df.loc[gtf_df.annot_ver=='PODER'] # filter for target annotation
 
+import pdb; pdb.set_trace()
+
 wildcard_constraints:
     assembly_sample='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),
     assembly_haplotype='|'.join([re.escape(x) for x in g_df['haplotype'].tolist()]),
