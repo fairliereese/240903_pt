@@ -9,22 +9,22 @@ ref:
     hg38:
       link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
     personal:
-      fa_gz: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.gz
-      fa_mmi: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.mmi
+      fa_gz: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.gz
+      fa_mmi: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.mmi
 
       v47_kallisto:
-        ind: ../../ref/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
-        t_fa: ../../ref/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
-        t2g: ../../ref/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
-        t2g_8col: ../../ref/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
-        t2t: ../../ref/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2t
+        ind: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
+        t_fa: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
+        t2g: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
+        t2g_8col: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
+        t2t: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2t
 
       kallisto:
-        ind: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
-        t_fa: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
-        t2g: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
-        t2g_8col: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
-        t2t: ../../ref/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2t
+        ind: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
+        t_fa: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
+        t2g: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
+        t2g_8col: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
+        t2t: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2t
 
   # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
   fa: ../../ref/hg38.fa
@@ -386,7 +386,6 @@ lr:
     count_mtx_uniq: ../../data/v47_personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/count.mtx
     count_transcripts_uniq: ../../data/v47_personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/count.genes.txt
     matrix_tsv_uniq: ../../data/v47_personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count_uniq/matrix_uniq.abundance.tsv
-
 
     count_pref: ../../data/v47_personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count
     count_mtx: ../../data/v47_personal_kallisto/{assembly_sample}_{assembly_haplotype}/{sample}/count.mtx

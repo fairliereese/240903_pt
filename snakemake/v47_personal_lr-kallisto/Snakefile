@@ -134,13 +134,13 @@ def get_df_val(df, col1, col_dict, uniq_val=True):
     else:
         return temp[col1].tolist()
 
-use rule dl_aws as dl_personal_assembly_mat with:
-    params:
-        link = lambda wc: get_df_val(g_df, 'link',
-                            {'sample': wc.assembly_sample,
-                             'haplotype': wc.assembly_haplotype})
-    output:
-        out = config['ref']['alt']['personal']['fa_gz']
+# use rule dl_aws as dl_personal_assembly_mat with:
+#     params:
+#         link = lambda wc: get_df_val(g_df, 'link',
+#                             {'sample': wc.assembly_sample,
+#                              'haplotype': wc.assembly_haplotype})
+#     output:
+#         out = config['ref']['alt']['personal']['fa_gz']
 #
 # use rule dl_aws as dl_personal_assembly_pat with:
 #     params:
