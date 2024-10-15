@@ -1,0 +1,5 @@
+path	annot_ver	assembly_sample	assembly_haplotype
+/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/liftoff/PODER/HG002/poder.hg38_to_HG002.lifted.gtf	PODER	HG002	maternal
+/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/liftoff/PODER/HG02717/poder.hg38_to_HG02717.lifted.gtf	PODER	HG02717	maternal
+/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/liftoff/gencodev47/HG002/gencodeV47.hg38_to_HG002.lifted.gtf	v47	HG002	maternal
+/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/liftoff/gencodev47/HG02717/gencodeV47.hg38_to_HG02717.lifted.gtf	v47	HG02717	maternal
