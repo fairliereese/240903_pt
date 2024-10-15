@@ -405,6 +405,9 @@ lr:
     gtf_added_gene_entries: ../../data/novel_gene/transcripts_novel_gene_loci_filt_gene_name.gtf
     # gtf_added_gene_entries: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240917_merge_geneEntry_correctedScaffolds_nochrEBV.gtf
 
+mage:
+  r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
+  r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
 
 params:
   orfanage:

@@ -1,0 +1,86 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+meta_file = 'filereport_read_run_PRJNA851328_tsv.txt'
+
+df = pd.read_csv(meta_file, sep='\t')
+df[['cell_line_id', 'batch', 'rep']] = df.experiment_alias.str.split('_', expand=True)
+len(df.index)
+len(df.cell_line_id.unique())
+
+df[['r1_fq_link', 'r2_fq_link']] = df.fastq_ftp.str.split(';', expand=True)
+df['r1_verify'] = df.r1_fq_link.str.endswith('_1.fastq.gz')
+df['r2_verify'] = df.r2_fq_link.str.endswith('_2.fastq.gz')
+assert len(df.loc[df.r1_verify==False].index)==0
+assert len(df.loc[df.r2_verify==False].index)==0
+
+df['sample'] = df['experiment_alias']
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
+
+def get_df_val(df, col1, col_dict, uniq_val=True):
+    """
+    uniq_val (b0ool) needs to return a uniq val rather
+        than a list
+    """
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    if uniq_val:
+        val = temp[col1].unique()
+        assert len(val) == 1
+        return val[0]
+    else:
+        return temp[col1].tolist()
+
+rule all:
+    input:
+        expand(config['mage']['r1_fq'],
+               sample=df['sample'].tolist()),
+        expand(config['mage']['r2_fq'],
+               sample=df['sample'].tolist())
+
+use rule wget as dl_r1_fq with:
+    params:
+        link = lambda wc: get_df_val(df, 'fastq_ftp',
+                                     {'sample': wc.sample})
+    output:
+        out = config['mage']['r1_fq']
+
+use rule wget as dl_r2_fq with:
+    params:
+        link = lambda wc: get_df_val(df, 'fastq_ftp',
+                                     {'sample': wc.sample})
+    output:
+        out = config['mage']['r2_fq']
