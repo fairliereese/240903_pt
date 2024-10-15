@@ -34,6 +34,7 @@ include: f'{c_dir}stats.smk'
 meta_file = '../config.tsv'
 meta_file_2 = 'config.tsv'
 genomes_file = 'genomes_config.tsv'
+gtfs_file = 'gtfs_config.tsv'
 
 df = parse_config(meta_file)
 df2 = pd.read_csv(meta_file_2, sep='\t')
@@ -89,6 +90,9 @@ g_df['haplotype'] = g_df['haplotype'].map({
     'aws_pat_link': 'paternal'
 })
 
+# add the gtf info
+gtf_df = pd.read_csv(gtfs_file, sep='\t')
+
 wildcard_constraints:
     assembly_sample='|'.join([re.escape(x) for x in g_df['sample'].tolist()]),,
     assembly_haplotype='|'.join([re.escape(x) for x in g_df['haplotype'].tolist()]),,
@@ -97,12 +101,15 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tpm_tsv'],
-               assembly_sample=g_df['sample'].tolist(),
-               assembly_haplotype=g_df['haplotype'].tolist()),
-        expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tsv'],
-               assembly_sample=g_df['sample'].tolist(),
-               assembly_haplotype=g_df['haplotype'].tolist()),
+    expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tpm_tsv'],
+           zip,
+           assembly_sample=gtf_df['assembly_sample'].tolist(),
+           assembly_haplotype=gtf_df['assembly_haplotype'].tolist()),
+    expand(config['lr']['personal_kallisto']['quant']['merge_matrix_tsv'],
+           zip,
+           assembly_sample=gtf_df['assembly_sample'].tolist(),
+           assembly_haplotype=gtf_df['assembly_haplotype'].tolist())
+
         # expand(config['ref']['alt']['personal']['fa_gz'],
         #        assembly_sample=g_df['sample'].tolist(),
         #        assembly_haplotype=g_df['haplotype'].tolist())
