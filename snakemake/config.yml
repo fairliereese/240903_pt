@@ -13,7 +13,7 @@ ref:
       fa_mmi: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.mmi
 
       v47_kallisto:
-        tmp_dir: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/
+        tmp_dir: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/kb_tmp/
         ind: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
         t_fa: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
         t2g: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
@@ -21,7 +21,7 @@ ref:
         t2t: ../../ref/personal/v47/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2t
 
       kallisto:
-        tmp_dir: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/
+        tmp_dir: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/kb_tmp/
         ind: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_k-63.idx
         t_fa: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}_transcripts.fa
         t2g: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.t2g
