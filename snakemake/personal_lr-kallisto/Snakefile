@@ -151,11 +151,10 @@ use rule dl_aws as dl_personal_assembly_mat with:
 
 use rule kallisto_build_ind as kallisto_ind with:
     input:
-        # fa = config['ref']['alt']['personal']['fa_gz'],
+        fa = config['ref']['alt']['personal']['fa_gz'],
         gtf = lambda wc: get_df_val(gtf_df, 'path',
                                     {'assembly_sample': wc.assembly_sample,
                                      'assembly_haplotype': wc.assembly_haplotype})
-        # gtf = config['lr']['gtf_filt_with_genes'] # TODO fabiens GTF
     output:
         ind = config['ref']['alt']['personal']['kallisto']['ind'],
         fa = config['ref']['alt']['personal']['kallisto']['t_fa'],
