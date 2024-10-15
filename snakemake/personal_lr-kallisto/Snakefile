@@ -29,6 +29,7 @@ include: f'{c_dir}transdecoder.smk'
 include: f'{c_dir}protein.smk'
 include: f'{c_dir}minimap2.smk'
 include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
 
 
 meta_file = '../config.tsv'
