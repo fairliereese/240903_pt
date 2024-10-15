@@ -156,6 +156,9 @@ use rule kallisto_build_ind as kallisto_ind with:
         gtf = lambda wc: get_df_val(gtf_df, 'path',
                                     {'assembly_sample': wc.assembly_sample,
                                      'assembly_haplotype': wc.assembly_haplotype})
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
+        tmp_dir = config['ref']['alt']['personal']['v47_kallisto']['tmp_dir']    
     output:
         ind = config['ref']['alt']['personal']['v47_kallisto']['ind'],
         fa = config['ref']['alt']['personal']['v47_kallisto']['t_fa'],

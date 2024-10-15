@@ -26,6 +26,7 @@ rule kallisto_build_ind:
             -k 63 \
             -f1 {output.fa} \
             -g {output.t2g} \
+            --tmp {params.tmp_dir} \
             {input.fa} \
             {input.gtf}
         """
