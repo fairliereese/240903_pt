@@ -248,8 +248,11 @@ rule merge_matrices:
 
 use rule merge_matrices as merge_matrices_tpm with:
     input:
-        tsvs = expand(config['lr']['personal_kallisto']['quant']['matrix_tpm_tsv'],
-                      sample=df.tech_rep.tolist())
+        tsvs = lambda wc: expand(expand(config['lr']['personal_kallisto']['quant']['matrix_tpm_tsv'],
+                      sample=df.tech_rep.tolist(),
+                      allow_missing=True),
+                      assembly_sample=wc.assembly_sample,
+                      assembly_haplotype=wc.assembly_haplotype)
     params:
         samples = df.tech_rep.tolist()
     output:
@@ -257,8 +260,11 @@ use rule merge_matrices as merge_matrices_tpm with:
 
 use rule merge_matrices as merge_matrices_counts with:
     input:
-        tsvs = expand(config['lr']['personal_kallisto']['quant']['matrix_tsv'],
-                      sample=df.tech_rep.tolist())
+        tsvs = lambda wc: expand(expand(config['lr']['personal_kallisto']['quant']['matrix_tsv'],
+                      sample=df.tech_rep.tolist(),
+                      allow_missing=True),
+                      assembly_sample=wc.assembly_sample,
+                      assembly_haplotype=wc.assembly_haplotype)
     params:
         samples = df.tech_rep.tolist()
     output:
