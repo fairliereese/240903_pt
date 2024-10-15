@@ -14,7 +14,7 @@ rule kallisto_build_ind:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
     resources:
         threads = 8,
-        nodes = 4
+        nodes = 2
     conda:
         'base'
     shell:
@@ -63,7 +63,7 @@ rule kallisto_pseudoalign:
         odir = config['lr']['kallisto']['odir']
     resources:
         threads = 32,
-        nodes = 8
+        nodes = 2
     conda:
         'base'
     shell:
@@ -84,7 +84,7 @@ rule bustools_sort:
         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
     resources:
         threads = 32,
-        nodes = 4
+        nodes = 2
     conda:
         'base'
     shell:
@@ -110,7 +110,7 @@ rule bustools_count_uniq:
         t = config['lr']['kallisto']['count_transcripts_uniq']
     resources:
         threads = 32,
-        nodes = 4
+        nodes = 2
     conda:
         'base'
     shell:
@@ -131,7 +131,7 @@ rule bustools_count:
         count_pref = config['lr']['kallisto']['count_pref']
     resources:
         threads = 32,
-        nodes = 4
+        nodes = 2
     conda:
         'base'
     shell:
@@ -150,7 +150,7 @@ rule bustools_count:
 rule lr_kallisto:
     resources:
         threads = 32,
-        nodes = 8
+        nodes = 2
     conda:
         'base'
     params:
