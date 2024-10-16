@@ -37,7 +37,7 @@ include: f'{c_dir}lr-kallisto.smk'
 rule all:
     input:
         config['ref']['pfam']['hmmer_parsed'],
-        config['lr']['pfam']['hmmer_parsed']
+        # config['lr']['pfam']['hmmer_parsed']
         # config['ref']['pfam']['db']
         # config['lr']['pfam']['pc_fa']
 
