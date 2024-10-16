@@ -158,7 +158,7 @@ rule parse_hmmer:
     shell:
         """
         module load R/4.3.2
-        python {params.scripts_dir}/Hmmscan-dmtblout-Parser.R \
+        R {params.scripts_dir}/Hmmscan-dmtblout-Parser.R \
             -i {input.txt} \
             -r {params.scripts_dir}/rhmmer.R \
             -o {output.tsv}
