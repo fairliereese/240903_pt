@@ -64,6 +64,7 @@ source(opt$rhmmer_path)
 # 1. Parser HMMScan Output Table
 hmmscan.tb <- read_domtblout(opt$hmmscan_tbl)
 # 2. Coerce to df
+browser()
 hmmscan.df <- tbl.to.df(hmmscan.tb)
 # 3. Add fraction of alignment
 hmmscan.df <- frac.alig.domain(hmmscan.df)

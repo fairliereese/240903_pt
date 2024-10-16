@@ -14,8 +14,7 @@ snakemake \
     -c {resources.threads}  \
     --mail-user=freese@bsc.es \
     --mail-type=START,END,FAIL \
-    --time=48:00:00 \
-    --constraint=medmem" \
+    --time=48:00:00" \
     -n
 
 # debug version
