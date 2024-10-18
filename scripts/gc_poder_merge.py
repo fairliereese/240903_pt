@@ -36,51 +36,51 @@ def make_hier_entry(df, how='t'):
 def merge_gtfs(gc_gtf_file,
                poder_gtf_file,
                output_file):
-    
+
     gc_df = pr.read_gtf(gc_gtf_file)
     p_df = pr.read_gtf(poder_gtf_file)
-    
+
     # get list of ics from each
     gc_ics = cerberus.get_ic(gc_df)
     p_ics = cerberus.get_ic(p_df)
-    
+
     # get uniq ICs (gene+chrom+ic)
     # to poder that are not in gc
-    gc_ics['id'] = gc_ics['Chromosome']+'_'+\
-                   gc_ics['gene_id']+'_'+\
-                   gc_ics['ic']
-    p_ics['id'] = p_ics['Chromosome']+'_'+\
-                   p_ics['gene_id']+'_'+\
-                   p_ics['ic']
+    gc_ics['id'] = gc_ics['Chromosome'].astype(str)+'_'+\
+                   gc_ics['gene_id'].astype(str)+'_'+\
+                   gc_ics['ic'].astype(str)
+    p_ics['id'] = p_ics['Chromosome'].astype(str)+'_'+\
+                   p_ics['gene_id'].astype(str)+'_'+\
+                   p_ics['ic'].astype(str)
     p_ics['in_gc'] = p_ics['id'].isin(gc_ics['id'].tolist())
     p_ics[['in_gc', 'transcript_id']].groupby('in_gc').count()
     nov_tids = p_ics.loc[~p_ics['id'].isin(gc_ics['id'])].transcript_id.tolist()
-    
+
     # filter poder gtf based on just novel transcripts
     p_df = p_df.df
     p_df = p_df.loc[p_df.transcript_id.isin(nov_tids)]
     assert len(p_df.loc[p_df.transcript_id.notnull()].transcript_id.unique())==len(nov_tids)
-    
+
     # restrict to just transcript + exon entries
     gc_df = gc_df.df
     gc_df = gc_df.loc[gc_df.Feature.isin(['transcript', 'exon'])]
     p_df = p_df.loc[p_df.Feature.isin(['transcript', 'exon'])]
-    
+
     # concatenate different dfs
     df = pd.concat([gc_df, p_df], axis=0)
-    
+
     # drop gene name entries cause all they do is screw everything up
     df.drop('gene_name', axis=1, inplace=True)
-    
+
         # # make sure that we don't have duplicates from gene name / gene id combos
     # l1 = len(df[['gene_name', 'gene_id']].drop_duplicates())
     # l2 = len(df.gene_id.unique())
     # print(l1)
     # print(l2)
-    
+
         # temp = df[['gene_name', 'gene_id']].drop_duplicates()
     # temp.loc[temp.gene_id.duplicated(keep=False)].sort_values(by='gene_id').head()
-    
+
     # make new gene entries for everything
     l1 = len(df.gene_id.unique().tolist())
     # make gene entry
@@ -95,7 +95,7 @@ def merge_gtfs(gc_gtf_file,
     # concat them and then sort gtf
     df = pd.concat([df, g_df], axis=0)
     df = cerberus.sort_gtf(df)
-    
+
     # make sure we've added the same number of transcripts
     n_gc_t = len(gc_df.loc[gc_df.transcript_id.notnull()].transcript_id.unique())
     n_nov_t = len(nov_tids)
@@ -105,7 +105,7 @@ def merge_gtfs(gc_gtf_file,
     print(n_nov_t)
     print(n_gc_p_t)
     assert n_gc_t+n_nov_t == n_gc_p_t
-    
+
     df = pr.PyRanges(df)
     df.to_gtf(output_file)
 
