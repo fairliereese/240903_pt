@@ -124,7 +124,7 @@ lr:
   nov_tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/05_mastertable/data/240909merge_filtered_novel_transcriptid.tsv
 
   # merged annotation
-  gtf_gc_poder: ../../data/v47_poder_merge.gtf
+  gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
 
   cerb:
     ics: ../../data/cerb/ics.tsv
@@ -265,7 +265,7 @@ lr:
       matrix_tpm_tsv: ../../data/v47_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
       merge_matrix_tsv: ../../data/v47_kallisto_quant/matrix.abundance.tsv
       merge_matrix_tpm_tsv: ../../data/v47_kallisto_quant/matrix.abundance.tpm.tsv
-
+      gene_tsv: ../../data/v47_kallisto_quant/matrix.abundance.genelevel.tsv # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/quantifications/v47_kallisto_quant/matrix.abundance.genelevel.tsv
 
   kallisto:
     odir: ../../data/kallisto/{sample}/
@@ -294,6 +294,7 @@ lr:
       matrix_tpm_tsv: ../../data/kallisto_quant/{sample}/matrix.abundance.tpm.tsv
       merge_matrix_tsv: ../../data/kallisto_quant/matrix.abundance.tsv
       merge_matrix_tpm_tsv: ../../data/kallisto_quant/matrix.abundance.tpm.tsv
+      gene_tsv: ../../data/kallisto_quant/matrix.abundance.genelevel.tsv # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/quantifications/kallisto_quant/matrix.abundance.genelevel.tsv
 
   unmerged_kallisto:
     odir: ../../data/unmerged_kallisto/{sample}/
