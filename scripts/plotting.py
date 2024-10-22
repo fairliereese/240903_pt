@@ -20,6 +20,22 @@ def rm_color_cats(palette, order, cats):
 
 #######################################
 ############# Color palettes
+
+def get_novelty_colors(cats=None):
+    palette = {'FSM': "#61814B",
+               'ISM': "#8EDE95", 
+               'NIC': "#356CA1", 
+               'NNC': "#C8773C",  
+               'Intergenic': "darkred", 
+               'Genic': "#B5B5B5", 
+               'Fusion': "#4F4F4F", 
+               'Antisense': "#6E5353"}
+    order = ['FSM', 'ISM', 'NIC', 'NNC',
+             'Intergenic', 'Genic', 'Fusion', 'Antisense']
+
+    palette, order = rm_color_cats(palette, order, cats)
+    return palette, order
+    
 def get_population_colors(cats=None):
     palette = {'ITU': '#db72f2',
                  'PEL': '#ff3a33',

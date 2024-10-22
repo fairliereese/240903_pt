@@ -1,9 +1,7 @@
 import yaml
 import os
 import pandas as pd
-import pysam
 import re
-from Bio import SearchIO
 
 
 def load_config(config_file=None):
@@ -112,6 +110,7 @@ def parse_wgs_meta(meta):
     return df
 
 def get_mapq(fname, threads):
+    import pysam
     if fname.endswith('.bam'):
         in_mode = 'rb'
     else:
@@ -129,6 +128,7 @@ def get_mapq(fname, threads):
 
 
 def compute_query_coverage(fname, threads):
+    import pysam
     if fname.endswith('.bam'):
         in_mode = 'rb'
     else:
@@ -182,6 +182,7 @@ def split_cigar(cigar):
     return alignTypes, counts
 
 def get_dupe_read_names(fname, threads, out):
+    import pysam
     if fname.endswith('.bam'):
         in_mode = 'rb'
     else:
@@ -210,6 +211,7 @@ def get_dupe_read_names(fname, threads, out):
 def tiebreak_supp_reads(fname, threads, output):
     # record the read id and query coverage for each read.
     # tiebreak duplicates w/ the higher coverage.
+    import pysam
     if fname.endswith('.bam'):
         in_mode = 'rb'
     else:
@@ -311,6 +313,8 @@ def rm_sirv_ercc_gtf(ifile, ofile):
     df.to_gtf(ofile)
 
 def write_parsed_hmmer(ifile, ofile):
+    from Bio import SearchIO
+    
     infile = open(ifile, 'r')
     outfile = open(ofile, 'w')
 
