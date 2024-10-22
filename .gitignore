@@ -1,3 +1,8 @@
+
+data/*tsv
+analysis/*tsv
+*pdf
+*.p
 *gtf
 .DS_Store
 */test*
