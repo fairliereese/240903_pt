@@ -29,9 +29,6 @@ include: f'{c_dir}minimap2.smk'
 include: f'{c_dir}stats.smk'
 include: f'{c_dir}lr-kallisto.smk'
 
-
-configfile: 'config.yml'
-meta_file = '../config.tsv'
 df = parse_config(meta_file)
 meta = load_meta()
 meta = meta.loc[meta.merged_run_mode==True]
