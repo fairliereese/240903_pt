@@ -29,19 +29,6 @@ include: f'{c_dir}minimap2.smk'
 include: f'{c_dir}stats.smk'
 include: f'{c_dir}lr-kallisto.smk'
 
-# Merge sample-level GTFs into one GTF
-
-import pandas as pd
-import os
-import sys
-import pyranges as pr
-
-p = os.path.dirname(os.getcwd())+'/scripts/'
-sys.path.append(p)
-
-from sm_utils import *
-
-include: '../snakemake/cerberus.smk'
 
 configfile: 'config.yml'
 meta_file = '../config.tsv'
