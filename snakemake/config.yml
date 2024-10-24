@@ -412,6 +412,13 @@ lr:
   sqanti:
     gff: ../../data/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
 
+  merge_espresso:
+    gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/05_downsampling/espresso/data/espresso_q/samples_N2_R0_updated_{sample}.gtf
+    cfg: ../../data/merge_espresso/merge_cfg.txt
+    merged_gtf: ../../data/merge_espresso/merged.gtf
+    sqanti_gff: ../../data/merge_espresso/merged.gtf
+
+
 
 
 

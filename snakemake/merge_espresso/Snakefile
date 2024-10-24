@@ -1,0 +1,139 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+# Merge sample-level GTFs into one GTF
+
+import pandas as pd
+import os
+import sys
+import pyranges as pr
+
+p = os.path.dirname(os.getcwd())+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+
+include: '../snakemake/cerberus.smk'
+
+configfile: 'config.yml'
+meta_file = '../config.tsv'
+df = parse_config(meta_file)
+meta = load_meta()
+meta = meta.loc[meta.merged_run_mode==True]
+sample_d = dict([(entry.cell_line_id, entry['sample']) \
+                 for ind, entry in meta.iterrows()])
+df['sample'] = df['sample'].map(sample_d)
+samples = df['sample'].unique().tolist()
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in samples]),
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+rule all:
+    input:
+        config['lr']['merge_espresso']['sqanti_gff']
+        # config['lr']['merge_espresso']['merged_gtf']
+
+rule cfg_merged_gtf:
+    input:
+        gtfs = lambda wc: expand(config['lr']['merge_espresso']['gtf'],
+                         sample=samples)
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        cfg = config['lr']['merge_espresso']['cfg']
+    run:
+        gtfs = list(input.gtfs)
+        df = pd.DataFrame()
+        df['gtf'] = gtfs
+        df.to_csv(output.cfg, index=False)
+
+rule get_merged_gtf:
+    input:
+        gtfs = rules.cfg_merged_gtf.input.gtfs,
+        cfg = rules.cfg_merged_gtf.output.cfg
+    resources:
+        threads = 1,
+        nodes = 3
+    conda:
+        'cerberus'
+    params:
+        scripts_dir = p
+    output:
+        gtf = config['lr']['merge_espresso']['merged_gtf']
+    shell:
+        """
+        python {params.scripts_dir}make_ic_gtf.py \
+            {input.cfg} \
+            {output.gtf}
+        """
+
+rule sqanti:
+    input:
+        gtf = config['lr']['merge_espresso']['merged_gtf'],
+        fa = config['ref']['fa'],
+        annot = config['ref']['gtf']
+    resources:
+        nodes = 2,
+        threads = 8
+    conda:
+        'base'
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['merge_espresso']['sqanti_gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['merge_espresso']['sqanti_gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['lr']['merge_espresso']['sqanti_gff']
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
+        mkdir -p {params.odir}
+        python {params.sq_path}sqanti3_qc.py \
+            {input.gtf} \
+            {input.annot} \
+            {input.fa} \
+            -d {params.odir} \
+            --report skip \
+            --force_id_ignore \
+            --aligner_choice minimap2 \
+            --skipORF \
+            -o {params.opref}
+        """
