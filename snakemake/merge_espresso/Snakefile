@@ -52,8 +52,9 @@ def get_df_val(df, col1, col_dict):
 
 rule all:
     input:
-        config['lr']['merge_espresso']['sqanti_gff']
-        # config['lr']['merge_espresso']['merged_gtf']
+        config['lr']['merge_espresso']['merged_gtf']
+
+        # config['lr']['merge_espresso']['sqanti_gff']
 
 rule cfg_merged_gtf:
     input:
