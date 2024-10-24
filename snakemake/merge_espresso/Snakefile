@@ -35,7 +35,7 @@ meta = meta.loc[meta.merged_run_mode==True]
 sample_d = dict([(entry.cell_line_id, entry['sample']) \
                  for ind, entry in meta.iterrows()])
 df['sample'] = df['sample'].map(sample_d)
-samples = df['sample'].unique().tolist()
+samples = df['lab_rep'].unique().tolist()
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in samples]),
