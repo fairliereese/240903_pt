@@ -126,8 +126,7 @@ def main(
         (cds_positive_start.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_positive_start.iloc[:, GTF_STRAND_IX] == "+")
     ]
-    import pdb; pdb.set_trace()
-    
+
     cds_positive_start = (
         cds_positive_start.groupby("transcript_id", group_keys=True)
         .min()
@@ -135,6 +134,8 @@ def main(
         .reset_index()
         .sort_values("transcript_id")
     )
+    import pdb; pdb.set_trace()
+    
     cds_positive_start.columns = [cds_positive_start.columns[0], "coord"]
 
     cds_positive_end = gtf_predicted.copy(deep=True)
