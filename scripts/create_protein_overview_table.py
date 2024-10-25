@@ -126,6 +126,7 @@ def main(
         (cds_positive_start.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_positive_start.iloc[:, GTF_STRAND_IX] == "+")
     ]
+    import pdb; pdb.set_trace()
 
     cds_positive_start = cds_positive_start[['transcript_id', GTF_START_IX]].groupby('transcript_id').min().reset_index().sort_values("transcript_id")
     # cds_positive_start = (
@@ -135,7 +136,6 @@ def main(
     #     .reset_index()
     #     .sort_values("transcript_id")
     # )
-    import pdb; pdb.set_trace()
 
     cds_positive_start.columns = [cds_positive_start.columns[0], "coord"]
 
