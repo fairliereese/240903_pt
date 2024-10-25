@@ -126,9 +126,8 @@ def main(
         (cds_positive_start.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_positive_start.iloc[:, GTF_STRAND_IX] == "+")
     ]
-    import pdb; pdb.set_trace()
 
-    cds_positive_start = cds_positive_start[['transcript_id', GTF_START_IX]].groupby('transcript_id').min().reset_index().sort_values("transcript_id")
+    cds_positive_start = cds_positive_start[['transcript_id', cds_positive_start.columns[GTF_START_IX]]].groupby('transcript_id').min().reset_index().sort_values("transcript_id")
     # cds_positive_start = (
     #     cds_positive_start.groupby("transcript_id", group_keys=True)
     #     .min()
@@ -152,13 +151,14 @@ def main(
         (cds_positive_end.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_positive_end.iloc[:, GTF_STRAND_IX] == "+")
     ]
-    cds_positive_end = (
-        cds_positive_end.groupby("transcript_id", group_keys=True)
-        .max()
-        .iloc[:, GTF_END_IX]
-        .reset_index()
-        .sort_values("transcript_id")
-    )
+    # cds_positive_end = (
+    #     cds_positive_end.groupby("transcript_id", group_keys=True)
+    #     .max()
+    #     .iloc[:, GTF_END_IX]
+    #     .reset_index()
+    #     .sort_values("transcript_id")
+    # )
+    cds_positive_end = cds_positive_end[['transcript_id', cds_positive_end.columns[GTF_END_IX]]].groupby('transcript_id').max().reset_index().sort_values("transcript_id")
     cds_positive_end.columns = [cds_positive_start.columns[0], "coord"]
 
     cds_negative_start = gtf_predicted.copy(deep=True)
@@ -174,13 +174,15 @@ def main(
         (cds_negative_start.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_negative_start.iloc[:, GTF_STRAND_IX] == "-")
     ]
-    cds_negative_start = (
-        cds_negative_start.groupby("transcript_id", group_keys=True)
-        .min()
-        .iloc[:, GTF_START_IX]
-        .reset_index()
-        .sort_values("transcript_id")
-    )
+    # cds_negative_start = (
+    #     cds_negative_start.groupby("transcript_id", group_keys=True)
+    #     .min()
+    #     .iloc[:, GTF_START_IX]
+    #     .reset_index()
+    #     .sort_values("transcript_id")
+    # )
+    cds_negative_start = cds_negative_start[['transcript_id', cds_negative_start.columns[GTF_START_IX]]].groupby('transcript_id').min().reset_index().sort_values("transcript_id")
+
     cds_negative_start.columns = [cds_positive_start.columns[0], "coord"]
 
     cds_negative_end = gtf_predicted.copy(deep=True)
@@ -197,13 +199,15 @@ def main(
         (cds_negative_end.iloc[:, GTF_TYPE_IX] == "CDS")
         & (cds_negative_end.iloc[:, GTF_STRAND_IX] == "-")
     ]
-    cds_negative_end = (
-        cds_negative_end.groupby("transcript_id", group_keys=True)
-        .max()
-        .iloc[:, GTF_END_IX]
-        .reset_index()
-        .sort_values("transcript_id")
-    )
+    # cds_negative_end = (
+    #     cds_negative_end.groupby("transcript_id", group_keys=True)
+    #     .max()
+    #     .iloc[:, GTF_END_IX]
+    #     .reset_index()
+    #     .sort_values("transcript_id")
+    # )
+    cds_negative_end = cds_negative_end[['transcript_id', cds_negative_end.columns[GTF_END_IX]]].groupby('transcript_id').max().reset_index().sort_values("transcript_id")
+
     cds_negative_end.columns = [cds_positive_start.columns[0], "coord"]
     cds_start = pd.concat([cds_positive_start, cds_negative_start], axis=0).sort_values(
         "transcript_id"
