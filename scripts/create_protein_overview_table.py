@@ -112,6 +112,8 @@ def main(
     cds_source = cds_source.iloc[:, [GTF_SOURCE_IX, -1]].drop_duplicates()
     cds_source.columns = ["source", "transcript_id"]
     cds_source = cds_source.sort_values("transcript_id")
+
+    import pdb; pdb.set_trace()
     cds_positive_start = gtf_predicted.copy(deep=True)
     # cds_positive_start["transcript_id"] = (
     #     cds_positive_start.iloc[:, GTF_GENE_INFO_IX]
