@@ -161,8 +161,8 @@ rule orf_prediction_run_orfanage:
                     --output {output} \
                     --threads {threads} \
                     {input.annotation} \
-                    1>../../data/protein/transcripts_orfanage.output \
-                    2>../../data/protein/transcripts_orfanage.error"""
+                    1>../../data/poder_protein/transcripts_orfanage.output \
+                    2>../../data/poder_protein/transcripts_orfanage.error"""
 
 
 rule orf_prediction_filter_orfanage:
@@ -267,9 +267,9 @@ rule orf_prediction_run_cpat_human:
                 -g {input.query} \
                 --min-orf={params.min_orf} \
                 --top-orf={params.top_orf} \
-                -o ../../data/protein/transcripts \
-                1> ../../data/protein/transcripts_cpat.output \
-                2>../../data/protein/transcripts_cpat.error"""
+                -o ../../data/poder_protein/transcripts \
+                1> ../../data/poder_protein/transcripts_cpat.output \
+                2>../../data/poder_protein/transcripts_cpat.error"""
 
 rule postprocess_check_orf_completeness:
     input:
@@ -467,7 +467,7 @@ rule postprocess_prepare_sqanti_protein_tsv:
         """python {params.scripts_dir}/create_orf_table_for_sqanti_protein.py \
                     --transcript_exons_path {input.transcript_only_exons} \
                     --cds_only_path {input.cds_renamed} \
-                    --output_prefix ../../data/protein/transcripts"""
+                    --output_prefix ../../data/poder_protein/transcripts"""
 
 
 rule postprocess_run_sqanti_protein:
@@ -556,7 +556,7 @@ rule postprocess_create_blast_db:
                 -in {input.protein_fasta} \
                 -dbtype prot \
                 -parse_seqids \
-                -out ../../data/protein/gencode.pc_translations_renamed
+                -out ../../data/poder_protein/gencode.pc_translations_renamed
         """
 
 
@@ -579,7 +579,7 @@ rule postprocess_run_blast:
             -evalue {params.blast_evalue} \
             -num_threads {resources.threads} \
             -outfmt 6 \
-            -db ../../data/protein/gencode.pc_translations_renamed \
+            -db ../../data/poder_protein/gencode.pc_translations_renamed \
             -query {input.protein_fasta} > \
             {output}
         """
