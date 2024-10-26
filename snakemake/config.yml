@@ -181,6 +181,50 @@ lr:
     summary: ../../data/protein/transcripts_protein_annotation.tsv
     summary_filt: ../../data/protein/transcripts_protein_annotation_filt.tsv
 
+  poder_protein:
+    orfanage:
+      query: ../../data/poder_protein/transcripts_orfanage_ready_query.gtf
+      ready_annot: ../../data/poder_protein/transcripts_orfanage_ready_annotation.gtf
+      cds: ../../data/poder_protein/transcripts_orfanage_cds.gtf
+      cds_to_be_predicted: ../../data/poder_protein/transcripts_cpat_cds_to_be_predicted.gtf
+      cds_filtered: ../../data/poder_protein/transcripts_orfanage_cds_filtered.gtf
+      orfs: ../../data/poder_protein/transcripts_orfanage_orfs.fa
+      stop_codon_orf: ../../data/poder_protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf
+      missing_cds: ../../data/poder_protein/transcripts_missing_cds.fa
+
+    cpat:
+      r: ../../data/poder_protein/transcripts.r
+      orf_seqs: ../../data/poder_protein/transcripts.ORF_seqs.fa
+      prob_tsv: ../../data/poder_protein/transcripts.ORF_prob.tsv
+      prob_best: ../../data/poder_protein/transcripts.ORF_prob.best.tsv
+      log: ../../data/poder_protein/transcripts_cpat.output
+      err: ../../data/poder_protein/transcripts_cpat.error
+      no_orf: ../../data/poder_protein/transcripts.no_ORF.txt
+      orf_remaining: ../../data/poder_protein/transcripts.ORF_remaining.tsv
+      orf_completeness: ../../data/poder_protein/transcripts_ORF_completeness.tsv
+      cds_coords: ../../data/poder_protein/transcripts_cpat_with_cds.gtf
+      unsourced: ../../data/poder_protein/transcripts_protein_unsourced.gtf
+      protein: ../../data/poder_protein/transcripts_protein.gtf
+      orf: ../../data/poder_protein/transcripts_ORF.fa
+      protein_fa: ../../data/poder_protein/transcripts_protein.fa
+
+    blast:
+      out: ../../data/poder_protein/transcripts_blastp.out
+      blast_db: ../../data/poder_protein/gencode.pc_translations_renamed.pog
+
+    sqanti_protein:
+      ref_exons: ../../data/poder_protein/transcripts_gencode.transcript_exons_only.gtf
+      ref_cds_renamed: ../../data/poder_protein/transcripts_gencode.cds_renamed_exon.gtf
+      data_exons: ../../data/poder_protein/transcripts.transcript_exons_only.gtf
+      data_cds_renamed: ../../data/poder_protein/transcripts.cds_renamed_exon.gtf
+      best_orf: ../../data/poder_protein/transcripts_best_orf.tsv
+      classified: ../../data/poder_protein/transcripts.sqanti_protein_classification.tsv
+
+    protein:
+      summary: ../../data/poder_protein/transcripts_protein_annotation.tsv
+      summary_filt: ../../data/poder_protein/transcripts_protein_annotation_filt.tsv
+
+
   pfam:
     pc_fa: ../../data/pfam/transcripts_pc.fa
     hmmer_out: ../../data/pfam/transcripts_pc_pfam_domtblout.txt

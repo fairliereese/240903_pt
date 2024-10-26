@@ -337,3 +337,59 @@ def write_parsed_hmmer(ifile, ofile):
             outfile.write('\t'.join(new_line)+'\n')
     infile.close()
     outfile.close()
+
+def get_transcript_info(gtf):
+    """
+    Get a file with relevant information about each transcript in a gtf
+
+    Parameters:
+        gtf (str): Path to gtf
+        o (str): Output file name
+    """
+    
+    import pyranges as pr
+
+    df = pr.read_gtf(gtf, as_df=True, duplicate_attr=True)
+
+    # remove sirvs and erccs
+    print(len(df.index))
+    df = df.loc[(~df.Chromosome.str.contains('SIRV'))&~(df.Chromosome.str.contains('ERCC'))]
+    print(len(df.index))
+
+    # mane status
+    mane_df = df.loc[df.Feature == 'transcript'].copy(deep=True)
+    mane_df.tag.fillna('', inplace=True)
+    mane_df['MANE_Select'] = mane_df.tag.str.contains('MANE_Select')
+    mane_df['MANE_Plus_Clinical'] = mane_df.tag.str.contains('MANE_Plus_Clinical')
+    mane_df = mane_df[['transcript_id', 'MANE_Select', 'MANE_Plus_Clinical']]
+    mane_df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
+
+    # only exons
+    df = df.loc[df.Feature == 'exon'].copy(deep=True)
+
+    # readthrough transcripts
+    df['readthrough_transcript'] = df.tag.str.contains('readthrough_transcript')
+
+    # rename some columns
+    m = {'gene_id': 'gid',
+         'gene_name': 'gname',
+         'transcript_id': 'tid',
+         'gene_type': 'biotype'}
+    df.rename(m, axis=1, inplace=True)
+
+
+    df['exon_len'] = (df.Start-df.End).abs()+1
+
+    cols = ['gid', 'gname', 'tid', 'exon_len', 'readthrough_transcript']
+    df = df[cols]
+    df_copy = df[['gid', 'gname', 'tid', 'readthrough_transcript']].copy(deep=True)
+    df_copy = df_copy.drop_duplicates(keep='first')
+
+    df = df.groupby('tid').sum().reset_index()
+    df.rename({'exon_len': 't_len'}, axis=1, inplace=True)
+    df = df.merge(df_copy, on='tid', how='left')
+
+    # merge mane info
+    df = df.merge(mane_df, how='left', on='tid')
+
+    return df
