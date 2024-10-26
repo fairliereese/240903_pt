@@ -70,6 +70,7 @@ except ImportError:
 from compare_junctions import *
 
 GTF2GENEPRED_PROG = "gtfToGenePred"
+import pdb; pdb.set_trace()
 utilitiesPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "utilities")
 sys.path.insert(0, utilitiesPath)
 GFFREAD_PROG = "gffread"
