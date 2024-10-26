@@ -25,7 +25,8 @@ from multiprocessing import Process
 
 utilitiesPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "utilities")
 sys.path.insert(0, utilitiesPath)
-# from rt_switching import rts
+import pdb; pdb.set_trace()
+from rt_switching import rts
 from indels_annot import calc_indels_from_sam
 from short_reads import *
 
