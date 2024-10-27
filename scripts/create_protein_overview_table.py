@@ -99,7 +99,7 @@ def main(
     gtf = gtf.loc[gtf.transcript_id.isin(gtf_predicted.transcript_id.tolist())]
 
     # gtf_predicted['gene_name'] = gtf_predicted['gene_id']
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     cds_source = gtf_predicted.copy(deep=True)
     cds_source = cds_source.loc[(cds_source.iloc[:, GTF_TYPE_IX] == "CDS")]
     # cds_source["transcript_id"] = (
@@ -110,7 +110,7 @@ def main(
     #     .str[1]
     #     .values
     # )
-    cds_source = cds_source.iloc[:, [GTF_SOURCE_IX, -1]].drop_duplicates()
+    cds_source = cds_source[['Source', 'transcript_id']].drop_duplicates()
     cds_source.columns = ["source", "transcript_id"]
     cds_source = cds_source.sort_values("transcript_id")
 
@@ -263,7 +263,7 @@ def main(
     ).sort_values("transcript_id")
 
     # gtf['gene_name'] = gtf['gene_id']
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     pd.DataFrame(
         {
             "Chromosome": gtf.iloc[:, 0].values,
