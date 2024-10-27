@@ -99,6 +99,7 @@ def main(
     gtf = gtf.loc[gtf.transcript_id.isin(gtf_predicted.transcript_id.tolist())]
 
     # gtf_predicted['gene_name'] = gtf_predicted['gene_id']
+    import pdb; pdb.set_trace()
     cds_source = gtf_predicted.copy(deep=True)
     cds_source = cds_source.loc[(cds_source.iloc[:, GTF_TYPE_IX] == "CDS")]
     # cds_source["transcript_id"] = (
