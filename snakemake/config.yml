@@ -339,6 +339,7 @@ lr:
       merge_matrix_tsv: ../../data/kallisto_quant/matrix.abundance.tsv
       merge_matrix_tpm_tsv: ../../data/kallisto_quant/matrix.abundance.tpm.tsv
       gene_tsv: ../../data/kallisto_quant/matrix.abundance.genelevel.tsv # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/quantifications/kallisto_quant/matrix.abundance.genelevel.tsv
+      gene_tpm_tsv: ../../data/kallisto_quant/matrix.abundance.genelevel.tpm.tsv
 
   unmerged_kallisto:
     odir: ../../data/unmerged_kallisto/{sample}/
