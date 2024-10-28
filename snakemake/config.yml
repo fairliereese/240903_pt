@@ -36,9 +36,12 @@ ref:
   cerb:
     ics: ../../ref/v47_ics.tsv
 
-  pc_link: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.pc_translations.fa.gz
+  # v46
+  # pc_link: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.pc_translations.fa.gz
+  pc_link: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.pc_translations.fa.gz
   pc_gz: ../../ref/pc_translations.fa.gz
   pc: ../../ref/pc_translations.fa
+
   pc_renamed: ../../ref/pc_translations_renamed.fa
 
   cpat:
@@ -221,7 +224,7 @@ lr:
       classified: ../../data/poder_protein/transcripts.sqanti_protein_classification.tsv
 
     protein:
-      summary: ../../data/poder_protein/transcripts_protein_annotation.tsv
+      summary: ../../data/poder_protein/transcripts_protein_annotation.tsv #/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/poder_protein/transcripts_protein_annotation.tsv
       summary_filt: ../../data/poder_protein/transcripts_protein_annotation_filt.tsv
 
 

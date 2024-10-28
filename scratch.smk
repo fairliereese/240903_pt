@@ -16,12 +16,13 @@ shell:
         ../../data/poder_protein/transcripts.cds_renamed_exon.gtf \
         ../../data/poder_protein/transcripts_best_orf.tsv \
         ../../data/poder_protein/transcripts_gencode.transcript_exons_only.gtf \
-        ../../data/poder_protein/transcripts_gencode.cds_renamed_exon.gtf                     -d ./                     -p ../../data/poder_protein/transcripts
+        ../../data/poder_protein/transcripts_gencode.cds_renamed_exon.gtf \
+        d ./                     -p ../../data/poder_protein/transcripts
 """
 
 """
-python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//create_protein_overview_table.py             --best_orf_path ../..
-/data/poder_protein/transcripts_best_orf.tsv \
+python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//create_protein_overview_table.py \
+ --best_orf_path ../../data/poder_protein/transcripts_best_orf.tsv \
     --sqanti_protein_path ../../data/poder_protein/transcripts.sqanti_protein_classification.tsv \
     --orf_completeness_path ../../data/poder_protein/transcripts_ORF_completeness.tsv \
     --output_name ../../data/poder_protein/transcripts_protein_annotation.tsv \

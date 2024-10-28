@@ -381,7 +381,7 @@ rule postprocess_amend_cds_source:
         config['lr']['poder_protein']['cpat']['protein']
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     params:
         scripts_dir = p
     shell:
