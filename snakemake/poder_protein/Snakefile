@@ -484,7 +484,7 @@ rule postprocess_run_sqanti_protein:
         scripts_dir=p
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     conda:
         'base'
     shell:
