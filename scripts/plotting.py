@@ -102,7 +102,7 @@ def init_plot_settings(font_scale=2,
     Initialize default plotting settings
     """
     sns.set_context('paper', font_scale=2)
-    mpl.rcParams['font.family'] = 'Arial'
+    mpl.rcParams['font.family'] = 'Helvetica'
     mpl.rcParams['pdf.fonttype'] = 42
 
     if aspect=='square':
