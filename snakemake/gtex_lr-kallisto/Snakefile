@@ -1,0 +1,172 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+
+c_dir = '../common/'
+
+meta_file = 'gtex_config.tsv'
+configfile: '../config.yml'
+
+df = pd.read_csv(meta_file, sep='\t')
+df['sample'] = df.basename.str.split('.', expand=True)[0]
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
+
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+# df = df.loc[df.tech_rep=='GM19240_1']
+
+rule all:
+    input:
+        config['gtex']['kallisto']['quant']['merge_matrix_tpm_tsv'],
+        config['gtex']['kallisto']['quant']['merge_matrix_tsv']
+        # expand(config['gtex']['kallisto']['quant']['matrix_tpm_tsv'],
+        #        sample=df.tech_rep.tolist()),
+        # expand(config['gtex']['kallisto']['quant']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
+                       # expand(config['gtex']['kallisto']['quant']['matrix_tpm_tsv'],
+                       #        sample=df.tech_rep.tolist()),
+                       # expand(config['gtex']['kallisto']['quant']['matrix_tsv'],
+                       #        sample=df.tech_rep.tolist()),
+        # expand(config['gtex']['kallisto']['matrix_tsv'],
+        #        sample=df.tech_rep.tolist()),
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+use rule kallisto_build_ind as kallisto_ind with:
+    input:
+        fa = config['ref']['fa'],
+        gtf = config['lr']['gtf_filt_with_genes']
+    output:
+        ind = config['ref']['kallisto']['ind'],
+        fa = config['ref']['kallisto']['t_fa'],
+        t2g = config['ref']['kallisto']['t2g'],
+
+
+use rule kallisto_pseudoalign as pseudoalign with:
+    input:
+        ind = config['ref']['kallisto']['ind'],
+        fq = config['gtex']['fastq']
+        # fq = lambda wc: expand(config['gtex']['fastq'],
+        #             sample=get_df_val(df,
+        #                     'lab_rep',
+        #                     {'tech_rep': wc.sample})),
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
+        odir = config['gtex']['kallisto']['odir']
+    output:
+        bus = config['gtex']['kallisto']['bus'],
+        flens = config['gtex']['kallisto']['flens'],
+        transcripts = config['gtex']['kallisto']['transcripts'],
+        matrix = config['gtex']['kallisto']['matrix']
+
+use rule bustools_sort as bt_sort with:
+    input:
+        bus = config['gtex']['kallisto']['bus']
+    output:
+        bus = config['gtex']['kallisto']['bus_sort']
+
+use rule bustools_count as bt_count with:
+    input:
+        bus = config['gtex']['kallisto']['bus_sort'],
+        transcripts = config['gtex']['kallisto']['transcripts'],
+        matrix = config['gtex']['kallisto']['matrix'],
+        t2g = config['ref']['kallisto']['t2g']
+    params:
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
+        count_pref = config['gtex']['kallisto']['count_pref']
+    output:
+        mtx = config['gtex']['kallisto']['count_mtx'],
+        ec = config['gtex']['kallisto']['count_ec']
+
+use rule lr_kallisto as run_lr_kallisto with:
+    input:
+        flens = config['gtex']['kallisto']['flens'],
+        mtx = config['gtex']['kallisto']['count_mtx'],
+        ind = config['ref']['kallisto']['ind'],
+        ec = config['gtex']['kallisto']['count_ec']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/lr-kallisto/bin/kallisto',
+        odir = config['gtex']['kallisto']['quant']['odir']
+    output:
+        quant = config['gtex']['kallisto']['quant']['matrix'],
+        tpm = config['gtex']['kallisto']['quant']['matrix_tpm'],
+
+use rule fmt_mtx_transcripts as get_counts_mtx with:
+    input:
+        mtx = config['gtex']['kallisto']['quant']['matrix'],
+        ts = config['gtex']['kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['gtex']['kallisto']['quant']['matrix_tsv']
+
+use rule fmt_mtx_transcripts as get_tpm_mtx with:
+    input:
+        mtx = config['gtex']['kallisto']['quant']['matrix_tpm'],
+        ts = config['gtex']['kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['gtex']['kallisto']['quant']['matrix_tpm_tsv']
+
+rule merge_matrices:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        merge_df = pd.DataFrame()
+        samples = list(params.samples)
+        i = 0
+        for t, s in zip(list(input.tsvs), samples):
+            temp = pd.read_csv(t, sep='\t')
+            temp.rename({'counts': s}, axis=1, inplace=True)
+            if i == 0:
+                merge_df = temp.copy(deep=True)
+            else:
+                merge_df = merge_df.merge(temp, how='outer',
+                            on='transcript_id')
+            i+=1
+        merge_df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule merge_matrices as merge_matrices_tpm with:
+    input:
+        tsvs = expand(config['gtex']['kallisto']['quant']['matrix_tpm_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['gtex']['kallisto']['quant']['merge_matrix_tpm_tsv']
+
+use rule merge_matrices as merge_matrices_counts with:
+    input:
+        tsvs = expand(config['gtex']['kallisto']['quant']['matrix_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['gtex']['kallisto']['quant']['merge_matrix_tsv']
