@@ -14,7 +14,7 @@ meta_file = 'gtex_config.tsv'
 configfile: '../config.yml'
 
 df = pd.read_csv(meta_file, sep='\t')
-df['sample'] = df.basename.str.split('.', expand=True)[0]
+df['sample'] = df.basename.str.split('.fastq', expand=True)[0]
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
