@@ -503,6 +503,11 @@ lr:
     merged_gtf: ../../data/merge_espresso/merged.gtf #/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merge_espresso_downsample/merged.gtf
     sqanti_gff: ../../data/merge_espresso/merged.gtf
 
+  merge_espresso_refseq:
+    gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/05_downsampling/espresso_refseq/data/espresso_q/{sample}/{sample}.gtf
+    cfg: ../../data/merge_espresso_refseq/merge_cfg.txt
+    merged_gtf: ../../data/merge_espresso_refseq/merged.gtf #/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merge_espresso_downsample/merged.gtf
+    sqanti_gff: ../../data/merge_espresso_refseq/merged.gtf
 
 
 
