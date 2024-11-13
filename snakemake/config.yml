@@ -33,6 +33,10 @@ ref:
   fa_mmi: ../../ref/hg38.fa.mmi
   gtf: ../../ref/annot.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
 
+  sqanti:
+    gff: ../../ref/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
+
+
   cerb:
     ics: ../../ref/v47_ics.tsv
 
@@ -88,6 +92,9 @@ ref:
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/refseq/v110/modified/GCF_000001405.40_GRCh38.p14_genomic.UCSC_contignames.gtf
     cerb:
       ics: ../../ref/refseq/v110_ics.tsv
+    pc_link: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_protein.faa.gz
+    pc_gz: ../../ref/refseq/pc_translations.fa.gz
+    pc: ../../ref/refseq/pc_translations.fa
 
 gtex:
     gtf_link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/flair_filter_transcripts.gtf.gz
@@ -502,6 +509,7 @@ lr:
   sqanti:
     gff: ../../data/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
 
+
   merge_espresso:
     gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/05_downsampling/espresso/data/espresso_q/samples_N2_R0_updated_{sample}.gtf
     cfg: ../../data/merge_espresso/merge_cfg.txt
@@ -511,7 +519,7 @@ lr:
   merge_espresso_refseq:
     gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/05_downsampling/espresso_refseq/data/espresso_q/{sample}/{sample}.gtf
     cfg: ../../data/merge_espresso_refseq/merge_cfg.txt
-    merged_gtf: ../../data/merge_espresso_refseq/merged.gtf #/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merge_espresso_downsample/merged.gtf
+    merged_gtf: ../../data/merge_espresso_refseq/merged.gtf #/gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merge_espresso_downsample_refseq/merged.gtf
     sqanti_gff: ../../data/merge_espresso_refseq/merged.gtf
 
 

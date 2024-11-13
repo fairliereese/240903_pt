@@ -32,7 +32,9 @@ rule all:
         config['ref']['cerb']['ics'],
         config['ref']['refseq']['cerb']['ics'],
         expand(config['lr']['sqanti']['gff'],
-               annot=['gtex', 'enc', 'chess'])
+               annot=['gtex', 'enc', 'chess']),
+        expand(config['ref']['sqanti']['gff'],
+              annot=['gtex', 'enc', 'chess'])
 
 ########### gencode
 use rule gtf_to_ic as gc_gtf_to_ic with:
@@ -127,6 +129,39 @@ rule sqanti:
         odir = '/'.join(config['lr']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
         gff = config['lr']['sqanti']['gff']
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
+        mkdir -p {params.odir}
+        python {params.sq_path}sqanti3_qc.py \
+            {input.gtf} \
+            {input.annot} \
+            {input.fa} \
+            -d {params.odir} \
+            --report skip \
+            --force_id_ignore \
+            --aligner_choice minimap2 \
+            --skipORF \
+            -o {params.opref}
+        """
+
+
+rule sqanti_vs_v47:
+    input:
+        gtf = config['ref']['gtf'],
+        fa = config['ref']['fa'],
+        annot = lambda wc: config[wc.annot]['gtf']
+    resources:
+        nodes = 2,
+        threads = 8
+    conda:
+        'base'
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['ref']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['ref']['sqanti']['gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['ref']['sqanti']['gff']
     shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
