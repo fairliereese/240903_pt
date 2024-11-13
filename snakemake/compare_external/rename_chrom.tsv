@@ -1,0 +1,43 @@
+	chr	new_chr	suff
+0	chr1	chr1	
+1	chr10	chr10	
+2	chr11	chr11	
+3	chr11_KI270721v1_random	KI270721.1	1
+4	chr12	chr12	
+5	chr13	chr13	
+6	chr14	chr14	
+7	chr14_GL000009v2_random	GL000009.2	2
+8	chr14_GL000194v1_random	GL000194.1	1
+9	chr15	chr15	
+10	chr16	chr16	
+11	chr16_KI270728v1_random	KI270728.1	1
+12	chr17	chr17	
+13	chr17_GL000205v2_random	GL000205.2	2
+14	chr18	chr18	
+15	chr19	chr19	
+16	chr1_KI270711v1_random	KI270711.1	1
+17	chr1_KI270713v1_random	KI270713.1	1
+18	chr2	chr2	
+19	chr20	chr20	
+20	chr21	chr21	
+21	chr22	chr22	
+22	chr22_KI270733v1_random	KI270733.1	1
+23	chr22_KI270734v1_random	KI270734.1	1
+24	chr3	chr3	
+25	chr4	chr4	
+26	chr5	chr5	
+27	chr6	chr6	
+28	chr7	chr7	
+29	chr8	chr8	
+30	chr9	chr9	
+31	chrEBV	chrEBV	
+32	chrM	chrM	
+33	chrUn_GL000195v1	GL000195.1	1
+34	chrUn_GL000213v1	GL000213.1	1
+35	chrUn_GL000218v1	GL000218.1	1
+36	chrUn_GL000219v1	GL000219.1	1
+37	chrUn_GL000220v1	GL000220.1	1
+38	chrUn_GL000224v1	GL000224.1	1
+39	chrUn_KI270744v1	KI270744.1	1
+40	chrX	chrX	
+41	chrY	chrY	
