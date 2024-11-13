@@ -153,6 +153,7 @@ enc:
   gtf_link: https://zenodo.org/records/10869841/files/cerberus.gtf?download=1
   gtf_gz: ../../data/enc/enc.gtf.gz
   gtf: ../../data/enc/enc.gtf
+  gtf_chr_renamed: ../../snakemake/compare_external/enc_renamed_chr.gtf
 
   cerb:
     ics: ../../data/enc/cerb/ics.tsv
