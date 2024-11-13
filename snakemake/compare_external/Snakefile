@@ -148,9 +148,9 @@ rule sqanti:
 
 rule sqanti_vs_v47:
     input:
-        gtf = config['ref']['gtf'],
+        annot = config['ref']['gtf'],
         fa = config['ref']['fa'],
-        annot = lambda wc: config[wc.annot]['gtf']
+        gtf = lambda wc: config[wc.annot]['gtf']
     resources:
         nodes = 2,
         threads = 8
