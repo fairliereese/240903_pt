@@ -73,7 +73,7 @@ rule suppa_generate_events:
 
 rule suppa_psi:
     resources:
-        mem_gb = 16,
+        nodes = 1,
         threads = 1
     conda:
         'base'
