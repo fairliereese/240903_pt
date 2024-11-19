@@ -17,6 +17,7 @@ chr_map = dict(zip(chr_df['chr'], chr_df['new_chr']))
 
 df = pr.read_gtf('../../data/enc/enc.gtf').df
 df['Chromosome'] = df['Chromosome'].map(chr_map)
+df = df.loc[df.Chromosome !='chrEBV']
 df = pr.PyRanges(df)
 df.to_gtf('enc_renamed_chr.gtf')
 ```

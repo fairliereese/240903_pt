@@ -1,0 +1,82 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+#
+# from sm_utils import *
+# from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = 'config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+
+rule all:
+    input:
+        expand(config['lr']['suppa']['events'],
+               event=['A3', 'A5', 'AF', 'AL', 'MX', 'RI', 'SE']),
+        expand(config['lr']['suppa']['psi'],
+               event=['A3', 'A5', 'AF', 'AL', 'MX', 'RI', 'SE'])
+
+
+rule suppa_generate_events:
+    input:
+        gtf = config['lr']['gtf_filt_with_genes']
+    resources:
+        mem_gb = 16,
+        threads = 1
+    conda:
+        'suppa'
+    params:
+        opref = config['lr']['suppa']['events']['A3'].rsplit('_', maxsplit=2)[0]
+    output:
+        config['lr']['suppa']['events']['A3'],
+        config['lr']['suppa']['events']['A5'],
+        config['lr']['suppa']['events']['AF'],
+        config['lr']['suppa']['events']['AL'],
+        config['lr']['suppa']['events']['MX'],
+        config['lr']['suppa']['events']['RI'],
+        config['lr']['suppa']['events']['SE'],
+    shell:
+        """
+        suppa.py generateEvents \
+            -i {input.gtf} \
+            -o {params.opref} \
+            -f ioe \
+            -e SE SS MX RI FL
+        """
+
+rule suppa_psi:
+    resources:
+        mem_gb = 16,
+        threads = 1
+    conda:
+        'suppa'
+    shell:
+        """
+        suppa.py psiPerEvent \
+            --ioe-file {input.ioe} \
+            --expression-file {input.filt_ab} \
+            --o {params.opref}
+        """
+
+use rule suppa_psi as suppa_get_psi with:
+    input:
+        ioe = lambda wc:config['lr']['suppa']['events'][wc.event],
+        filt_ab = config['lr']['suppa']['filt_ab']
+    params:
+        opref = config['lr']['suppa']['psi'].rsplit('.psi', maxsplit=1)[0]
+    output:
+        config['lr']['suppa']['psi']

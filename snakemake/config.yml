@@ -183,6 +183,17 @@ lr:
     ics: ../../data/cerb/ics.tsv
     nov_ics: ../../data/cerb/nov_ics.tsv
 
+  suppa:
+    events:
+        A3: ../../data/suppa/poder.events_A3_strict.ioe
+        A5: ../../data/suppa/poder.events_A5_strict.ioe
+        AF: ../../data/suppa/poder.events_AF_strict.ioe
+        AL: ../../data/suppa/poder.events_AL_strict.ioe
+        MX: ../../data/suppa/poder.events_MX_strict.ioe
+        RI: ../../data/suppa/poder.events_RI_strict.ioe
+        SE: ../../data/suppa/poder.events_SE_strict.ioe
+    psi: ../../data/suppa/poder_{event}.psi
+
   unmerged:
     fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/unmerged/{sample}_preprocessed_Q7.fastq.gz
 
