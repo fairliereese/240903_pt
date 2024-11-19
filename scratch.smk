@@ -31,3 +31,19 @@ python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts/
     --protein_fasta_path ../../data/poder_protein/transcripts_protein.fa \
     --blastp_path ../../data/poder_protein/transcripts_blastp.out 2> wha_happen.txt
 """
+
+"""
+python /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//recover_source.py                                 --combined_cds_p
+ath ../../data/poder_protein/transcripts_protein_unsourced.gtf                                 --source_gtf_path ../../data/transcripts_filt_with_gene.gtf
+                                --cpat_cds_path ../../data/poder_protein/transcripts_cpat_with_cds.gtf                                 --orfanage_cds_path
+../../data/poder_protein/transcripts_orfanage_cds_filtered_stop_codon_corrected.gtf                                 --output_path ../../data/poder_protein/
+transcripts_protein.gtf
+"""
+
+"""
+/gpfs/home/bsc/bsc083001/mele_lab/bin/SUPPA/suppa.py generateEvents \
+    -i ../../data/transcripts_filt_with_gene.gtf \
+    -o ../../data/suppa/poder.events \
+    -f ioe \
+    -e SE SS MX RI FL
+"""
