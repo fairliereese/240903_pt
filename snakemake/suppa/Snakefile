@@ -64,7 +64,7 @@ rule suppa_generate_events:
     shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/suppa2
-        /gpfs/projects/bsc83/utils/SUPPA-2.4/suppa.py generateEvents \
+        /gpfs/home/bsc/bsc083001/mele_lab/bin/SUPPA/suppa.py generateEvents \
             -i {input.gtf} \
             -o {params.opref} \
             -f ioe \
@@ -80,7 +80,7 @@ rule suppa_psi:
     shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/suppa2
-        /gpfs/projects/bsc83/utils/SUPPA-2.4/suppa.py psiPerEvent \
+        /gpfs/home/bsc/bsc083001/mele_lab/bin/SUPPA/suppa.py psiPerEvent \
             --ioe-file {input.ioe} \
             --expression-file {input.filt_ab} \
             --o {params.opref}
