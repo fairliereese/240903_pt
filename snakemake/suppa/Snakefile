@@ -47,7 +47,7 @@ rule suppa_generate_events:
     input:
         gtf = config['lr']['gtf_filt_with_genes']
     resources:
-        mem_gb = 16,
+        nodes = 1,
         threads = 1
     params:
         opref = config['lr']['suppa']['events']['A3'].rsplit('_', maxsplit=2)[0]
