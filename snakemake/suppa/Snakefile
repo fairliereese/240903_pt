@@ -30,6 +30,20 @@ rule all:
         expand(config['lr']['suppa']['psi'],
                event=['A3', 'A5', 'AF', 'AL', 'MX', 'RI', 'SE'])
 
+# the input format is so dumb
+# rule fmt_ab:
+#     input:
+#         ab = config['lr']['kallisto']['merge_matrix_tpm_tsv']
+#     resources:
+#         threads = 1,
+#         nodes = 1
+#     output:
+#         ab = config['lr']['suppa']['fmt_ab']
+#     run:
+#         df = pd.read_csv(input.ab, sep='\t')
+#         df = df.set_index('transcript_id')
+#         df.index.name = ''
+#         df.to_csv(output.ab, sep='\t')
 
 rule suppa_generate_events:
     input:
@@ -37,8 +51,6 @@ rule suppa_generate_events:
     resources:
         mem_gb = 16,
         threads = 1
-    conda:
-        'suppa'
     params:
         opref = config['lr']['suppa']['events']['A3'].rsplit('_', maxsplit=2)[0]
     output:
@@ -49,9 +61,12 @@ rule suppa_generate_events:
         config['lr']['suppa']['events']['MX'],
         config['lr']['suppa']['events']['RI'],
         config['lr']['suppa']['events']['SE'],
+    conda:
+        'base'
     shell:
         """
-        suppa.py generateEvents \
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/suppa2
+        /gpfs/projects/bsc83/utils/SUPPA-2.4/suppa.py generateEvents \
             -i {input.gtf} \
             -o {params.opref} \
             -f ioe \
@@ -63,10 +78,11 @@ rule suppa_psi:
         mem_gb = 16,
         threads = 1
     conda:
-        'suppa'
+        'base'
     shell:
         """
-        suppa.py psiPerEvent \
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/suppa2
+        /gpfs/projects/bsc83/utils/SUPPA-2.4/suppa.py psiPerEvent \
             --ioe-file {input.ioe} \
             --expression-file {input.filt_ab} \
             --o {params.opref}
@@ -75,7 +91,7 @@ rule suppa_psi:
 use rule suppa_psi as suppa_get_psi with:
     input:
         ioe = lambda wc:config['lr']['suppa']['events'][wc.event],
-        filt_ab = config['lr']['suppa']['filt_ab']
+        filt_ab = config['lr']['suppa']['fmt_ab']
     params:
         opref = config['lr']['suppa']['psi'].rsplit('.psi', maxsplit=1)[0]
     output:

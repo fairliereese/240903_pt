@@ -184,6 +184,7 @@ lr:
     nov_ics: ../../data/cerb/nov_ics.tsv
 
   suppa:
+    fmt_ab: ../../data/suppa/fmt_matrix.abundance.tpm.tsv
     events:
         A3: ../../data/suppa/poder.events_A3_strict.ioe
         A5: ../../data/suppa/poder.events_A5_strict.ioe
