@@ -8,6 +8,9 @@ ref:
       link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/610/035/GCA_003610035.2_CAAPA_Pan-Genome/GCA_003610035.2_CAAPA_Pan-Genome_genomic.fna.gz
     hg38:
       link: #/gpfs/projects/bsc83/Data/assemblies/GRCh38/GRCh38.primary_assembly.genome.fa for hg38
+    pfam:
+      link: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz
+      bed: ../../ref/ucscGenePfam.bed
     personal:
       fa_gz: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.gz
       fa_mmi: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.mmi
@@ -105,6 +108,15 @@ gtex:
     ab_gz: ../../data/gtex/gtex_abundance.tsv.gz
     ab: ../../data/gtex/gtex_abundance.tsv
     ab_fmt: ../../data/gtex/gtex_abundance_formatted.tsv
+
+    supp_tables:
+      link: https://pmc.ncbi.nlm.nih.gov/articles/instance/10337767/bin/NIHMS1877316-supplement-Supplementary_tables.xlsx
+      xlsx: ../../data/gtex/supp_tables/NIHMS1877316-supplement-Supplementary_tables.xlsx
+      
+    ase:
+      link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/LORALS_GTEx_v9_ase_quant_results.gencode.txt.gz
+      tsv_gz: ../../data/gtex/ase/LORALS_GTEx_v9_ase_quant_results.gencode.txt.gz
+      tsv: ../../data/gtex/ase/LORALS_GTEx_v9_ase_quant_results.gencode.txt
 
     cerb:
       ics: ../../data/gtex/cerb/ics.tsv
