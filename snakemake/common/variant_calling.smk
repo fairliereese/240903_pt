@@ -188,3 +188,14 @@ rule bcftools_subset_on_samples:
         -Ou \
         {input.vcf} > {output.vcf}
         """
+rule vcftools_calc_af:
+    resources:
+        threads = 1,
+        nodes = 1
+    shell:
+        """
+        vcftools \
+            --vcf {input.vcf} \
+            --freq \
+            --out {output.tsv}
+        """

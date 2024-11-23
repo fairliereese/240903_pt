@@ -611,4 +611,4 @@ software:
   meta: /gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
   hla_dpi_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/data/example_HLA_variants_v2.vcf
   hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{population}.vcf
-  # hla_dpi_af:
+  hla_dpi_pop_af: ../../data/1000g/example_HLA_variants_v2_{population}_afs.tsv
