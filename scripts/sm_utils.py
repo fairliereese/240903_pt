@@ -157,3 +157,6 @@ def parse_config(fname):
     df['tech_rep'] = df['sample']+'_'+df['tech_rep_num'].astype(str)
 
     return df
+
+def fmt_list_for_cli(l, sep=','):
+    return sep.join(l)

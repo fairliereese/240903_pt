@@ -174,3 +174,17 @@ rule vcf_rm_tags:
             -O z \
             -o {output.vcf} {input.vcf}
         """
+
+rule bcftools_subset_on_samples:
+    resources:
+        threads = 1,
+        nodes = 1
+    conda:
+        'base'
+    shell:
+        """
+        bcftools view \
+        --samples {params.samples} \
+        -Ou \
+        {input.vcf} > {output.vcf}
+        """

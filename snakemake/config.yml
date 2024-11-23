@@ -112,7 +112,7 @@ gtex:
     supp_tables:
       link: https://pmc.ncbi.nlm.nih.gov/articles/instance/10337767/bin/NIHMS1877316-supplement-Supplementary_tables.xlsx
       xlsx: ../../data/gtex/supp_tables/NIHMS1877316-supplement-Supplementary_tables.xlsx
-      
+
     ase:
       link: https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/LORALS_GTEx_v9_ase_quant_results.gencode.txt.gz
       tsv_gz: ../../data/gtex/ase/LORALS_GTEx_v9_ase_quant_results.gencode.txt.gz
@@ -606,3 +606,9 @@ software:
   buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl
   sqanti_path: /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/
   hmmer_path: /gpfs/projects/bsc83/utils/conda_envs/hmmer/bin/
+
+1000g:
+  meta: /gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
+  hla_dpi_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/data/example_HLA_variants_v2.vcf
+  hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{pop}.vcf
+  # hla_dpi_af:
