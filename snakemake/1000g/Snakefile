@@ -32,7 +32,7 @@ include: f'{c_dir}lr-kallisto.smk'
 df = pd.read_csv(config['1000g']['meta'],
     sep='\t', comment='#', header=None)
 df = df[[9,10]]
-df.columns = ['cell_line_id', 'pop']
+df.columns = ['cell_line_id', 'population']
 
 pops = ['CEU', 'YRI']
 
@@ -45,6 +45,6 @@ use rule bcftools_subset_on_samples as subset_pop with:
     input:
         vcf = config['1000g']['hla_dpi_vars']
     params:
-        samples = lambda wc: fmt_list_for_cli(df.loc[df.pop==wc.pop, 'cell_line_id'].unique())
+        samples = lambda wc: fmt_list_for_cli(df.loc[df.population==wc.population, 'cell_line_id'].unique())
     output:
         vcf = config['1000g']['hla_dpi_pop_vars']
