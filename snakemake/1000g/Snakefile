@@ -37,8 +37,9 @@ df.columns = ['cell_line_id', 'pop']
 pops = ['CEU', 'YRI']
 
 rule all:
-    expand(config['1000g']['hla_dpi_vars'],
-           pop=pops)
+    input:
+        expand(config['1000g']['hla_dpi_vars'],
+               pop=pops)
 
 use rule bcftools_subset_on_samples as subset_pop with:
     input:
