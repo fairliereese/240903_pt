@@ -39,7 +39,7 @@ pops = ['CEU', 'YRI']
 rule all:
     input:
         expand(config['1000g']['hla_dpi_pop_vars'],
-               pop=pops)
+               population=pops)
 
 use rule bcftools_subset_on_samples as subset_pop with:
     input:
