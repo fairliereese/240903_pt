@@ -197,5 +197,5 @@ rule vcftools_calc_af:
         vcftools \
             --vcf {input.vcf} \
             --freq \
-            --out {output.tsv}
+            --out {params.opref}
         """

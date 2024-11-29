@@ -178,6 +178,8 @@ lr:
   fastq_n_reads: ../../data/{sample}_fastq_n_reads.txt
   fastq_n_reads_summary: ../../data/fastq_n_reads.txt
 
+  q7_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic/{lab_sample}.bam
+
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf
   gtf_chr_renamed: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged_withoutchrEBV.gtf # whole post-merge GTF
   # gtf: /gpfs/home/bsc/bsc083001/mele_lab/projects/240706_pantranscriptome_cerberus_gtf_merge/merge_only_ics/data/flair/raw/GM10492_1.gtf # test for just one sample
@@ -190,6 +192,12 @@ lr:
 
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
+
+  # finding astu examples
+  astu_example:
+    bam: ../../data/astu_example/{var}_{chr}_{position}_{sample}.bam
+    bam_sorted: ../../data/astu_example/{var}_{chr}_{position}_{sample}_sorted.bam
+    bam_sorted_ind: ../../data/astu_example/{var}_{chr}_{position}_{sample}_sorted.bam.bai
 
   cerb:
     ics: ../../data/cerb/ics.tsv
@@ -609,6 +617,10 @@ software:
 
 1000g:
   meta: /gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
+  trios_meta: /gpfs/projects/bsc83/Data/1000G/1000G_trios_metadata.tsv
+
+  exon_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/1000G_variants_in_exons.vcf
+
   hla_dpi_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/data/example_HLA_variants_v2.vcf
   hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{population}.vcf
-  hla_dpi_pop_af: ../../data/1000g/example_HLA_variants_v2_{population}_afs.tsv
+  hla_dpi_pop_af: ../../data/1000g/example_HLA_variants_v2_{population}_afs.frq

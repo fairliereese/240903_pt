@@ -52,5 +52,7 @@ use rule bcftools_subset_on_samples as subset_pop with:
 use rule vcftools_calc_af as calc_pop_af with:
     input:
         vcf = config['1000g']['hla_dpi_pop_vars']
+    params:
+        opref = config['1000g']['hla_dpi_pop_af'].split('.frq')[0]
     output:
         tsv = config['1000g']['hla_dpi_pop_af']

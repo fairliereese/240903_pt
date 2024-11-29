@@ -105,3 +105,14 @@ module load samtools
 fa=/gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/ref/HG002/HG002.fa.gz
 samtools faidx $fa chrX > test
 ```
+
+```bash
+module load samtools
+bam=/gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic12_NI7_GM19240.bam
+var=C
+chrom=chr6
+pos=29942581
+samtools view -h ${bam} ${chrom}:${pos}-${pos} | \
+        awk 'BEGIN {{pos = ${pos}; allele = "${params.var}"}} \
+         $0 ~ /^@/ || (substr($10, pos - $4 + 1, 1) == allele) {{print $0}}' > {output.sam}
+```

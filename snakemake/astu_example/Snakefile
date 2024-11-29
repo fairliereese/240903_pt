@@ -1,0 +1,112 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+# config parsing
+
+# 1000g config
+df = pd.read_csv('../1000g/1000G_metadata.tsv',
+    sep='\t', comment='#', header=None)
+df = df[[9,10]]
+df.columns = ['cell_line_id_1000g', 'population']
+df['cell_line_id_1000g_short'] = df['cell_line_id_1000g'].str.split('NA', expand=True)[1]
+inds = df.loc[df.cell_line_id_1000g_short.isnull()].index
+df.loc[inds, 'cell_line_id_1000g_short'] = df.loc[inds, 'cell_line_id_1000g'].str.split('HG', expand=True)[1]
+assert len(df.loc[df.cell_line_id_1000g_short.isnull()]) == 0
+df.drop(['cell_line_id_1000g', 'population'], axis=1, inplace=True)
+
+# variant config
+config_df = pd.read_csv('config.tsv', sep='\t')
+
+# meta stuff
+# need to also get the weird shorthand name from the meta table
+# and the 1000g name
+meta = load_meta()
+meta['hapmap_DNA_ID_short'] = meta['hapmap_DNA_ID'].str.split('NA', expand=True)[1]
+config_df = config_df.merge(meta,
+                            how='left',
+                            on=['cell_line_id', 'population', 'sample'])
+
+# merge w/ 1000g
+config_df = config_df.merge(df,
+                  how='left',
+                  left_on='hapmap_DNA_ID_short',
+                  right_on='cell_line_id_1000g_short')
+
+# TODO remove when matches are all fixed
+print(len(config_df.index))
+config_df = config_df.loc[config_df.cell_line_id_1000g_short.notnull()]
+print(len(config_df.index))
+
+# 43_EU3_GM12812
+config_df['lab_sample'] = config_df['lab_number_sample'].astype(str)+'_'+\
+                          config_df['lab_sampleid'].astype(str)+'_'+\
+                          config_df['cell_line_id'].astype(str)
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+rule all:
+    input:
+        expand(config['lr']['astu_example']['bam'],
+               zip,
+               var=config_df['pos'].tolist(),
+               chr=config_df['chr'].tolist(),
+               position=config_df['pos'].tolist(),
+               sample=config_df['sample'].tolist())
+
+rule get_var_gene_reads:
+    input:
+        bam = lambda wc: expand(config['lr']['q7_bam'],
+                                lab_sample=get_df_val(config_df,
+                                'lab_sample',
+                                {'sample': wc.sample}))
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        bam = config['lr']['astu_example']['bam']
+        # bam = temporary(config['lr']['astu_example']['bam'])
+    shell:
+        """
+        module load samtools
+        samtools view -hu {wildcards.chr}:{wc.pos} {input.bam} | \
+             awk '{{if($0 ~ /^@/ || $10 ~ /{wildcards.var}/) print $0}}' | \
+             samtools view -hb > > {output.bam}
+        """
+
+# sort + index
