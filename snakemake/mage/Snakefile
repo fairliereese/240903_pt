@@ -109,6 +109,6 @@ use rule short_kallisto_quant as v47_sr_kallisto_quant with:
         odir = config['mage']['v47_kallisto']['odir']
     output:
         bus = config['mage']['v47_kallisto']['bus'],
-        flens = config['mage']['v47_kallisto']['flens'],
+        # flens = config['mage']['v47_kallisto']['flens'],
         transcripts = config['mage']['v47_kallisto']['transcripts'],
         matrix = config['mage']['v47_kallisto']['matrix']
