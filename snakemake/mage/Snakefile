@@ -122,7 +122,7 @@ use rule fmt_mtx_transcripts as get_counts_mtx with:
     params:
         col = 'counts'
     output:
-        tsv = cconfig['mage']['v47_kallisto']['matrix_tsv']
+        tsv = config['mage']['v47_kallisto']['matrix_tsv']
 
 use rule fmt_mtx_transcripts as get_tpm_mtx with:
     input:
