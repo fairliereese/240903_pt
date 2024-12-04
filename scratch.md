@@ -118,6 +118,13 @@ samtools view -h ${bam} ${chrom}:${pos}-${pos} | \
 ```
 
 ```bash
+conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto
+        /gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto bus             -t 32             -x bulk             -i ../../ref/v47_kallisto_short/hg38_v47_k-31.idx             -g ../../ref/v47_kallisto_short/hg38_v47.t2g             -o ../../data/mage/v47_kallisto/NA19704_batch11_rep1/
+            --paired             ../../data/mage/raw/NA19704_batch11_rep1_r1.fq.gz ../../data/mage/raw/NA19704_batch11_rep1_r2.fq.gz
+```
+
+
+```bash
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     bus: ../../data/mage/poder_kallisto/{sample}/output.bus

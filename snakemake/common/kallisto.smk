@@ -48,7 +48,7 @@ rule short_kallisto_quant:
             -g {input.t2g} \
             -o {params.odir} \
             --paired \
-            {input.r1_fq} {input.r2_fq}
+            {input.r1_fq} {input.r2_fq} 2> temp.err
         """
 
 rule short_bustools_count:
@@ -73,12 +73,7 @@ rule short_bustools_count:
             -g {input.t2g}
         """
 
-#         bustools count -o output_dir/counts_unfiltered/
-# cells_x_tcc -g t2g.txt -e output_dir/matrix.ec \
-#  -t output_dir/transcripts.txt --multimapping --cm
-# output_dir/output.s.bus
-
-# rule short_lr_kallisto:
+# rule short_kallisto_quant:
 #     resources:
 #         threads = 32,
 #         nodes = 2
