@@ -71,7 +71,7 @@ rule all:
                sample=df['sample'].tolist()),
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
-        expand(config['mage']['v47_kallisto']['matrix_tsv'],
+        expand(config['mage']['v47_kallisto']['matrix_mtx'],
                sample=df['sample'].tolist()[0]),
 
 use rule wget as dl_r1_fq with:
@@ -109,7 +109,7 @@ use rule short_kb_count as sr_kallisto_count with:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
         odir = config['mage']['v47_kallisto']['odir']
     output:
-        mtx = config['mage']['v47_kallisto']['matrix_tsv']
+        mtx = config['mage']['v47_kallisto']['matrix_mtx']
 
 
 # use rule short_kallisto_quant as v47_sr_kallisto_quant with:
