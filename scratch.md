@@ -118,27 +118,6 @@ samtools view -h ${bam} ${chrom}:${pos}-${pos} | \
 ```
 
 ```bash
-ref:
-
-  v47_kallisto_short:
-    ind: ../../ref/v47_kallisto_short/hg38_v47_k-63.idx
-    t_fa: ../../ref/v47_kallisto_short/hg38_v47_transcripts.fa
-    t2g: ../../ref/v47_kallisto_short/hg38_v47.t2g
-
-  poder_kallisto_short:
-    ind: ../../ref/poder_kallisto_short/hg38_poder_k-63.idx
-    t_fa: ../../ref/poder_kallisto_short/hg38_poder_transcripts.fa
-    t2g: ../../ref/poder_kallisto_short/hg38_poder.t2g
-
-  enh_v47_kallisto_short:
-    ind: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_k-63.idx
-    t_fa: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_transcripts.fa
-    t2g: ../../ref/enh_v47_kallisto_short/hg38_enh_v47.t2g
-
-mage:
-  r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
-  r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
-
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     bus: ../../data/mage/poder_kallisto/{sample}/output.bus
@@ -146,6 +125,20 @@ mage:
     matrix: ../../data/mage/poder_kallisto/{sample}/matrix.ec
     flens: ../../data/mage/poder_kallisto/{sample}/flens.txt
     bus_sort: ../../data/mage/poder_kallisto/{sample}/output_sorted.bus
+
+    count_pref: ../../data/mage/poder_kallisto/{sample}/count
+    count_mtx: ../../data/mage/poder_kallisto/{sample}/count.mtx
+    count_ec: ../../data/mage/poder_kallisto/{sample}/count.ec.txt
+    matrix_tsv: ../../data/mage/poder_kallisto/{sample}/matrix.abundance.tsv
+
+    quant:
+      odir: ../../data/mage/poder_kallisto_quant/{sample}
+      matrix: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.mtx
+      matrix_tpm: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.tpm.mtx
+      matrix_tsv: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.tsv
+      matrix_tpm_tsv: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
+      merge_matrix_tsv: ../../data/mage/poder_kallisto_quant/matrix.abundance.tsv
+      merge_matrix_tpm_tsv: ../../data/mage/poder_kallisto_quant/matrix.abundance.tpm.tsv
 
   v47_kallisto:
     odir: ../../data/mage/v47_kallisto/{sample}/
@@ -155,6 +148,20 @@ mage:
     flens: ../../data/mage/v47_kallisto/{sample}/flens.txt
     bus_sort: ../../data/mage/v47_kallisto/{sample}/output_sorted.bus
 
+    count_pref: ../../data/mage/v47_kallisto/{sample}/count
+    count_mtx: ../../data/mage/v47_kallisto/{sample}/count.mtx
+    count_ec: ../../data/mage/v47_kallisto/{sample}/count.ec.txt
+    matrix_tsv: ../../data/mage/v47_kallisto/{sample}/matrix.abundance.tsv
+
+    quant:
+      odir: ../../data/mage/v47_kallisto_quant/{sample}
+      matrix: ../../data/mage/v47_kallisto_quant/{sample}/matrix.abundance.mtx
+      matrix_tpm: ../../data/mage/v47_kallisto_quant/{sample}/matrix.abundance.tpm.mtx
+      matrix_tsv: ../../data/mage/v47_kallisto_quant/{sample}/matrix.abundance.tsv
+      matrix_tpm_tsv: ../../data/mage/v47_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
+      merge_matrix_tsv: ../../data/mage/v47_kallisto_quant/matrix.abundance.tsv
+      merge_matrix_tpm_tsv: ../../data/mage/v47_kallisto_quant/matrix.abundance.tpm.tsv
+
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
     bus: ../../data/mage/enh_v47_kallisto/{sample}/output.bus
@@ -162,3 +169,17 @@ mage:
     matrix: ../../data/mage/enh_v47_kallisto/{sample}/matrix.ec
     flens: ../../data/mage/enh_v47_kallisto/{sample}/flens.txt
     bus_sort: ../../data/mage/enh_v47_kallisto/{sample}/output_sorted.bus
+
+    count_pref: ../../data/mage/enh_v47_kallisto/{sample}/count
+    count_mtx: ../../data/mage/enh_v47_kallisto/{sample}/count.mtx
+    count_ec: ../../data/mage/enh_v47_kallisto/{sample}/count.ec.txt
+    matrix_tsv: ../../data/mage/enh_v47_kallisto/{sample}/matrix.abundance.tsv
+
+    quant:
+      odir: ../../data/mage/enh_v47_kallisto_quant/{sample}
+      matrix: ../../data/mage/enh_v47_kallisto_quant/{sample}/matrix.abundance.mtx
+      matrix_tpm: ../../data/mage/enh_v47_kallisto_quant/{sample}/matrix.abundance.tpm.mtx
+      matrix_tsv: ../../data/mage/enh_v47_kallisto_quant/{sample}/matrix.abundance.tsv
+      matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
+      merge_matrix_tsv: ../../data/mage/enh_v47_kallisto_quant/matrix.abundance.tsv
+      merge_matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto_quant/matrix.abundance.tpm.tsv

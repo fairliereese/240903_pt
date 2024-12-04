@@ -47,7 +47,7 @@ rule short_kallisto_quant:
             -i {input.ind} \
             -g {input.t2g} \
             -o {params.odir} \
-             --paired \
+            --paired \
             {input.r1_fq} {input.r2_fq}
         """
 
@@ -69,7 +69,7 @@ rule short_bustools_count:
              -e {input.matrix} \
              -o {params.count_pref} \
             --cm \
-            -m \
+            --multimapping \
             -g {input.t2g}
         """
 
