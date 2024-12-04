@@ -81,17 +81,17 @@ ref:
 
   ## short kallisto
   v47_kallisto_short:
-    ind: ../../ref/v47_kallisto_short/hg38_v47_k-63.idx
+    ind: ../../ref/v47_kallisto_short/hg38_v47_k-31.idx
     t_fa: ../../ref/v47_kallisto_short/hg38_v47_transcripts.fa
     t2g: ../../ref/v47_kallisto_short/hg38_v47.t2g
 
   poder_kallisto_short:
-    ind: ../../ref/poder_kallisto_short/hg38_poder_k-63.idx
+    ind: ../../ref/poder_kallisto_short/hg38_poder_k-31.idx
     t_fa: ../../ref/poder_kallisto_short/hg38_poder_transcripts.fa
     t2g: ../../ref/poder_kallisto_short/hg38_poder.t2g
 
   enh_v47_kallisto_short:
-    ind: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_k-63.idx
+    ind: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_k-31.idx
     t_fa: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_transcripts.fa
     t2g: ../../ref/enh_v47_kallisto_short/hg38_enh_v47.t2g
 
