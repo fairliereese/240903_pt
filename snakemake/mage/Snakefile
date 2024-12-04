@@ -71,10 +71,12 @@ rule all:
                sample=df['sample'].tolist()),
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
-        expand(config['mage']['v47_kallisto']['matrix_tsv'],
-               sample=df['sample'].tolist()[0]),
-        expand(config['mage']['v47_kallisto']['matrix_tpm_tsv'],
-              sample=df['sample'].tolist()[0]),
+        config['mage']['v47_kallisto']['merge_matrix_tsv'],
+        config['mage']['v47_kallisto']['merge_matrix_tpm_tsv']
+        # expand(config['mage']['v47_kallisto']['matrix_tsv'],
+        #        sample=df['sample'].tolist()[0]),
+        # expand(config['mage']['v47_kallisto']['matrix_tpm_tsv'],
+        #       sample=df['sample'].tolist()[0]),
 
 use rule wget as dl_r1_fq with:
     params:
@@ -133,7 +135,42 @@ use rule fmt_mtx_transcripts as get_tpm_mtx with:
     output:
         tsv = config['mage']['v47_kallisto']['matrix_tpm_tsv']
 
+rule merge_matrices:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        merge_df = pd.DataFrame()
+        samples = list(params.samples)
+        i = 0
+        for t, s in zip(list(input.tsvs), samples):
+            temp = pd.read_csv(t, sep='\t')
+            temp.rename({'counts': s}, axis=1, inplace=True)
+            if i == 0:
+                merge_df = temp.copy(deep=True)
+            else:
+                merge_df = merge_df.merge(temp, how='outer',
+                            on='transcript_id')
+            i+=1
+        merge_df.to_csv(output.tsv, sep='\t', index=False)
 
+use rule merge_matrices as merge_matrices_tpm with:
+    input:
+        tsvs = expand(config['mage']['v47_kallisto']['matrix_tpm_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['mage']['v47_kallisto']['merge_matrix_tpm_tsv']
+
+use rule merge_matrices as merge_matrices_counts with:
+    input:
+        tsvs = expand(config['mage']['v47_kallisto']['matrix_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['mage']['v47_kallisto']['merge_matrix_tsv']
 
 # use rule short_kallisto_quant as v47_sr_kallisto_quant with:
 #     input:

@@ -620,6 +620,10 @@ mage:
     matrix_tsv: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tsv
     matrix_tpm_tsv: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
 
+    merge_matrix_tsv: ../../data/mage/v47_kallisto/matrix.abundance.tsv
+    merge_matrix_tpm_tsv: ../../data/mage/v47_kallisto/matrix.abundance.tpm.tsv
+
+
 
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
