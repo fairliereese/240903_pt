@@ -72,7 +72,7 @@ rule all:
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
         expand(config['mage']['v47_kallisto']['matrix'],
-               sample=df['sample'].tolist()),
+               sample=df['sample'].tolist()[0]),
 
 use rule wget as dl_r1_fq with:
     params:
