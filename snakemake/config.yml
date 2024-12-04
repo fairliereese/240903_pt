@@ -613,11 +613,16 @@ mage:
 
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
-    matrix_mtx: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.mtx
+    transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
+    matrix: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.mtx
+    matrix_tpm: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.mtx
+
+    matrix_tsv: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.tsv
+    matrix_tpm_tsv: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
 
   v47_kallisto:
     odir: ../../data/mage/v47_kallisto/{sample}/
-    matrix_mtx: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.mtx
+    matrix: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.mtx
 
 
     # quant:

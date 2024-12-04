@@ -71,8 +71,10 @@ rule all:
                sample=df['sample'].tolist()),
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
-        expand(config['mage']['v47_kallisto']['matrix_mtx'],
+        expand(config['mage']['v47_kallisto']['matrix_tsv'],
                sample=df['sample'].tolist()[0]),
+        expand(config['mage']['v47_kallisto']['matrix_tpm_tsv'],
+              sample=df['sample'].tolist()[0]),
 
 use rule wget as dl_r1_fq with:
     params:
@@ -109,7 +111,28 @@ use rule short_kb_count as sr_kallisto_count with:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
         odir = config['mage']['v47_kallisto']['odir']
     output:
-        mtx = config['mage']['v47_kallisto']['matrix_mtx']
+        mtx = config['mage']['v47_kallisto']['matrix'],
+        mtx_tpm = config['mage']['v47_kallisto']['matrix_tpm'],
+        transcripts = config['mage']['v47_kallisto']['transcripts']
+
+use rule fmt_mtx_transcripts as get_counts_mtx with:
+    input:
+        mtx = config['mage']['v47_kallisto']['matrix'],
+        ts = config['mage']['v47_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = cconfig['mage']['v47_kallisto']['matrix_tsv']
+
+use rule fmt_mtx_transcripts as get_tpm_mtx with:
+    input:
+        mtx = config['mage']['v47_kallisto']['matrix_tpm'],
+        ts = config['mage']['v47_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['mage']['v47_kallisto']['matrix_tpm_tsv']
+
 
 
 # use rule short_kallisto_quant as v47_sr_kallisto_quant with:
