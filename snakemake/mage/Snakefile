@@ -102,6 +102,7 @@ use rule short_kallisto_build_ind as v47_sr_kallisto_ind with:
 use rule short_kallisto_quant as v47_sr_kallisto_quant with:
     input:
         ind = config['ref']['v47_kallisto_short']['ind'],
+        t2g = config['ref']['v47_kallisto_short']['t2g'],
         r1_fq = config['mage']['r1_fq'],
         r2_fq = config['mage']['r2_fq']
     params:

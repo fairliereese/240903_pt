@@ -47,12 +47,11 @@ rule short_kallisto_quant:
             -i {input.ind} \
             -g {input.t2g} \
             -o {params.odir} \
+            --parity=paired \
             {input.r1_fq} {input.r2_fq}
         """
 
 
-#
-#
 # rule short_bustools_count:
 #     params:
 #         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
