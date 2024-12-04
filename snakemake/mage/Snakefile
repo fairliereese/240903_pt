@@ -71,7 +71,7 @@ rule all:
                sample=df['sample'].tolist()),
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
-        expand(config['mage']['v47_kallisto']['matrix'],
+        expand(config['mage']['v47_kallisto']['bus_sort'],
                sample=df['sample'].tolist()[0]),
 
 use rule wget as dl_r1_fq with:
@@ -112,3 +112,9 @@ use rule short_kallisto_quant as v47_sr_kallisto_quant with:
         # flens = config['mage']['v47_kallisto']['flens'],
         transcripts = config['mage']['v47_kallisto']['transcripts'],
         matrix = config['mage']['v47_kallisto']['matrix']
+
+use rule bustools_sort as v47_sr_kallisto_sort with:
+    input:
+        bus = config['mage']['v47_kallisto']['bus']
+    output:
+        bus = config['mage']['v47_kallisto']['bus_sort']

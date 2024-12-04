@@ -45,43 +45,12 @@ rule short_kallisto_quant:
             -t {resources.threads} \
             -x bulk \
             -i {input.ind} \
+            -g {input.t2g} \
             -o {params.odir} \
             {input.r1_fq} {input.r2_fq}
         """
 
-# from ruben: /gpfs/projects/bsc83/Projects/scRNAseq/rchazarr/01_Projects/04_Single-cell-AS/01_Randolph2021/01_Quantification/02_Kallisto-bustools/02_Quant/03_GENCODEv42-filt/01_kallisto-bustools-count.sh
-# kallisto bus -i $idx -o $out_dir -x 10xv2 -t $n_threads $fastqs
-# bustools correct -w $barcodes -o $out_dir/output.correct.bus $out_dir/output.bus
-# bustools sort -t $n_threads -o $out_dir/output.correct.sort.bus $out_dir/output.correct.bus
-#
-# # Gene Counts
-# mkdir -p $out_dir/GeneCount
-#
-# bustools count -o $out_dir/GeneCount/gene -g $txp_map -e $out_dir/matrix.ec -t $out_dir/transcripts.txt --genecounts $out_dir/output.correct.sort.bus
-#
-# # TCC (Transcript Compatibility Counts)
-# mkdir -p $out_dir/TCC
-# bustools count -o $out_dir/TCC/tcc -g $txp_map -e $out_dir/matrix.ec -t $out_dir/transcripts.txt $out_dir/output.correct.sort.bus
 
-
-#z
-#
-# rule short_bustools_sort:
-#     params:
-#         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools'
-#     resources:
-#         threads = 32,
-#         nodes = 2
-#     conda:
-#         'base'
-#     shell:
-#         """
-#         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
-#         {params.bustools_path} sort \
-#             -t {resources.threads} \
-#             {input.bus} \
-#             -o {output.bus}
-#         """
 #
 #
 # rule short_bustools_count:
