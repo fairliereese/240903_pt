@@ -47,33 +47,37 @@ rule short_kallisto_quant:
             -i {input.ind} \
             -g {input.t2g} \
             -o {params.odir} \
-            --parity=paired \
+             --paired \
             {input.r1_fq} {input.r2_fq}
         """
 
+rule short_bustools_count:
+    params:
+        bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
+        count_pref = config['lr']['kallisto']['count_pref']
+    resources:
+        threads = 32,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
+        {params.bustools_path} count \
+            {input.bus} \
+             -t {input.transcripts} \
+             -e {input.matrix} \
+             -o {params.count_pref} \
+            --cm \
+            -m \
+            -g {input.t2g}
+        """
 
-# rule short_bustools_count:
-#     params:
-#         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
-#         count_pref = config['lr']['kallisto']['count_pref']
-#     resources:
-#         threads = 32,
-#         nodes = 2
-#     conda:
-#         'base'
-#     shell:
-#         """
-#         conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/bustools
-#         {params.bustools_path} count \
-#             {input.bus} \
-#              -t {input.transcripts} \
-#              -e {input.matrix} \
-#              -o {params.count_pref} \
-#             --cm \
-#             -m \
-#             -g {input.t2g}
-#         """
-#
+#         bustools count -o output_dir/counts_unfiltered/
+# cells_x_tcc -g t2g.txt -e output_dir/matrix.ec \
+#  -t output_dir/transcripts.txt --multimapping --cm
+# output_dir/output.s.bus
+
 # rule short_lr_kallisto:
 #     resources:
 #         threads = 32,
