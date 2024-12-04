@@ -611,6 +611,16 @@ mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
   r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
 
+  v47_kallisto:
+    odir: ../../data/mage/v47_kallisto/{sample}/
+    transcripts: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/transcripts.txt
+    matrix: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.mtx
+    matrix_tpm: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.mtx
+
+    matrix_tsv: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tsv
+    matrix_tpm_tsv: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
+
+
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -620,9 +630,6 @@ mage:
     matrix_tsv: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.tsv
     matrix_tpm_tsv: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
 
-  v47_kallisto:
-    odir: ../../data/mage/v47_kallisto/{sample}/
-    matrix: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.mtx
 
 
     # quant:
