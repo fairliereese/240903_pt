@@ -52,6 +52,7 @@ rule short_kb_count:
             --matrix-to-directories \
             {input.r1_fq} {input.r2_fq}
         """
+
 # rule short_kallisto_quant:
 #     params:
 #         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',

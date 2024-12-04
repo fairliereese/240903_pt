@@ -99,7 +99,7 @@ use rule short_kallisto_build_ind as v47_sr_kallisto_ind with:
         fa = config['ref']['v47_kallisto_short']['t_fa'],
         t2g = config['ref']['v47_kallisto_short']['t2g']
 
-use rule short_kb_count as sr_kallisto_ind_count with:
+use rule short_kb_count as sr_kallisto_count with:
     input:
         ind = config['ref']['v47_kallisto_short']['ind'],
         t2g = config['ref']['v47_kallisto_short']['t2g'],
