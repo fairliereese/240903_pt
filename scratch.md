@@ -113,6 +113,52 @@ var=C
 chrom=chr6
 pos=29942581
 samtools view -h ${bam} ${chrom}:${pos}-${pos} | \
-        awk 'BEGIN {{pos = ${pos}; allele = "${params.var}"}} \
-         $0 ~ /^@/ || (substr($10, pos - $4 + 1, 1) == allele) {{print $0}}' > {output.sam}
+        awk 'BEGIN {{pos = ${pos}; allele = "${var}"}} \
+         $0 ~ /^@/ || (substr($10, pos - $4 + 1, 1) == allele) {{print $0}}' > ~/test.sam
 ```
+
+```bash
+ref:
+
+  v47_kallisto_short:
+    ind: ../../ref/v47_kallisto_short/hg38_v47_k-63.idx
+    t_fa: ../../ref/v47_kallisto_short/hg38_v47_transcripts.fa
+    t2g: ../../ref/v47_kallisto_short/hg38_v47.t2g
+
+  poder_kallisto_short:
+    ind: ../../ref/poder_kallisto_short/hg38_poder_k-63.idx
+    t_fa: ../../ref/poder_kallisto_short/hg38_poder_transcripts.fa
+    t2g: ../../ref/poder_kallisto_short/hg38_poder.t2g
+
+  enh_v47_kallisto_short:
+    ind: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_k-63.idx
+    t_fa: ../../ref/enh_v47_kallisto_short/hg38_enh_v47_transcripts.fa
+    t2g: ../../ref/enh_v47_kallisto_short/hg38_enh_v47.t2g
+
+mage:
+  r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
+  r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
+
+  poder_kallisto:
+    odir: ../../data/mage/poder_kallisto/{sample}/
+    bus: ../../data/mage/poder_kallisto/{sample}/output.bus
+    transcripts: ../../data/mage/poder_kallisto/{sample}/transcripts.txt
+    matrix: ../../data/mage/poder_kallisto/{sample}/matrix.ec
+    flens: ../../data/mage/poder_kallisto/{sample}/flens.txt
+    bus_sort: ../../data/mage/poder_kallisto/{sample}/output_sorted.bus
+
+  v47_kallisto:
+    odir: ../../data/mage/v47_kallisto/{sample}/
+    bus: ../../data/mage/v47_kallisto/{sample}/output.bus
+    transcripts: ../../data/mage/v47_kallisto/{sample}/transcripts.txt
+    matrix: ../../data/mage/v47_kallisto/{sample}/matrix.ec
+    flens: ../../data/mage/v47_kallisto/{sample}/flens.txt
+    bus_sort: ../../data/mage/v47_kallisto/{sample}/output_sorted.bus
+
+  enh_v47_kallisto:
+    odir: ../../data/mage/enh_v47_kallisto/{sample}/
+    bus: ../../data/mage/enh_v47_kallisto/{sample}/output.bus
+    transcripts: ../../data/mage/enh_v47_kallisto/{sample}/transcripts.txt
+    matrix: ../../data/mage/enh_v47_kallisto/{sample}/matrix.ec
+    flens: ../../data/mage/enh_v47_kallisto/{sample}/flens.txt
+    bus_sort: ../../data/mage/enh_v47_kallisto/{sample}/output_sorted.bus
