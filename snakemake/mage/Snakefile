@@ -102,6 +102,8 @@ use rule short_kallisto_build_ind as v47_sr_kallisto_ind with:
 use rule short_kallisto_quant as v47_sr_kallisto_quant with:
     input:
         ind = config['ref']['v47_kallisto_short']['ind'],
+        r1_fq = config['mage']['r1_fq'],
+        r2_fq = config['mage']['r2_fq']
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
         odir = config['mage']['v47_kallisto']['odir']
