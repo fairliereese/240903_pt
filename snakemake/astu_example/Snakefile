@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import sys
+import pysam
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
@@ -348,7 +349,8 @@ rule get_var_allele_read_ids:
                            var=nts,
                            allow_missing=True),
     run:
-        a, c, g, t, a_reads, c_reads, g_reads, t_reads = count_coverage(input.bam,
+        afile = pysam.AlignmentFile(input.bam, 'rb')
+        a, c, g, t, a_reads, c_reads, g_reads, t_reads = count_coverage(afile,
             wildcards.chrom,
             start=int(wildcards.position)-1,
             stop=int(wildcards.position))
