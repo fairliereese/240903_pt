@@ -54,13 +54,21 @@ def get_stable_gid(df, col):
     return df[col].tolist()
 
 
+# sample information
+meta_file = '../config.tsv'
+
+meta_df = load_meta()
+meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
+                      meta_df['lab_sampleid'].astype(str)+'_'+\
+                      meta_df['cell_line_id'].astype(str)
+
 # ase genes to remove
 # df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ase_results_threeannots.tsv', sep='\t')
 df = pd.read_csv(config['lr']['as']['ase'], sep='\t')
 
 df = df.loc[(df.annot=='PODER')&\
             (df.FDR<=0.05)]
-df['gid'] = get_stable_gid(df, 'geneid.v')
+df['gid'] = cerberus.get_stable_gid(df, 'geneid.v')
 ase_gids = df.gid.tolist()
 
 # astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
@@ -68,7 +76,7 @@ astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
 
 astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
                       (astu_df.gene_testable==True)]
-astu_df['gid'] = get_stable_gid(astu_df, 'geneid.v')
+astu_df['gid'] = cerberus.get_stable_gid(astu_df, 'geneid.v')
 
 # remove ase genes
 print(len(astu_df.index))
@@ -96,7 +104,12 @@ astu_df = astu_df.merge(df[['ID', 'geneID']],
 # {gid}_{tid}_{var}_{chr}_{position}_{sample}.bam
 astu_df['chrom'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[0]
 astu_df['position'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[1]
-# astu_df[['transcript_variant', 'chrom', 'position', 'transcriptid.v', 'geneid.v']].head()
+astu_df[['transcript_variant', 'chrom', 'position', 'transcriptid.v', 'geneid.v']].head()
+
+# merge in sample info
+astu_df = astu_df.merge(meta_df,
+                        how='left',
+                        on='sample')
 
 config_df = astu_df.copy(deep=True)
 nts  = ['a', 'c', 'g', 't']
