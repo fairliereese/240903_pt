@@ -340,3 +340,18 @@ rule get_bed_reads:
             --region-file {input.bed} \
             {input.bam} > {output.bam}
         """
+
+# get the reads matching specific read ids
+rule get_bam_from_read_ids:
+    resources:
+        threads = 8,
+        nodes = 1
+    shell:
+        """
+        module load samtools
+        samtools view \
+            -h \
+            -b {input.align} \
+            --qname-file {input.read_ids} \
+            -o {output.align}
+        """

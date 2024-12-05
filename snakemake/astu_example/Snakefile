@@ -324,7 +324,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(expand(config['lr']['astu_example']['read_ids'],
+        expand(expand(config['lr']['astu_example']['bam_sorted_ind'],
                zip,
                chrom=config_df['chrom'].tolist(),
                position=config_df['position'].tolist(),
@@ -334,7 +334,7 @@ rule all:
                allow_missing=True),
                var=nts)
 
-rule get_var_allele_reads:
+rule get_var_allele_read_ids:
     input:
         bam = lambda wc: expand(config['lr']['q7_bam'],
                                 lab_sample=get_df_val(config_df,
@@ -361,7 +361,27 @@ rule get_var_allele_reads:
                 for read_id in reads:
                     ofile.write(read_id+'\n')
 
+use rule get_bam_from_read_ids as get_var_allele_reads with:
+    input:
+        align = lambda wc: expand(config['lr']['q7_bam'],
+                                lab_sample=get_df_val(config_df,
+                                'lab_sample',
+                                {'sample': wc.sample})),
+        read_ids = config['lr']['astu_example']['read_ids']
+    output:
+        align = temporary(config['lr']['astu_example']['bam'])
 
+use rule sort_bam as var_allele_reads_sort_bam with:
+    input:
+        bam = config['lr']['astu_example']['bam']
+    output:
+        bam = config['lr']['astu_example']['bam_sorted']
+
+use rule index_bam as var_allele_reads_index_bam with:
+    input:
+        bam = config['lr']['astu_example']['bam_sorted']
+    output:
+        bam = config['lr']['astu_example']['bam_sorted_ind']
 
 # rule get_var_gene_reads:
 #     input:
