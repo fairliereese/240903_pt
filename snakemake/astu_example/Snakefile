@@ -301,6 +301,14 @@ def count_coverage(afile,
     return count_a, count_c, count_g, count_t, \
       read_names_a, read_names_c, read_names_g, read_names_t
 
+wildcard_constraints:
+    chrom='|'.join([re.escape(x) for x in config_df['chrom'].tolist()]),
+    position='|'.join([re.escape(x) for x in config_df['position'].tolist()]),
+    sample='|'.join([re.escape(x) for x in config_df['sample'].tolist()]),
+    gid='|'.join([re.escape(x) for x in config_df['geneid.v'].tolist()]),
+    tid='|'.join([re.escape(x) for x in config_df['transcriptid.v'].tolist()])
+
+
 rule all:
     input:
         expand(expand(config['lr']['astu_example']['read_ids'],
