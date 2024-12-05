@@ -211,11 +211,16 @@ lr:
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
 
+  as:
+    ase: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/ase_results_threeannots.tsv
+    astu: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/ASTS_results_threeannots.tsv
+    gwas: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/pantrx/ASTU_GWAS_PODER.tsv
+
   # finding astu examples
   astu_example:
-    bam: ../../data/astu_example/{var}_{chr}_{position}_{sample}.bam
-    bam_sorted: ../../data/astu_example/{var}_{chr}_{position}_{sample}_sorted.bam
-    bam_sorted_ind: ../../data/astu_example/{var}_{chr}_{position}_{sample}_sorted.bam.bai
+    bam: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}.bam
+    bam_sorted: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}_sorted.bam
+    bam_sorted_ind: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}_sorted.bam.bai
 
   cerb:
     ics: ../../data/cerb/ics.tsv

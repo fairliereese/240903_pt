@@ -29,46 +29,55 @@ include: f'{c_dir}minimap2.smk'
 include: f'{c_dir}stats.smk'
 include: f'{c_dir}lr-kallisto.smk'
 
-# config parsing
+# ase genes to remove
+# df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ase_results_threeannots.tsv', sep='\t')
+df = pd.read_csv(config['lr']['as']['ase'], sep='\t')
 
-# 1000g config
-df = pd.read_csv('../1000g/1000G_metadata.tsv',
-    sep='\t', comment='#', header=None)
-df = df[[9,10]]
-df.columns = ['cell_line_id_1000g', 'population']
-df['cell_line_id_1000g_short'] = df['cell_line_id_1000g'].str.split('NA', expand=True)[1]
-inds = df.loc[df.cell_line_id_1000g_short.isnull()].index
-df.loc[inds, 'cell_line_id_1000g_short'] = df.loc[inds, 'cell_line_id_1000g'].str.split('HG', expand=True)[1]
-assert len(df.loc[df.cell_line_id_1000g_short.isnull()]) == 0
-df.drop(['cell_line_id_1000g', 'population'], axis=1, inplace=True)
+df = df.loc[(df.annot=='PODER')&\
+            (df.FDR<=0.05)]
+df['gid'] = cerberus.get_stable_gid(df, 'geneid.v')
+ase_gids = df.gid.tolist()
 
-# variant config
-config_df = pd.read_csv('config.tsv', sep='\t')
+# astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
+astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
 
-# meta stuff
-# need to also get the weird shorthand name from the meta table
-# and the 1000g name
-meta = load_meta()
-meta['hapmap_DNA_ID_short'] = meta['hapmap_DNA_ID'].str.split('NA', expand=True)[1]
-config_df = config_df.merge(meta,
-                            how='left',
-                            on=['cell_line_id', 'population', 'sample'])
+astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
+                      (astu_df.gene_testable==True)]
+astu_df['gid'] = cerberus.get_stable_gid(astu_df, 'geneid.v')
 
-# merge w/ 1000g
-config_df = config_df.merge(df,
-                  how='left',
-                  left_on='hapmap_DNA_ID_short',
-                  right_on='cell_line_id_1000g_short')
+# remove ase genes
+print(len(astu_df.index))
+astu_df = astu_df.loc[~(astu_df.gid.isin(ase_gids))]
+print(len(astu_df.index))
 
-# TODO remove when matches are all fixed
-print(len(config_df.index))
-config_df = config_df.loc[config_df.cell_line_id_1000g_short.notnull()]
-print(len(config_df.index))
+# limit to astu gwas thing
+# df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTU_GWAS_PODER.tsv', sep='\t')
+df = pd.read_csv(config['lr']['as']['gwas'], sep='\t')
 
-# 43_EU3_GM12812
-config_df['lab_sample'] = config_df['lab_number_sample'].astype(str)+'_'+\
-                          config_df['lab_sampleid'].astype(str)+'_'+\
-                          config_df['cell_line_id'].astype(str)
+# explode gene id
+df['geneID'] = df.geneID.str.split('/')
+df = df.explode('geneID')
+
+print(len(astu_df.index))
+astu_df = astu_df.loc[astu_df['gid'].isin(df.geneID.tolist())]
+print(len(astu_df.index))
+
+# add in trait
+astu_df = astu_df.merge(df[['ID', 'geneID']],
+                        how='left',
+                        left_on='gid',
+                        right_on='geneID')
+
+# {gid}_{tid}_{var}_{chr}_{position}_{sample}.bam
+astu_df['chrom'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[0]
+astu_df['position'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[1]
+astu_df[['transcript_variant', 'chrom', 'position', 'transcriptid.v', 'geneid.v']].head()
+
+config_df = astu_df.copy(deep=True)
+nts  = ['a', 'c', 'g', 't']
+
+# TODO
+config = config.head(1)
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
@@ -80,16 +89,203 @@ def get_df_val(df, col1, col_dict):
     assert len(val) == 1
     return val[0]
 
+import array
+
+def count_coverage(afile,
+                   contig,
+                   start=None,
+                   stop=None,
+                   region=None,
+                   quality_threshold=15,
+                   read_callback='all',
+                   reference=None,
+                   end=None):
+    """count the coverage of genomic positions by reads in :term:`region`.
+
+    The region is specified by :term:`contig`, `start` and `stop`.
+    :term:`reference` and `end` are also accepted for backward
+    compatibility as synonyms for :term:`contig` and `stop`,
+    respectively.  Alternatively, a `samtools`_ :term:`region`
+    string can be supplied.  The coverage is computed per-base [ACGT].
+
+    Parameters
+    ----------
+
+    contig : string
+        reference_name of the genomic region (chromosome)
+
+    start : int
+        start of the genomic region (0-based inclusive). If not
+        given, count from the start of the chromosome.
+
+    stop : int
+        end of the genomic region (0-based exclusive). If not given,
+        count to the end of the chromosome.
+
+    region : string
+        a region string.
+
+    quality_threshold : int
+        quality_threshold is the minimum quality score (in phred) a
+        base has to reach to be counted.
+
+    read_callback: string or function
+
+        select a call-back to ignore reads when counting. It can
+        be either a string with the following values:
+
+        ``all``
+            skip reads in which any of the following
+            flags are set: BAM_FUNMAP, BAM_FSECONDARY, BAM_FQCFAIL,
+            BAM_FDUP
+
+        ``nofilter``
+            uses every single read
+
+        Alternatively, `read_callback` can be a function
+        ``check_read(read)`` that should return True only for
+        those reads that shall be included in the counting.
+
+    reference : string
+        backward compatible synonym for `contig`
+
+    end : int
+        backward compatible synonym for `stop`
+
+    Raises
+    ------
+
+    ValueError
+        if the genomic coordinates are out of range or invalid.
+
+    Returns
+    -------
+
+    four array.arrays of the same length in order A C G T : tuple
+
+    """
+
+    # cdef uint32_t contig_length = afile.get_reference_length(contig)
+    # cdef int _start = start if start is not None else 0
+    # cdef int _stop = stop if stop is not None else contig_length
+    # _stop = _stop if _stop < contig_length else contig_length
+
+    contig_length = afile.get_reference_length(contig)
+    _start = start if start is not None else 0
+    _stop = stop if stop is not None else contig_length
+    _stop = _stop if _stop < contig_length else contig_length
+
+    if _stop == _start:
+        raise ValueError("interval of size 0")
+    if _stop < _start:
+        raise ValueError("interval of size less than 0")
+
+    # cdef int length = _stop - _start
+    # cdef c_array.array int_array_template = array.array('L', [])
+    # cdef c_array.array count_a
+    # cdef c_array.array count_c
+    # cdef c_array.array count_g
+    # cdef c_array.array count_t
+    # count_a = c_array.clone(int_array_template, length, zero=True)
+    # count_c = c_array.clone(int_array_template, length, zero=True)
+    # count_g = c_array.clone(int_array_template, length, zero=True)
+    # count_t = c_array.clone(int_array_template, length, zero=True)
+
+    length = _stop - _start
+    # int_array_template = ['L', 0]
+    count_a = [['L', 0] for _ in range(length)]
+    count_c = [['L', 0] for _ in range(length)]
+    count_g = [['L', 0] for _ in range(length)]
+    count_t = [['L', 0] for _ in range(length)]
+
+    # # Data structures to store read names
+    # cdef list read_names_a, read_names_c, read_names_g, read_names_t
+    # read_names_a = [[] for _ in range(length)]
+    # read_names_c = [[] for _ in range(length)]
+    # read_names_g = [[] for _ in range(length)]
+    # read_names_t = [[] for _ in range(length)]
+
+    read_names_a = [[] for _ in range(length)]
+    read_names_c = [[] for _ in range(length)]
+    read_names_g = [[] for _ in range(length)]
+    read_names_t = [[] for _ in range(length)]
+
+    # cdef AlignedSegment read
+    # cdef cython.str seq
+    # cdef c_array.array quality
+    # cdef int qpos
+    # cdef int refpos
+    # cdef int c = 0
+    # cdef int filter_method = 0
+
+    c = 0
+    filter_method = 0
+
+    if read_callback == "all":
+        filter_method = 1
+    elif read_callback == "nofilter":
+        filter_method = 2
+
+    # cdef int _threshold = quality_threshold or 0
+    _threshold = quality_threshold or 0
+
+    for read in afile.fetch(contig=contig,
+                           reference=reference,
+                           start=start,
+                           stop=stop,
+                           end=end,
+                           region=region):
+        # apply filter
+        if filter_method == 1:
+            # filter = "all"
+            if (read.flag & (0x4 | 0x100 | 0x200 | 0x400)):
+                continue
+        elif filter_method == 2:
+            # filter = "nofilter"
+            pass
+        else:
+            if not read_callback(read):
+                continue
+
+        # count
+        seq = read.seq
+        if seq is None:
+            continue
+        quality = read.query_qualities
+
+        for qpos, refpos in read.get_aligned_pairs(True):
+            if qpos is not None and refpos is not None and \
+               _start <= refpos < _stop:
+
+                # only check base quality if _threshold > 0
+                if (_threshold and quality and quality[qpos] >= _threshold) or not _threshold:
+                    if seq[qpos] == 'A':
+                        count_a[refpos - _start][1] += 1
+                        read_names_a[refpos - _start].append(read.query_name)
+                    if seq[qpos] == 'C':
+                        count_c[refpos - _start][1] += 1
+                        read_names_c[refpos - _start].append(read.query_name)
+                    if seq[qpos] == 'G':
+                        count_g[refpos - _start][1] += 1
+                        read_names_g[refpos - _start].append(read.query_name)
+                    if seq[qpos] == 'T':
+                        count_t[refpos - _start][1] += 1
+                        read_names_t[refpos - _start].append(read.query_name)
+
+    return count_a, count_c, count_g, count_t, \
+      read_names_a, read_names_c, read_names_g, read_names_t
+
 rule all:
     input:
         expand(config['lr']['astu_example']['bam'],
                zip,
-               var=config_df['pos'].tolist(),
-               chr=config_df['chr'].tolist(),
+               chrom=config_df['chrom'].tolist(),
                position=config_df['pos'].tolist(),
-               sample=config_df['sample'].tolist())
+               sample=config_df['sample'].tolist(),
+               gid=config_df['geneid.v'].tolist(),
+               tid=config_df['transcriptid.v'].tolist())
 
-rule get_var_gene_reads:
+rule get_var_allele_reads:
     input:
         bam = lambda wc: expand(config['lr']['q7_bam'],
                                 lab_sample=get_df_val(config_df,
@@ -99,14 +295,44 @@ rule get_var_gene_reads:
         threads = 1,
         nodes = 2
     output:
-        bam = config['lr']['astu_example']['bam']
-        # bam = temporary(config['lr']['astu_example']['bam'])
-    shell:
-        """
-        module load samtools
-        samtools view -hu {wildcards.chr}:{wc.pos} {input.bam} | \
-             awk '{{if($0 ~ /^@/ || $10 ~ /{wildcards.var}/) print $0}}' | \
-             samtools view -hb > > {output.bam}
-        """
+        bam_files = expand(config['lr']['astu_example']['bam'],
+                           var=nts,
+                           allow_missing=True),
+    run:
+        a, c, g, t, a_reads, c_reads,
+        g_reads, t_reads = count_coverage(afile,
+            wildcards.chr,
+            start=int(wildcards.pos)-1,
+            stop=int(wildcards.pos))
 
-# sort + index
+        # output read names for each allele in a separate text file
+        # only 1 position so just take the 0th element each time
+        read_ids = [a_reads[0], c_reads[0], g_reads[0], t_reads[0]]
+        for nt, reads, fname in zip(nts, read_ids, list(output.bam_files)):
+            with open(fname, 'w') as ofile:
+                for read_id in reads:
+                    ofile.write(read_id+'\n')
+
+
+
+# rule get_var_gene_reads:
+#     input:
+#         bam = lambda wc: expand(config['lr']['q7_bam'],
+#                                 lab_sample=get_df_val(config_df,
+#                                 'lab_sample',
+#                                 {'sample': wc.sample}))
+#     resources:
+#         threads = 1,
+#         nodes = 2
+#     output:
+#         bam = config['lr']['astu_example']['bam']
+#         # bam = temporary(config['lr']['astu_example']['bam'])
+#     shell:
+#         """
+#         module load samtools
+#         samtools view -hu {wildcards.chr}:{wc.pos} {input.bam} | \
+#              awk '{{if($0 ~ /^@/ || $10 ~ /{wildcards.var}/) print $0}}' | \
+#              samtools view -hb > > {output.bam}
+#         """
+#
+# # sort + index
