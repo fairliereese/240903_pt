@@ -339,7 +339,7 @@ rule get_var_allele_read_ids:
         bam = lambda wc: expand(config['lr']['q7_bam'],
                                 lab_sample=get_df_val(config_df,
                                 'lab_sample',
-                                {'sample': wc.sample}))
+                                {'sample': wc.sample}))[0]
     resources:
         threads = 1,
         nodes = 2
