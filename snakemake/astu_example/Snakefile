@@ -349,9 +349,9 @@ rule get_var_allele_read_ids:
                            allow_missing=True),
     run:
         a, c, g, t, a_reads, c_reads, g_reads, t_reads = count_coverage(input.bam,
-            wildcards.chr,
-            start=int(wildcards.pos)-1,
-            stop=int(wildcards.pos))
+            wildcards.chrom,
+            start=int(wildcards.position)-1,
+            stop=int(wildcards.position))
 
         # output read names for each allele in a separate text file
         # only 1 position so just take the 0th element each time
