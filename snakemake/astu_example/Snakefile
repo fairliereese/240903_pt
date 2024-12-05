@@ -306,7 +306,7 @@ rule all:
         expand(config['lr']['astu_example']['read_ids'],
                zip,
                chrom=config_df['chrom'].tolist(),
-               position=config_df['pos'].tolist(),
+               position=config_df['position'].tolist(),
                sample=config_df['sample'].tolist(),
                gid=config_df['geneid.v'].tolist(),
                tid=config_df['transcriptid.v'].tolist())
