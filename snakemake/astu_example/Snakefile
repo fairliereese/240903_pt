@@ -277,7 +277,7 @@ def count_coverage(afile,
 
 rule all:
     input:
-        expand(config['lr']['astu_example']['bam'],
+        expand(config['lr']['astu_example']['read_ids'],
                zip,
                chrom=config_df['chrom'].tolist(),
                position=config_df['pos'].tolist(),
@@ -295,7 +295,7 @@ rule get_var_allele_reads:
         threads = 1,
         nodes = 2
     output:
-        bam_files = expand(config['lr']['astu_example']['bam'],
+        bam_files = expand(config['lr']['astu_example']['read_ids'],
                            var=nts,
                            allow_missing=True),
     run:
