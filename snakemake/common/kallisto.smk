@@ -26,6 +26,7 @@ rule short_kallisto_build_ind:
             -k 31 \
             -f1 {output.fa} \
             -g {output.t2g} \
+            --tmp {params.odir} \
             {input.fa} \
             {input.gtf}
         """

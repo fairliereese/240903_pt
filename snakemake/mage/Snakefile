@@ -118,6 +118,9 @@ use rule short_kallisto_build_ind as v47_sr_kallisto_ind with:
     input:
         fa = config['ref']['fa'],
         gtf = config['ref']['gtf']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
+        odir = config['ref']['v47_kallisto_short']['ind'].split('.idx')[0]
     output:
         ind = config['ref']['v47_kallisto_short']['ind'],
         fa = config['ref']['v47_kallisto_short']['t_fa'],
@@ -178,6 +181,9 @@ use rule short_kallisto_build_ind as enh_v47_sr_kallisto_ind with:
     input:
         fa = config['ref']['fa'],
         gtf = config['lr']['gtf_gc_poder']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
+        odir = config['ref']['enh_v47_kallisto_short']['ind'].split('.idx')[0]
     output:
         ind = config['ref']['enh_v47_kallisto_short']['ind'],
         fa = config['ref']['enh_v47_kallisto_short']['t_fa'],
@@ -238,6 +244,9 @@ use rule short_kallisto_build_ind as poder_sr_kallisto_ind with:
     input:
         fa = config['ref']['fa'],
         gtf = config['lr']['gtf_filt_with_genes']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
+        odir = config['ref']['poder_kallisto_short']['ind'].split('.idx')[0] 
     output:
         ind = config['ref']['poder_kallisto_short']['ind'],
         fa = config['ref']['poder_kallisto_short']['t_fa'],
