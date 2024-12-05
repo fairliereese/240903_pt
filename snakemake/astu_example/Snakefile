@@ -348,7 +348,7 @@ rule get_var_allele_reads:
                            var=nts,
                            allow_missing=True),
     run:
-        a, c, g, t, a_reads, c_reads, g_reads, t_reads = count_coverage(afile,
+        a, c, g, t, a_reads, c_reads, g_reads, t_reads = count_coverage(input.bam,
             wildcards.chr,
             start=int(wildcards.pos)-1,
             stop=int(wildcards.pos))
