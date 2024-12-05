@@ -65,6 +65,7 @@ def get_df_val(df, col1, col_dict, uniq_val=True):
     else:
         return temp[col1].tolist()
 
+
 rule all:
     input:
         expand(config['mage']['r1_fq'],
@@ -72,11 +73,12 @@ rule all:
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
         config['mage']['v47_kallisto']['merge_matrix_tsv'],
-        config['mage']['v47_kallisto']['merge_matrix_tpm_tsv']
-        # expand(config['mage']['v47_kallisto']['matrix_tsv'],
-        #        sample=df['sample'].tolist()[0]),
-        # expand(config['mage']['v47_kallisto']['matrix_tpm_tsv'],
-        #       sample=df['sample'].tolist()[0]),
+        config['mage']['v47_kallisto']['merge_matrix_tpm_tsv'],
+        config['mage']['poder_kallisto']['merge_matrix_tsv'],
+        config['mage']['poder_kallisto']['merge_matrix_tpm_tsv'],
+        config['mage']['enh_v47_kallisto']['merge_matrix_tsv'],
+        config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv']
+
 
 use rule wget as dl_r1_fq with:
     params:
@@ -92,12 +94,30 @@ use rule wget as dl_r2_fq with:
     output:
         out = config['mage']['r2_fq']
 
+rule merge_matrices:
+    resources:
+        nodes = 3,
+        threads = 1
+    run:
+        merge_df = pd.DataFrame()
+        samples = list(params.samples)
+        i = 0
+        for t, s in zip(list(input.tsvs), samples):
+            temp = pd.read_csv(t, sep='\t')
+            temp.rename({'counts': s}, axis=1, inplace=True)
+            if i == 0:
+                merge_df = temp.copy(deep=True)
+            else:
+                merge_df = merge_df.merge(temp, how='outer',
+                            on='transcript_id')
+            i+=1
+        merge_df.to_csv(output.tsv, sep='\t', index=False)
 
 ## v47 kallisto
 use rule short_kallisto_build_ind as v47_sr_kallisto_ind with:
     input:
         fa = config['ref']['fa'],
-        gtf = config['lr']['gtf_filt_with_genes']
+        gtf = config['ref']['gtf']
     output:
         ind = config['ref']['v47_kallisto_short']['ind'],
         fa = config['ref']['v47_kallisto_short']['t_fa'],
@@ -135,25 +155,6 @@ use rule fmt_mtx_transcripts as get_tpm_mtx with:
     output:
         tsv = config['mage']['v47_kallisto']['matrix_tpm_tsv']
 
-rule merge_matrices:
-    resources:
-        nodes = 3,
-        threads = 1
-    run:
-        merge_df = pd.DataFrame()
-        samples = list(params.samples)
-        i = 0
-        for t, s in zip(list(input.tsvs), samples):
-            temp = pd.read_csv(t, sep='\t')
-            temp.rename({'counts': s}, axis=1, inplace=True)
-            if i == 0:
-                merge_df = temp.copy(deep=True)
-            else:
-                merge_df = merge_df.merge(temp, how='outer',
-                            on='transcript_id')
-            i+=1
-        merge_df.to_csv(output.tsv, sep='\t', index=False)
-
 use rule merge_matrices as merge_matrices_tpm with:
     input:
         tsvs = expand(config['mage']['v47_kallisto']['matrix_tpm_tsv'],
@@ -172,36 +173,122 @@ use rule merge_matrices as merge_matrices_counts with:
     output:
         tsv = config['mage']['v47_kallisto']['merge_matrix_tsv']
 
-# use rule short_kallisto_quant as v47_sr_kallisto_quant with:
-#     input:
-#         ind = config['ref']['v47_kallisto_short']['ind'],
-#         t2g = config['ref']['v47_kallisto_short']['t2g'],
-#         r1_fq = config['mage']['r1_fq'],
-#         r2_fq = config['mage']['r2_fq']
-#     params:
-#         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
-#         odir = config['mage']['v47_kallisto']['odir']
-#     output:
-#         bus = config['mage']['v47_kallisto']['bus'],
-#         # flens = config['mage']['v47_kallisto']['flens'],
-#         transcripts = config['mage']['v47_kallisto']['transcripts'],
-#         matrix = config['mage']['v47_kallisto']['matrix']
-#
-# use rule bustools_sort as v47_sr_kallisto_sort with:
-#     input:
-#         bus = config['mage']['v47_kallisto']['bus']
-#     output:
-#         bus = config['mage']['v47_kallisto']['bus_sort']
-#
-# use rule short_bustools_count as v47_sr_kallisto_count with:
-#     input:
-#         bus = config['mage']['v47_kallisto']['bus_sort'],
-#         transcripts = config['mage']['v47_kallisto']['transcripts'],
-#         matrix = config['mage']['v47_kallisto']['matrix'],
-#         t2g = config['ref']['v47_kallisto_short']['t2g']
-#     params:
-#         bustools_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/bustools/bin/bustools',
-#         count_pref = config['mage']['v47_kallisto']['count_pref']
-#     output:
-#         mtx = config['mage']['v47_kallisto']['count_mtx'],
-#         ec = config['mage']['v47_kallisto']['count_ec']
+## v47 enh kallisto
+use rule short_kallisto_build_ind as enh_v47_sr_kallisto_ind with:
+    input:
+        fa = config['ref']['fa'],
+        gtf = config['lr']['gtf_gc_poder']
+    output:
+        ind = config['ref']['enh_v47_kallisto_short']['ind'],
+        fa = config['ref']['enh_v47_kallisto_short']['t_fa'],
+        t2g = config['ref']['enh_v47_kallisto_short']['t2g']
+
+use rule short_kb_count as enh_v47_sr_kallisto_count with:
+    input:
+        ind = config['ref']['enh_v47_kallisto_short']['ind'],
+        t2g = config['ref']['enh_v47_kallisto_short']['t2g'],
+        r1_fq = config['mage']['r1_fq'],
+        r2_fq = config['mage']['r2_fq']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
+        odir = config['mage']['enh_v47_kallisto']['odir']
+    output:
+        mtx = config['mage']['enh_v47_kallisto']['matrix'],
+        mtx_tpm = config['mage']['enh_v47_kallisto']['matrix_tpm'],
+        transcripts = config['mage']['enh_v47_kallisto']['transcripts']
+
+use rule fmt_mtx_transcripts as enh_v47_get_counts_mtx with:
+    input:
+        mtx = config['mage']['enh_v47_kallisto']['matrix'],
+        ts = config['mage']['enh_v47_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['matrix_tsv']
+
+use rule fmt_mtx_transcripts as enh_v47_get_tpm_mtx with:
+    input:
+        mtx = config['mage']['enh_v47_kallisto']['matrix_tpm'],
+        ts = config['mage']['enh_v47_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['matrix_tpm_tsv']
+
+use rule merge_matrices as enh_v47_merge_matrices_tpm with:
+    input:
+        tsvs = expand(config['mage']['enh_v47_kallisto']['matrix_tpm_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv']
+
+use rule merge_matrices as enh_v47_merge_matrices_counts with:
+    input:
+        tsvs = expand(config['mage']['enh_v47_kallisto']['matrix_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tsv']
+
+## poder kallisto
+use rule short_kallisto_build_ind as poder_sr_kallisto_ind with:
+    input:
+        fa = config['ref']['fa'],
+        gtf = config['lr']['gtf_filt_with_genes']
+    output:
+        ind = config['ref']['poder_kallisto_short']['ind'],
+        fa = config['ref']['poder_kallisto_short']['t_fa'],
+        t2g = config['ref']['poder_kallisto_short']['t2g']
+
+use rule short_kb_count as poder_sr_kallisto_count with:
+    input:
+        ind = config['ref']['poder_kallisto_short']['ind'],
+        t2g = config['ref']['poder_kallisto_short']['t2g'],
+        r1_fq = config['mage']['r1_fq'],
+        r2_fq = config['mage']['r2_fq']
+    params:
+        kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
+        odir = config['mage']['poder_kallisto']['odir']
+    output:
+        mtx = config['mage']['poder_kallisto']['matrix'],
+        mtx_tpm = config['mage']['poder_kallisto']['matrix_tpm'],
+        transcripts = config['mage']['poder_kallisto']['transcripts']
+
+use rule fmt_mtx_transcripts as poder_get_counts_mtx with:
+    input:
+        mtx = config['mage']['poder_kallisto']['matrix'],
+        ts = config['mage']['poder_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['mage']['poder_kallisto']['matrix_tsv']
+
+use rule fmt_mtx_transcripts as poder_get_tpm_mtx with:
+    input:
+        mtx = config['mage']['poder_kallisto']['matrix_tpm'],
+        ts = config['mage']['poder_kallisto']['transcripts']
+    params:
+        col = 'counts'
+    output:
+        tsv = config['mage']['poder_kallisto']['matrix_tpm_tsv']
+
+use rule merge_matrices as poder_merge_matrices_tpm with:
+    input:
+        tsvs = expand(config['mage']['poder_kallisto']['matrix_tpm_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['mage']['poder_kallisto']['merge_matrix_tpm_tsv']
+
+use rule merge_matrices as poder_merge_matrices_counts with:
+    input:
+        tsvs = expand(config['mage']['poder_kallisto']['matrix_tsv'],
+                      sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist()
+    output:
+        tsv = config['mage']['poder_kallisto']['merge_matrix_tsv']
