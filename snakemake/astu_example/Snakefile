@@ -96,13 +96,13 @@ astu_df = astu_df.merge(df[['ID', 'geneID']],
 # {gid}_{tid}_{var}_{chr}_{position}_{sample}.bam
 astu_df['chrom'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[0]
 astu_df['position'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[1]
-astu_df[['transcript_variant', 'chrom', 'position', 'transcriptid.v', 'geneid.v']].head()
+# astu_df[['transcript_variant', 'chrom', 'position', 'transcriptid.v', 'geneid.v']].head()
 
 config_df = astu_df.copy(deep=True)
 nts  = ['a', 'c', 'g', 't']
 
 # TODO
-config = config.head(1)
+config_df = config_df.head(1)
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
