@@ -68,7 +68,7 @@ df = pd.read_csv(config['lr']['as']['ase'], sep='\t')
 
 df = df.loc[(df.annot=='PODER')&\
             (df.FDR<=0.05)]
-df['gid'] = cerberus.get_stable_gid(df, 'geneid.v')
+df['gid'] = get_stable_gid(df, 'geneid.v')
 ase_gids = df.gid.tolist()
 
 # astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
@@ -76,7 +76,7 @@ astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
 
 astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
                       (astu_df.gene_testable==True)]
-astu_df['gid'] = cerberus.get_stable_gid(astu_df, 'geneid.v')
+astu_df['gid'] = get_stable_gid(astu_df, 'geneid.v')
 
 # remove ase genes
 print(len(astu_df.index))
