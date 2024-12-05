@@ -303,13 +303,15 @@ def count_coverage(afile,
 
 rule all:
     input:
-        expand(config['lr']['astu_example']['read_ids'],
+        expand(expand(config['lr']['astu_example']['read_ids'],
                zip,
                chrom=config_df['chrom'].tolist(),
                position=config_df['position'].tolist(),
                sample=config_df['sample'].tolist(),
                gid=config_df['geneid.v'].tolist(),
-               tid=config_df['transcriptid.v'].tolist())
+               tid=config_df['transcriptid.v'].tolist(),
+               allow_missing=True),
+               var=nts)
 
 rule get_var_allele_reads:
     input:
