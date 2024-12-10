@@ -331,7 +331,6 @@ rule filt_vcf:
         nodes = 2
     params:
         min_maf = 0.01
-    conda:
     output:
         vcf = config['mage']['genotype_pc']['filt_vcf']
     shell:
