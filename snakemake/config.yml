@@ -657,6 +657,7 @@ mage:
 
   genotype_pc:
     filt_vcf:  ../../data/mage/genotype_pc/1kg_mage.vcf.gz
+    pcs: ../../data/mage/genotype_pc/pcs.tsv
 
 
 

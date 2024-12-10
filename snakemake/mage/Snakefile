@@ -79,7 +79,7 @@ rule all:
         config['mage']['poder_kallisto']['gene_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['gene_tsv'],
         config['mage']['enh_v47_kallisto']['gene_tpm_tsv'],
-        config['mage']['genotype_pc']['filt_vcf']
+        config['mage']['genotype_pc']['pcs']
 
 
 use rule wget as dl_r1_fq with:
@@ -404,6 +404,30 @@ rule filt_vcf:
             --maf {params.min_maf} \
             --keep {input.samples} \
             --stdout | gzip -c > {output.vcf}
+        """
+
+# compute genotype PCs
+rule genotype_pcs:
+    input:
+        vcf = config['mage']['genotype_pc']['filt_vcf']
+    resources:
+        threads = 112,
+        nodes = 2
+    params:
+        opref = config['mage']['genotype_pc']['pcs'].rsplit('.', maxsplit=1)[0]
+    output:
+        pcs = config['mage']['genotype_pc']['pcs']
+    shell:
+        """
+        module load plink
+        plink2 \
+            --vcf {input.vcf} \
+            --allow-extra-chr \
+            --set-missing-var-ids @:# \
+            --make-bed \
+            --pca \
+            --threads {resources.threads} \
+            --out {params.opref}
         """
 
 ###########################
