@@ -73,12 +73,12 @@ rule all:
                sample=df['sample'].tolist()),
         expand(config['mage']['r2_fq'],
                sample=df['sample'].tolist()),
-        config['mage']['v47_kallisto']['merge_matrix_tsv'],
-        config['mage']['v47_kallisto']['merge_matrix_tpm_tsv'],
-        config['mage']['poder_kallisto']['merge_matrix_tsv'],
-        config['mage']['poder_kallisto']['merge_matrix_tpm_tsv'],
-        config['mage']['enh_v47_kallisto']['merge_matrix_tsv'],
-        config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv'],
+        config['mage']['v47_kallisto']['gene_tsv'],
+        config['mage']['v47_kallisto']['gene_tpm_tsv'],
+        config['mage']['poder_kallisto']['gene_tsv'],
+        config['mage']['poder_kallisto']['gene_tpm_tsv'],
+        config['mage']['enh_v47_kallisto']['gene_tsv'],
+        config['mage']['enh_v47_kallisto']['gene_tpm_tsv'],
         config['mage']['genotype_pc']['filt_vcf']
 
 
@@ -114,6 +114,27 @@ rule merge_matrices:
                             on='transcript_id')
             i+=1
         merge_df.to_csv(output.tsv, sep='\t', index=False)
+
+rule compute_gene_level_tsv:
+    resources:
+        threads = 1,
+        nodes = 3
+    run:
+        exp_df = pd.read_csv(input.tsv, sep='\t')
+        t2g = pd.read_csv(input.t2g, sep='\t', header=None)
+        t2g = t2g[[0,1]]
+        t2g.columns = ['transcript_id', 'gid']
+
+        # get gene assignments for each transcript using t2g file
+        exp_df = exp_df.merge(t2g[['gid', 'transcript_id']],
+                      how='left',
+                      on='transcript_id')
+        assert len(exp_df.loc[exp_df.gid.isnull()].index) == 0
+
+        # drop tid, gb on gid and sum
+        exp_df.drop('transcript_id', axis=1, inplace=True)
+        exp_df = exp_df.groupby('gid').sum().reset_index()
+        exp_df.to_csv(output.tsv, sep='\t', index=False)
 
 ## v47 kallisto
 use rule short_kallisto_build_ind as v47_sr_kallisto_ind with:
@@ -178,6 +199,20 @@ use rule merge_matrices as merge_matrices_counts with:
     output:
         tsv = config['mage']['v47_kallisto']['merge_matrix_tsv']
 
+use rule compute_gene_level_tsv as gene_level_tpm with:
+    input:
+        tsv = config['mage']['v47_kallisto']['merge_matrix_tpm_tsv'],
+        t2g = config['ref']['v47_kallisto_short']['t2g']
+    output:
+        tsv = config['mage']['v47_kallisto']['gene_tpm_tsv']
+
+use rule compute_gene_level_tsv as gene_level_counts with:
+    input:
+        tsv = config['mage']['v47_kallisto']['merge_matrix_tsv'],
+        t2g = config['ref']['v47_kallisto_short']['t2g']
+    output:
+        tsv = config['mage']['v47_kallisto']['gene_tsv']
+
 ## v47 enh kallisto
 use rule short_kallisto_build_ind as enh_v47_sr_kallisto_ind with:
     input:
@@ -240,6 +275,21 @@ use rule merge_matrices as enh_v47_merge_matrices_counts with:
         samples = df['sample'].tolist()
     output:
         tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tsv']
+
+use rule compute_gene_level_tsv as enh_v47_gene_level_tpm with:
+    input:
+        tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv'],
+        t2g = config['ref']['enh_v47_kallisto_short']['t2g']
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['gene_tpm_tsv']
+
+use rule compute_gene_level_tsv as enh_v47_gene_level_counts with:
+    input:
+        tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tsv'],
+        t2g = config['ref']['enh_v47_kallisto_short']['t2g']
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['gene_tsv']
+
 
 ## poder kallisto
 use rule short_kallisto_build_ind as poder_sr_kallisto_ind with:
@@ -304,6 +354,20 @@ use rule merge_matrices as poder_merge_matrices_counts with:
     output:
         tsv = config['mage']['poder_kallisto']['merge_matrix_tsv']
 
+use rule compute_gene_level_tsv as poder_gene_level_tpm with:
+    input:
+        tsv = config['mage']['poder_kallisto']['merge_matrix_tpm_tsv'],
+        t2g = config['ref']['poder_kallisto_short']['t2g']
+    output:
+        tsv = config['mage']['poder_kallisto']['gene_tpm_tsv']
+
+use rule compute_gene_level_tsv as poder_gene_level_counts with:
+    input:
+        tsv = config['mage']['poder_kallisto']['merge_matrix_tsv'],
+        t2g = config['ref']['poder_kallisto_short']['t2g']
+    output:
+        tsv = config['mage']['poder_kallisto']['gene_tsv']
+
 ########################
 ######## Genotype PCs ##
 ########################
@@ -341,3 +405,7 @@ rule filt_vcf:
             --keep {input.samples} \
             --stdout | gzip -c > {output.vcf}
         """
+
+###########################
+###### Transcript filtering
+###########################
