@@ -44,6 +44,7 @@ assert len(df.loc[df.r1_verify==False].index)==0
 assert len(df.loc[df.r2_verify==False].index)==0
 
 df['sample'] = df['experiment_alias']
+df['cell_line_id'] = df['sample'].str.split('_', expand=True)[0]
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
@@ -77,7 +78,8 @@ rule all:
         config['mage']['poder_kallisto']['merge_matrix_tsv'],
         config['mage']['poder_kallisto']['merge_matrix_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['merge_matrix_tsv'],
-        config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv']
+        config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv'],
+        config['mage']['genotype_pc']['filt_vcf']
 
 
 use rule wget as dl_r1_fq with:
@@ -246,7 +248,7 @@ use rule short_kallisto_build_ind as poder_sr_kallisto_ind with:
         gtf = config['lr']['gtf_filt_with_genes']
     params:
         kallisto_path = '/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto',
-        odir = config['ref']['poder_kallisto_short']['ind'].split('.idx')[0] 
+        odir = config['ref']['poder_kallisto_short']['ind'].split('.idx')[0]
     output:
         ind = config['ref']['poder_kallisto_short']['ind'],
         fa = config['ref']['poder_kallisto_short']['t_fa'],
@@ -301,3 +303,42 @@ use rule merge_matrices as poder_merge_matrices_counts with:
         samples = df['sample'].tolist()
     output:
         tsv = config['mage']['poder_kallisto']['merge_matrix_tsv']
+
+########################
+######## Genotype PCs ##
+########################
+
+# filter the 1000G VCF for
+# 1. samples that are in MAGE
+# 2. MAF >= 0.01
+# vcftools ref: https://vcftools.github.io/man_latest.html
+rule get_samples:
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        samples = config['mage']['samples']
+    run:
+        temp = df[['cell_line_id']]
+        temp.to_csv(output.samples, header=None, index=False)
+
+rule filt_vcf:
+    input:
+        vcf = config['1000g']['vcf'],
+        samples = config['mage']['samples']
+    resources:
+        threads = 16,
+        nodes = 2
+    params:
+        min_maf = 0.01
+    conda:
+    output:
+        vcf = config['mage']['genotype_pc']['filt_vcf']
+    shell:
+        """
+        vcftools \
+            --gzvcf {input.vcf} \
+            --maf {params.min_maf} \
+            --keep {input.samples} \
+            --stdout | gzip -c > {output.vcf}
+        """

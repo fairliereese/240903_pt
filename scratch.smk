@@ -41,7 +41,7 @@ transcripts_protein.gtf
 """
 
 """
-/gpfs/home/bsc/bsc083001/mele_lab/bin/SUPPA/suppa.py generateEvents \
+python /gpfs/home/bsc/bsc083001/mele_lab/bin/SUPPA/suppa.py generateEvents \
     -i ../../data/transcripts_filt_with_gene.gtf \
     -o ../../data/suppa/poder.events \
     -f ioe \

@@ -119,41 +119,28 @@ samtools view -h ${bam} ${chrom}:${pos}-${pos} | \
 
 ```bash
 conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto
-        /gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto bus             -t 32             -x bulk             -i ../../ref/v47_kallisto_short/hg38_v47_k-31.idx             -g ../../ref/v47_kallisto_short/hg38_v47.t2g             -o ../../data/mage/v47_kallisto/NA19704_batch11_rep1/
-            --paired             ../../data/mage/raw/NA19704_batch11_rep1_r1.fq.gz ../../data/mage/raw/NA19704_batch11_rep1_r2.fq.gz
-```
+/gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto/bin/kallisto bus \
+     -t 32 \
+     -x bulk \
+     -i ../../ref/v47_kallisto_short/hg38_v47_k-31.idx \
+     -g ../../ref/v47_kallisto_short/hg38_v47.t2g \
+     -o ../../data/mage/v47_kallisto/NA19704_batch11_rep1/ \
+     --paired \
+     ../../data/mage/raw/NA19704_batch11_rep1_r1.fq.gz \
+     ../../data/mage/raw/NA19704_batch11_rep1_r2.fq.gz
+
+conda activate /gpfs/home/bsc/bsc083001/miniconda3/envs/kallisto
+kb count \
+  -x BULK \
+  -o ../../data/mage/v47_kallisto/NA19704_batch11_rep1/ \
+              -i ../../ref/v47_kallisto_short/hg38_v47_k-31.idx             -g ../../ref/v47_kallisto_short/hg38_v47.
+t2g             --parity=paired             --strand=unstranded             --tcc             --matrix-to-directories             ../../data/mage/raw/NA19704_batch11_rep1_r1.fq.gz ../../data/mage/raw/NA19704_batch11_re
+
+p1_r2.fq.gz
 
 
-```bash
-  poder_kallisto:
-    odir: ../../data/mage/poder_kallisto/{sample}/
-    bus: ../../data/mage/poder_kallisto/{sample}/output.bus
-    transcripts: ../../data/mage/poder_kallisto/{sample}/transcripts.txt
-    matrix: ../../data/mage/poder_kallisto/{sample}/matrix.ec
-    flens: ../../data/mage/poder_kallisto/{sample}/flens.txt
-    bus_sort: ../../data/mage/poder_kallisto/{sample}/output_sorted.bus
 
-    count_pref: ../../data/mage/poder_kallisto/{sample}/count
-    count_mtx: ../../data/mage/poder_kallisto/{sample}/count.mtx
-    count_ec: ../../data/mage/poder_kallisto/{sample}/count.ec.txt
-    matrix_tsv: ../../data/mage/poder_kallisto/{sample}/matrix.abundance.tsv
-
-    quant:
-      odir: ../../data/mage/poder_kallisto_quant/{sample}
-      matrix: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.mtx
-      matrix_tpm: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.tpm.mtx
-      matrix_tsv: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.tsv
-      matrix_tpm_tsv: ../../data/mage/poder_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
-      merge_matrix_tsv: ../../data/mage/poder_kallisto_quant/matrix.abundance.tsv
-      merge_matrix_tpm_tsv: ../../data/mage/poder_kallisto_quant/matrix.abundance.tpm.tsv
-
-  v47_kallisto:
-    odir: ../../data/mage/v47_kallisto/{sample}/
-    bus: ../../data/mage/v47_kallisto/{sample}/output.bus
-    transcripts: ../../data/mage/v47_kallisto/{sample}/transcripts.txt
-    matrix: ../../data/mage/v47_kallisto/{sample}/matrix.ec
-    flens: ../../data/mage/v47_kallisto/{sample}/flens.txt
-    bus_sort: ../../data/mage/v47_kallisto/{sample}/output_sorted.bus
+         bus_sort: ../../data/mage/v47_kallisto/{sample}/output_sorted.bus
 
     count_pref: ../../data/mage/v47_kallisto/{sample}/count
     count_mtx: ../../data/mage/v47_kallisto/{sample}/count.mtx

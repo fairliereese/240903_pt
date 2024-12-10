@@ -616,6 +616,7 @@ lr:
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
   r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
+  samples: ../../data/mage/samples.txt
 
   v47_kallisto:
     odir: ../../data/mage/v47_kallisto/{sample}/
@@ -647,6 +648,9 @@ mage:
     merge_matrix_tsv: ../../data/mage/enh_v47_kallisto/matrix.abundance.tsv
     merge_matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto/matrix.abundance.tpm.tsv
 
+  genotype_pc:
+    filt_vcf:  ../../data/mage/genotype_pc/1kg_mage.vcf.gz
+
 
 
 
@@ -673,6 +677,7 @@ software:
   hmmer_path: /gpfs/projects/bsc83/utils/conda_envs/hmmer/bin/
 
 1000g:
+  vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel_biallelic.vcf.gz
   meta: /gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
   trios_meta: /gpfs/projects/bsc83/Data/1000G/1000G_trios_metadata.tsv
 
