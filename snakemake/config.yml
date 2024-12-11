@@ -615,6 +615,7 @@ lr:
 
   personal_genome:
     gtf: ../../data/personal_genome/gtf/{sample}.fq_{genome}.fa_transcript_models.gtf
+    gtf_no_gene: ../../data/personal_genome/gtf/{sample}.fq_{genome}.fa_transcript_models_no_gene.gtf
     t_info: ../../data/personal_genome/gtf/{sample}.fq_{genome}.fa_transcript_models_t_info.tsv
     build_loci_gtf: ../../data/personal_genome/build_loci/{sample}.fq_{genome}.fa_transcript_models_t_info.tsv
 

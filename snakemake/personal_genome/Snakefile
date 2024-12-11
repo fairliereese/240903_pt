@@ -90,10 +90,25 @@ rule get_t_info:
         t_info = get_transcript_info_pg(input.gtf)
         t_info.to_csv(output.tsv, sep='\t', index=False)
 
+rule rm_gene_gtf:
+        input:
+            gtf = config['lr']['personal_genome']['gtf']
+        resources:
+            nodes = 1,
+            threads = 1
+        output:
+            gtf = config['lr']['personal_genome']['gtf_no_gene']
+        run:
+            import pyranges as pr
+            df = pr.read_gtf(input.gtf).df
+            df = df.loc[df.Feature!='gene']
+            df = pr.PyRanges(df)
+            df.to_gtf(output.gtf)
+            
 # build loci
 rule buildloci:
     input:
-        gtf = config['lr']['personal_genome']['gtf']
+        gtf = config['lr']['personal_genome']['gtf_no_gene']
     resources:
         threads = 1,
         nodes = 1
