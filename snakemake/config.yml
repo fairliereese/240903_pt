@@ -613,6 +613,10 @@ lr:
     gtf_added_gene_entries: ../../data/novel_gene/transcripts_novel_gene_loci_filt_gene_name.gtf
     # gtf_added_gene_entries: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240917_merge_geneEntry_correctedScaffolds_nochrEBV.gtf
 
+  personal_genome:
+    gtf:
+
+
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
   r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
@@ -656,7 +660,7 @@ mage:
     gene_tpm_tsv: ../../data/enh_v47_kallisto/matrix.abundance.genelevel.tpm.tsv
 
   genotype_pc:
-    filt_vcf:  ../../data/mage/genotype_pc/1kg_mage.vcf.gz
+    filt_vcf:  ../../data/mage/genotype_pc/1kg_mage.vcf
     pcs: ../../data/mage/genotype_pc/pcs.tsv
 
 

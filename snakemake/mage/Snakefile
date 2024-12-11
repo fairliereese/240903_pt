@@ -403,7 +403,8 @@ rule filt_vcf:
             --gzvcf {input.vcf} \
             --maf {params.min_maf} \
             --keep {input.samples} \
-            --stdout | gzip -c > {output.vcf}
+            --stdout > {output.vcf}
+            # --stdout | gzip -c > {output.vcf}
         """
 
 # compute genotype PCs
