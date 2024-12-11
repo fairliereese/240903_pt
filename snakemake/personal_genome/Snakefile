@@ -54,6 +54,8 @@ rule all:
 
 # get transcript info (what we care about = # exons and total exon lenght)
 def get_transcript_info_pg(gtf):
+    import pyranges as pr
+
     df = pr.read_gtf(gtf, as_df=True, duplicate_attr=True)
     df = df.loc[df.Feature=='exon']
 
@@ -80,6 +82,5 @@ rule get_t_info:
     output:
         tsv = config['lr']['personal_genome']['t_info']
     run:
-        import pyranges as pr
         t_info = get_transcript_info_pg(input.gtf)
         t_info.to_csv(output.tsv, sep='\t', index=False)
