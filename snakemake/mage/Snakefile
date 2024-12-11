@@ -409,7 +409,7 @@ rule filt_sample_vcf:
             --stdout | gzip -c > {output.vcf}
         """
 
-rule filt_sample_vcf:
+rule filt_maf_vcf:
     input:
         vcf = config['mage']['genotype_pc']['filt_sample_vcf'],
         samples = config['mage']['samples']
