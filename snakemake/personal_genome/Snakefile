@@ -2,6 +2,8 @@ import pandas as pd
 import os
 import sys
 from itertools import product
+import pyranges as pr
+
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
@@ -51,7 +53,7 @@ rule all:
                zip,
                sample=df['sample'].tolist(),
                genome=df['genome'].tolist()),
-        expand(config['lr']['personal_genome']['build_loci_gtf'],
+        expand(config['lr']['personal_genome']['t2g'],
                zip,
                sample=df['sample'].tolist(),
                genome=df['genome'].tolist())
@@ -59,7 +61,6 @@ rule all:
 
 # get transcript info (what we care about = # exons and total exon lenght)
 def get_transcript_info_pg(gtf):
-    import pyranges as pr
 
     df = pr.read_gtf(gtf, as_df=True, duplicate_attr=True)
     df = df.loc[df.Feature=='exon']
@@ -77,6 +78,10 @@ def get_transcript_info_pg(gtf):
     return df
 
 
+def get_t2g(gtf):
+    df = pr.read_gtf(gtf).df
+    df = df[['gene_id', 'transcript_id']].drop_duplicates()
+    return df
 
 rule get_t_info:
     input:
@@ -131,3 +136,15 @@ rule buildloci:
                 locPrefix {params.prefix} \
                 > {output.gtf}
         """
+
+rule get_t2g:
+    input:
+        gtf = config['lr']['personal_genome']['build_loci_gtf']
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        tsv = config['lr']['personal_genome']['t2g']
+    run:
+        df = get_t2g(gtf)
+        df.to_csv(output.t2g, sep='\t', index=False)
