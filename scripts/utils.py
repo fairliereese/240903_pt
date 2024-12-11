@@ -356,19 +356,19 @@ def get_transcript_info(gtf):
     df = df.loc[(~df.Chromosome.str.contains('SIRV'))&~(df.Chromosome.str.contains('ERCC'))]
     print(len(df.index))
 
-    # mane status
-    mane_df = df.loc[df.Feature == 'transcript'].copy(deep=True)
-    mane_df.tag.fillna('', inplace=True)
-    mane_df['MANE_Select'] = mane_df.tag.str.contains('MANE_Select')
-    mane_df['MANE_Plus_Clinical'] = mane_df.tag.str.contains('MANE_Plus_Clinical')
-    mane_df = mane_df[['transcript_id', 'MANE_Select', 'MANE_Plus_Clinical']]
-    mane_df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
+    # # mane status
+    # mane_df = df.loc[df.Feature == 'transcript'].copy(deep=True)
+    # mane_df.tag.fillna('', inplace=True)
+    # mane_df['MANE_Select'] = mane_df.tag.str.contains('MANE_Select')
+    # mane_df['MANE_Plus_Clinical'] = mane_df.tag.str.contains('MANE_Plus_Clinical')
+    # mane_df = mane_df[['transcript_id', 'MANE_Select', 'MANE_Plus_Clinical']]
+    # mane_df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
 
     # only exons
     df = df.loc[df.Feature == 'exon'].copy(deep=True)
 
-    # readthrough transcripts
-    df['readthrough_transcript'] = df.tag.str.contains('readthrough_transcript')
+    # # readthrough transcripts
+    # df['readthrough_transcript'] = df.tag.str.contains('readthrough_transcript')
 
     # rename some columns
     m = {'gene_id': 'gid',
