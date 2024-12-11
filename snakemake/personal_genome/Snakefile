@@ -144,7 +144,7 @@ rule get_t2g:
         threads = 1,
         nodes = 1
     output:
-        tsv = config['lr']['personal_genome']['t2g']
+        t2g = config['lr']['personal_genome']['t2g']
     run:
         df = get_t2g(input.gtf)
-        df.to_csv(output.t2g, sep='\t', index=False)
+        df.to_csv(output.try, sep='\t', index=False)
