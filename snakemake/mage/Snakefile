@@ -403,7 +403,9 @@ rule filt_vcf:
             --gzvcf {input.vcf} \
             --maf {params.min_maf} \
             --keep {input.samples} \
-            --stdout > {output.vcf}
+            --recode \
+            --recode-INFO-all \
+            --stdout > {output.vcf} \
             # --stdout | gzip -c > {output.vcf}
         """
 

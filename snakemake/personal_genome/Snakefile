@@ -80,5 +80,6 @@ rule get_t_info:
     output:
         tsv = config['lr']['personal_genome']['t_info']
     run:
+        import pyranges as pr
         t_info = get_transcript_info_pg(input.gtf)
         t_info.to_csv(output.tsv, sep='\t', index=False)
