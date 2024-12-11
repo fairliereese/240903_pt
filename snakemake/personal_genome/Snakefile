@@ -53,6 +53,24 @@ rule all:
                genome=df['genome'].tolist())
 
 # get transcript info (what we care about = # exons and total exon lenght)
+def get_transcript_info_pg(gtf):
+    df = pr.read_gtf(gtf, as_df=True, duplicate_attr=True)
+    df = df.loc[df.Feature=='exon']
+
+    # number of exons
+    n_exons = df[['Feature', 'transcript_id']].groupby('transcript_id').count().reset_index().rename({''})
+
+    # exon len
+    df['exon_len'] = (df.Start-df.End).abs()+1
+    df = df.groupby('tid').sum().reset_index()
+
+    # merge in # n_exons
+    df = df.merge(n_exons, how='left', on='transcript_id')
+
+    return df
+
+
+
 rule get_t_info:
     input:
         gtf = config['lr']['personal_genome']['gtf']
@@ -62,5 +80,5 @@ rule get_t_info:
     output:
         tsv = config['lr']['personal_genome']['t_info']
     run:
-        t_info = get_transcript_info(input.gtf)
+        t_info = get_transcript_info_pg(input.gtf)
         t_info.to_csv(output.tsv, sep='\t', index=False)
