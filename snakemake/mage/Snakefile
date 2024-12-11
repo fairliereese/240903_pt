@@ -45,7 +45,7 @@ assert len(df.loc[df.r2_verify==False].index)==0
 
 df['sample'] = df['experiment_alias']
 df['cell_line_id'] = df['sample'].str.split('_', expand=True)[0]
-chroms = [i for i in range(1,23)]+['X']
+chroms = [str(i) for i in range(1,23)]+['X']
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
