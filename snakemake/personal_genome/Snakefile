@@ -1,0 +1,66 @@
+import pandas as pd
+import os
+import sys
+from itertools import product
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+include: f'{c_dir}kallisto.smk'
+
+samples = ['HG002', 'HG00621', 'HG01928',
+           'HG01952', 'NA18906', 'NA19240']
+genomes = ['T2T', 'hg38']
+
+combinations = list(product(samples, genomes))
+df = pd.DataFrame(combinations, columns=['sample', 'genome'])
+df2 = pd.DataFrame(data=samples, columns=['sample'])
+df2['genome'] = df2['sample']
+df = pd.concat([df, df2], axis=0)
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
+    genome='|'.join([re.escape(x) for x in df['genome'].tolist()]),
+
+rule all:
+    input:
+        expand(config['lr']['personal_genome']['t_info'],
+               zip,
+               sample=df['sample'].tolist(),
+               genome=df['genome'].tolist())
+
+# get transcript info (what we care about = # exons and total exon lenght)
+rule get_t_info:
+    input:
+        gtf = config['lr']['personal_genome']['gtf']
+    resources:
+        nodes = 1,
+        threads = 1
+    output:
+        tsv = config['lr']['personal_genome']['t_info']
+    run:
+        t_info = get_transcript_info(input.gtf)
+        t_info.to_csv(output.tsv, sep='\t', index=False)

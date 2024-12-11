@@ -614,7 +614,8 @@ lr:
     # gtf_added_gene_entries: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240917_merge_geneEntry_correctedScaffolds_nochrEBV.gtf
 
   personal_genome:
-    gtf:
+    gtf: ../../data/personal_genome/gtf/{sample}.fq_{genome}.fa_transcript_models.gtf
+    t_info: ../../data/personal_genome/gtf/{sample}.fq_{genome}.fa_transcript_models_t_info.tsv
 
 
 mage:

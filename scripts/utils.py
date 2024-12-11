@@ -314,7 +314,7 @@ def rm_sirv_ercc_gtf(ifile, ofile):
 
 def write_parsed_hmmer(ifile, ofile):
     from Bio import SearchIO
-    
+
     infile = open(ifile, 'r')
     outfile = open(ofile, 'w')
 
@@ -346,7 +346,7 @@ def get_transcript_info(gtf):
         gtf (str): Path to gtf
         o (str): Output file name
     """
-    
+
     import pyranges as pr
 
     df = pr.read_gtf(gtf, as_df=True, duplicate_attr=True)
@@ -377,6 +377,8 @@ def get_transcript_info(gtf):
          'gene_type': 'biotype'}
     df.rename(m, axis=1, inplace=True)
 
+    # count number of exons per transcript
+    n_exons = df[['Feature', 'tid']].groupby('tid').count().reset_index().rename({'Feature':'n_exons'}, axis=1)
 
     df['exon_len'] = (df.Start-df.End).abs()+1
 
@@ -391,5 +393,8 @@ def get_transcript_info(gtf):
 
     # merge mane info
     df = df.merge(mane_df, how='left', on='tid')
+
+    # merge n exon info
+    df = df.merge(n_exons, how='left', on='tid')
 
     return df
