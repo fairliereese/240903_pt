@@ -146,5 +146,5 @@ rule get_t2g:
     output:
         tsv = config['lr']['personal_genome']['t2g']
     run:
-        df = get_t2g(gtf)
+        df = get_t2g(input.gtf)
         df.to_csv(output.t2g, sep='\t', index=False)
