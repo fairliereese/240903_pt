@@ -49,7 +49,7 @@ chroms = [i for i in range(1,23)]+['X']
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
-    chrom = '|'.join([re.escape(x) for x in chroms),
+    chrom = '|'.join([re.escape(x) for x in chroms]),
 
 def get_df_val(df, col1, col_dict, uniq_val=True):
     """
