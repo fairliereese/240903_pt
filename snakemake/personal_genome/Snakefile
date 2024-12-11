@@ -50,7 +50,12 @@ rule all:
         expand(config['lr']['personal_genome']['t_info'],
                zip,
                sample=df['sample'].tolist(),
+               genome=df['genome'].tolist()),
+        expand(config['lr']['personal_genome']['build_loci_gtf'],
+               zip,
+               sample=df['sample'].tolist(),
                genome=df['genome'].tolist())
+
 
 # get transcript info (what we care about = # exons and total exon lenght)
 def get_transcript_info_pg(gtf):
@@ -64,7 +69,7 @@ def get_transcript_info_pg(gtf):
 
     # exon len
     df['exon_len'] = (df.Start-df.End).abs()+1
-    df = df.groupby('tid').sum().reset_index()
+    df = df.groupby('transcript_id').sum().reset_index()
 
     # merge in # n_exons
     df = df.merge(n_exons, how='left', on='transcript_id')
@@ -84,3 +89,30 @@ rule get_t_info:
     run:
         t_info = get_transcript_info_pg(input.gtf)
         t_info.to_csv(output.tsv, sep='\t', index=False)
+
+# build loci
+rule buildloci:
+    input:
+        gtf = config['lr']['personal_genome']['gtf']
+    resources:
+        threads = 1,
+        nodes = 1
+    conda:
+        'base'
+    params:
+        buildLoci = config['software']['buildLoci'],
+        prefix = 'novel_gene'
+    output:
+        gtf = config['lr']['personal_genome']['build_loci_gtf']
+    shell:
+        """
+        module load bedtools
+        bedtools intersect \
+            -s \
+            -wao \
+            -a {input.gtf} \
+            -b {input.gtf} | \
+            {params.buildLoci} - \
+                locPrefix {params.prefix} \
+                > {output.gtf}
+        """
