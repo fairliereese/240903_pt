@@ -635,8 +635,8 @@ mage:
     matrix_tpm_tsv: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
     merge_matrix_tsv: ../../data/mage/v47_kallisto/matrix.abundance.tsv
     merge_matrix_tpm_tsv: ../../data/mage/v47_kallisto/matrix.abundance.tpm.tsv
-    gene_tsv: ../../data/v47_kallisto_quant/matrix.abundance.genelevel.tsv
-    gene_tpm_tsv: ../../data/v47_kallisto_quant/matrix.abundance.genelevel.tpm.tsv
+    gene_tsv: ../../data/mage/v47_kallisto/matrix.abundance.genelevel.tsv
+    gene_tpm_tsv: ../../data/mage/v47_kallisto/matrix.abundance.genelevel.tpm.tsv
 
 
   poder_kallisto:
@@ -648,8 +648,8 @@ mage:
     matrix_tpm_tsv: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
     merge_matrix_tsv: ../../data/mage/poder_kallisto/matrix.abundance.tsv
     merge_matrix_tpm_tsv: ../../data/mage/poder_kallisto/matrix.abundance.tpm.tsv
-    gene_tsv: ../../data/poder_kallisto/matrix.abundance.genelevel.tsv
-    gene_tpm_tsv: ../../data/poder_kallisto/matrix.abundance.genelevel.tpm.tsv
+    gene_tsv: ../../data/mage/poder_kallisto/matrix.abundance.genelevel.tsv
+    gene_tpm_tsv: ../../data/mage/poder_kallisto/matrix.abundance.genelevel.tpm.tsv
 
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
@@ -660,15 +660,13 @@ mage:
     matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto/{sample}/quant_unfiltered/matrix.abundance.tpm.tsv
     merge_matrix_tsv: ../../data/mage/enh_v47_kallisto/matrix.abundance.tsv
     merge_matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto/matrix.abundance.tpm.tsv
-    gene_tsv: ../../data/enh_v47_kallisto/matrix.abundance.genelevel.tsv
-    gene_tpm_tsv: ../../data/enh_v47_kallisto/matrix.abundance.genelevel.tpm.tsv
+    gene_tsv: ../../data/mage/enh_v47_kallisto/matrix.abundance.genelevel.tsv
+    gene_tpm_tsv: ../../data/mage/enh_v47_kallisto/matrix.abundance.genelevel.tpm.tsv
 
   genotype_pc:
-    filt_vcf:  ../../data/mage/genotype_pc/1kg_mage.vcf
+    filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
+    filt_maf_vcf:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz
     pcs: ../../data/mage/genotype_pc/pcs.tsv
-
-
-
 
 params:
   orfanage:
@@ -695,6 +693,8 @@ software:
 1000g:
   # vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel_biallelic.vcf.gz # i think this is actually the subset vcf of just our samples
   vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
+  vcf_chr: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.chr{chrom}.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
+
   meta: /gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
   trios_meta: /gpfs/projects/bsc83/Data/1000G/1000G_trios_metadata.tsv
 

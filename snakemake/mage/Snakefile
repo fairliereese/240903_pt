@@ -45,9 +45,11 @@ assert len(df.loc[df.r2_verify==False].index)==0
 
 df['sample'] = df['experiment_alias']
 df['cell_line_id'] = df['sample'].str.split('_', expand=True)[0]
+chroms = [i for i in range(1,23)]+['X']
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
+    chrom = '|'.join([re.escape(x) for x in chroms),
 
 def get_df_val(df, col1, col_dict, uniq_val=True):
     """
@@ -79,7 +81,9 @@ rule all:
         config['mage']['poder_kallisto']['gene_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['gene_tsv'],
         config['mage']['enh_v47_kallisto']['gene_tpm_tsv'],
-        config['mage']['genotype_pc']['pcs']
+        expand(config['mage']['genotype_pc']['filt_maf_vcf'],
+               chrom=chroms)
+        # config['mage']['genotype_pc']['pcs']
 
 
 use rule wget as dl_r1_fq with:
@@ -386,9 +390,28 @@ rule get_samples:
         temp = df[['cell_line_id']]
         temp.to_csv(output.samples, header=None, index=False)
 
-rule filt_vcf:
+rule filt_sample_vcf:
     input:
-        vcf = config['1000g']['vcf'],
+        vcf = config['1000g']['vcf_chr'],
+        samples = config['mage']['samples']
+    resources:
+        threads = 16,
+        nodes = 2
+    output:
+        vcf = config['mage']['genotype_pc']['filt_sample_vcf']
+    shell:
+        """
+        vcftools \
+            --gzvcf {input.vcf} \
+            --keep {input.samples} \
+            --recode \
+            --recode-INFO-all \
+            --stdout | gzip -c > {output.vcf}
+        """
+
+rule filt_sample_vcf:
+    input:
+        vcf = config['mage']['genotype_pc']['filt_sample_vcf'],
         samples = config['mage']['samples']
     resources:
         threads = 16,
@@ -396,18 +419,18 @@ rule filt_vcf:
     params:
         min_maf = 0.01
     output:
-        vcf = config['mage']['genotype_pc']['filt_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     shell:
         """
         vcftools \
             --gzvcf {input.vcf} \
             --maf {params.min_maf} \
-            --keep {input.samples} \
             --recode \
             --recode-INFO-all \
-            --stdout > {output.vcf} \
-            # --stdout | gzip -c > {output.vcf}
+            --stdout | gzip -c > {output.vcf}
         """
+
+
 
 # compute genotype PCs
 rule genotype_pcs:
@@ -434,5 +457,11 @@ rule genotype_pcs:
         """
 
 ###########################
-###### Transcript filtering
+###### Transcript / gene filtering
 ###########################
+
+# Gene filtering:
+# genes expressed ≥ 1 TPM in at least 80% of the samples
+# with at least two isoforms and a minimum isoform expression of 0.1 TPM
+# rule filt_stl_transcripts:
+#     run:
