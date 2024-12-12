@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import sys
+import pyranges as pr
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
