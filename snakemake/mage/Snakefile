@@ -580,3 +580,22 @@ rule fmt_sqtlseeker_t_tpm:
                       on='trId')
         assert len(df.loc[df.geneId.isnull()].index)==0
         df.to_csv(output.t_tpm_tsv, sep='\t', index=None)
+
+use rule fmt_sqtlseeker_t_tpm as v47_fmt_sqtlseeker_t_tpm with:
+    input:
+        t_tpm_tsv = config['mage']['v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
+        t2g = config['ref']['v47_kallisto_short']['t2g']
+    output:
+        t_tpm_tsv = config['mage']['v47_kallisto']['sqtl']['merge_matrix_tpm_tsv'],
+use rule fmt_sqtlseeker_t_tpm as enh_v47_fmt_sqtlseeker_t_tpm with:
+    input:
+        t_tpm_tsv = config['mage']['enh_v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
+        t2g = config['ref']['enh_v47_kallisto_short']['t2g']
+    output:
+        t_tpm_tsv = config['mage']['enh_v47_kallisto']['sqtl']['merge_matrix_tpm_tsv'],
+use rule fmt_sqtlseeker_t_tpm as poder_fmt_sqtlseeker_t_tpm with:
+    input:
+        t_tpm_tsv = config['mage']['poder_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
+        t2g = config['ref']['poder_kallisto_short']['t2g']
+    output:
+        t_tpm_tsv = config['mage']['poder_kallisto']['sqtl']['merge_matrix_tpm_tsv'],

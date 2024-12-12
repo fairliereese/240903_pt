@@ -647,6 +647,10 @@ mage:
       gene_tsv: ../../data/mage/v47_kallisto/filt/matrix.abundance.genelevel.tsv
       gene_tpm_tsv: ../../data/mage/v47_kallisto/filt/matrix.abundance.genelevel.tpm.tsv
 
+    sqtl:
+      t_tpm_tsv: ../../data/mage/v47_kallisto/sqtl/matrix.abundance.tpm.tsv
+
+
 
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
@@ -665,6 +669,10 @@ mage:
       merge_matrix_tpm_tsv: ../../data/mage/poder_kallisto/filt/matrix.abundance.tpm.tsv
       gene_tsv: ../../data/mage/poder_kallisto/filt/matrix.abundance.genelevel.tsv
       gene_tpm_tsv: ../../data/mage/poder_kallisto/filt/matrix.abundance.genelevel.tpm.tsv
+
+    sqtl:
+      t_tpm_tsv: ../../data/mage/poder_kallisto/sqtl/matrix.abundance.tpm.tsv
+
 
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
