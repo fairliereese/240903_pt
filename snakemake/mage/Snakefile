@@ -78,7 +78,7 @@ rule all:
         config['mage']['v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['poder_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
-        config['mage']['genotype_pc']['pcs'],
+        config['mage']['genotype_pc']['merge_vcf'],
         config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
         config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
         config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
