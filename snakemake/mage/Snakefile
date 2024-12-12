@@ -647,19 +647,19 @@ use rule get_cis_regions as v47_get_cis_regions with:
 use rule get_cis_region_vcf as v47_get_cis_regions with:
     input:
         bed = config['mage']['v47_kallisto']['sqtl']['cis_bed'],
-        vcf =  = config['mage']['genotype_pc']['filt_maf_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     output:
         vcf = config['mage']['v47_kallisto']['sqtl']['cis_vcf']
 use rule get_cis_region_vcf as enh_v47_get_cis_region_vcf with:
     input:
         bed = config['mage']['enh_v47_kallisto']['sqtl']['cis_bed'],
-        vcf =  = config['mage']['genotype_pc']['filt_maf_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     output:
         vcf = config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf']
 use rule get_cis_region_vcf as poder_get_cis_region_vcf with:
     input:
         bed = config['mage']['poder_kallisto']['sqtl']['cis_bed'],
-        vcf =  = config['mage']['genotype_pc']['filt_maf_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     output:
         vcf = config['mage']['poder_kallisto']['sqtl']['cis_vcf']
 
