@@ -460,8 +460,166 @@ rule filt_maf_vcf:
 ###### Transcript / gene filtering
 ###########################
 
+# sample filtering -- keep rep. / cell line
+# w/ highest number of total counts
+def get_filt_mage_samples(f, ofile):
+    df = pd.read_csv(f, sep='\t')
+    df = df.set_index('transcript_id')
+    df = df.transpose()
+
+    # counts / sample
+    df = df.reset_index()
+    df = df.rename({'index':'sample'}, axis=1)
+    df['cell_line_id'] = df['sample'].str.split('_', expand=True)[0]
+    df = df.set_index(['cell_line_id', 'sample'])
+    df['total_counts'] = df.sum(axis=1)
+    df = df[['total_counts']].reset_index()
+
+    # dedupe on total counts
+    df = df.sort_values(by='total_counts', ascending=False)
+    print(len(df.index))
+    df = df.drop_duplicates(subset=['cell_line_id'], keep='first')
+    print(len(df.index))
+
+    df = df[['sample']]
+    df.to_csv(ofile, sep='\t', index=False)
+
+def filt_mage_samples(samples, ab, ofile):
+    # now filter
+    s_df = pd.read_csv(samples, sep='\t')
+    df = pd.read_csv(ab, sep='\t')
+    samples = s_df['sample'].tolist()
+    ind_cols = [c for c in df.columns if 'id' in c]
+    df = df.set_index(ind_cols)
+    df = df[samples]
+    df = df.reset_index()
+    df.to_csv(ofile, sep='\t', index=False)
+
+rule get_filt_mage_samples:
+    input:
+        tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tsv'] # we'll use the same sample for everything for consistency
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['mage']['filt_samples']
+    run:
+        get_filt_mage_samples(input.tsv, output.tsv)
+
+rule filt_mage_samples:
+    resources:
+        threads = 1,
+        nodes = 2
+    run:
+        filt_mage_samples(input.samples, input.t_tsv, output.t_tsv)
+        filt_mage_samples(input.samples, input.t_tpm_tsv, output.t_tpm_tsv)
+        filt_mage_samples(input.samples, input.g_tsv, output.g_tsv)
+        filt_mage_samples(input.samples, input.g_tpm_tsv, output.g_tpm_tsv)
+
+use rule filt_mage_samples as enh_v47_filt_samples with:
+    input:
+        samples = config['mage']['filt_samples'],
+        t_tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tsv'],
+        t_tpm_tsv = config['mage']['enh_v47_kallisto']['merge_matrix_tpm_tsv'],
+        g_tsv = config['mage']['enh_v47_kallisto']['gene_tsv'],
+        g_tpm_tsv = config['mage']['enh_v47_kallisto']['gene_tpm_tsv']
+    output:
+        t_tsv = config['mage']['enh_v47_kallisto']['filt']['merge_matrix_tsv'],
+        t_tpm_tsv = config['mage']['enh_v47_kallisto']['filt']['merge_matrix_tpm_tsv'],
+        g_tsv = config['mage']['enh_v47_kallisto']['filt']['gene_tsv'],
+        g_tpm_tsv = config['mage']['enh_v47_kallisto']['filt']['gene_tpm_tsv']
+
+use rule filt_mage_samples as poder_filt_samples with:
+    input:
+        samples = config['mage']['filt_samples'],
+        t_tsv = config['mage']['poder_kallisto']['merge_matrix_tsv'],
+        t_tpm_tsv = config['mage']['poder_kallisto']['merge_matrix_tpm_tsv'],
+        g_tsv = config['mage']['poder_kallisto']['gene_tsv'],
+        g_tpm_tsv = config['mage']['poder_kallisto']['gene_tpm_tsv']
+    output:
+        t_tsv = config['mage']['poder_kallisto']['filt']['merge_matrix_tsv'],
+        t_tpm_tsv = config['mage']['poder_kallisto']['filt']['merge_matrix_tpm_tsv'],
+        g_tsv = config['mage']['poder_kallisto']['filt']['gene_tsv'],
+        g_tpm_tsv = config['mage']['poder_kallisto']['filt']['gene_tpm_tsv']
+
+use rule filt_mage_samples as v47_filt_samples with:
+    input:
+        samples = config['mage']['filt_samples'],
+        t_tsv = config['mage']['v47_kallisto']['merge_matrix_tsv'],
+        t_tpm_tsv = config['mage']['v47_kallisto']['merge_matrix_tpm_tsv'],
+        g_tsv = config['mage']['v47_kallisto']['gene_tsv'],
+        g_tpm_tsv = config['mage']['v47_kallisto']['gene_tpm_tsv']
+    output:
+        t_tsv = config['mage']['v47_kallisto']['filt']['merge_matrix_tsv'],
+        t_tpm_tsv = config['mage']['v47_kallisto']['filt']['merge_matrix_tpm_tsv'],
+        g_tsv = config['mage']['v47_kallisto']['filt']['gene_tsv'],
+        g_tpm_tsv = config['mage']['v47_kallisto']['filt']['gene_tpm_tsv']
+
+
 # Gene filtering:
 # genes expressed ≥ 1 TPM in at least 80% of the samples
 # with at least two isoforms and a minimum isoform expression of 0.1 TPM
-# rule filt_stl_transcripts:
-#     run:
+def filt_sqtl_transcripts(g_tpm_tsv,
+                          t_tpm_tsv,
+                          t2g,
+                          min_samp_prop,
+                          min_g_exp,
+                          min_t_exp,
+                          min_n_t,
+                          ofile):
+    # genes exp. >= 1 TPM in at least 80% of samples
+    df = pd.read_csv(g_tpm_tsv, sep='\t')
+    n_samples = len([c for c in df.columns.tolist() if c not in ['gid']])
+    n_sample_cutoff = int(n_samples*min_samp_prop)
+
+    df = df.set_index('gid')
+    df = df>=min_g_exp
+    df['n_exp_samples'] = df.sum(axis=1)
+    print(len(df.index))
+    df = df.loc[df['n_exp_samples']>=n_sample_cutoff]
+    print(len(df.index))
+    gids = df.index.tolist()
+
+    # with at least two isoforms and
+    # minimum isoform expression of 0.1 TPM
+    # genes exp. >= 1 TPM in at least 80% of samples
+    df = pd.read_csv(t_tpm_tsv, sep='\t')
+    df = df.set_index('transcript_id')
+    df = df>=min_t_exp
+    df['n_exp_samples'] = df.sum(axis=1)
+    print(len(df.index))
+    df = df.loc[df['n_exp_samples']>=1]
+    print(len(df.index))
+    tids = df.index.tolist()
+
+    # limit to tids and gids
+    t2g_df = pd.read_csv(t2g, sep='\t', header=None)
+    t2g_df = t2g_df[[0,1]]
+    t2g_df.columns = ['tid', 'gid']
+
+    print(len(t2g_df.index))
+    t2g_df = t2g_df.loc[(t2g_df.gid.isin(gids))&\
+                        (t2g_df.tid.isin(tids))]
+    print(len(t2g_df.index))
+
+    # then count # isos / gene and filter one more time
+    t2g_df = t2g_df.groupby('gid').nunique().reset_index().rename({'tid':'n_tid'}, axis=1)
+    print(len(t2g_df.index))
+    t2g_df = t2g_df.loc[t2g_df.n_tid >= min_n_t]
+    print(len(t2g_df.index))
+
+
+rule filt_sqtl_transcripts:
+    input:
+        g_tpm_tsv = ,
+        t_tpm_tsv = ,
+        t2g = ,
+    resources:
+        nodes = 2,
+        threads = 1
+    params:
+        min_samp_prop = 0.8, # min. prop. of samples where gene is exp
+        min_g_exp = 1, # min tpm val. of exp. gene
+        min_t_exp = 0.1, # min tpm val. of exp. transcript
+        min_n_t = 2, # min # exp transcirpts / g
+    run:
