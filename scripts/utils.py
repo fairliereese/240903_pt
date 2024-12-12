@@ -393,3 +393,6 @@ def get_transcript_info(gtf):
     df = df.merge(mane_df, how='left', on='tid')
 
     return df
+
+def fmt_for_cli(l, sep=' '):
+    return sep.join(l)

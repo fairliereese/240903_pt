@@ -650,8 +650,6 @@ mage:
     sqtl:
       t_tpm_tsv: ../../data/mage/v47_kallisto/sqtl/matrix.abundance.tpm.tsv
 
-
-
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -673,7 +671,6 @@ mage:
     sqtl:
       t_tpm_tsv: ../../data/mage/poder_kallisto/sqtl/matrix.abundance.tpm.tsv
 
-
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
     transcripts: ../../data/mage/enh_v47_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -694,10 +691,13 @@ mage:
 
     sqtl:
       t_tpm_tsv: ../../data/mage/enh_v47_kallisto/sqtl/matrix.abundance.tpm.tsv
+      cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
+      merge_cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
     filt_maf_vcf:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz
+    merge_vcf: ../../data/mage/genotype_pc/1kg_mage_maf.vcf.gz
     pcs: ../../data/mage/genotype_pc/pcs.tsv
 
 params:

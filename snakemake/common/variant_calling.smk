@@ -199,3 +199,19 @@ rule vcftools_calc_af:
             --freq \
             --out {params.opref}
         """
+
+rule bcftools_concat:
+    resources:
+        threads = 8
+        nodes = 3
+    conda:
+        'base'
+    shell:
+        """
+        # output type = v --> compressed vcf
+        bcftools concat \
+            --output-type v \
+            -o {output.vcf} \
+            {params.cli_vcfs}
+            # chr1.vcf chr2.vcf chr3.vcf ... chrX.vcf
+        """
