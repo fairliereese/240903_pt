@@ -202,7 +202,7 @@ rule vcftools_calc_af:
 
 rule bcftools_concat:
     resources:
-        threads = 8
+        threads = 8,
         nodes = 3
     conda:
         'base'
