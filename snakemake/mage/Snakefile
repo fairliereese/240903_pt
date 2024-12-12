@@ -644,19 +644,19 @@ use rule get_cis_regions as poder_get_cis_regions with:
 
 ### filter vcfs on these cis regions
 # using the maf / sample filtered variants... I think this makes sense
-use rule get_cis_region_vcf as v47_get_cis_regions_vcf with:
+use rule bcftools_filter_on_regions as v47_get_cis_regions_vcf with:
     input:
         bed = config['mage']['v47_kallisto']['sqtl']['cis_bed'],
         vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     output:
         vcf = config['mage']['v47_kallisto']['sqtl']['cis_vcf']
-use rule get_cis_region_vcf as enh_v47_get_cis_region_vcf with:
+use rule bcftools_filter_on_regions as enh_v47_get_cis_region_vcf with:
     input:
         bed = config['mage']['enh_v47_kallisto']['sqtl']['cis_bed'],
         vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     output:
         vcf = config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf']
-use rule get_cis_region_vcf as poder_get_cis_region_vcf with:
+use rule bcftools_filter_on_regions as poder_get_cis_region_vcf with:
     input:
         bed = config['mage']['poder_kallisto']['sqtl']['cis_bed'],
         vcf = config['mage']['genotype_pc']['filt_maf_vcf']
