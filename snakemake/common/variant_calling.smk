@@ -95,6 +95,7 @@ rule merge_variants:
     shell:
         """
         bcftools merge \
+            --threads {resources.threads} \
             --use-header {input.header_vcf} \
             {input.vcfs} > {output.vcf}
         """
@@ -211,7 +212,24 @@ rule bcftools_concat:
         # output type = v --> compressed vcf
         bcftools concat \
             --output-type v \
+            --threads {resources.threads} \
             -o {output.vcf} \
             {params.cli_vcfs}
             # chr1.vcf chr2.vcf chr3.vcf ... chrX.vcf
+        """
+
+rule bcftools_filter_on_regions:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        bcftools view \
+            {input.vcf} \
+            --threads {resources.threads} \
+            --regions-file {input.bed} \
+            --output-type v \
+            --output {output.vcf}
         """

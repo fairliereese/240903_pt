@@ -78,7 +78,10 @@ rule all:
         config['mage']['v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['poder_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
-        config['mage']['genotype_pc']['pcs']
+        config['mage']['genotype_pc']['pcs'],
+        config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
+        config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
+        config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
 
         # expand(config['mage']['genotype_pc']['pcs'],
         #        chrom=chroms)
@@ -609,6 +612,57 @@ use rule fmt_sqtlseeker_t_tpm as poder_fmt_sqtlseeker_t_tpm with:
 ################
 #### Preparing genotype file
 ################
+
+### get +- 5kb regions for gene bodies
+rule get_cis_regions:
+    resources:
+        threads = 16,
+        nodes = 3
+    params:
+        extension = 5000
+    run:
+        gtf_df = pr.read_gtf(input.gtf).df
+        gtf_df = gtf_df.loc[gtf_df.Feature=='gene']
+        gtf_df = pr.PyRanges(gtf_df)
+        gtf_df = gtf_df.extend(params.extension)
+        gtf_df.to_bed(output.bed)
+use rule get_cis_regions as v47_get_cis_regions with:
+    input:
+        gtf = config['ref']['gtf']
+    output:
+        bed = config['mage']['v47_kallisto']['sqtl']['cis_bed']
+use rule get_cis_regions as enh_v47_get_cis_regions with:
+    input:
+        gtf = config['lr']['gtf_gc_poder']
+    output:
+        bed = config['mage']['enh_v47_kallisto']['sqtl']['cis_bed']
+use rule get_cis_regions as v47_get_cis_regions with:
+    input:
+        gtf = config['lr']['gtf_filt_with_genes']
+    output:
+        bed = config['mage']['poder_kallisto']['sqtl']['cis_bed']
+
+### filter vcfs on these cis regions
+# using the maf / sample filtered variants... I think this makes sense
+use rule v47_get_cis_region_vcf:
+    input:
+        bed = config['mage']['v47_kallisto']['sqtl']['cis_bed'],
+        vcf = bed = config['mage']['genotype_pc']['filt_maf_vcf']
+    output:
+        vcf = config['mage']['v47_kallisto']['sqtl']['cis_vcf']
+use rule enh_v47_get_cis_region_vcf:
+    input:
+        bed = config['mage']['enh_v47_kallisto']['sqtl']['cis_bed'],
+        vcf = bed = config['mage']['genotype_pc']['filt_maf_vcf']
+    output:
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf']
+use rule poder_get_cis_region_vcf:
+    input:
+        bed = config['mage']['poder_kallisto']['sqtl']['cis_bed'],
+        vcf = bed = config['mage']['genotype_pc']['filt_maf_vcf']
+    output:
+        vcf = config['mage']['poder_kallisto']['sqtl']['cis_vcf']
+
 use rule bcftools_concat as v47_concat_sqtl_vcfs with:
     input:
         files = expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],

@@ -649,6 +649,8 @@ mage:
 
     sqtl:
       t_tpm_tsv: ../../data/mage/v47_kallisto/sqtl/matrix.abundance.tpm.tsv
+
+      cis_bed: ../../data/mage/v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
       merge_cis_vcf: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
@@ -672,6 +674,8 @@ mage:
 
     sqtl:
       t_tpm_tsv: ../../data/mage/poder_kallisto/sqtl/matrix.abundance.tpm.tsv
+
+      cis_bed: ../../data/mage/poder_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
       merge_cis_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
@@ -695,6 +699,8 @@ mage:
 
     sqtl:
       t_tpm_tsv: ../../data/mage/enh_v47_kallisto/sqtl/matrix.abundance.tpm.tsv
+
+      cis_bed: ../../data/mage/enh_v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
       merge_cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
