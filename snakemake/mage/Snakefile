@@ -609,12 +609,30 @@ use rule fmt_sqtlseeker_t_tpm as poder_fmt_sqtlseeker_t_tpm with:
 ################
 #### Preparing genotype file
 ################
-use rule bcftools_concat as concat_sqtl_vcfs with:
+use rule bcftools_concat as v47_concat_sqtl_vcfs with:
     input:
-        files = expand(config['mage']['sqtl']['cis_vcf'],
+        files = expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
                        chrom=chroms)
     params:
-        cli_vcfs = fmt_for_cli(expand(config['mage']['sqtl']['cis_vcf'],
+        cli_vcfs = fmt_for_cli(expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
     output:
-        vcf = config['mage']['sqtl']['merge_cis_vcf']
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf']
+use rule bcftools_concat as enh_v47_concat_sqtl_vcfs with:
+    input:
+        files = expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
+                       chrom=chroms)
+    params:
+        cli_vcfs = fmt_for_cli(expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
+                               chrom=chroms), sep=' ')
+    output:
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf']
+use rule bcftools_concat as poder_concat_sqtl_vcfs with:
+    input:
+        files = expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
+                       chrom=chroms)
+    params:
+        cli_vcfs = fmt_for_cli(expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
+                               chrom=chroms), sep=' ')
+    output:
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf']
