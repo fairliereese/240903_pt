@@ -636,7 +636,7 @@ use rule get_cis_regions as enh_v47_get_cis_regions with:
         gtf = config['lr']['gtf_gc_poder']
     output:
         bed = config['mage']['enh_v47_kallisto']['sqtl']['cis_bed']
-use rule get_cis_regions as v47_get_cis_regions with:
+use rule get_cis_regions as poder_get_cis_regions with:
     input:
         gtf = config['lr']['gtf_filt_with_genes']
     output:
