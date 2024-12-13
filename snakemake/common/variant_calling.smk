@@ -111,6 +111,20 @@ rule bgzip:
         bgzip -c {input.ifile} > {output.gz}
         """
 
+rule bcftools_vcf_index:
+    resources:
+        threads = 16,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        bcftools index \
+            {input.vcf} \
+            --threads {resources.threads}
+        """
+
+
 rule vcf_index:
     resources:
         threads = 1,

@@ -46,7 +46,8 @@ assert len(df.loc[df.r2_verify==False].index)==0
 
 df['sample'] = df['experiment_alias']
 df['cell_line_id'] = df['sample'].str.split('_', expand=True)[0]
-chroms = [str(i) for i in range(1,23)]+['X']
+autosomes = [str(i) for i in range(1,23)]
+chroms = autosomes+['X']
 
 wildcard_constraints:
     sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
@@ -79,7 +80,7 @@ rule all:
         config['mage']['v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['poder_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
-        config['mage']['genotype_pc']['merge_vcf'],
+        config['mage']['genotype_pc']['pcs'],
         config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
         config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
         config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
@@ -432,13 +433,22 @@ rule filt_maf_vcf:
             --stdout | bgzip -c > {output.vcf}
         """
 
+use rule bcftools_vcf_index as index_genotype_pc_vcf with:
+    input:
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
+    output:
+        ind = config['mage']['genotype_pc']['filt_maf_vcf_ind']
+
+
 use rule bcftools_concat as concat_genotype_pc_vcfs with:
     input:
         files = expand(config['mage']['genotype_pc']['filt_maf_vcf'],
-                       chrom=chroms)
+                       chrom=autosomes),
+        inds = expand(config['mage']['genotype_pc']['filt_maf_vcf_ind'],
+                      chrom=autosomes),
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['genotype_pc']['filt_maf_vcf'],
-                               chrom=chroms), sep=' ')
+                               chrom=autosomes), sep=' ')
     output:
         vcf = config['mage']['genotype_pc']['merge_vcf']
 

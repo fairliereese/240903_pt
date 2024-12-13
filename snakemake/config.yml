@@ -707,7 +707,8 @@ mage:
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
     filt_maf_vcf:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz
-    merge_vcf: ../../data/mage/genotype_pc/1kg_mage_maf.vcf.gz
+    filt_maf_vcf_ind:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz.csi
+    merge_vcf: ../../data/mage/genotype_pc/1kg_mage_maf_autosomes.vcf.gz
     pcs: ../../data/mage/genotype_pc/pcs.tsv
 
 params:
