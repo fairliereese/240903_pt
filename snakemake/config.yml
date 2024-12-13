@@ -652,6 +652,7 @@ mage:
 
       cis_bed: ../../data/mage/v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
+      cis_vcf_ind: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
   poder_kallisto:
@@ -677,6 +678,7 @@ mage:
 
       cis_bed: ../../data/mage/poder_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
+      cis_vcf_ind: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
   enh_v47_kallisto:
@@ -702,6 +704,7 @@ mage:
 
       cis_bed: ../../data/mage/enh_v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
+      cis_vcf_ind: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
   genotype_pc:

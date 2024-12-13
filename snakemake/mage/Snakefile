@@ -675,10 +675,28 @@ use rule bcftools_filter_on_regions as poder_get_cis_region_vcf with:
     output:
         vcf = config['mage']['poder_kallisto']['sqtl']['cis_vcf']
 
+use rule bcftools_vcf_index as v47_vcf_ind with:
+    input:
+        vcf = config['mage']['v47_kallisto']['sqtl']['cis_vcf']
+    output:
+        ind = config['mage']['v47_kallisto']['sqtl']['cis_vcf_ind']
+use rule bcftools_vcf_index as enh_v47_vcf_ind with:
+    input:
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf']
+    output:
+        ind = config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf_ind']
+use rule bcftools_vcf_index as poder_vcf_ind with:
+    input:
+        vcf = config['mage']['poder_kallisto']['sqtl']['cis_vcf']
+    output:
+        ind = config['mage']['poder_kallisto']['sqtl']['cis_vcf_ind']
+
 use rule bcftools_concat as v47_concat_sqtl_vcfs with:
     input:
         files = expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
-                       chrom=chroms)
+                       chrom=chroms),
+        inds = expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf_ind'],
+                      chroms=chroms)
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
@@ -687,7 +705,9 @@ use rule bcftools_concat as v47_concat_sqtl_vcfs with:
 use rule bcftools_concat as enh_v47_concat_sqtl_vcfs with:
     input:
         files = expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
-                       chrom=chroms)
+                       chrom=chroms),
+        inds = expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf_ind'],
+                     chroms=chroms)
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
@@ -696,7 +716,9 @@ use rule bcftools_concat as enh_v47_concat_sqtl_vcfs with:
 use rule bcftools_concat as poder_concat_sqtl_vcfs with:
     input:
         files = expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
-                       chrom=chroms)
+                       chrom=chroms),
+        inds = expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf_ind'],
+                     chroms=chroms)
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
