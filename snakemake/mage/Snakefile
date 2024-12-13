@@ -696,7 +696,7 @@ use rule bcftools_concat as v47_concat_sqtl_vcfs with:
         files = expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
                        chrom=chroms),
         inds = expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf_ind'],
-                      chroms=chroms)
+                      chrom=chroms)
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
@@ -707,7 +707,7 @@ use rule bcftools_concat as enh_v47_concat_sqtl_vcfs with:
         files = expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
                        chrom=chroms),
         inds = expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf_ind'],
-                     chroms=chroms)
+                     chrom=chroms)
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
@@ -718,7 +718,7 @@ use rule bcftools_concat as poder_concat_sqtl_vcfs with:
         files = expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
                        chrom=chroms),
         inds = expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf_ind'],
-                     chroms=chroms)
+                     chrom=chroms)
     params:
         cli_vcfs = fmt_for_cli(expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
