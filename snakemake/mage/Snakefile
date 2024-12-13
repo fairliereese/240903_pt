@@ -423,12 +423,13 @@ rule filt_maf_vcf:
         vcf = config['mage']['genotype_pc']['filt_maf_vcf']
     shell:
         """
+        module load samtools
         vcftools \
             --gzvcf {input.vcf} \
             --maf {params.min_maf} \
             --recode \
             --recode-INFO-all \
-            --stdout | gzip -c > {output.vcf}
+            --stdout | bgzip -c > {output.vcf}
         """
 
 use rule bcftools_concat as concat_genotype_pc_vcfs with:
