@@ -659,19 +659,22 @@ use rule get_cis_regions as poder_get_cis_regions with:
 use rule bcftools_filter_on_regions as v47_get_cis_regions_vcf with:
     input:
         bed = config['mage']['v47_kallisto']['sqtl']['cis_bed'],
-        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf'],
+        ind = config['mage']['genotype_pc']['filt_maf_vcf_ind']
     output:
         vcf = config['mage']['v47_kallisto']['sqtl']['cis_vcf']
 use rule bcftools_filter_on_regions as enh_v47_get_cis_region_vcf with:
     input:
         bed = config['mage']['enh_v47_kallisto']['sqtl']['cis_bed'],
-        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf'],
+        ind = config['mage']['genotype_pc']['filt_maf_vcf_ind']
     output:
         vcf = config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf']
 use rule bcftools_filter_on_regions as poder_get_cis_region_vcf with:
     input:
         bed = config['mage']['poder_kallisto']['sqtl']['cis_bed'],
-        vcf = config['mage']['genotype_pc']['filt_maf_vcf']
+        vcf = config['mage']['genotype_pc']['filt_maf_vcf'],
+        ind = config['mage']['genotype_pc']['filt_maf_vcf_ind']
     output:
         vcf = config['mage']['poder_kallisto']['sqtl']['cis_vcf']
 
