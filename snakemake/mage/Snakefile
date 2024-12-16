@@ -882,8 +882,7 @@ rule filt_sqtl_transcripts:
         min_t_exp = 0.1, # min tpm val. of exp. transcript
         min_n_t = 2, # min # exp transcirpts / g
     run:
-        filt_sqtl_transcripts(input.g_tpm_tsv,
-                              input.t_tpm_tsv,
+        filt_sqtl_transcripts(input.t_tpm_tsv,
                               input.t2g,
                               params.min_samp_prop,
                               params.min_g_exp,
