@@ -84,6 +84,9 @@ rule all:
         config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
         config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
         config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
+        config['mage']['v47_kallisto']['sqtl']['t_tpm_tsv'],
+        config['mage']['poder_kallisto']['sqtl']['t_tpm_tsv'],
+        config['mage']['enh_v47_kallisto']['sqtl']['t_tpm_tsv'],
 
         # expand(config['mage']['genotype_pc']['pcs'],
         #        chrom=chroms)
