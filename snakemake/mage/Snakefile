@@ -780,33 +780,27 @@ rule prepare_lineage_genotype:
             --verbose
         """
 
-# Gene filtering:
-# genes expressed ≥ 1 TPM in at least 80% of the samples
-# with at least two isoforms and a minimum isoform expression of 0.1 TPM
-def filt_sqtl_transcripts(g_tpm_tsv,
-                          t_tpm_tsv,
+def filt_sqtl_transcripts(t_tpm_tsv,
                           t2g,
                           min_samp_prop,
                           min_g_exp,
                           min_t_exp,
                           min_n_t,
                           ofile):
-    # genes exp. >= 1 TPM in at least 80% of samples
-    df = pd.read_csv(g_tpm_tsv, sep='\t')
-    n_samples = len([c for c in df.columns.tolist() if c not in ['gid']])
-    n_sample_cutoff = int(n_samples*min_samp_prop)
 
-    df = df.set_index('gid')
-    df = df>=min_g_exp
-    df['n_exp_samples'] = df.sum(axis=1)
-    print(len(df.index))
-    df = df.loc[df['n_exp_samples']>=n_sample_cutoff]
-    print(len(df.index))
-    gids = df.index.tolist()
+    # get melted version of table w/ tid, gid, sample, t_exp, n_t (per gene), passed t exp filt, passed g exp filt
+    # this is the main output tale
+    filt_df = pd.read_csv(t_tpm_tsv, sep='\t')
+    filt_df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
+    filt_df = filt_df.set_index('tid').melt(ignore_index=False, value_name='tpm', var_name='sample').reset_index()
+    t2g_df = pd.read_csv(t2g, sep='\t', header=None)
+    t2g_df = t2g_df[[0,1]]
+    t2g_df.columns = ['tid', 'gid']
+    filt_df = filt_df.merge(t2g_df,
+                            how='left',
+                            on='tid')
 
-    # with at least two isoforms and
-    # minimum isoform expression of 0.1 TPM
-    # genes exp. >= 1 TPM in at least 80% of samples
+    # isoform expressed in at least 1 sample >= 0.1 TPM
     df = pd.read_csv(t_tpm_tsv, sep='\t')
     df = df.set_index('transcript_id')
     df = df>=min_t_exp
@@ -815,22 +809,67 @@ def filt_sqtl_transcripts(g_tpm_tsv,
     df = df.loc[df['n_exp_samples']>=1]
     print(len(df.index))
     tids = df.index.tolist()
+    filt_df['t_passed_exp_filt'] = filt_df.tid.isin(tids)
 
-    # limit to tids and gids
+    # using these isoform, which genes pass the n transcripts / gene
     t2g_df = pd.read_csv(t2g, sep='\t', header=None)
     t2g_df = t2g_df[[0,1]]
     t2g_df.columns = ['tid', 'gid']
-
     print(len(t2g_df.index))
-    t2g_df = t2g_df.loc[(t2g_df.gid.isin(gids))&\
-                        (t2g_df.tid.isin(tids))]
+    t2g_df = t2g_df.loc[(t2g_df.tid.isin(tids))]
     print(len(t2g_df.index))
-
-    # then count # isos / gene and filter one more time
+    # count # isos / gene and filter one more time
     t2g_df = t2g_df.groupby('gid').nunique().reset_index().rename({'tid':'n_tid'}, axis=1)
-    print(len(t2g_df.index))
     t2g_df = t2g_df.loc[t2g_df.n_tid >= min_n_t]
     print(len(t2g_df.index))
+    gids2 = t2g_df.gid.tolist()
+    filt_df['g_passed_n_t_filt'] = filt_df.gid.isin(gids2)
+
+    # if sum of remaining transcripts (so gene expression based on filtered trx) is >=1 TPM
+    # keep transcript, if not, convert to NA (this is per sample)
+    df = pd.read_csv(t_tpm_tsv, sep='\t')
+    df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
+    df = df.loc[df.tid.isin(tids)]
+    t2g_df = pd.read_csv(t2g_file, sep='\t', header=None)
+    t2g_df = t2g_df[[0,1]]
+    t2g_df.columns = ['tid', 'gid']
+    df = df.merge(t2g_df,
+                  how='left',
+                  on='tid')
+    df = df.drop('tid', axis=1)
+    df = df.groupby('gid').sum().reset_index()
+    df = df.set_index('gid').melt(ignore_index=False, value_name='gene_tpm', var_name='sample').reset_index()
+    df['g_passed_exp_filt'] = df.gene_tpm>=min_g_exp
+    filt_df = filt_df.merge(df,
+                            how='left',
+                            on=['gid', 'sample'])
+
+    # using just these isoforms, re-compute gene tpm
+    # genes exp. >= 1 TPM in at least 80% of samples
+    n_samples = len([c for c in df.columns.tolist() if c not in ['gid']])
+    n_sample_cutoff = int(n_samples*min_samp_prop)
+    df = pd.read_csv(t_tpm_tsv, sep='\t')
+    df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
+    df = df.loc[df.tid.isin(tids)]
+    t2g_df = pd.read_csv(t2g_file, sep='\t', header=None)
+    t2g_df = t2g_df[[0,1]]
+    t2g_df.columns = ['tid', 'gid']
+    df = df.merge(t2g_df,
+                  how='left',
+                  on='tid')
+    df = df.drop('tid', axis=1)
+    df = df.groupby('gid').sum().reset_index()
+    df = df.set_index('gid')
+    df = df>=min_g_exp
+    df['n_exp_samples'] = df.sum(axis=1)
+    print(len(df.index))
+    df = df.loc[df['n_exp_samples']>=n_sample_cutoff]
+    print(len(df.index))
+    gids = df.index.tolist()
+    filt_df['g_passed_exp_min_samples_filt'] = filt_df.gid.isin(gids)
+    filt_df.to_csv(ofile, sep='\t', index=False)
+
+
 
 
 rule filt_sqtl_transcripts:

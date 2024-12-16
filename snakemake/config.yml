@@ -722,7 +722,6 @@ mage:
     sqtl:
       t_tpm_tsv: ../../data/mage/enh_v47_kallisto/sqtl/matrix.abundance.tpm.tsv
 
-
       cis_bed: ../../data/mage/enh_v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
       cis_vcf_ind: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
