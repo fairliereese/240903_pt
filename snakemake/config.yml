@@ -718,7 +718,7 @@ mage:
 
     testable:
       t_tpm_tsv: ../../data/mage/enh_v47_kallisto/testable/matrix.abundance_testable.tpm.tsv
-      
+
     sqtl:
       t_tpm_tsv: ../../data/mage/enh_v47_kallisto/sqtl/matrix.abundance.tpm.tsv
 

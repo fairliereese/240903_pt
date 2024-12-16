@@ -70,6 +70,8 @@ def get_df_val(df, col1, col_dict, uniq_val=True):
     else:
         return temp[col1].tolist()
 
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df['sample'].tolist()]),
 
 rule all:
     input:
