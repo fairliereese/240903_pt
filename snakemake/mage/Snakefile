@@ -910,4 +910,4 @@ use rule filt_sqtl_transcripts as poder_filt_sqtl_transcripts with:
         t_tpm_tsv = config['mage']['poder_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         t2g = config['ref']['poder_kallisto_short']['t2g'],
     output:
-        t_tpm_testable_tsv = config['mage']['enh_v47_kallisto']['testable']['t_tpm_tsv']
+        t_tpm_testable_tsv = config['mage']['poder_kallisto']['testable']['t_tpm_tsv']
