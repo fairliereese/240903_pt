@@ -586,14 +586,9 @@ use rule filt_mage_samples as v47_filt_samples with:
 # expression of each transcript in each sample TPM
 # columns trId and geneId
 rule fmt_sqtlseeker_t_tpm:
-    input:
-        t_tpm_tsv = config['mage']['v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
-        t2g = config['ref']['v47_kallisto_short']['t2g']
     resources:
         threads = 1,
         nodes = 2
-    output:
-        t_tpm_tsv = config['mage']['v47_kallisto']['sqtl']['t_tpm_tsv'],
     run:
         df = pd.read_csv(input.t_tpm_tsv, sep='\t')
         df.rename({'transcript_id':'trId'}, axis=1, inplace=True)
