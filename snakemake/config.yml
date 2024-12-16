@@ -647,8 +647,12 @@ mage:
       gene_tsv: ../../data/mage/v47_kallisto/filt/matrix.abundance.genelevel.tsv
       gene_tpm_tsv: ../../data/mage/v47_kallisto/filt/matrix.abundance.genelevel.tpm.tsv
 
+    testable:
+      t_tpm_tsv: ../../data/mage/v47_kallisto/testable/matrix.abundance_testable.tpm.tsv
+
     sqtl:
       t_tpm_tsv: ../../data/mage/v47_kallisto/sqtl/matrix.abundance.tpm.tsv
+
 
       cis_bed: ../../data/mage/v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
@@ -677,6 +681,9 @@ mage:
       merge_matrix_tpm_tsv: ../../data/mage/poder_kallisto/filt/matrix.abundance.tpm.tsv
       gene_tsv: ../../data/mage/poder_kallisto/filt/matrix.abundance.genelevel.tsv
       gene_tpm_tsv: ../../data/mage/poder_kallisto/filt/matrix.abundance.genelevel.tpm.tsv
+
+    testable:
+      t_tpm_tsv: ../../data/mage/poder_kallisto/testable/matrix.abundance_testable.tpm.tsv
 
     sqtl:
       t_tpm_tsv: ../../data/mage/poder_kallisto/sqtl/matrix.abundance.tpm.tsv
@@ -709,8 +716,12 @@ mage:
       gene_tsv: ../../data/mage/enh_v47_kallisto/filt/matrix.abundance.genelevel.tsv
       gene_tpm_tsv: ../../data/mage/enh_v47_kallisto/filt/matrix.abundance.genelevel.tpm.tsv
 
+    testable:
+      t_tpm_tsv: ../../data/mage/enh_v47_kallisto/testable/matrix.abundance_testable.tpm.tsv
+      
     sqtl:
       t_tpm_tsv: ../../data/mage/enh_v47_kallisto/sqtl/matrix.abundance.tpm.tsv
+
 
       cis_bed: ../../data/mage/enh_v47_kallisto/sqtl/cis_gene.bed
       cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
