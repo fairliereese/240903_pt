@@ -687,7 +687,7 @@ mage:
       merge_cis_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
       # weird 012 files
-      genotypes: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012
+      genotype: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012
       indv: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.indv
       pos: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.pos
 
