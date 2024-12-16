@@ -81,9 +81,9 @@ rule all:
         config['mage']['poder_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv'],
         config['mage']['genotype_pc']['pcs'],
-        config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
-        config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
-        config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
+        config['mage']['v47_kallisto']['sqtl']['genotype'],
+        config['mage']['poder_kallisto']['sqtl']['genotype'],
+        config['mage']['enh_v47_kallisto']['sqtl']['genotype'],
         config['mage']['v47_kallisto']['sqtl']['t_tpm_tsv'],
         config['mage']['poder_kallisto']['sqtl']['t_tpm_tsv'],
         config['mage']['enh_v47_kallisto']['sqtl']['t_tpm_tsv'],
@@ -725,3 +725,33 @@ use rule bcftools_concat as poder_concat_sqtl_vcfs with:
                                chrom=chroms), sep=' ')
     output:
         vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf']
+
+use rule vcftools_012 as v47_get_012 with:
+    input:
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf']
+    params:
+        opref = config['mage']['v47_kallisto']['sqtl']['genotype'].split('.012')[0]
+    output:
+        genotypes = config['mage']['v47_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['v47_kallisto']['sqtl']['indv'],
+        pos = config['mage']['v47_kallisto']['sqtl']['pos']
+
+use rule vcftools_012 as enh_v47_get_012 with:
+    input:
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf']
+    params:
+        opref = config['mage']['enh_v47_kallisto']['sqtl']['genotype'].split('.012')[0]
+    output:
+        genotypes = config['mage']['enh_v47_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['enh_v47_kallisto']['sqtl']['indv'],
+        pos = config['mage']['enh_v47_kallisto']['sqtl']['pos']
+
+use rule vcftools_012 as poder_get_012 with:
+    input:
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf']
+    params:
+        opref = config['mage']['poder_kallisto']['sqtl']['genotype'].split('.012')[0]
+    output:
+        genotypes = config['mage']['poder_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['poder_kallisto']['sqtl']['indv'],
+        pos = config['mage']['poder_kallisto']['sqtl']['pos']

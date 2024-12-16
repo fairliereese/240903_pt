@@ -247,3 +247,19 @@ rule bcftools_filter_on_regions:
             --output-type v \
             --output {output.vcf}
         """
+
+rule vcftools_012:
+    resources:
+        threads = 1,
+        nodes = 2
+    shell:
+        """
+        vcftools \
+            --gzvcf {input.vcf} \
+            --012 \
+            --out {params.opref}
+
+        matrix_012="$geno_dir/matrix.012"
+        pos_012="$geno_dir/matrix.012.pos"
+        indv_012="$geno_dir/matrix.012.indv"
+        """

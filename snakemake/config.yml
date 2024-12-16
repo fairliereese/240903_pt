@@ -655,6 +655,11 @@ mage:
       cis_vcf_ind: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
+      # weird 012 files
+      genotypes: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.012
+      indv: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.indv
+      pos: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.pos
+
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -681,6 +686,11 @@ mage:
       cis_vcf_ind: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.vcf.gz
 
+      # weird 012 files
+      genotypes: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012
+      indv: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.indv
+      pos: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.pos
+
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
     transcripts: ../../data/mage/enh_v47_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -706,6 +716,11 @@ mage:
       cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz
       cis_vcf_ind: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
+
+      # weird 012 files
+      genotypes: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012
+      indv: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.indv
+      pos: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.pos
 
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
