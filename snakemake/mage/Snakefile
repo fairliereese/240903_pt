@@ -830,7 +830,7 @@ def filt_sqtl_transcripts(t_tpm_tsv,
     df = pd.read_csv(t_tpm_tsv, sep='\t')
     df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
     df = df.loc[df.tid.isin(tids)]
-    t2g_df = pd.read_csv(t2g_file, sep='\t', header=None)
+    t2g_df = pd.read_csv(t2g, sep='\t', header=None)
     t2g_df = t2g_df[[0,1]]
     t2g_df.columns = ['tid', 'gid']
     df = df.merge(t2g_df,
@@ -851,7 +851,7 @@ def filt_sqtl_transcripts(t_tpm_tsv,
     df = pd.read_csv(t_tpm_tsv, sep='\t')
     df.rename({'transcript_id':'tid'}, axis=1, inplace=True)
     df = df.loc[df.tid.isin(tids)]
-    t2g_df = pd.read_csv(t2g_file, sep='\t', header=None)
+    t2g_df = pd.read_csv(t2g, sep='\t', header=None)
     t2g_df = t2g_df[[0,1]]
     t2g_df.columns = ['tid', 'gid']
     df = df.merge(t2g_df,
