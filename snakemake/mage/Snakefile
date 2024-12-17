@@ -481,7 +481,7 @@ rule genotype_pcs:
     output:
         pcs = config['mage']['genotype_pc']['pcs'],
         eigenvec = config['mage']['genotype_pc']['eigenvec'],
-    shell:xc
+    shell:
         """
         module load plink
         plink2 \
