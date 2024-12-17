@@ -476,7 +476,8 @@ rule genotype_pcs:
     params:
         opref = config['mage']['genotype_pc']['pcs'].rsplit('.', maxsplit=1)[0]
     output:
-        pcs = config['mage']['genotype_pc']['pcs']
+        pcs = config['mage']['genotype_pc']['pcs'],
+        eigenvec = config['mage']['genotype_pc']['eigenvec'],
     shell:
         """
         module load plink

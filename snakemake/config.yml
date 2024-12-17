@@ -747,6 +747,7 @@ mage:
     filt_maf_vcf_ind:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz.csi
     merge_vcf: ../../data/mage/genotype_pc/1kg_mage_maf_autosomes.vcf.gz
     pcs: ../../data/mage/genotype_pc/pcs.bed
+    eigenvec: ../../data/mage/genotype_pc/pcs.eigenvec
 
 params:
   orfanage:
