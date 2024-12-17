@@ -661,8 +661,8 @@ mage:
 
       # weird 012 files
       genotype: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.012
-      indv: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.indv
-      pos: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.pos
+      indv: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.012.indv
+      pos: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.012.pos
 
       # gene location file
       gene_loc: ../../data/mage/v47_kallisto/sqtl/gene_bodies.tsv
@@ -698,8 +698,8 @@ mage:
 
       # weird 012 files
       genotype: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012
-      indv: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.indv
-      pos: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.pos
+      indv: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012.indv
+      pos: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012.pos
 
       # gene location file
       gene_loc: ../../data/mage/poder_kallisto/sqtl/gene_bodies.tsv
@@ -735,8 +735,8 @@ mage:
 
       # weird 012 files
       genotype: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012
-      indv: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.indv
-      pos: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.pos
+      indv: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012.indv
+      pos: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012.pos
 
       # gene location file
       gene_loc: ../../data/mage/enh_v47_kallisto/sqtl/gene_bodies.tsv
