@@ -96,7 +96,7 @@ rule all:
         config['mage']['poder_kallisto']['sqtl']['gene_loc'],
         config['mage']['enh_v47_kallisto']['sqtl']['gene_loc'],
         config['mage']['enh_v47_kallisto']['sqtl']['metadata'],
-        config['mage']['v47_kallisto']['sqtl']['metadata']
+        config['mage']['v47_kallisto']['sqtl']['metadata'],
         config['mage']['poder_v47_kallisto']['sqtl']['metadata']
 
 
