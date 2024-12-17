@@ -92,6 +92,10 @@ rule all:
         config['mage']['enh_v47_kallisto']['testable']['t_tpm_tsv'],
         config['mage']['poder_kallisto']['testable']['t_tpm_tsv'],
         config['mage']['v47_kallisto']['testable']['t_tpm_tsv'],
+        config['mage']['v47_kallisto']['sqtl']['gene_loc'],
+        config['mage']['poder_kallisto']['sqtl']['gene_loc'],
+        config['mage']['enh_v47_kallisto']['sqtl']['gene_loc']
+
 
 
 
@@ -910,3 +914,37 @@ use rule filt_sqtl_transcripts as poder_filt_sqtl_transcripts with:
         t2g = config['ref']['poder_kallisto_short']['t2g'],
     output:
         t_tpm_testable_tsv = config['mage']['poder_kallisto']['testable']['t_tpm_tsv']
+
+# gene location file. Contains the location of each gene.
+# Columns chr, start, end and geneId are required.
+# This file defines which genes will be tested.
+rule get_gene_bodies:
+    resources:
+        threads = 16,
+        nodes = 3
+    run:
+        gtf_df = pr.read_gtf(input.gtf).df
+        gtf_df = gtf_df.loc[gtf_df.Feature=='gene']
+        m = {'Chromosome': 'chr',
+             'Start': 'start',
+             'End': 'end',
+             'gene_id': 'geneId'}
+        gtf_df = gtf_df[['Chromosome', 'Start', 'End', 'gene_id']]
+        gtf_df = gtf_df.rename(m, axis=1)
+        gtf_df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule get_gene_bodies as v47_get_gene_bodies with:
+    input:
+        gtf = config['ref']['gtf']
+    output:
+        tsv = config['mage']['v47_kallisto']['sqtl']['gene_loc']
+use rule get_gene_bodies as enh_get_gene_bodies with:
+    input:
+        gtf = config['lr']['gtf_gc_poder']
+    output:
+        tsv = config['mage']['enh_v47_kallisto']['sqtl']['gene_loc']
+use rule get_gene_bodies as poder_get_gene_bodies with:
+    input:
+        gtf = config['lr']['gtf_filt_with_genes']
+    output:
+        tsv = config['mage']['poder_kallisto']['sqtl']['gene_loc']

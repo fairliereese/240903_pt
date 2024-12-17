@@ -664,6 +664,9 @@ mage:
       indv: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.indv
       pos: ../../data/mage/v47_kallisto/sqtl/1kg_mage_cis.pos
 
+      # gene location file
+      gene_loc: ../../data/mage/v47_kallisto/sqtl/gene_bodies.tsv
+
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -698,6 +701,9 @@ mage:
       indv: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.indv
       pos: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.pos
 
+      # gene location file
+      gene_loc: ../../data/mage/poder_kallisto/sqtl/gene_bodies.tsv
+
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
     transcripts: ../../data/mage/enh_v47_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -731,6 +737,9 @@ mage:
       genotype: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012
       indv: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.indv
       pos: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.pos
+
+      # gene location file
+      gene_loc: ../../data/mage/enh_v47_kallisto/sqtl/gene_bodies.tsv
 
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
