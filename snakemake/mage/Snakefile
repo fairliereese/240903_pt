@@ -805,6 +805,8 @@ def make_sqtlseeker_meta(dl_metadata,
 
     df.to_csv(ofile, sep='\t', index=False)
 rule make_sqtlseeker_meta:
+    params:
+        n_genotype_pcs = 3
     resources:
         threads = 1,
         nodes = 1
