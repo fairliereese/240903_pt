@@ -839,14 +839,6 @@ use rule make_sqtlseeker_meta as enh_v47_make_sqtlseeker_meta with:
         metadata = config['mage']['enh_v47_kallisto']['sqtl']['metadata']
 
 rule prepare_lineage_genotype:
-    input:
-        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
-        genotypes = config['mage']['poder_kallisto']['sqtl']['genotype'],
-        indv = config['mage']['poder_kallisto']['sqtl']['indv'],
-        pos = config['mage']['poder_kallisto']['sqtl']['pos'],
-        metadata = config['mage']['poder_kallisto']['sqtl']['metadata'],
-    output:
-        tsv_gz = config['mage']['poder_kallisto']['sqtl']['genotype_tsv']
     resources:
         threads = 1,
         nodes = 2
@@ -864,6 +856,33 @@ rule prepare_lineage_genotype:
             --out-file {output.tsv_gz} \
             --verbose
         """
+use rule prepare_lineage_genotype as poder_prepare_lineage_genotype with:
+    input:
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
+        genotypes = config['mage']['poder_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['poder_kallisto']['sqtl']['indv'],
+        pos = config['mage']['poder_kallisto']['sqtl']['pos'],
+        metadata = config['mage']['poder_kallisto']['sqtl']['metadata'],
+    output:
+        tsv_gz = config['mage']['poder_kallisto']['sqtl']['genotype_tsv']
+use rule prepare_lineage_genotype as v47_prepare_lineage_genotype with:
+    input:
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
+        genotypes = config['mage']['v47_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['v47_kallisto']['sqtl']['indv'],
+        pos = config['mage']['v47_kallisto']['sqtl']['pos'],
+        metadata = config['mage']['v47_kallisto']['sqtl']['metadata'],
+    output:
+        tsv_gz = config['mage']['v47_kallisto']['sqtl']['genotype_tsv']
+use rule prepare_lineage_genotype as enh_v47_prepare_lineage_genotype with:
+    input:
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
+        genotypes = config['mage']['enh_v47_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['enh_v47_kallisto']['sqtl']['indv'],
+        pos = config['mage']['enh_v47_kallisto']['sqtl']['pos'],
+        metadata = config['mage']['enh_v47_kallisto']['sqtl']['metadata'],
+    output:
+        tsv_gz = config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv']
 
 def filt_sqtl_transcripts(t_tpm_tsv,
                           t2g,
