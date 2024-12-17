@@ -259,3 +259,20 @@ rule vcftools_012:
             --012 \
             --out {params.opref}
         """
+
+rule filt_biallelic:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        bcftools view \
+            {input.vcf} \
+            --threads {resources.threads} \
+            -m2 \
+            -M2 \
+            --output-type v \
+            --output {output.vcf}
+        """
