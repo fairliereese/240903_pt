@@ -36,7 +36,7 @@ Rscript $script_data \
 	--id-rds=$ids_suffix \
 	--pca-dir $pca_dir \
 	--out-dir $out_dir \
-    	--lineage=$lineage \
+  --lineage=$lineage \
 	--verbose
 
 echo "Processing merged genotype...."

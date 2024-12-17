@@ -94,7 +94,10 @@ rule all:
         config['mage']['v47_kallisto']['testable']['t_tpm_tsv'],
         config['mage']['v47_kallisto']['sqtl']['gene_loc'],
         config['mage']['poder_kallisto']['sqtl']['gene_loc'],
-        config['mage']['enh_v47_kallisto']['sqtl']['gene_loc']
+        config['mage']['enh_v47_kallisto']['sqtl']['gene_loc'],
+        config['mage']['enh_v47_kallisto']['sqtl']['metadata'],
+        config['mage']['v47_kallisto']['sqtl']['metadata']
+        config['mage']['poder_v47_kallisto']['sqtl']['metadata']
 
 
 
@@ -478,7 +481,7 @@ rule genotype_pcs:
     output:
         pcs = config['mage']['genotype_pc']['pcs'],
         eigenvec = config['mage']['genotype_pc']['eigenvec'],
-    shell:
+    shell:xc
         """
         module load plink
         plink2 \
@@ -768,7 +771,79 @@ use rule vcftools_012 as poder_get_012 with:
         indv = config['mage']['poder_kallisto']['sqtl']['indv'],
         pos = config['mage']['poder_kallisto']['sqtl']['pos']
 
+# Metadata file.
+# Contains the covariate information for each sample.
+# - batch -run -genotype pcs -texp pcs
+# In addition, it defines the groups or conditions for which
+# sQTL mapping will be performed. T
+# the first columns should be: indId, sampleId, group,
+# followed by the covariates. This file defines which samples will be tested.
+def make_sqtlseeker_meta(dl_metadata,
+                         metadata,
+                         genotype_pcs,
+                         n_genotype_pcs,
+                         ofile):
+    df = pd.read_csv(dl_metadata, sep='\t')
+    df['sampleId'] = df['indId'] = df.experiment_alias.str.split('_', expand=True)[0]
+    df['batch'] = df.experiment_alias.str.split('_', expand=True)[1]
+
+    df2 = pd.read_csv(metadata, sep=' ', header=None)
+    df2.columns = ['sampleId', 'pop', 'continent', 'sex', 'sth', 'sth2']
+    df = df.merge(df2, how='left',
+                  on='sampleId')
+    df['group'] = 1 # all the same group because we don't want to call sqtls separately for anything
+    df = df[['indId', 'sampleId', 'group', 'batch', 'sex']]
+
+    # add genotype PCs (first 3)
+    pcs_df = pd.read_csv(genotype_pcs, sep='\t')
+    pcs_df.rename({'#IID':'sampleId'}, axis=1, inplace=True)
+    pcs_df = pcs_df[pcs_df.columns[:n_genotype_pcs+1]]
+    pcs_df.columns = [f'{c}_genotype' if c != 'sampleId' else c for c in pcs_df.columns]
+    df = df.merge(pcs_df,
+                  how='left',
+                  on='sampleId')
+
+    df.to_csv(ofile, sep='\t', index=False)
+rule make_sqtlseeker_meta:
+    resources:
+        threads = 1,
+        nodes = 1
+    run:
+        make_sqtlseeker_meta(input.dl_metadata,
+                             input.metadata,
+                             input.genotype_pcs,
+                             params.n_genotype_pcs,
+                             output.metadata)
+use rule make_sqtlseeker_meta as v47_make_sqtlseeker_meta with:
+    input:
+        dl_metadata = config['mage']['dl_metadata'],
+        metadata = config['mage']['metadata'],
+        genotype_pcs = config['mage']['genotype_pc']['eigenvec']
+    output:
+        metadata = config['mage']['v47_kallisto']['sqtl']['metadata']
+use rule make_sqtlseeker_meta as poder_make_sqtlseeker_meta with:
+    input:
+        dl_metadata = config['mage']['dl_metadata'],
+        metadata = config['mage']['metadata'],
+        genotype_pcs = config['mage']['genotype_pc']['eigenvec']
+    output:
+        metadata = config['mage']['poder_kallisto']['sqtl']['metadata']
+use rule make_sqtlseeker_meta as enh_v47_make_sqtlseeker_meta with:
+    input:
+        dl_metadata = config['mage']['dl_metadata'],
+        metadata = config['mage']['metadata'],
+        genotype_pcs = config['mage']['genotype_pc']['eigenvec']
+    output:
+        metadata = config['mage']['enh_v47_kallisto']['sqtl']['metadata']
+
 rule prepare_lineage_genotype:
+    input:
+        vcf = config['mage']['poder_kalliso']['sqtl']['merge_cis_vcf'],
+        genotypes = config['mage']['poder_kallisto']['sqtl']['genotype'],
+        indv = config['mage']['poder_kallisto']['sqtl']['indv'],
+        pos = config['mage']['poder_kallisto']['sqtl']['pos']
+    output:
+
     resources:
         threads = 1,
         nodes = 2
@@ -949,11 +1024,3 @@ use rule get_gene_bodies as poder_get_gene_bodies with:
         gtf = config['lr']['gtf_filt_with_genes']
     output:
         tsv = config['mage']['poder_kallisto']['sqtl']['gene_loc']
-
-# Metadata file.
-# Contains the covariate information for each sample.
-# - batch -run -genotype pcs -texp pcs
-# In addition, it defines the groups or conditions for which
-# sQTL mapping will be performed. T
-# the first columns should be: indId, sampleId, group,
-# followed by the covariates. This file defines which samples will be tested.

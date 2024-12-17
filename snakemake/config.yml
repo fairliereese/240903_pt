@@ -629,6 +629,10 @@ mage:
   # filter based on sample that has highest counts / cell line
   filt_samples: ../../data/mage/filt_samples.tsv
 
+  # metadata
+  dl_metadata: filereport_read_run_PRJNA851328_tsv.txt
+  metadata: sample_metadata_parsed.tsv
+
   v47_kallisto:
     odir: ../../data/mage/v47_kallisto/{sample}/
     transcripts: ../../data/mage/v47_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -667,6 +671,9 @@ mage:
       # gene location file
       gene_loc: ../../data/mage/v47_kallisto/sqtl/gene_bodies.tsv
 
+      # metadata file w/ covariates etc.
+      metadata: ../../data/mage/v47_kallisto/sqtl/metadata.tsv
+
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -703,6 +710,9 @@ mage:
 
       # gene location file
       gene_loc: ../../data/mage/poder_kallisto/sqtl/gene_bodies.tsv
+
+      # metadata file w/ covariates etc.
+      metadata: ../../data/mage/poder_kallisto/sqtl/metadata.tsv
 
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
@@ -741,6 +751,9 @@ mage:
       # gene location file
       gene_loc: ../../data/mage/enh_v47_kallisto/sqtl/gene_bodies.tsv
 
+      # metadata file w/ covariates etc.
+      metadata: ../../data/mage/enh_v47_kallisto/sqtl/metadata.tsv
+
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
     filt_maf_vcf:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz
@@ -748,6 +761,7 @@ mage:
     merge_vcf: ../../data/mage/genotype_pc/1kg_mage_maf_autosomes.vcf.gz
     pcs: ../../data/mage/genotype_pc/pcs.bed
     eigenvec: ../../data/mage/genotype_pc/pcs.eigenvec
+
 
 params:
   orfanage:
