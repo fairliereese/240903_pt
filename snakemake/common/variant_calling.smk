@@ -258,8 +258,4 @@ rule vcftools_012:
             --gzvcf {input.vcf} \
             --012 \
             --out {params.opref}
-
-        matrix_012="$geno_dir/matrix.012"
-        pos_012="$geno_dir/matrix.012.pos"
-        indv_012="$geno_dir/matrix.012.indv"
         """
