@@ -79,12 +79,12 @@ option_list <- list(
     metavar = "file"
   ),
   make_option(
-    "--out-dir",
+    "--out-file",
     action = "store",
     type = "character",
     default = file.path( getwd(), "lineage_in_data/" ),
-    help = "Absolute path to where output files shall be written. Default: $PWD/lineage_in_data",
-    metavar = "directory"
+    help = "Absolute filename to where output files shall be written. Default: $PWD/lineage_in_data",
+    metavar = "file"
   ),
   make_option(
     c( "-h", "--help" ),
@@ -133,7 +133,7 @@ metadata <- opt$`metadata`
 in.012 <- opt$`in-012`
 pos.012 <- opt$`pos-012`
 indv.012  <- opt$`indv-012`
-out.dir <- opt$`out-dir`
+out.file <- opt$`out-file`
 verb <- opt$`verbose`
 
 # Validate required arguments
@@ -155,40 +155,40 @@ get_genotype_info <- function( in_vcf, pos.012 ) {
   i_tbl <- data.table::fread( in_vcf, sep = "\t",
                               header = TRUE, skip = "CHROM",
                               select = c("#CHROM", "POS", "ID") )
-  
+
   colnames( i_tbl ) <- c("chr", "pos", "snpId")
   i_tbl$chr <- unlist( lapply( i_tbl$chr,
                                function(x) strsplit( x, "chr" )[[1]][2] ))
-  
-  
+
+
   i_pos.012 <- read.table( pos.012, sep="\t", col.names = c("chr", "pos"))
   i_pos.012$chr <- unlist( lapply( i_pos.012$chr,
                                function(x) strsplit( x, "chr" )[[1]][2] ))
-  
+
   o_pos.012 <- i_pos.012 %>% dplyr::left_join( i_tbl, by=c( "chr", "pos" ))
-  
+
   write.table( o_pos.012, paste(c( pos.012, "extended.tsv"), collapse="_" ),
                sep = "\t", quote = FALSE,
                row.names = FALSE, col.names = TRUE )
-  
-  return ( tibble::tibble( chr=i_tbl$chr, 
+
+  return ( tibble::tibble( chr=i_tbl$chr,
                            start=i_tbl$pos,
                            end=i_tbl$pos,
                            snpId=i_tbl$snpId ) )
 }
 
 get_genotype_012_format <- function( in.012 , indv.012, snpId ) {
-  
+
   donors <- data.table::fread( in.012, sep = "\t", drop = 1)
-  
+
   indv.012 <- unlist( lapply( indv.012$V1, function(x)
     paste( c( "popCell", x ),  collapse = "_" )))
-  
+
   donors <- as.data.frame( t( donors ))
   colnames( donors ) <- indv.012
-  
+
   donors$snpId <- snpId
-  
+
   return( donors )
 }
 
@@ -197,14 +197,8 @@ get_genotype_012_format <- function( in.012 , indv.012, snpId ) {
 ###      MAIN      ###
 ######################
 
-if (verb) {
-  cat( "Setting output directory...\n" )
-}
 
-if ( !dir.exists( out.dir ) ) { dir.create( out.dir ) }
-
-o.genotype.vcf.gz <- paste( c( out.dir,"lineage_genotype-EUB.AFB.vcf.gz" ),
-                            collapse = "" )
+o.genotype.vcf.gz <- out.file
 
 if (verb) {
   cat( "Creating genotype file...\n" )
@@ -218,7 +212,7 @@ if (verb) {
 }
 
 indv.012 <- read.table( indv.012, sep="\t" )
-indId <- data.table::fread( metadata, select = c( "indId" )) 
+indId <- data.table::fread( metadata, select = c( "indId" ))
 snpId <- data.table::fread( paste(c( pos.012, "extended.tsv" ), collapse = "_" ),
                             sep = "\t", header = TRUE, select = c( "snpId" ))
 

@@ -97,10 +97,10 @@ rule all:
         config['mage']['enh_v47_kallisto']['sqtl']['gene_loc'],
         config['mage']['enh_v47_kallisto']['sqtl']['metadata'],
         config['mage']['v47_kallisto']['sqtl']['metadata'],
-        config['mage']['poder_kallisto']['sqtl']['metadata']
-
-
-
+        config['mage']['poder_kallisto']['sqtl']['metadata'],
+        config['mage']['poder_kallisto']['sqtl']['genotype_tsv'],
+        config['mage']['v47_kallisto']['sqtl']['genotype_tsv'],
+        config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv'],
 
         # expand(config['mage']['genotype_pc']['pcs'],
         #        chrom=chroms)
@@ -843,22 +843,25 @@ rule prepare_lineage_genotype:
         vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
         genotypes = config['mage']['poder_kallisto']['sqtl']['genotype'],
         indv = config['mage']['poder_kallisto']['sqtl']['indv'],
-        pos = config['mage']['poder_kallisto']['sqtl']['pos']
+        pos = config['mage']['poder_kallisto']['sqtl']['pos'],
+        metadata = config['mage']['poder_kallisto']['sqtl']['metadata'],
     output:
-
+        tsv_gz = config['mage']['poder_kallisto']['sqtl']['genotype_tsv']
     resources:
         threads = 1,
         nodes = 2
+    params:
+        scripts_dir = p
     shell:
         """
         module load R/4.3.2
-        Rscript $script_genotype \
-            --genotype $geno_vcf \
-            --metadata "${out_dir}lineage_metadata-EUB.AFB.tsv" \
-            --in-012 $matrix_012 \
-            --indv-012 $indv_012 \
-            --pos-012 $pos_012 \
-            --out-dir $out_dir \
+        Rscript {params.scripts_dir}/prepare_lineage_genotype.R \
+            --genotype {input.vcf} \
+            --metadata {input.metadata} \
+            --in-012 {input.genotypes} \
+            --indv-012 {input_indv} \
+            --pos-012 {input.pos} \
+            --out-file {output.tsv_gz} \
             --verbose
         """
 

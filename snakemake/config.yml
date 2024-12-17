@@ -674,6 +674,9 @@ mage:
       # metadata file w/ covariates etc.
       metadata: ../../data/mage/v47_kallisto/sqtl/metadata.tsv
 
+      # genotype tsv
+      genotype_tsv: ../../data/mage/v47_kallisto/sqtl/genotype.tsv.gz
+
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -714,6 +717,9 @@ mage:
       # metadata file w/ covariates etc.
       metadata: ../../data/mage/poder_kallisto/sqtl/metadata.tsv
 
+      # genotype tsv
+      genotype_tsv: ../../data/mage/poder_kallisto/sqtl/genotype.tsv.gz
+
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
     transcripts: ../../data/mage/enh_v47_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -753,6 +759,9 @@ mage:
 
       # metadata file w/ covariates etc.
       metadata: ../../data/mage/enh_v47_kallisto/sqtl/metadata.tsv
+
+      # genotype tsv
+      genotype_tsv: ../../data/mage/enh_v47_kallisto/sqtl/genotype.tsv.gz
 
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
