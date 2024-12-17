@@ -838,7 +838,7 @@ use rule make_sqtlseeker_meta as enh_v47_make_sqtlseeker_meta with:
 
 rule prepare_lineage_genotype:
     input:
-        vcf = config['mage']['poder_kalliso']['sqtl']['merge_cis_vcf'],
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
         genotypes = config['mage']['poder_kallisto']['sqtl']['genotype'],
         indv = config['mage']['poder_kallisto']['sqtl']['indv'],
         pos = config['mage']['poder_kallisto']['sqtl']['pos']
