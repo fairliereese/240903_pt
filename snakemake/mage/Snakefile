@@ -949,4 +949,10 @@ use rule get_gene_bodies as poder_get_gene_bodies with:
     output:
         tsv = config['mage']['poder_kallisto']['sqtl']['gene_loc']
 
-# Metadata file. Contains the covariate information for each sample. In addition, it defines the groups or conditions for which sQTL mapping will be performed. The first columns should be: indId, sampleId, group, followed by the covariates. This file defines which samples will be tested.
+# Metadata file.
+# Contains the covariate information for each sample.
+# - batch -run -genotype pcs -texp pcs
+# In addition, it defines the groups or conditions for which
+# sQTL mapping will be performed. T
+# the first columns should be: indId, sampleId, group,
+# followed by the covariates. This file defines which samples will be tested.

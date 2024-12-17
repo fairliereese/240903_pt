@@ -59,3 +59,4 @@ Rscript $script_genotype \
     --verbose
 
 echo "Done!"
+meta=/gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/sqtlseeker2-nf/data/lineages/lineage_metadata-EUB.AFB.tsv
