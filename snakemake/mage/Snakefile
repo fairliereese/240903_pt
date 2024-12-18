@@ -764,17 +764,17 @@ use rule filt_biallelic as enh_v47_biallelic with:
     input:
         vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_vcf'],
     output:
-        vcf = temporary(config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'])
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf']
 use rule filt_biallelic as v47_biallelic with:
     input:
         vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_vcf'],
     output:
-        vcf = temporary(config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'])
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf']
 use rule filt_biallelic as poder_biallelic with:
     input:
         vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_vcf'],
     output:
-        vcf = temporary(config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_bial_vcf'])
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_bial_vcf']
 
 use rule vcftools_012 as v47_get_012 with:
     input:
