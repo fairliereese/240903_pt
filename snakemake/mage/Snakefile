@@ -746,19 +746,19 @@ use rule vcf_norm as enh_v47_norm with:
         vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
         fa = config['ref']['fa']
     output:
-        vcf = temporary(config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_vcf'])
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_vcf']
 use rule vcf_norm as v47_norm with:
     input:
         vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
         fa = config['ref']['fa']
     output:
-        vcf = temporary(config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_vcf'])
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_vcf']
 use rule vcf_norm as poder_norm with:
     input:
         vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
         fa = config['ref']['fa']
     output:
-        vcf = temporary(config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_vcf'])
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_vcf']
 # only biallelic
 use rule filt_biallelic as enh_v47_biallelic with:
     input:
