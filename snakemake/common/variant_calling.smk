@@ -273,6 +273,7 @@ rule filt_biallelic:
             --threads {resources.threads} \
             -m2 \
             -M2 \
+            --verbose \
             --output-type v \
             --output {output.vcf}
         """
