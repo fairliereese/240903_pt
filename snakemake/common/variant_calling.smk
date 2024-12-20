@@ -169,6 +169,7 @@ rule vcf_norm:
               -m -any \
               --fasta-ref {input.fa} \
               --old-rec-tag INFO \
+              --output-type v \
               {input.vcf} > {output.vcf}
         else
             touch {output.vcf}
@@ -275,4 +276,20 @@ rule filt_biallelic:
             -M2 \
             --output-type v \
             --output {output.vcf}
+        """
+
+rule rm_indels:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        bcftools view \
+        {input.vcf} \
+         --types snps \
+        --threads {resources.threads} \
+        --output-type v \
+        --output {output.vcf}
         """
