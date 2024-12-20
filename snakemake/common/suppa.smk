@@ -12,6 +12,9 @@ rule fmt_kallisto_to_suppa_ab:
         df.to_csv(output.ab, sep='\t')
 
 rule suppa_generate_events:
+    resources:
+        nodes = 1,
+        threads = 1
     conda:
         'base'
     shell:
