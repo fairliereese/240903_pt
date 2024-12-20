@@ -102,6 +102,8 @@ rule all:
         config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_bial_vcf'],
         config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'],
         config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'],
+        expand(config['mage']['v47_kallisto']['suppa']['psi'],
+               event=['A3', 'A5', 'AF', 'AL', 'MX', 'RI', 'SE'])
 
         # expand(config['mage']['genotype_pc']['pcs'],
         #        chrom=chroms)
@@ -1104,16 +1106,31 @@ use rule get_gene_bodies as poder_get_gene_bodies with:
 ##########################################
 ########### suppa splice event quantification
 ##########################################
+use rule fmt_kallisto_to_suppa_ab as v47_fmt_ab with:
+    input:
+        ab = config['mage']['v47_kallisto']['samp_filt']['merge_matrix_tpm_tsv']
+    output:
+        ab = config['mage']['v47_kallisto']['suppa']['fmt_ab']
+
 use rule suppa_generate_events as v47_suppa_ge with:
     input:
         gtf = rules.v47_sr_kallisto_ind.input.gtf
     params:
-        opref = config['lr']['suppa']['events']['A3'].rsplit('_', maxsplit=2)[0]
+        opref = config['mage']['v47_kallisto']['suppa']['events']['A3'].rsplit('_', maxsplit=2)[0]
     output:
-        config['lr']['suppa']['events']['A3'],
-        config['lr']['suppa']['events']['A5'],
-        config['lr']['suppa']['events']['AF'],
-        config['lr']['suppa']['events']['AL'],
-        config['lr']['suppa']['events']['MX'],
-        config['lr']['suppa']['events']['RI'],
-        config['lr']['suppa']['events']['SE'],
+        config['mage']['v47_kallisto']['suppa']['events']['A3'],
+        config['mage']['v47_kallisto']['suppa']['events']['A5'],
+        config['mage']['v47_kallisto']['suppa']['events']['AF'],
+        config['mage']['v47_kallisto']['suppa']['events']['AL'],
+        config['mage']['v47_kallisto']['suppa']['events']['MX'],
+        config['mage']['v47_kallisto']['suppa']['events']['RI'],
+        config['mage']['v47_kallisto']['suppa']['events']['SE'],
+
+use rule suppa_psi as v47_suppa_psi with:
+    input:
+        ioe = lambda wc: config['mage']['v47_kallisto']['suppa']['events'][wc.event],
+        filt_ab = config['mage']['v47_kallisto']['suppa']['fmt_ab']
+    params:
+        opref = config['mage']['v47_kallisto']['suppa']['psi'].rsplit('.psi', maxsplit=1)[0]
+    output:
+        config['mage']['v47_kallisto']['suppa']['psi']

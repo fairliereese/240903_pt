@@ -1,5 +1,16 @@
 suppa_events = ['A3', 'A5', 'AF', 'AL', 'MX', 'RI', 'SE']
 
+# the input format is so dumb
+rule fmt_kallisto_to_suppa_ab:
+    resources:
+        threads = 1,
+        nodes = 1
+    run:
+        df = pd.read_csv(input.ab, sep='\t')
+        df = df.set_index('transcript_id')
+        df.index.name = ''
+        df.to_csv(output.ab, sep='\t')
+
 rule suppa_generate_events:
     conda:
         'base'
@@ -27,12 +38,3 @@ rule suppa_psi:
             --expression-file {input.filt_ab} \
             --o {params.opref}
         """
-
-use rule suppa_psi as suppa_get_psi with:
-    input:
-        ioe = lambda wc: config['lr']['suppa']['events'][wc.event],
-        filt_ab = config['lr']['suppa']['fmt_ab']
-    params:
-        opref = config['lr']['suppa']['psi'].rsplit('.psi', maxsplit=1)[0]
-    output:
-        config['lr']['suppa']['psi']

@@ -651,6 +651,18 @@ mage:
       gene_tsv: ../../data/mage/v47_kallisto/filt/matrix.abundance.genelevel.tsv
       gene_tpm_tsv: ../../data/mage/v47_kallisto/filt/matrix.abundance.genelevel.tpm.tsv
 
+    suppa:
+      events:
+        A3: ../../data/mage/v47_kallisto/suppa/poder.events_A3_strict.ioe
+        A5: ../../data/mage/v47_kallisto/suppa/poder.events_A5_strict.ioe
+        AF: ../../data/mage/v47_kallisto/suppa/poder.events_AF_strict.ioe
+        AL: ../../data/mage/v47_kallisto/suppa/poder.events_AL_strict.ioe
+        MX: ../../data/mage/v47_kallisto/suppa/poder.events_MX_strict.ioe
+        RI: ../../data/mage/v47_kallisto/suppa/poder.events_RI_strict.ioe
+        SE: ../../data/mage/v47_kallisto/suppa/poder.events_SE_strict.ioe
+      fmt_ab: ../../data/mage/v47_kallisto/suppa/matrix.abundance.tpm.tsv
+      psi: ../../data/mage/v47_kallisto/suppa/{event}.psi
+
     testable:
       t_tpm_tsv: ../../data/mage/v47_kallisto/testable/matrix.abundance_testable.tpm.tsv
 
