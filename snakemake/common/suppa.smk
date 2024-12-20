@@ -4,7 +4,7 @@ suppa_events = ['A3', 'A5', 'AF', 'AL', 'MX', 'RI', 'SE']
 rule fmt_kallisto_to_suppa_ab:
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     run:
         df = pd.read_csv(input.ab, sep='\t')
         df = df.set_index('transcript_id')
