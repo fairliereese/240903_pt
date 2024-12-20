@@ -9,7 +9,8 @@ rule fmt_kallisto_to_suppa_ab:
         df = pd.read_csv(input.ab, sep='\t')
         df = df.set_index('transcript_id')
         df.index.name = ''
-        df.to_csv(output.ab, sep='\t')
+        header = '\t'+'\t'.join(df.columns.tolist())+'\n'
+        df.to_csv(output.ab, sep='\t', header=None, mode='a')
 
 rule suppa_generate_events:
     resources:
