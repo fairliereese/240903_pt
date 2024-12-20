@@ -771,17 +771,17 @@ use rule vcf_norm as poder_norm with:
 # get only snps
 use rule rm_indels as enh_v47_rm_indels with:
     input:
-        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_vcf'],
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'],
     output:
         vcf = temporary(config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_snp_vcf'])
 use rule rm_indels as v47_rm_indels with:
     input:
-        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_vcf'],
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'],
     output:
         vcf = temporary(config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_snp_vcf'])
 use rule rm_indels as poder_rm_indels with:
     input:
-        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_vcf'],
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'],
     output:
         vcf = temporary(config['mage']['poder_kallisto']['sqtl']['merge_cis_norm_snp_vcf'])
 # only biallelic
