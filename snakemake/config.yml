@@ -756,8 +756,8 @@ mage:
       cis_vcf_ind: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.chr{chrom}.vcf.gz.csi
       merge_cis_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.vcf.gz
       merge_cis_norm_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis_norm.vcf.gz
-      merge_cis_norm_snp_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis_norm_snp.vcf.gz
-      merge_cis_norm_bial_vcf: ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis_norm_snp_biallelic.vcf.gz
+      merge_cis_norm_snp_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis_norm_snp.vcf.gz
+      merge_cis_norm_bial_vcf: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis_norm_snp_biallelic.vcf.gz
 
       # weird 012 files
       genotype: ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012
