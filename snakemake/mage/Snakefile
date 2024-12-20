@@ -717,7 +717,7 @@ use rule bcftools_concat as v47_concat_sqtl_vcfs with:
         cli_vcfs = fmt_for_cli(expand(config['mage']['v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
     output:
-        vcf = temporary(config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf'])
+        vcf = config['mage']['v47_kallisto']['sqtl']['merge_cis_vcf']
 use rule bcftools_concat as enh_v47_concat_sqtl_vcfs with:
     input:
         files = expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
@@ -728,7 +728,7 @@ use rule bcftools_concat as enh_v47_concat_sqtl_vcfs with:
         cli_vcfs = fmt_for_cli(expand(config['mage']['enh_v47_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
     output:
-        vcf = temporary(config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf'])
+        vcf = config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_vcf']
 use rule bcftools_concat as poder_concat_sqtl_vcfs with:
     input:
         files = expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
@@ -739,7 +739,7 @@ use rule bcftools_concat as poder_concat_sqtl_vcfs with:
         cli_vcfs = fmt_for_cli(expand(config['mage']['poder_kallisto']['sqtl']['cis_vcf'],
                                chrom=chroms), sep=' ')
     output:
-        vcf = temporary(config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf'])
+        vcf = config['mage']['poder_kallisto']['sqtl']['merge_cis_vcf']
 # normalize these guys
 use rule vcf_norm as enh_v47_norm with:
     input:
