@@ -10,6 +10,8 @@ rule fmt_kallisto_to_suppa_ab:
         df = df.set_index('transcript_id')
         df.index.name = ''
         header = '\t'+'\t'.join(df.columns.tolist())+'\n'
+        with open(output.ab, 'w') as ofile:
+            ofile.write(header)
         df.to_csv(output.ab, sep='\t', header=None, mode='a')
 
 rule suppa_generate_events:
