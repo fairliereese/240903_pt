@@ -177,3 +177,19 @@ p1_r2.fq.gz
       matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto_quant/{sample}/matrix.abundance.tpm.tsv
       merge_matrix_tsv: ../../data/mage/enh_v47_kallisto_quant/matrix.abundance.tsv
       merge_matrix_tpm_tsv: ../../data/mage/enh_v47_kallisto_quant/matrix.abundance.tpm.tsv
+
+module load bedtools
+bedtools intersect             -s             -wao             -a ../../data/personal_genome/gtf/HG002.fq_HG002.fa_transcript_models.gtf  -b ../../data/personal_genome/gtf/HG002.fq_HG002.fa_transcript_models.gtf
+```
+
+Trying to make the weird input files:
+```bash
+Rscript /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//prepare_lineage_genotype.R \
+  --genotype ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis_norm_snp_biallelic.vcf.gz  \
+  --metadata ../../data/mage/enh_v47_kallisto/sqtl/metadata.tsv \
+  --in-012 ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012 \
+  --indv-012 ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012.indv \
+  --pos-012 ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012.pos \
+  --out-file ../../data/mage/enh_v47_kallisto/sqtl/genotype.tsv.gz \
+  --verbose
+```

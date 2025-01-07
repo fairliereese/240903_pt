@@ -154,9 +154,12 @@ if ( is.null( genotype.vcf.gz ) | is.null( metadata) | is.null( in.012 ) | is.nu
 get_genotype_info <- function( in_vcf, pos.012 ) {
   i_tbl <- data.table::fread( in_vcf, sep = "\t",
                               header = TRUE, skip = "CHROM",
-                              select = c("#CHROM", "POS", "ID") )
+                              select = c("#CHROM", "POS", "ID", "REF", "ALT") )
 
-  colnames( i_tbl ) <- c("chr", "pos", "snpId")
+  colnames( i_tbl ) <- c("chr", "pos", "snpId", 'ref', 'alt')
+  i_tbl <- i_tbl %>%
+    mutate(new_snpid = paste(chr, pos, ref, alt, sep = ":"))
+
   i_tbl$chr <- unlist( lapply( i_tbl$chr,
                                function(x) strsplit( x, "chr" )[[1]][2] ))
 
@@ -166,6 +169,8 @@ get_genotype_info <- function( in_vcf, pos.012 ) {
                                function(x) strsplit( x, "chr" )[[1]][2] ))
 
   o_pos.012 <- i_pos.012 %>% dplyr::left_join( i_tbl, by=c( "chr", "pos" ))
+
+# TODO -- filter on non-duplicated SNP ids
 
   write.table( o_pos.012, paste(c( pos.012, "extended.tsv"), collapse="_" ),
                sep = "\t", quote = FALSE,
