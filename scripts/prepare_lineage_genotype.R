@@ -172,7 +172,7 @@ get_genotype_info <- function( in_vcf, pos.012 ) {
   write.table( i_pos.012, paste(c( 'i_pos', "temp.tsv"), collapse="_" ),
                sep = "\t", quote = FALSE,
                row.names = FALSE, col.names = TRUE )
-  write.table( i_tbl.012, paste(c( 'i_tbl', "temp.tsv"), collapse="_" ),
+  write.table( i_tbl, paste(c( 'i_tbl', "temp.tsv"), collapse="_" ),
               sep = "\t", quote = FALSE,
               row.names = FALSE, col.names = TRUE )
 
