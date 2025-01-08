@@ -157,11 +157,14 @@ get_genotype_info <- function( in_vcf, pos.012 ) {
                               select = c("#CHROM", "POS", "ID", "REF", "ALT") )
 
   colnames( i_tbl ) <- c("chr", "pos", "snpId", 'ref', 'alt')
-  i_tbl <- i_tbl %>%
-    mutate(new_snpid = paste(chr, pos, ref, alt, sep = ":"))
+
 
   i_tbl$chr <- unlist( lapply( i_tbl$chr,
                                function(x) strsplit( x, "chr" )[[1]][2] ))
+  i_tbl <- i_tbl %>%  mutate(snpId = paste(chr, pos, ref, alt, sep = ":"))
+
+  # get rid of duplicated positions which who knows why they're even here
+  i_tbl <- i_tbl%>% dplyr::distinct(chr, pos, snpId)
 
 
   i_pos.012 <- read.table( pos.012, sep="\t", col.names = c("chr", "pos"))
@@ -177,8 +180,6 @@ get_genotype_info <- function( in_vcf, pos.012 ) {
               row.names = FALSE, col.names = TRUE )
 
   o_pos.012 <- i_pos.012 %>% dplyr::left_join( i_tbl, by=c( "chr", "pos" ))
-
-# TODO -- filter on non-duplicated SNP ids
 
   write.table( o_pos.012, paste(c( pos.012, "extended.tsv"), collapse="_" ),
                sep = "\t", quote = FALSE,
