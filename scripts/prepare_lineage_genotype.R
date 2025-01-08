@@ -165,6 +165,7 @@ get_genotype_info <- function( in_vcf, pos.012 ) {
 
   # get rid of duplicated positions which who knows why they're even here
   i_tbl <- i_tbl%>% dplyr::distinct(chr, pos, snpId)
+  i_pos <- i_pos%>% dplyr::distinct(chr, pos)
 
 
   i_pos.012 <- read.table( pos.012, sep="\t", col.names = c("chr", "pos"))
