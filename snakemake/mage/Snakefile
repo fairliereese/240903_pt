@@ -103,8 +103,8 @@ rule all:
         config['mage']['v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'],
         config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'],
         config['mage']['poder_kallisto']['sqtl']['genotype_tsv'],
-        config['mage']['v47_kallisto']['sqtl']['genotype_tsv'],
-        config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv']
+        # config['mage']['v47_kallisto']['sqtl']['genotype_tsv'],
+        # config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv']
 
 
 
