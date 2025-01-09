@@ -234,6 +234,11 @@ genotype.donors <- get_genotype_012_format( in.012 = in.012,
                                             indv.012 = indv.012,
                                             snpId = unlist( snpId ))
 
+# TODO - remove
+write.table( genotype.donors, paste(c( 'genotype_donors', "temp.tsv"), collapse="_" ),
+         sep = "\t", quote = FALSE,
+         row.names = FALSE, col.names = TRUE )
+
 genotype.donors <- genotype.donors %>% dplyr::select( "snpId", indId$indId )
 
 if ( verb ) {

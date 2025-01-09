@@ -185,11 +185,11 @@ bedtools intersect             -s             -wao             -a ../../data/per
 Trying to make the weird input files:
 ```bash
 Rscript /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts//prepare_lineage_genotype.R \
-  --genotype ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis_norm_snp_biallelic.vcf.gz  \
-  --metadata ../../data/mage/enh_v47_kallisto/sqtl/metadata.tsv \
-  --in-012 ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012 \
-  --indv-012 ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012.indv \
-  --pos-012 ../../data/mage/enh_v47_kallisto/sqtl/1kg_mage_cis.012.pos \
-  --out-file ../../data/mage/enh_v47_kallisto/sqtl/genotype.tsv.gz \
+  --genotype ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis_norm_snp_biallelic.vcf.gz  \
+  --metadata ../../data/mage/poder_kallisto/sqtl/metadata.tsv \
+  --in-012 ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012 \
+  --indv-012 ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012.indv \
+  --pos-012 ../../data/mage/poder_kallisto/sqtl/1kg_mage_cis.012.pos \
+  --out-file ../../data/mage/poder_kallisto/sqtl/genotype.tsv.gz \
   --verbose
 ```
