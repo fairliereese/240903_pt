@@ -841,9 +841,15 @@ use rule vcftools_012 as poder_get_012 with:
 def make_sqtlseeker_meta(dl_metadata,
                          metadata,
                          genotype_pcs,
+                         filt_samples,
                          n_genotype_pcs,
                          ofile):
     df = pd.read_csv(dl_metadata, sep='\t')
+
+    # filter for relevant samples
+    filt_samples = pd.read_csv(filt_samples, sep='\t')
+    df = df.loc[df['experiment_alias'].isin(filt_samples['sample'].tolist())]
+
     df['sampleId'] = df['indId'] = df.experiment_alias.str.split('_', expand=True)[0]
     df['batch'] = df.experiment_alias.str.split('_', expand=True)[1]
 
@@ -864,6 +870,7 @@ def make_sqtlseeker_meta(dl_metadata,
                   on='sampleId')
 
     df.to_csv(ofile, sep='\t', index=False)
+
 rule make_sqtlseeker_meta:
     params:
         n_genotype_pcs = 3
@@ -874,27 +881,31 @@ rule make_sqtlseeker_meta:
         make_sqtlseeker_meta(input.dl_metadata,
                              input.metadata,
                              input.genotype_pcs,
+                             input.filt_samples,
                              params.n_genotype_pcs,
                              output.metadata)
 use rule make_sqtlseeker_meta as v47_make_sqtlseeker_meta with:
     input:
         dl_metadata = config['mage']['dl_metadata'],
         metadata = config['mage']['metadata'],
-        genotype_pcs = config['mage']['genotype_pc']['eigenvec']
+        genotype_pcs = config['mage']['genotype_pc']['eigenvec'],
+        filt_samples = config['mage']['filt_samples'],
     output:
         metadata = config['mage']['v47_kallisto']['sqtl']['metadata']
 use rule make_sqtlseeker_meta as poder_make_sqtlseeker_meta with:
     input:
         dl_metadata = config['mage']['dl_metadata'],
         metadata = config['mage']['metadata'],
-        genotype_pcs = config['mage']['genotype_pc']['eigenvec']
+        genotype_pcs = config['mage']['genotype_pc']['eigenvec'],
+        filt_samples = config['mage']['filt_samples'],
     output:
         metadata = config['mage']['poder_kallisto']['sqtl']['metadata']
 use rule make_sqtlseeker_meta as enh_v47_make_sqtlseeker_meta with:
     input:
         dl_metadata = config['mage']['dl_metadata'],
         metadata = config['mage']['metadata'],
-        genotype_pcs = config['mage']['genotype_pc']['eigenvec']
+        genotype_pcs = config['mage']['genotype_pc']['eigenvec'],
+        filt_samples = config['mage']['filt_samples'],
     output:
         metadata = config['mage']['enh_v47_kallisto']['sqtl']['metadata']
 
