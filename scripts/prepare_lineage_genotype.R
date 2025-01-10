@@ -195,8 +195,9 @@ get_genotype_012_format <- function( in.012 , indv.012, snpId ) {
 
   donors <- data.table::fread( in.012, sep = "\t", drop = 1)
 
-  indv.012 <- unlist( lapply( indv.012$V1, function(x)
-    paste( c( "popCell", x ),  collapse = "_" )))
+  # indv.012 <- unlist( lapply( indv.012$V1, function(x)
+  #   paste( c( "popCell", x ),  collapse = "_" )))
+  indv.012 <- unlist(lapply(indv.012$V1, function(x) x))
 
   donors <- as.data.frame( t( donors ))
   colnames( donors ) <- indv.012
