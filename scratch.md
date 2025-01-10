@@ -193,3 +193,56 @@ Rscript /gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/scripts
   --out-file ../../data/mage/poder_kallisto/sqtl/genotype.tsv.gz \
   --verbose
 ```
+
+```bash
+d=/gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/snakemake/mage/work/8c/e6d8a42a96a4f5a7161f82dbc7a17b
+d2=/gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/sqtlseeker2-nf/bin/
+Rscript $d2/prepare_trexp.R \
+  --transcript_expr $d/matrix.abundance.tpm.tsv \
+  --metadata $d/metadata.tsv \
+  --gene_location $d/gene_bodies.tsv  \
+  --group "1" \
+  --covariates \
+  --min_gene_expr 1  \
+  --min_proportion 0.4 \
+  --min_transcript_expr 0.1 \
+  --min_dispersion 0.1  \
+  --output_tre tre.df.RData \
+  --output_gene genes.ss.bed
+```
+```R
+library(dplyr)
+library("data.table")
+genes.bed.f="/gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/snakemake/mage/work/8c/e6d8a42a96a4f5a7161f82dbc7a17b/gene_bodies.tsv"
+metadata.f='/gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/snakemake/mage/work/8c/e6d8a42a96a4f5a7161f82dbc7a17b/metadata.tsv'
+trans.expr.f="/gpfs/projects/bsc83/Projects/pantranscriptome/fairlie/240903_pt/snakemake/mage/work/8c/e6d8a42a96a4f5a7161f82dbc7a17b/matrix.abundance.tpm.tsv"
+sel.group = "1"
+
+# this stuff is just right from prepare_trexp.R
+genes.bed <- read.table(genes.bed.f, header = TRUE, as.is = TRUE, sep = "\t")
+
+## 3. Getting the IDs of the samples in the group of interest
+
+metadata <- read.table(metadata.f, header = TRUE,
+                       as.is = TRUE, sep = "\t")
+
+subset.df <- subset(metadata, group == sel.group)                                   # Select samples of interest
+subset.samples <- subset.df$sampleId
+
+## 4. Prepare transcript expression
+
+if( grepl("\\.gz$", trans.expr.f) ){
+    trans.expr.f <- paste0("zcat < '", trans.expr.f, "'")
+}
+
+te.df <- as.data.frame(fread(input=trans.expr.f, header = TRUE, sep = "\t"))
+colnames(te.df)[1:2] <- c("trId", "geneId")                                         # Proper 1,2 colnames
+subset.samples <- subset.samples[subset.samples%in%colnames(te.df)]                 # Get samples that have quantifications
+
+te.df <- te.df[, c("trId", "geneId", subset.samples)]                               # Select subgroup of samples = the ones from the group of interest
+
+# try before starting to subset everything
+
+# hellow i'm the problem
+te.df <- subset(te.df, geneId %in% genes.bed$geneId)         
+```

@@ -623,6 +623,11 @@ rule fmt_sqtlseeker_t_tpm:
         df = df.merge(t2g_df, how='left',
                       on='trId')
         assert len(df.loc[df.geneId.isnull()].index)==0
+        nc1 = len(df.columns)
+        id_cols = ['trId', 'geneId']
+        col_order = id_cols+[c for c in df.columns if c not in id_cols]
+        df = df[col_order]
+        assert nc1 == len(df.columns)
         df.to_csv(output.t_tpm_tsv, sep='\t', index=None)
 
 use rule fmt_sqtlseeker_t_tpm as v47_fmt_sqtlseeker_t_tpm with:
@@ -1150,7 +1155,7 @@ rule run_sqtlseeker:
           --min_gene_exp 1 \
           --min_transcript_exp 0.1 \
           --min_md 0.05 \
-          --min_proportion 0.4 \
+          --min_proportion 0.8 \
           --with-singularity {params.image}
         """
 
