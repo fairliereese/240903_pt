@@ -695,7 +695,7 @@ mage:
 
     sqtlseeker:
       odir: ../../data/mage/v47_kallisto/sqtlseeker/
-      results: ../../data/mage/v47_kallisto/sqtlseeker/result/group1/all-tests.nominal.tsv
+      results: ../../data/mage/v47_kallisto/sqtlseeker/02_sQTL_nominal/1/all-tests.nominal.tsv
 
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
@@ -745,7 +745,7 @@ mage:
 
     sqtlseeker:
       odir: ../../data/mage/poder_kallisto/sqtlseeker/
-      results: ../../data/mage/poder_kallisto/sqtlseeker/result/group1/all-tests.nominal.tsv
+      results: ../../data/mage/poder_kallisto/sqtlseeker/02_sQTL_nominal/1/all-tests.nominal.tsv
 
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
@@ -795,7 +795,7 @@ mage:
 
     sqtlseeker:
       odir: ../../data/mage/enh_v47_kallisto/sqtlseeker/
-      results: ../../data/mage/enh_v47_kallisto/sqtlseeker/result/group1/all-tests.nominal.tsv
+      results: ../../data/mage/enh_v47_kallisto/sqtlseeker/02_sQTL_nominal/1/all-tests.nominal.tsv
 
 
   genotype_pc:
