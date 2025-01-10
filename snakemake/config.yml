@@ -693,6 +693,10 @@ mage:
       # genotype tsv
       genotype_tsv: ../../data/mage/v47_kallisto/sqtl/genotype.tsv.gz
 
+    sqtlseeker:
+      odir: ../../data/mage/v47_kallisto/sqtlseeker/
+      results: ../../data/mage/v47_kallisto/sqtlseeker/result/group1/all-tests.nominal.tsv
+
   poder_kallisto:
     odir: ../../data/mage/poder_kallisto/{sample}/
     transcripts: ../../data/mage/poder_kallisto/{sample}/quant_unfiltered/transcripts.txt
@@ -738,6 +742,10 @@ mage:
 
       # genotype tsv
       genotype_tsv: ../../data/mage/poder_kallisto/sqtl/genotype.tsv.gz
+
+    sqtlseeker:
+      odir: ../../data/mage/poder_kallisto/sqtlseeker/
+      results: ../../data/mage/poder_kallisto/sqtlseeker/result/group1/all-tests.nominal.tsv
 
   enh_v47_kallisto:
     odir: ../../data/mage/enh_v47_kallisto/{sample}/
@@ -785,6 +793,11 @@ mage:
       # genotype tsv
       genotype_tsv: ../../data/mage/enh_v47_kallisto/sqtl/genotype.tsv.gz
 
+    sqtlseeker:
+      odir: ../../data/mage/enh_v47_kallisto/sqtlseeker/
+      results: ../../data/mage/enh_v47_kallisto/sqtlseeker/result/group1/all-tests.nominal.tsv
+
+
   genotype_pc:
     filt_sample_vcf:  ../../data/mage/genotype_pc/1kg_mage_sample.chr{chrom}.vcf.gz
     filt_maf_vcf:  ../../data/mage/genotype_pc/1kg_mage_maf.chr{chrom}.vcf.gz
@@ -815,6 +828,8 @@ software:
   buildLoci: /gpfs/home/bsc/bsc083001/mele_lab/bin/buildLoci/buildLoci.pl
   sqanti_path: /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1/
   hmmer_path: /gpfs/projects/bsc83/utils/conda_envs/hmmer/bin/
+  sqtlseeker_sing_img: /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/runs/sqtlseeker2-nf.sif
+  sqtlseeker_nf: /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/sqtlseeker2-nf/sqtlseeker2.nf
 
 1000g:
   # vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel_biallelic.vcf.gz # i think this is actually the subset vcf of just our samples

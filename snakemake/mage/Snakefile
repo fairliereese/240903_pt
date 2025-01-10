@@ -104,7 +104,8 @@ rule all:
         config['mage']['enh_v47_kallisto']['sqtl']['merge_cis_norm_bial_vcf'],
         config['mage']['poder_kallisto']['sqtl']['genotype_tsv'],
         # config['mage']['v47_kallisto']['sqtl']['genotype_tsv'],
-        # config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv']
+        # config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv'],
+        config['mage']['poder_kallisto']['sqtlseeker']['results']
 
 
 
@@ -1119,6 +1120,73 @@ use rule get_gene_bodies as poder_get_gene_bodies with:
         gtf = config['lr']['gtf_filt_with_genes']
     output:
         tsv = config['mage']['poder_kallisto']['sqtl']['gene_loc']
+
+############################################
+######## actually run sqtlseeker
+############################################
+rule run_sqtlseeker:
+    conda:
+        "base"
+    shell:
+        """
+        module load nextflow/21.04.0
+        module load singularity/3.11.5
+        module load R/4.3.2
+
+        nextflow run {params.nf} \
+    	  --genotype {input.genotype} \
+    	  --trexp {input.tcc} \
+    	  --metadata {input.metadata} \
+    	  --genes {input.genes} \
+    	  --dir {params.odir} \
+    	  --mode "nominal" \
+    	  --covariates "true" \
+          --svqtl "true" \
+          --fdr 0.01 \
+          --fdr_svqtl 0.01 \
+          --min_gene_exp 1 \
+          --min_transcript_exp 0.1 \
+          --min_md 0.05 \
+          --min_proportion 0.4 \
+          --with-singularity {params.image}
+        """
+
+use rule run_sqtlseeker as poder_run_sqtlseeker with:
+    input:
+        genotype = config['mage']['poder_kallisto']['sqtl']['genotype_tsv'],
+        tcc = config['mage']['poder_kallisto']['sqtl']['t_tpm_tsv'],
+        metadata = config['mage']['poder_kallisto']['sqtl']['metadata'],
+        genes = config['mage']['poder_kallisto']['sqtl']['gene_loc']
+    output:
+        results = config['mage']['poder_kallisto']['sqtlseeker']['results']
+    params:
+        image = config['software']['sqtlseeker_sing_img'],
+        nf = config['software']['sqtlseeker_nf'],
+        odir = config['mage']['poder_kallisto']['sqtlseeker']['odir']
+use rule run_sqtlseeker as v47_run_sqtlseeker with:
+    input:
+        genotype = config['mage']['v47_kallisto']['sqtl']['genotype_tsv'],
+        tcc = config['mage']['v47_kallisto']['sqtl']['t_tpm_tsv'],
+        metadata = config['mage']['v47_kallisto']['sqtl']['metadata'],
+        genes = config['mage']['v47_kallisto']['sqtl']['gene_loc']
+    output:
+        results = config['mage']['v47_kallisto']['sqtlseeker']['results']
+    params:
+        image = config['software']['sqtlseeker_sing_img'],
+        nf = config['software']['sqtlseeker_nf'],
+        odir = config['mage']['v47_kallisto']['sqtlseeker']['odir']
+use rule run_sqtlseeker as enh_v47_run_sqtlseeker with:
+    input:
+        genotype = config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv'],
+        tcc = config['mage']['enh_v47_kallisto']['sqtl']['t_tpm_tsv'],
+        metadata = config['mage']['enh_v47_kallisto']['sqtl']['metadata'],
+        genes = config['mage']['enh_v47_kallisto']['sqtl']['gene_loc']
+    output:
+        results = config['mage']['enh_v47_kallisto']['sqtlseeker']['results']
+    params:
+        image = config['software']['sqtlseeker_sing_img'],
+        nf = config['software']['sqtlseeker_nf'],
+        odir = config['mage']['enh_v47_kallisto']['sqtlseeker']['odir']
 
 # ##########################################
 # ########### suppa splice event quantification
