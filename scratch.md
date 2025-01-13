@@ -246,3 +246,26 @@ te.df <- te.df[, c("trId", "geneId", subset.samples)]                           
 # hellow i'm the problem
 te.df <- subset(te.df, geneId %in% genes.bed$geneId)         
 ```
+
+```bash
+module load nextflow/21.04.0
+module load singularity/3.11.5
+module load R/4.3.2
+
+nextflow run /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/sqtlseeker2-nf/sqtlseeker2.nf \
+--genotype ../../data/mage/v47_kallisto/sqtl/genotype.tsv.gz \
+--trexp ../../data/mage/v47_kallisto/sqtl/matrix.abundance.tpm.tsv \
+--metadata ../../data/mage/v47_kallisto/sqtl/metadata.tsv \
+--genes ../../data/mage/v47_kallisto/sqtl/gene_bodies.tsv \
+--dir ../../data/mage/v47_kallisto/sqtlseeker/ \
+--mode "nominal" \
+--covariates "true" \
+  --svqtl "true" \
+  --fdr 0.01 \
+  --fdr_svqtl 0.01 \
+  --min_gene_exp 1 \
+  --min_transcript_exp 0.1 \
+  --min_md 0.05 \
+  --min_proportion 0.8 \
+  --with-singularity /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/runs/sqtlseeker2-nf.sif
+```

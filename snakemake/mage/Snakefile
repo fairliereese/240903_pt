@@ -106,8 +106,8 @@ rule all:
         # config['mage']['v47_kallisto']['sqtl']['genotype_tsv'],
         # config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv'],
         config['mage']['poder_kallisto']['sqtlseeker']['results'],
-        config['mage']['enh_v47_kallisto']['sqtlseeker']['results'],
-        config['mage']['v47_kallisto']['sqtlseeker']['results']
+        # config['mage']['enh_v47_kallisto']['sqtlseeker']['results'],
+        # config['mage']['v47_kallisto']['sqtlseeker']['results']
 
 
 
