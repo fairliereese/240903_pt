@@ -150,6 +150,24 @@ rule filt_non_prim_unmap_supp:
             {input.align} > {output.align}
         """
 
+# filter out non-primary, unmapped, and supp. alignments
+rule filt_non_prim_unmap_supp_contigs:
+    resources:
+        nodes = 4,
+        threads = 64
+    shell:
+        """
+        module load samtools
+        samtools view \
+            -@ {resources.threads} \
+            -h \
+            -F 256 \
+            -F 4 \
+            -F 2048 \
+            -L {input.bed} \
+            {input.align} > {output.align}
+        """
+
 rule cov_filt_read_ids_min_max:
     resources:
         nodes = 2,

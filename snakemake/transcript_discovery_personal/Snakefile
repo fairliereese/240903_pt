@@ -60,7 +60,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['td_personal']['map']['sam'],
+        expand(config['lr']['td_personal']['map']['bam_ind'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap)
 
@@ -81,7 +81,25 @@ use rule minimap2_index as ind_alt_assembly with:
     output:
         ind = config['lr']['td_personal']['ref_fa_mmi']
 
-use rule minimap2_with_index as alt_map with:
+rule minimap2_with_index_2:
+    resources:
+        threads = 8,
+        nodes = 32
+    shell:
+        """
+        module load minimap2
+        minimap2 \
+            -ax splice \
+            -t {resources.threads} \
+            --MD \
+            --secondary=no \
+            -L \
+            -o {output.sam} \
+            -a {input.ind} \
+            {input.fq}
+        """
+
+use rule minimap2_with_index_2 as alt_map with:
     input:
         fq = lambda wc: expand(config['lr']['fastq'],
                        lab_sample=get_df_val(df,
@@ -92,7 +110,7 @@ use rule minimap2_with_index as alt_map with:
         threads = 8,
         nodes = 32
     output:
-        sam = config['lr']['td_personal']['map']['sam']
+        sam = temporary(config['lr']['td_personal']['map']['sam'])
         # sam = temporary(config['lr']['td_personal']['map']['sam'])
 
 use rule filt_non_prim_unmap_supp as alt_filt_map with:
