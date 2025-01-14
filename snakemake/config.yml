@@ -620,6 +620,17 @@ lr:
     build_loci_gtf: ../../data/personal_genome/build_loci/{sample}.fq_{genome}.fa_transcript_models_t_info.tsv
     t2g: ../../data/personal_genome/build_loci/{sample}.fq_{genome}.t2g
 
+  transcript_discovery_personal:
+    ref_fa: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/01_samples_vcf/{cell_line_id}_{hap}.fa
+    ref_fa_mmi: ../../data/transcript_discovery_personal/ref/{cell_line_id}_{hap}.fa.mmi
+
+    map:
+      sam: ../../data/transcript_discovery_personal/map/{cell_line_id}_{hap}.sam
+      sam_filt: ../../data/transcript_discovery_personal/map/{cell_line_id}_{hap}_filt.sam
+      bam: ../../data/transcript_discovery_personal/map/{cell_line_id}_{hap}.bam
+      bam_sort: ../../data/transcript_discovery_personal/map/{cell_line_id}_{hap}_sorted.bam
+      bam_ind: ../../data/transcript_discovery_personal/map/{cell_line_id}_{hap}_sorted.bam.bai
+
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz

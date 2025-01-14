@@ -1,0 +1,264 @@
+import pandas as pd
+import os
+import sys
+import pysam
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+# sample information
+# sample information
+df = load_meta()
+df = df.loc[~df['sample'].str.contains('_')]
+df['lab_sample'] = df['lab_number_sample'].astype(str)+'_'+\
+                      df['lab_sampleid'].astype(str)+'_'+\
+                      df['cell_line_id'].astype(str)
+df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
+
+temp_df = pd.read_csv('cell_line_ids.txt', header=None, names=['cell_line_id'])
+
+# make a 1000g cell line id col
+df['cell_line_id_1000g'] = df.cell_line_id
+
+inds = df.loc[~df.cell_line_id_1000g.isin(temp_df.cell_line_id.tolist())].index
+df.loc[inds, 'cell_line_id_1000g'] = df.loc[inds, 'hapmap_DNA_ID']
+len(df.index)
+
+# limit to just those in 1000g
+df = df.loc[df.cell_line_id_1000g.isin(temp_df.cell_line_id.tolist())]
+assert len(df.index) == 30
+
+hap = ['hap1', 'hap2']
+
+wildcard_constraints:
+    cell_line_id='|'.join([re.escape(x) for x in meta_df['cell_line_id_1000g'].tolist()]),
+    hap='|'.join([re.escape(x) for x in hap),
+
+rule all:
+    input:
+        expand(config['lr']['transcript_discovery_personal']['map']['sam'],
+               cell_line_id=meta_df['cell_line_id_1000g'].tolist(),
+               hap=hap)
+
+
+### index genome
+use rule minimap2_index as ind_alt_assembly with:
+    input:
+        fa = config['lr']['transcript_discovery_personal']['ref_fa']
+    output:
+        ind = config['lr']['transcript_discovery_personal']['ref_fa_mmi']
+
+use rule minimap2_with_index as alt_map with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    sample=get_df_val(meta_df,
+                            'sample',
+                            {'tech_rep': wc.sample})),
+        ind = lambda wc: expand(config['lr']['transcript_discovery_personal']['ref_fa_mmi'],
+                                hap=wc.hap,
+                                cell_line_id=get_df_val(meta_df,
+                                                        'sample', {('cell_line_id', 'hapmap_DNA_ID'):wc.}),
+    resources:
+        threads = 8,
+        nodes = 32
+    output:
+        sam = temporary(config['lr']['map']['sam'])
+
+use rule filt_non_prim_unmap_supp as alt_filt_map with:
+    input:
+        align = config['lr']['map']['sam']
+    output:
+        align = temporary(config['lr']['map']['sam_filt'])
+
+use rule sam_to_bam as alt_sam_to_bam with:
+    input:
+        sam = config['lr']['map']['sam_filt']
+    output:
+        bam = temporary(config['lr']['map']['bam'])
+
+# index and sort bam
+use rule sort_bam as alt_sort_bam with:
+    input:
+        bam = config['lr']['map']['bam']
+    output:
+        bam = config['lr']['map']['bam_sort']
+
+use rule index_bam as alt_index_bam with:
+    input:
+        bam = config['lr']['map']['bam_sort']
+    output:
+        ind = config['lr']['map']['bam_ind']
+
+### statistics
+rule all_stats:
+    input:
+        config['lr']['fastq_n_reads_summary'],
+        expand(config['lr']['map']['bam_n_reads_summary'],
+               assembly=assemblies),
+        expand(config['lr']['map']['bam_mapqs_summary'],
+              assembly=assemblies)
+
+# raw fq read ids
+use rule fq_get_read_ids as fq_read_ids with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample}))
+    output:
+        txt = config['lr']['fastq_reads']
+
+# raw fq counts
+use rule fq_count_reads as count_raw_reads with:
+    input:
+        fq = lambda wc: expand(config['lr']['fastq'],
+                    lab_sample=get_df_val(df,
+                            'lab_rep',
+                            {'tech_rep': wc.sample}))
+    output:
+        txt = config['lr']['fastq_n_reads']
+
+use rule count_reads_summary as fq_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+                                sample=df['tech_rep'].tolist()),
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['fastq_n_reads_summary']
+
+# filtered bam counts
+use rule count_bam as alt_count_mapped_reads with:
+    input:
+        align = config['lr']['map']['bam_sort']
+    output:
+        txt = config['lr']['map']['bam_n_reads']
+
+
+use rule count_reads_summary as sam_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['map']['bam_n_reads'],
+                                assembly=wc.assembly,
+                                sample=df['tech_rep'].tolist()),
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['bam_n_reads_summary']
+
+# mapqs per read
+use rule bam_get_mapqs as alt_get_mapqs with:
+    input:
+        bam = config['lr']['map']['bam_sort']
+    output:
+        txt = config['lr']['map']['bam_mapqs']
+
+use rule read_id_df_summary as alt_get_mapqs_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+                                assembly=wc.assembly,
+                                sample=df['tech_rep'].tolist())
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['bam_mapqs_summary']
+
+# query coverage and read length per read
+use rule bam_get_query_cov as alt_get_qcov with:
+    input:
+        align = config['lr']['map']['bam_sort']
+    output:
+        out = config['lr']['map']['bam_query_covs']
+
+use rule read_id_df_summary as alt_get_qcov_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map']['bam_query_covs'],
+                                assembly=wc.assembly,
+                                sample=df['tech_rep'].tolist())
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['bam_query_covs_summary']
+
+################################
+#### mapping summary statistics that aren't so heavy
+################################
+use rule bool_mapq_summary as get_bool_mapq_summary with:
+    input:
+        files = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+                              sample=wc.sample,
+                              assembly=assemblies)
+    params:
+        assemblies = assemblies,
+        mapq_thresh = lambda wc: wc.thresh
+    output:
+        tsv = config['lr']['map']['mapq_tsv'],
+        afr_reads = config['lr']['map']['mapq_uniq_afr_reads'],
+        upset = config['lr']['map']['mapq_upset']
+
+use rule max_mapq_summary as get_max_mapq_summary with:
+    input:
+        files = lambda wc: expand(config['lr']['map']['bam_mapqs'],
+                              sample=wc.sample,
+                              assembly=assemblies)
+    params:
+        assemblies = assemblies,
+        mapq_thresh = lambda wc: wc.thresh
+    output:
+        tsv = config['lr']['map']['max_mapq_tsv'],
+        afr_reads = config['lr']['map']['max_mapq_uniq_afr_reads'],
+        upset = config['lr']['map']['max_mapq_upset']
+
+
+
+use rule read_id_df_summary as get_mapq_summary_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map']['mapq_tsv'],
+               sample=df.tech_rep.tolist(),
+               thresh=wc.thresh)
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['mapq_tsv_summary']
+
+use rule read_id_df_summary as get_max_mapq_summary_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['map']['max_mapq_tsv'],
+               sample=df.tech_rep.tolist(),
+               thresh=wc.thresh)
+    resources:
+        threads = 1,
+        nodes = 3
+    params:
+        samples = df['tech_rep'].tolist()
+    output:
+        summ = config['lr']['map']['max_mapq_tsv_summary']
