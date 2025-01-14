@@ -120,152 +120,152 @@ use rule index_bam as alt_index_bam with:
     output:
         ind = config['lr']['td_personal']['map']['bam_ind']
 
-### statistics
-rule all_stats:
-    input:
-        config['lr']['fastq_n_reads_summary'],
-        expand(config['lr']['td_personal']['map']['bam_n_reads_summary'],
-               assembly=assemblies),
-        expand(config['lr']['td_personal']['map']['bam_mapqs_summary'],
-              assembly=assemblies)
-
-# raw fq read ids
-use rule fq_get_read_ids as fq_read_ids with:
-    input:
-        fq = lambda wc: expand(config['lr']['fastq'],
-                    lab_sample=get_df_val(df,
-                            'lab_rep',
-                            {'tech_rep': wc.sample}))
-    output:
-        txt = config['lr']['fastq_reads']
-
-# raw fq counts
-use rule fq_count_reads as count_raw_reads with:
-    input:
-        fq = lambda wc: expand(config['lr']['fastq'],
-                    lab_sample=get_df_val(df,
-                            'lab_rep',
-                            {'tech_rep': wc.sample}))
-    output:
-        txt = config['lr']['fastq_n_reads']
-
-use rule count_reads_summary as fq_count_reads_summary with:
-    input:
-        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
-                                sample=df['tech_rep'].tolist()),
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['fastq_n_reads_summary']
-
-# filtered bam counts
-use rule count_bam as alt_count_mapped_reads with:
-    input:
-        align = config['lr']['td_personal']['map']['bam_sort']
-    output:
-        txt = config['lr']['td_personal']['map']['bam_n_reads']
-
-
-use rule count_reads_summary as sam_count_reads_summary with:
-    input:
-        txts = lambda wc: expand(config['lr']['td_personal']['map']['bam_n_reads'],
-                                assembly=wc.assembly,
-                                sample=df['tech_rep'].tolist()),
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['td_personal']['map']['bam_n_reads_summary']
-
-# mapqs per read
-use rule bam_get_mapqs as alt_get_mapqs with:
-    input:
-        bam = config['lr']['td_personal']['map']['bam_sort']
-    output:
-        txt = config['lr']['td_personal']['map']['bam_mapqs']
-
-use rule read_id_df_summary as alt_get_mapqs_summary with:
-    input:
-        tsvs = lambda wc: expand(config['lr']['td_personal']['map']['bam_mapqs'],
-                                assembly=wc.assembly,
-                                sample=df['tech_rep'].tolist())
-    resources:
-        threads = 1,
-        nodes = 3
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['td_personal']['map']['bam_mapqs_summary']
-
-# query coverage and read length per read
-use rule bam_get_query_cov as alt_get_qcov with:
-    input:
-        align = config['lr']['td_personal']['map']['bam_sort']
-    output:
-        out = config['lr']['td_personal']['map']['bam_query_covs']
-
-use rule read_id_df_summary as alt_get_qcov_summary with:
-    input:
-        tsvs = lambda wc: expand(config['lr']['td_personal']['map']['bam_query_covs'],
-                                assembly=wc.assembly,
-                                sample=df['tech_rep'].tolist())
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['td_personal']['map']['bam_query_covs_summary']
-
-################################
-#### mapping summary statistics that aren't so heavy
-################################
-use rule bool_mapq_summary as get_bool_mapq_summary with:
-    input:
-        files = lambda wc: expand(config['lr']['td_personal']['map']['bam_mapqs'],
-                              sample=wc.sample,
-                              assembly=assemblies)
-    params:
-        assemblies = assemblies,
-        mapq_thresh = lambda wc: wc.thresh
-    output:
-        tsv = config['lr']['td_personal']['map']['mapq_tsv'],
-        afr_reads = config['lr']['td_personal']['map']['mapq_uniq_afr_reads'],
-        upset = config['lr']['td_personal']['map']['mapq_upset']
-
-use rule max_mapq_summary as get_max_mapq_summary with:
-    input:
-        files = lambda wc: expand(config['lr']['td_personal']['map']['bam_mapqs'],
-                              sample=wc.sample,
-                              assembly=assemblies)
-    params:
-        assemblies = assemblies,
-        mapq_thresh = lambda wc: wc.thresh
-    output:
-        tsv = config['lr']['td_personal']['map']['max_mapq_tsv'],
-        afr_reads = config['lr']['td_personal']['map']['max_mapq_uniq_afr_reads'],
-        upset = config['lr']['td_personal']['map']['max_mapq_upset']
-
-
-
-use rule read_id_df_summary as get_mapq_summary_summary with:
-    input:
-        tsvs = lambda wc: expand(config['lr']['td_personal']['map']['mapq_tsv'],
-               sample=df.tech_rep.tolist(),
-               thresh=wc.thresh)
-    resources:
-        threads = 1,
-        nodes = 3
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['td_personal']['map']['mapq_tsv_summary']
-
-use rule read_id_df_summary as get_max_mapq_summary_summary with:
-    input:
-        tsvs = lambda wc: expand(config['lr']['td_personal']['map']['max_mapq_tsv'],
-               sample=df.tech_rep.tolist(),
-               thresh=wc.thresh)
-    resources:
-        threads = 1,
-        nodes = 3
-    params:
-        samples = df['tech_rep'].tolist()
-    output:
-        summ = config['lr']['td_personal']['map']['max_mapq_tsv_summary']
+# ### statistics
+# rule all_stats:
+#     input:
+#         config['lr']['fastq_n_reads_summary'],
+#         expand(config['lr']['td_personal']['map']['bam_n_reads_summary'],
+#                assembly=assemblies),
+#         expand(config['lr']['td_personal']['map']['bam_mapqs_summary'],
+#               assembly=assemblies)
+#
+# # raw fq read ids
+# use rule fq_get_read_ids as fq_read_ids with:
+#     input:
+#         fq = lambda wc: expand(config['lr']['fastq'],
+#                     lab_sample=get_df_val(df,
+#                             'lab_rep',
+#                             {'tech_rep': wc.sample}))
+#     output:
+#         txt = config['lr']['fastq_reads']
+#
+# # raw fq counts
+# use rule fq_count_reads as count_raw_reads with:
+#     input:
+#         fq = lambda wc: expand(config['lr']['fastq'],
+#                     lab_sample=get_df_val(df,
+#                             'lab_rep',
+#                             {'tech_rep': wc.sample}))
+#     output:
+#         txt = config['lr']['fastq_n_reads']
+#
+# use rule count_reads_summary as fq_count_reads_summary with:
+#     input:
+#         txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+#                                 sample=df['tech_rep'].tolist()),
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['fastq_n_reads_summary']
+#
+# # filtered bam counts
+# use rule count_bam as alt_count_mapped_reads with:
+#     input:
+#         align = config['lr']['td_personal']['map']['bam_sort']
+#     output:
+#         txt = config['lr']['td_personal']['map']['bam_n_reads']
+#
+#
+# use rule count_reads_summary as sam_count_reads_summary with:
+#     input:
+#         txts = lambda wc: expand(config['lr']['td_personal']['map']['bam_n_reads'],
+#                                 assembly=wc.assembly,
+#                                 sample=df['tech_rep'].tolist()),
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['td_personal']['map']['bam_n_reads_summary']
+#
+# # mapqs per read
+# use rule bam_get_mapqs as alt_get_mapqs with:
+#     input:
+#         bam = config['lr']['td_personal']['map']['bam_sort']
+#     output:
+#         txt = config['lr']['td_personal']['map']['bam_mapqs']
+#
+# use rule read_id_df_summary as alt_get_mapqs_summary with:
+#     input:
+#         tsvs = lambda wc: expand(config['lr']['td_personal']['map']['bam_mapqs'],
+#                                 assembly=wc.assembly,
+#                                 sample=df['tech_rep'].tolist())
+#     resources:
+#         threads = 1,
+#         nodes = 3
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['td_personal']['map']['bam_mapqs_summary']
+#
+# # query coverage and read length per read
+# use rule bam_get_query_cov as alt_get_qcov with:
+#     input:
+#         align = config['lr']['td_personal']['map']['bam_sort']
+#     output:
+#         out = config['lr']['td_personal']['map']['bam_query_covs']
+#
+# use rule read_id_df_summary as alt_get_qcov_summary with:
+#     input:
+#         tsvs = lambda wc: expand(config['lr']['td_personal']['map']['bam_query_covs'],
+#                                 assembly=wc.assembly,
+#                                 sample=df['tech_rep'].tolist())
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['td_personal']['map']['bam_query_covs_summary']
+#
+# ################################
+# #### mapping summary statistics that aren't so heavy
+# ################################
+# use rule bool_mapq_summary as get_bool_mapq_summary with:
+#     input:
+#         files = lambda wc: expand(config['lr']['td_personal']['map']['bam_mapqs'],
+#                               sample=wc.sample,
+#                               assembly=assemblies)
+#     params:
+#         assemblies = assemblies,
+#         mapq_thresh = lambda wc: wc.thresh
+#     output:
+#         tsv = config['lr']['td_personal']['map']['mapq_tsv'],
+#         afr_reads = config['lr']['td_personal']['map']['mapq_uniq_afr_reads'],
+#         upset = config['lr']['td_personal']['map']['mapq_upset']
+#
+# use rule max_mapq_summary as get_max_mapq_summary with:
+#     input:
+#         files = lambda wc: expand(config['lr']['td_personal']['map']['bam_mapqs'],
+#                               sample=wc.sample,
+#                               assembly=assemblies)
+#     params:
+#         assemblies = assemblies,
+#         mapq_thresh = lambda wc: wc.thresh
+#     output:
+#         tsv = config['lr']['td_personal']['map']['max_mapq_tsv'],
+#         afr_reads = config['lr']['td_personal']['map']['max_mapq_uniq_afr_reads'],
+#         upset = config['lr']['td_personal']['map']['max_mapq_upset']
+#
+#
+#
+# use rule read_id_df_summary as get_mapq_summary_summary with:
+#     input:
+#         tsvs = lambda wc: expand(config['lr']['td_personal']['map']['mapq_tsv'],
+#                sample=df.tech_rep.tolist(),
+#                thresh=wc.thresh)
+#     resources:
+#         threads = 1,
+#         nodes = 3
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['td_personal']['map']['mapq_tsv_summary']
+#
+# use rule read_id_df_summary as get_max_mapq_summary_summary with:
+#     input:
+#         tsvs = lambda wc: expand(config['lr']['td_personal']['map']['max_mapq_tsv'],
+#                sample=df.tech_rep.tolist(),
+#                thresh=wc.thresh)
+#     resources:
+#         threads = 1,
+#         nodes = 3
+#     params:
+#         samples = df['tech_rep'].tolist()
+#     output:
+#         summ = config['lr']['td_personal']['map']['max_mapq_tsv_summary']
