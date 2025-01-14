@@ -55,13 +55,13 @@ assert len(df.index) == 30
 hap = ['hap1', 'hap2']
 
 wildcard_constraints:
-    cell_line_id='|'.join([re.escape(x) for x in meta_df['cell_line_id_1000g'].tolist()]),
+    cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
     hap='|'.join([re.escape(x) for x in hap]),
 
 rule all:
     input:
         expand(config['lr']['td_personal']['map']['sam'],
-               cell_line_id=meta_df['cell_line_id_1000g'].tolist(),
+               cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap)
 
 def get_df_val(df, col1, col_dict):
