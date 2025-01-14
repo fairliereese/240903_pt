@@ -1113,8 +1113,9 @@ rule get_gene_bodies:
         gtf_df = gtf_df[['Chromosome', 'Start', 'End', 'gene_id']]
 
         # remove chr
-        inds = gtf_df.loc[gtf_df.Chromosome.str.contains('chr')].index
-        gtf_df.loc[inds, 'Chromosome']= gtf_df.loc[inds].Chromosome.str.split('chr', expand=True)[-1]
+        gtf_df['Chromosome'] = gtf_df['Chromsome'].str.replace('chr', '')
+        # inds = gtf_df.loc[gtf_df.Chromosome.str.contains('chr')].index
+        # gtf_df.loc[inds, 'Chromosome']= gtf_df.loc[inds].Chromosome.str.split('chr', expand=True)[0]
 
         gtf_df = gtf_df.rename(m, axis=1)
         gtf_df.to_csv(output.tsv, sep='\t', index=False)
