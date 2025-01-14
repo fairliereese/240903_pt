@@ -77,9 +77,9 @@ def get_df_val(df, col1, col_dict):
 ### index genome
 use rule minimap2_index as ind_alt_assembly with:
     input:
-        fa = config['td_personal']['ref_fa']
+        fa = config['lr']['td_personal']['ref_fa']
     output:
-        ind = config['td_personal']['ref_fa_mmi']
+        ind = config['lr']['td_personal']['ref_fa_mmi']
 
 use rule minimap2_with_index as alt_map with:
     input:
@@ -87,7 +87,7 @@ use rule minimap2_with_index as alt_map with:
                        lab_sample=get_df_val(df,
                             'lab_sample',
                             {'cell_line_id_1000g': wc.cell_line_id})),
-        ind = config['ref']['alt']['fa_mmi']
+        ind = config['lr']['td_personal']['ref_fa_mmi']
     resources:
         threads = 8,
         nodes = 32
