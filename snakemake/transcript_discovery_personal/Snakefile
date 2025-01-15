@@ -359,7 +359,7 @@ use rule gtf_to_ic as gc_gtf_to_ic_hg38 with:
                             'lab_sample',
                             {'cell_line_id_1000g': wc.cell_line_id})),
     output:
-        tsv = config['lr']['cerb']['ics']
+        tsv = config['lr']['espresso']['cerb']['ics']
 
 use rule sqanti as sqanti_td_hg38 with:
     input:
