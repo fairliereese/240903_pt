@@ -352,7 +352,7 @@ use rule gtf_to_ic as gc_gtf_to_ic with:
 ###### stuff for espresso w/ normal hg38
 
 # get ics file
-use rule gtf_to_ic as gc_gtf_to_ic with:
+use rule gtf_to_ic as gc_gtf_to_ic_hg38 with:
     input:
         gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
                        lab_sample=get_df_val(df,
@@ -361,7 +361,7 @@ use rule gtf_to_ic as gc_gtf_to_ic with:
     output:
         tsv = config['lr']['cerb']['ics']
 
-use rule sqanti as sqanti_td with:
+use rule sqanti as sqanti_td_hg38 with:
     input:
         gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
                        lab_sample=get_df_val(df,
