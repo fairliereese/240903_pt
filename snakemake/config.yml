@@ -640,7 +640,7 @@ lr:
       bam_ind: ../../data/td_personal/map/{cell_line_id}_{hap}_sorted.bam.bai
 
     espresso:
-      gtf: # TODO
+      gtf: ''
 
     sqanti:
       gff: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_corrected.gtf.cds.gff
