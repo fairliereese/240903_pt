@@ -217,7 +217,7 @@ lr:
     cerb:
       ics: ../../data/espresso/cerb/{cell_line_id}_ics.tsv
     sqanti:
-      gff: .../../data/espresso/cerb/{cell_line_id}_sqanti_corrected.gtf.cds.gff
+      gff: ../../data/espresso/sqanti/{cell_line_id}_sqanti_corrected.gtf.cds.gff
 
   as:
     ase: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/ase_results_threeannots.tsv
