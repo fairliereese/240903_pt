@@ -212,7 +212,7 @@ lr:
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
 
   espresso:
-    gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/espresso/{lab_rep}_espresso.gtf
+    gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/espresso/{lab_sample}_espresso.gtf
 
     cerb:
       ics: ../../data/espresso/cerb/{cell_line_id}_ics.tsv
