@@ -60,9 +60,22 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['td_personal']['map']['bam_ind'],
+        expand(config['lr']['espresso']['sqanti']['gff'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
-               hap=hap)
+               hap=hap),
+        expand(config['lr']['espresso']['cerb']['ics'],
+               cell_line_id=df['cell_line_id_1000g'].tolist(),
+               hap=hap),
+        # expand(config['lr']['td_personal']['sqanti']['gff'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #        hap=hap),
+        # expand(config['lr']['td_personal']['cerb']['ics'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #        hap=hap),
+
+        # expand(config['lr']['td_personal']['map']['bam_ind'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #        hap=hap),
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
@@ -287,3 +300,78 @@ use rule index_bam as alt_index_bam with:
 #         samples = df['tech_rep'].tolist()
 #     output:
 #         summ = config['lr']['td_personal']['map']['max_mapq_tsv_summary']
+
+
+#############
+##### sqanti
+############
+
+
+rule sqanti:
+    resources:
+        nodes = 2,
+        threads = 8
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.2.1
+        mkdir -p {params.odir}
+        python {params.sq_path}sqanti3_qc.py \
+            {input.gtf} \
+            {input.annot} \
+            {input.fa} \
+            -d {params.odir} \
+            --report skip \
+            --force_id_ignore \
+            --aligner_choice minimap2 \
+            --skipORF \
+            -o {params.opref}
+        """
+
+use rule sqanti as sqanti_td with:
+    input:
+        gtf = config['lr']['td_personal']['espresso']['gtf'],
+        fa = config['lr']['td_personal']['ref_fa'],
+        annot = config['ref']['gtf']
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['td_personal']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['lr']['td_personal']['sqanti']['gff']
+
+# get ics file
+use rule gtf_to_ic as gc_gtf_to_ic with:
+    input:
+        gtf = config['lr']['td_personal']['espresso']['gtf']
+    output:
+        tsv = config['lr']['td_personal']['cerb']['ics']
+
+##################
+###### stuff for espresso w/ normal hg38
+
+# get ics file
+use rule gtf_to_ic as gc_gtf_to_ic with:
+    input:
+        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+    output:
+        tsv = config['lr']['cerb']['ics']
+
+use rule sqanti as sqanti_td with:
+    input:
+        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+        fa = config['ref']['fa'],
+        annot = config['ref']['gtf']
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['espresso'][['sqanti']['gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['lr']['espresso'][['sqanti']['gff']
