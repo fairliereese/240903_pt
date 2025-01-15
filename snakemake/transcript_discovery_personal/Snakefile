@@ -372,6 +372,6 @@ use rule sqanti as sqanti_td with:
     params:
         sq_path = config['software']['sqanti_path'],
         opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
-        odir = '/'.join(config['lr']['espresso'][['sqanti']['gff'].split('/')[:-1])+'/'
+        odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
-        gff = config['lr']['espresso'][['sqanti']['gff']
+        gff = config['lr']['espresso']['sqanti']['gff']
