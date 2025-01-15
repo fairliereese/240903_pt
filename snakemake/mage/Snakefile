@@ -1145,7 +1145,7 @@ rule run_sqtlseeker:
     conda:
         "base"
     resources:
-        nodes = 2,
+        nodes = 3,
         threads = 64
     shell:
         """
