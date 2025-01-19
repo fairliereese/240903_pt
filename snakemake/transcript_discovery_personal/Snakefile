@@ -64,22 +64,23 @@ wildcard_constraints:
 
 rule all:
     input:
-        config['lr']['td_personal']['sqanti']['sj_summary'],
-        config['lr']['td_personal']['sqanti']['cl_summary'],
-        config['lr']['td_personal']['cerb']['ic_summary'],
-        expand(config['lr']['espresso']['sqanti']['sjs'],
-               cell_line_id=df['cell_line_id_1000g'].tolist()),
-        expand(config['lr']['espresso']['cerb']['ics'],
-               cell_line_id=df['cell_line_id_1000g'].tolist()),
-        expand(config['lr']['td_personal']['sqanti']['sjs'],
-               cell_line_id=df['cell_line_id_1000g'].tolist(),
-               hap=hap),
-        expand(config['lr']['td_personal']['cerb']['ics'],
-               cell_line_id=df['cell_line_id_1000g'].tolist(),
-               hap=hap),
         expand(config['lr']['td_personal']['map']['bam_ind'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap),
+        # config['lr']['td_personal']['sqanti']['sj_summary'],
+        # config['lr']['td_personal']['sqanti']['cl_summary'],
+        # config['lr']['td_personal']['cerb']['ic_summary'],
+        # expand(config['lr']['espresso']['sqanti']['sjs'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist()),
+        # expand(config['lr']['espresso']['cerb']['ics'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist()),
+        # expand(config['lr']['td_personal']['sqanti']['sjs'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #        hap=hap),
+        # expand(config['lr']['td_personal']['cerb']['ics'],
+        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #        hap=hap),
+
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
@@ -118,7 +119,7 @@ rule minimap2_with_index_2:
 
 use rule minimap2_with_index_2 as alt_map with:
     input:
-        fq = lambda wc: expand(config['lr']['fastq'],
+        fq = lambda wc: expand(config['lr']['q10_fastq'],
                        lab_sample=get_df_val(df,
                             'lab_sample',
                             {'cell_line_id_1000g': wc.cell_line_id})),
@@ -167,7 +168,7 @@ use rule index_bam as alt_index_bam with:
 # # raw fq read ids
 # use rule fq_get_read_ids as fq_read_ids with:
 #     input:
-#         fq = lambda wc: expand(config['lr']['fastq'],
+#         fq = lambda wc: expand(config['lr']['q10_fastq'],
 #                     lab_sample=get_df_val(df,
 #                             'lab_rep',
 #                             {'tech_rep': wc.sample}))
@@ -177,7 +178,7 @@ use rule index_bam as alt_index_bam with:
 # # raw fq counts
 # use rule fq_count_reads as count_raw_reads with:
 #     input:
-#         fq = lambda wc: expand(config['lr']['fastq'],
+#         fq = lambda wc: expand(config['lr']['q10_fastq'],
 #                     lab_sample=get_df_val(df,
 #                             'lab_rep',
 #                             {'tech_rep': wc.sample}))

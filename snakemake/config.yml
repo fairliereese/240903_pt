@@ -192,6 +192,7 @@ enc:
 lr:
   meta: ../../data/pantranscriptome_samples_metadata.tsv
   fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q7/{lab_sample}_preprocessed_Q7.fastq.gz
+  q10_fastq: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/02_ONT_preprocessing/data/q10/{lab_sample}_preprocessed_Q10.fastq.gz
   fastq_reads: ../../data/{sample}_fastq_read_ids.txt
   fastq_n_reads: ../../data/{sample}_fastq_n_reads.txt
   fastq_n_reads_summary: ../../data/fastq_n_reads.txt
@@ -216,6 +217,7 @@ lr:
 
     cerb:
       ics: ../../data/espresso/cerb/{cell_line_id}_ics.tsv
+
     sqanti:
       gff: ../../data/espresso/sqanti/{cell_line_id}_sqanti_corrected.gtf.cds.gff
       sjs: ../../data/espresso/sqanti/{cell_line_id}_sqanti_junctions.txt
