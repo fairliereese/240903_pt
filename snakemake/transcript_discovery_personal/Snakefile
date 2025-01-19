@@ -406,7 +406,7 @@ use rule sqanti as sqanti_td_td with:
         odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
         gff = config['lr']['td_personal']['sqanti']['gff'],
-        sjs = config['lr']['td_personal']['sqanti']['gff']
+        sjs = config['lr']['td_personal']['sqanti']['sjs']
 
 ####################
 # summarize splice junctions
