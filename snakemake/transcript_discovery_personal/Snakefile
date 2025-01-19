@@ -65,6 +65,7 @@ wildcard_constraints:
 rule all:
     input:
         config['lr']['td_personal']['sqanti']['sj_summary'],
+        config['lr']['td_personal']['sqanti']['cl_summary'],
         config['lr']['td_personal']['cerb']['ic_summary'],
         expand(config['lr']['espresso']['sqanti']['sjs'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
@@ -378,7 +379,8 @@ use rule sqanti as sqanti_td_hg38 with:
         odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
         gff = config['lr']['espresso']['sqanti']['gff'],
-        sjs = config['lr']['espresso']['sqanti']['sjs']
+        sjs = config['lr']['espresso']['sqanti']['sjs'],
+        cl = config['lr']['espresso']['sqanti']['cl']
 
 ##################
 ###### stuff for espresso w/ personal genome haplotypes
@@ -404,7 +406,8 @@ use rule sqanti as sqanti_td_td with:
         odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
         gff = config['lr']['td_personal']['sqanti']['gff'],
-        sjs = config['lr']['td_personal']['sqanti']['sjs']
+        sjs = config['lr']['td_personal']['sqanti']['sjs'],
+        cl = config['lr']['td_personal']['sqanti']['cl'],
 
 ####################
 # summarize splice junctions / ics
@@ -463,3 +466,21 @@ use rule summarize as ic_summary with:
         cell_line_id = df['cell_line_id_1000g'].tolist()
     output:
         summary = config['lr']['td_personal']['cerb']['ic_summary']
+
+use rule summarize as cl_summary with:
+    input:
+        hg38_files = expand(config['lr']['espresso']['sqanti']['cl'],
+               cell_line_id=df['cell_line_id_1000g'].tolist()),
+        td_hap1_files = expand(config['lr']['td_personal']['sqanti']['cl'],
+                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+                   hap='hap1'),
+        td_hap2_files = expand(config['lr']['td_personal']['sqanti']['cl'],
+                  cell_line_id=df['cell_line_id_1000g'].tolist(),
+                  hap='hap2'),
+    resources:
+        nodes = 3,
+        threads = 1
+    params:
+        cell_line_id = df['cell_line_id_1000g'].tolist()
+    output:
+        summary = config['lr']['td_personal']['sqanti']['cl_summary']
