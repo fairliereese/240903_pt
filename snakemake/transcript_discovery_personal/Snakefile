@@ -394,10 +394,7 @@ use rule gtf_to_ic as gc_gtf_to_ic_td with:
 
 use rule sqanti as sqanti_td_td with:
     input:
-        gtf = lambda wc: expand(config['lr']['td_personal']['espresso']['gtf'],
-                       lab_sample=get_df_val(df,
-                            'lab_sample',
-                            {'cell_line_id_1000g': wc.cell_line_id})),
+        gtf = config['lr']['td_personal']['espresso']['gtf'],
         fa = config['lr']['td_personal']['ref_fa'],
         annot = config['ref']['gtf']
     params:
