@@ -377,7 +377,7 @@ use rule sqanti as sqanti_td_hg38 with:
         odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
         gff = config['lr']['espresso']['sqanti']['gff'],
-        sjs = config['lr']['espresso']['sqanti']['gff']
+        sjs = config['lr']['espresso']['sqanti']['sjs']
 
 ##################
 ###### stuff for espresso w/ personal genome haplotypes
