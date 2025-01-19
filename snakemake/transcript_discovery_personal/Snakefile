@@ -65,7 +65,7 @@ wildcard_constraints:
 rule all:
     input:
         config['lr']['td_personal']['sqanti']['sj_summary'],
-        config['lr']['td_personal']['cerb']['ic_summary']
+        config['lr']['td_personal']['cerb']['ic_summary'],
         expand(config['lr']['espresso']['sqanti']['sjs'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['espresso']['cerb']['ics'],
