@@ -218,6 +218,8 @@ lr:
       ics: ../../data/espresso/cerb/{cell_line_id}_ics.tsv
     sqanti:
       gff: ../../data/espresso/sqanti/{cell_line_id}_sqanti_corrected.gtf.cds.gff
+      sjs: ../../data/espresso/sqanti/{cell_line_id}_sqanti_junctions.txt
+      sj_summary: ../../data/espresso/sqanti/sj_summary.tsv
 
   as:
     ase: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/ase_results_threeannots.tsv
@@ -644,6 +646,7 @@ lr:
 
     sqanti:
       gff: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_corrected.gtf.cds.gff
+      sjs: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_junctions.txt
 
     cerb:
       ics: ../../data/td_personal/cerb/{cell_line_id}_{hap}_ics.tsv

@@ -64,11 +64,12 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['espresso']['sqanti']['gff'],
+        config['lr']['td_personal']['sqanti']['sj_summary'],
+        expand(config['lr']['espresso']['sqanti']['sjs'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['espresso']['cerb']['ics'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
-        expand(config['lr']['td_personal']['sqanti']['gff'],
+        expand(config['lr']['td_personal']['sqanti']['sjs'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap),
         expand(config['lr']['td_personal']['cerb']['ics'],
@@ -375,7 +376,8 @@ use rule sqanti as sqanti_td_hg38 with:
         opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
         odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
-        gff = config['lr']['espresso']['sqanti']['gff']
+        gff = config['lr']['espresso']['sqanti']['gff'],
+        sjs = config['lr']['espresso']['sqanti']['gff']
 
 ##################
 ###### stuff for espresso w/ personal genome haplotypes
@@ -403,4 +405,44 @@ use rule sqanti as sqanti_td_td with:
         opref = config['lr']['td_personal']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
         odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
-        gff = config['lr']['td_personal']['sqanti']['gff']
+        gff = config['lr']['td_personal']['sqanti']['gff'],
+        sjs = config['lr']['td_personal']['sqanti']['gff']
+
+####################
+# summarize splice junctions
+
+rule sj_summary:
+    input:
+        hg38_sjs = expand(config['lr']['espresso']['sqanti']['sjs'],
+               cell_line_id=df['cell_line_id_1000g'].tolist()),
+        td_hap1_sjs = expand(config['lr']['td_personal']['sqanti']['sjs'],
+                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+                   hap='hap1'),
+        td_hap2_sjs = expand(config['lr']['td_personal']['sqanti']['sjs'],
+                  cell_line_id=df['cell_line_id_1000g'].tolist(),
+                  hap='hap2'),
+    resources:
+        nodes = 1,
+        threads = 1
+    params:
+        cell_line_id = df['cell_line_id_1000g'].tolist()
+    output:
+        sj_summary = config['lr']['td_personal']['sqanti']['sj_summary']
+    run:
+        hg38_sjs = list(input.hg38_sjs)
+        td_hap1_sjs = list(input.td_hap1_sjs)
+        td_hap2_sjs = list(input.td_hap2_sjs)
+
+        genomes = ['hg38', 'hap1', 'hap2']
+
+        df = pd.DataFrame()
+        for genome, sjs in zip(genomes, [hg38_sjs, td_hap1_sjs, td_hap2_sjs]):
+            for clid, sj_file in zip(param.cell_line_id, sjs):
+                # quick check to make sure we're looking at the right
+                # cell line for each file
+                assert clid in sj_file
+                temp = pd.read_csv(sj_file, sep='\t')
+                temp['genome'] = genome
+                temp['cell_line_id'] = clid
+                df = pd.concat([df, temp], axis=0)
+        df.to_csv(output.sj_summary, sep='\t')
