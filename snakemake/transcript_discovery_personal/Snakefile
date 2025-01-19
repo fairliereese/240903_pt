@@ -61,21 +61,18 @@ wildcard_constraints:
 rule all:
     input:
         expand(config['lr']['espresso']['sqanti']['gff'],
-               cell_line_id=df['cell_line_id_1000g'].tolist(),
-               hap=hap),
+               cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['espresso']['cerb']['ics'],
+               cell_line_id=df['cell_line_id_1000g'].tolist()),
+        expand(config['lr']['td_personal']['sqanti']['gff'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap),
-        # expand(config['lr']['td_personal']['sqanti']['gff'],
-        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
-        #        hap=hap),
-        # expand(config['lr']['td_personal']['cerb']['ics'],
-        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
-        #        hap=hap),
-
-        # expand(config['lr']['td_personal']['map']['bam_ind'],
-        #        cell_line_id=df['cell_line_id_1000g'].tolist(),
-        #        hap=hap),
+        expand(config['lr']['td_personal']['cerb']['ics'],
+               cell_line_id=df['cell_line_id_1000g'].tolist(),
+               hap=hap),
+        expand(config['lr']['td_personal']['map']['bam_ind'],
+               cell_line_id=df['cell_line_id_1000g'].tolist(),
+               hap=hap),
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
@@ -375,3 +372,31 @@ use rule sqanti as sqanti_td_hg38 with:
         odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
         gff = config['lr']['espresso']['sqanti']['gff']
+
+##################
+###### stuff for espresso w/ personal genome haplotypes
+
+# get ics file
+use rule gtf_to_ic as gc_gtf_to_ic_td with:
+    input:
+        gtf = lambda wc: expand(config['lr']['td_personal']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+    output:
+        tsv = config['lr']['td_personal']['espresso']['cerb']['ics']
+
+use rule sqanti as sqanti_td_td with:
+    input:
+        gtf = lambda wc: expand(config['lr']['td_personal']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+        fa = config['lr']['td_personal']['ref_fa'],
+        annot = config['ref']['gtf']
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['td_personal']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['td_personal']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['lr']['td_personal']['espresso']['sqanti']['gff']

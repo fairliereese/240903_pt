@@ -640,7 +640,7 @@ lr:
       bam_ind: ../../data/td_personal/map/{cell_line_id}_{hap}_sorted.bam.bai
 
     espresso:
-      gtf: ''
+      gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/04_transcript_discovery_haplotypes/data/espresso_q/{cell_line_id}_{hap}/samples_N2_R0_updated.gtf
 
     sqanti:
       gff: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_corrected.gtf.cds.gff
