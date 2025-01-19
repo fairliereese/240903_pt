@@ -384,7 +384,7 @@ use rule gtf_to_ic as gc_gtf_to_ic_td with:
                             'lab_sample',
                             {'cell_line_id_1000g': wc.cell_line_id})),
     output:
-        tsv = config['lr']['td_personal']['espresso']['cerb']['ics']
+        tsv = config['lr']['td_personal']['cerb']['ics']
 
 use rule sqanti as sqanti_td_td with:
     input:
@@ -396,7 +396,7 @@ use rule sqanti as sqanti_td_td with:
         annot = config['ref']['gtf']
     params:
         sq_path = config['software']['sqanti_path'],
-        opref = config['lr']['td_personal']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
-        odir = '/'.join(config['lr']['td_personal']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
+        opref = config['lr']['td_personal']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
     output:
-        gff = config['lr']['td_personal']['espresso']['sqanti']['gff']
+        gff = config['lr']['td_personal']['sqanti']['gff']
