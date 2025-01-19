@@ -52,6 +52,10 @@ len(df.index)
 df = df.loc[df.cell_line_id_1000g.isin(temp_df.cell_line_id.tolist())]
 assert len(df.index) == 30
 
+# TODO bad sample that hasn't finished on espresso
+bad_samples = ['NA19328']
+df = df.loc[~df.cell_line_id_1000g.isin(bad_samples)]
+
 hap = ['hap1', 'hap2']
 
 wildcard_constraints:
