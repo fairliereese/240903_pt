@@ -421,7 +421,7 @@ rule summarize:
 
         df = pd.DataFrame()
         for genome, files in zip(genomes, [hg38_files, td_hap1_files, td_hap2_files]):
-            for clid, file in zip(param.cell_line_id, files):
+            for clid, file in zip(params.cell_line_id, files):
                 # quick check to make sure we're looking at the right
                 # cell line for each file
                 assert clid in file
