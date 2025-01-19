@@ -651,6 +651,7 @@ lr:
 
     cerb:
       ics: ../../data/td_personal/cerb/{cell_line_id}_{hap}_ics.tsv
+      ic_summary: ../../data/td_personal/cerb/ic_summary.tsv
 
 
 

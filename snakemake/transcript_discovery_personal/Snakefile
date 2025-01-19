@@ -65,6 +65,7 @@ wildcard_constraints:
 rule all:
     input:
         config['lr']['td_personal']['sqanti']['sj_summary'],
+        config['lr']['td_personal']['cerb']['ic_summary']
         expand(config['lr']['espresso']['sqanti']['sjs'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['espresso']['cerb']['ics'],
@@ -406,16 +407,38 @@ use rule sqanti as sqanti_td_td with:
         sjs = config['lr']['td_personal']['sqanti']['sjs']
 
 ####################
-# summarize splice junctions
+# summarize splice junctions / ics
+rule summarize:
+    resources:
+        nodes = 1,
+        threads = 1
+    run:
+        hg38_files = list(input.hg38_files)
+        td_hap1_files = list(input.td_hap1_files)
+        td_hap2_files = list(input.td_hap2_files)
 
-rule sj_summary:
+        genomes = ['hg38', 'hap1', 'hap2']
+
+        df = pd.DataFrame()
+        for genome, files in zip(genomes, [hg38_files, td_hap1_files, td_hap2_files]):
+            for clid, file in zip(param.cell_line_id, files):
+                # quick check to make sure we're looking at the right
+                # cell line for each file
+                assert clid in file
+                temp = pd.read_csv(file, sep='\t')
+                temp['genome'] = genome
+                temp['cell_line_id'] = clid
+                df = pd.concat([df, temp], axis=0)
+        df.to_csv(output.summary, sep='\t')
+
+use rule summarize as sj_summary with:
     input:
-        hg38_sjs = expand(config['lr']['espresso']['sqanti']['sjs'],
+        hg38_files = expand(config['lr']['espresso']['sqanti']['sjs'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
-        td_hap1_sjs = expand(config['lr']['td_personal']['sqanti']['sjs'],
+        td_hap1_files = expand(config['lr']['td_personal']['sqanti']['sjs'],
                    cell_line_id=df['cell_line_id_1000g'].tolist(),
                    hap='hap1'),
-        td_hap2_sjs = expand(config['lr']['td_personal']['sqanti']['sjs'],
+        td_hap2_files = expand(config['lr']['td_personal']['sqanti']['sjs'],
                   cell_line_id=df['cell_line_id_1000g'].tolist(),
                   hap='hap2'),
     resources:
@@ -424,22 +447,22 @@ rule sj_summary:
     params:
         cell_line_id = df['cell_line_id_1000g'].tolist()
     output:
-        sj_summary = config['lr']['td_personal']['sqanti']['sj_summary']
-    run:
-        hg38_sjs = list(input.hg38_sjs)
-        td_hap1_sjs = list(input.td_hap1_sjs)
-        td_hap2_sjs = list(input.td_hap2_sjs)
+        summary = config['lr']['td_personal']['sqanti']['sj_summary']
 
-        genomes = ['hg38', 'hap1', 'hap2']
-
-        df = pd.DataFrame()
-        for genome, sjs in zip(genomes, [hg38_sjs, td_hap1_sjs, td_hap2_sjs]):
-            for clid, sj_file in zip(param.cell_line_id, sjs):
-                # quick check to make sure we're looking at the right
-                # cell line for each file
-                assert clid in sj_file
-                temp = pd.read_csv(sj_file, sep='\t')
-                temp['genome'] = genome
-                temp['cell_line_id'] = clid
-                df = pd.concat([df, temp], axis=0)
-        df.to_csv(output.sj_summary, sep='\t')
+use rule summarize as ic_summary with:
+    input:
+        hg38_files = expand(config['lr']['espresso']['cerb']['ics'],
+               cell_line_id=df['cell_line_id_1000g'].tolist()),
+        td_hap1_files = expand(config['lr']['td_personal']['cerb']['ics'],
+                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+                   hap='hap1'),
+        td_hap2_files = expand(config['lr']['td_personal']['cerb']['ics'],
+                  cell_line_id=df['cell_line_id_1000g'].tolist(),
+                  hap='hap2'),
+    resources:
+        nodes = 1,
+        threads = 1
+    params:
+        cell_line_id = df['cell_line_id_1000g'].tolist()
+    output:
+        summary = config['lr']['td_personal']['cerb']['ic_summary']
