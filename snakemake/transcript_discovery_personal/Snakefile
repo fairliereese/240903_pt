@@ -82,10 +82,10 @@ rule all:
                            cell_line_id=df['cell_line_id_1000g'].tolist(),
                            hap=hap,
                            sqanti_genome=sqanti_genomes),
-        # expand(config['lr']['espresso']['sqanti']['cl'],
-        #                cell_line_id=df['cell_line_id_1000g'].tolist(),
-        #                hap=hap,
-        #                sqanti_genome=sqanti_genomes),
+        expand(config['lr']['espresso']['sqanti']['cl'],
+                       cell_line_id=df['cell_line_id_1000g'].tolist(),
+                       hap=hap,
+                       sqanti_genome=sqanti_genomes),
         # config['lr']['td_personal']['sqanti']['sj_summary'],
         # config['lr']['td_personal']['sqanti']['cl_summary'],
         # config['lr']['td_personal']['cerb']['ic_summary'],
@@ -510,23 +510,23 @@ def get_sqanti_ref_fa(wc):
 
 
 
-# # just for the hg38-mapped reads
-# use rule sqanti as sqanti_td_hg38 with:
-#     input:
-#         gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
-#                        lab_sample=get_df_val(df,
-#                             'lab_sample',
-#                             {'cell_line_id_1000g': wc.cell_line_id})),
-#         fa = lambda wc: get_sqanti_ref_fa(wc),
-#         annot = config['ref']['gtf']
-#     params:
-#         sq_path = config['software']['sqanti_path'],
-#         opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
-#         odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
-#     output:
-#         gff = config['lr']['espresso']['sqanti']['gff'],
-#         sjs = config['lr']['espresso']['sqanti']['sjs'],
-#         cl = config['lr']['espresso']['sqanti']['cl']
+# just for the hg38-mapped reads
+use rule sqanti as sqanti_td_hg38 with:
+    input:
+        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+        fa = lambda wc: get_sqanti_ref_fa(wc),
+        annot = config['ref']['gtf']
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['lr']['espresso']['sqanti']['gff'],
+        sjs = config['lr']['espresso']['sqanti']['sjs'],
+        cl = config['lr']['espresso']['sqanti']['cl']
 
 # sqanti for td mapped genomes
 use rule sqanti as sqanti_td_td with:
