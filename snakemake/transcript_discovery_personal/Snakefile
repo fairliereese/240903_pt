@@ -512,7 +512,7 @@ use rule sqanti as sqanti_td_hg38 with:
                        lab_sample=get_df_val(df,
                             'lab_sample',
                             {'cell_line_id_1000g': wc.cell_line_id})),
-        fa = lambda wc: get_sqanti_ref_fa(wc)
+        fa = lambda wc: get_sqanti_ref_fa(wc),
         annot = config['ref']['gtf']
     params:
         sq_path = config['software']['sqanti_path'],
