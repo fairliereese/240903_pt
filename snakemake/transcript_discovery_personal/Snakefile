@@ -376,16 +376,6 @@ use rule gtf_to_ic as gc_gtf_to_ic_hg38 with:
 ##################
 ###### stuff for espresso w/ personal genome haplotypes
 
-# get ics file
-use rule gtf_to_ic as gc_gtf_to_ic_td with:
-    input:
-        gtf = lambda wc: expand(config['lr']['td_personal']['espresso']['gtf'],
-                       lab_sample=get_df_val(df,
-                            'lab_sample',
-                            {'cell_line_id_1000g': wc.cell_line_id})),
-    output:
-        tsv = config['lr']['td_personal']['cerb']['ics']
-
 # use rule sqanti as sqanti_td_td with:
 #     input:
 #         gtf = config['lr']['td_personal']['espresso']['gtf'],
