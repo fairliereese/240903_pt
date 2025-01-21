@@ -84,7 +84,6 @@ rule all:
                            sqanti_genome=sqanti_genomes),
         expand(config['lr']['espresso']['sqanti']['cl'],
                        cell_line_id=df['cell_line_id_1000g'].tolist(),
-                       hap=hap,
                        sqanti_genome=sqanti_genomes),
         # config['lr']['td_personal']['sqanti']['sj_summary'],
         # config['lr']['td_personal']['sqanti']['cl_summary'],
