@@ -76,7 +76,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['espresso']['cerb']['ic_parsed'],
+        expand(config['lr']['td_personal']['cerb']['ic_parsed'],
                            cell_line_id=df['cell_line_id_1000g'].tolist(),
                            hap=hap,
                            sqanti_genome=sqanti_genomes),
