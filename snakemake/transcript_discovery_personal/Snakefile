@@ -75,7 +75,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        config['lr']['espresso']['sqanti']['sj_summary']
+        config['lr']['td_personal']['sqanti']['sj_summary']
         # expand(config['lr']['td_personal']['cerb']['ic_parsed'],
         #                    cell_line_id=df['cell_line_id_1000g'].tolist(),
         #                    hap=hap,
@@ -606,8 +606,8 @@ rule create_summaries:
         threads = 1,
         nodes = 4
     output:
-        ic_summary = config['lr']['espresso']['cerb']['ic_summary'],
-        sj_summary = config['lr']['espresso']['sqanti']['sj_summary']
+        ic_summary = config['lr']['td_personal']['cerb']['ic_summary'],
+        sj_summary = config['lr']['td_personal']['sqanti']['sj_summary']
     run:
         df = pd.DataFrame()
         for f in list(input.ic_files):
