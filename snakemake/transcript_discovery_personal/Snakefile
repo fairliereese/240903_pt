@@ -52,9 +52,13 @@ len(df.index)
 df = df.loc[df.cell_line_id_1000g.isin(temp_df.cell_line_id.tolist())]
 assert len(df.index) == 30
 
+# # TODO removing one problematic sample
+# bad_samples = ['NA19328']
+# df = df.loc[df.cell_line_id_1000g.isin(bad_samples)]
+
 # TODO try on just one cell line
-bad_samples = ['NA19328']
-df = df.loc[df.cell_line_id_1000g.isin(bad_samples)]
+test_samples = ['NA12273']
+df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
 
 hap = ['hap1', 'hap2']
 
