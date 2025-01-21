@@ -56,9 +56,9 @@ assert len(df.index) == 30
 # bad_samples = ['NA19328']
 # df = df.loc[df.cell_line_id_1000g.isin(bad_samples)]
 
-# TODO try on just one cell line
-test_samples = ['NA12273']
-df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
+# # TODO try on just one cell line
+# test_samples = ['NA12273']
+# df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
 
 hap = ['hap1', 'hap2']
 
@@ -78,13 +78,13 @@ rule all:
         expand(config['lr']['td_personal']['map']['bam_ind'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap),
-        expand(config['lr']['td_personal']['sqanti']['cl'],
-                           cell_line_id=df['cell_line_id_1000g'].tolist(),
-                           hap=hap,
-                           sqanti_genome=sqanti_genomes),
-        expand(config['lr']['espresso']['sqanti']['cl'],
-                       cell_line_id=df['cell_line_id_1000g'].tolist(),
-                       sqanti_genome=sqanti_genomes),
+        # expand(config['lr']['td_personal']['sqanti']['cl'],
+        #                    cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #                    hap=hap,
+        #                    sqanti_genome=sqanti_genomes),
+        # expand(config['lr']['espresso']['sqanti']['cl'],
+        #                cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #                sqanti_genome=sqanti_genomes),
         # config['lr']['td_personal']['sqanti']['sj_summary'],
         # config['lr']['td_personal']['sqanti']['cl_summary'],
         # config['lr']['td_personal']['cerb']['ic_summary'],
