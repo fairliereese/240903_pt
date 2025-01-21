@@ -550,7 +550,7 @@ rule summarize_one_exp:
           --sjs_summary {output.sj_summary} \
           --ic_summary {output.ic_summary} \
           --cell_line_id {params.cell_line_id} \
-          --map_genome {params.map_genome} \
+          --map_genome {params.hap} \
           --sqanti_genome {params.sqanti_genome}
         """
 
