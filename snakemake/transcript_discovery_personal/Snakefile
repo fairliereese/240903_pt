@@ -574,8 +574,8 @@ use rule summarize_one_exp as hg38_summarize_one_exp with:
                        lab_sample=get_df_val(df,
                             'lab_sample',
                             {'cell_line_id_1000g': wc.cell_line_id})),
-        sjs = config['lr']['td_personal']['sqanti']['sjs'],
-        cl = config['lr']['td_personal']['sqanti']['cl']
+        sjs = config['lr']['espresso']['sqanti']['sjs'],
+        cl = config['lr']['espresso']['sqanti']['cl']
     params:
         cell_line_id = lambda wc: wc.cell_line_id,
         hap = 'hg38',
