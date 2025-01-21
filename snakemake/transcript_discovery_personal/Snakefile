@@ -352,25 +352,25 @@ rule sqanti:
             -o {params.opref}
         """
 
-# get ics file
-use rule gtf_to_ic as gc_gtf_to_ic with:
-    input:
-        gtf = config['lr']['td_personal']['espresso']['gtf']
-    output:
-        tsv = config['lr']['td_personal']['cerb']['ics']
+# # get ics file
+# use rule gtf_to_ic as gc_gtf_to_ic with:
+#     input:
+#         gtf = config['lr']['td_personal']['espresso']['gtf']
+#     output:
+#         tsv = config['lr']['td_personal']['cerb']['ics']
 
 ##################
 ###### stuff for espresso w/ normal hg38
 
-# get ics file
-use rule gtf_to_ic as gc_gtf_to_ic_hg38 with:
-    input:
-        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
-                       lab_sample=get_df_val(df,
-                            'lab_sample',
-                            {'cell_line_id_1000g': wc.cell_line_id})),
-    output:
-        tsv = config['lr']['espresso']['cerb']['ics']
+# # get ics file
+# use rule gtf_to_ic as gc_gtf_to_ic_hg38 with:
+#     input:
+#         gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+#                        lab_sample=get_df_val(df,
+#                             'lab_sample',
+#                             {'cell_line_id_1000g': wc.cell_line_id})),
+#     output:
+#         tsv = config['lr']['espresso']['cerb']['ics']
 
 
 ##################
