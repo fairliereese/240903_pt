@@ -503,9 +503,12 @@ def get_sqanti_ref_fa(wc):
     if wc['sqanti_genome'] == 'hg38':
         return config['ref']['fa']
     else:
-        return expand(config['lr']['td_personal']['ref_fa'],
-                        cell_line_id=wc['cell_line_id'],
-                        hap=wc['sqanti_genome'])[0]
+        try:
+            return expand(config['lr']['td_personal']['ref_fa'],
+                            cell_line_id=wc['cell_line_id'],
+                            hap=wc['sqanti_genome'])[0]
+        except:
+            import pdb; pdb.set_trace()
 
 
 # just for the hg38-mapped reads
