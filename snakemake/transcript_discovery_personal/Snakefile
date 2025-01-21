@@ -508,7 +508,9 @@ def get_sqanti_ref_fa(wc):
                             cell_line_id=wc['cell_line_id'],
                             hap=wc['sqanti_genome'])[0]
         except:
-            import pdb; pdb.set_trace()
+            print('ups')
+            print(wc)
+
 
 
 # just for the hg38-mapped reads
