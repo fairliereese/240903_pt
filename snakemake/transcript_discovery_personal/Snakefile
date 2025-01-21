@@ -67,7 +67,7 @@ sqanti_df = sqanti_df.explode('sqanti_genome').reset_index(drop=True)
 wildcard_constraints:
     cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
     hap='|'.join([re.escape(x) for x in hap]),
-    ref='|'.join([re.escape(x) for x in genomes]),
+    ref='|'.join([re.escape(x) for x in sqanti_genomes]),
 
 rule all:
     input:
