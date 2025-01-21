@@ -75,13 +75,14 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['td_personal']['cerb']['ic_parsed'],
-                           cell_line_id=df['cell_line_id_1000g'].tolist(),
-                           hap=hap,
-                           sqanti_genome=sqanti_genomes),
-        expand(config['lr']['espresso']['cerb']['ic_parsed'],
-                       cell_line_id=df['cell_line_id_1000g'].tolist(),
-                       sqanti_genome=sqanti_genomes),
+        config['lr']['espresso']['sqanti']['sj_summary']
+        # expand(config['lr']['td_personal']['cerb']['ic_parsed'],
+        #                    cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #                    hap=hap,
+        #                    sqanti_genome=sqanti_genomes),
+        # expand(config['lr']['espresso']['cerb']['ic_parsed'],
+        #                cell_line_id=df['cell_line_id_1000g'].tolist(),
+        #                sqanti_genome=sqanti_genomes),
         # expand(config['lr']['td_personal']['map']['bam_ind'],
         #        cell_line_id=df['cell_line_id_1000g'].tolist(),
         #        hap=hap),
@@ -584,3 +585,38 @@ use rule summarize_one_exp as hg38_summarize_one_exp with:
     output:
         sj_summary = config['lr']['espresso']['sqanti']['sj_parsed'],
         ic_summary = config['lr']['espresso']['cerb']['ic_parsed']
+
+rule create_summaries:
+    input:
+        ic_files = expand(config['lr']['td_personal']['cerb']['ic_parsed'],
+                           cell_line_id=df['cell_line_id_1000g'].tolist(),
+                           hap=hap,
+                           sqanti_genome=sqanti_genomes)+\
+                    expand(config['lr']['espresso']['cerb']['ic_parsed'],
+                                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+                                   sqanti_genome=sqanti_genomes),
+        sj_files = expand(config['lr']['td_personal']['sqanti']['sj_parsed'],
+                           cell_line_id=df['cell_line_id_1000g'].tolist(),
+                           hap=hap,
+                           sqanti_genome=sqanti_genomes)+\
+                    expand(config['lr']['espresso']['sqanti']['sj_parsed'],
+                                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+                                   sqanti_genome=sqanti_genomes)
+    resources:
+        threads = 1,
+        nodes = 4
+    output:
+        ic_summary = config['lr']['espresso']['cerb']['ic_summary'],
+        sj_summary = config['lr']['espresso']['sqanti']['sj_summary']
+    run:
+        df = pd.DataFrame()
+        for f in list(input.ic_files):
+            temp = pd.read_csv(f, sep='\t')
+            df = pd.concat([temp, df], axis=0)
+        df.to_csv(output.ic_summary)
+
+        df = pd.DataFrame()
+        for f in list(input.sj_files):
+            temp = pd.read_csv(f, sep='\t')
+            df = pd.concat([temp, df], axis=0)
+        df.to_csv(output.sj_summary)
