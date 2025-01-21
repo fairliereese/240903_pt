@@ -52,21 +52,36 @@ len(df.index)
 df = df.loc[df.cell_line_id_1000g.isin(temp_df.cell_line_id.tolist())]
 assert len(df.index) == 30
 
-# TODO bad sample that hasn't finished on espresso
+# TODO try on just one cell line
 bad_samples = ['NA19328']
-df = df.loc[~df.cell_line_id_1000g.isin(bad_samples)]
+df = df.loc[df.cell_line_id_1000g.isin(bad_samples)]
 
 hap = ['hap1', 'hap2']
+
+# genome information table
+sqanti_genomes = ['hap1', 'hap2', 'hg38']
+sqanti_df = df.copy(deep=True)
+sqanti_df['sqanti_genome'] = [sqanti_genomes] * len(df)
+sqanti_df = sqanti_df.explode('sqanti_genome').reset_index(drop=True)
 
 wildcard_constraints:
     cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
     hap='|'.join([re.escape(x) for x in hap]),
+    ref='|'.join([re.escape(x) for x in genomes]),
 
 rule all:
     input:
         expand(config['lr']['td_personal']['map']['bam_ind'],
                cell_line_id=df['cell_line_id_1000g'].tolist(),
                hap=hap),
+        expand(config['lr']['espresso']['sqanti']['cl'],
+                       cell_line_id=df['cell_line_id_1000g'].tolist()),
+        expand(config['lr']['td_personal']['sqanti']['cl'],
+                           cell_line_id=df['cell_line_id_1000g'].tolist(),
+                           hap='hap1'),
+        expand(config['lr']['td_personal']['sqanti']['cl'],
+                          cell_line_id=df['cell_line_id_1000g'].tolist(),
+                          hap='hap2'),
         # config['lr']['td_personal']['sqanti']['sj_summary'],
         # config['lr']['td_personal']['sqanti']['cl_summary'],
         # config['lr']['td_personal']['cerb']['ic_summary'],
@@ -334,18 +349,6 @@ rule sqanti:
             -o {params.opref}
         """
 
-use rule sqanti as sqanti_td with:
-    input:
-        gtf = config['lr']['td_personal']['espresso']['gtf'],
-        fa = config['lr']['td_personal']['ref_fa'],
-        annot = config['ref']['gtf']
-    params:
-        sq_path = config['software']['sqanti_path'],
-        opref = config['lr']['td_personal']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
-        odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
-    output:
-        gff = config['lr']['td_personal']['sqanti']['gff']
-
 # get ics file
 use rule gtf_to_ic as gc_gtf_to_ic with:
     input:
@@ -366,22 +369,6 @@ use rule gtf_to_ic as gc_gtf_to_ic_hg38 with:
     output:
         tsv = config['lr']['espresso']['cerb']['ics']
 
-use rule sqanti as sqanti_td_hg38 with:
-    input:
-        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
-                       lab_sample=get_df_val(df,
-                            'lab_sample',
-                            {'cell_line_id_1000g': wc.cell_line_id})),
-        fa = config['ref']['fa'],
-        annot = config['ref']['gtf']
-    params:
-        sq_path = config['software']['sqanti_path'],
-        opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
-        odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
-    output:
-        gff = config['lr']['espresso']['sqanti']['gff'],
-        sjs = config['lr']['espresso']['sqanti']['sjs'],
-        cl = config['lr']['espresso']['sqanti']['cl']
 
 ##################
 ###### stuff for espresso w/ personal genome haplotypes
@@ -396,10 +383,151 @@ use rule gtf_to_ic as gc_gtf_to_ic_td with:
     output:
         tsv = config['lr']['td_personal']['cerb']['ics']
 
+# use rule sqanti as sqanti_td_td with:
+#     input:
+#         gtf = config['lr']['td_personal']['espresso']['gtf'],
+#         fa = config['lr']['td_personal']['ref_fa'],
+#         annot = config['ref']['gtf']
+#     params:
+#         sq_path = config['software']['sqanti_path'],
+#         opref = config['lr']['td_personal']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+#         odir = '/'.join(config['lr']['td_personal']['sqanti']['gff'].split('/')[:-1])+'/'
+#     output:
+#         gff = config['lr']['td_personal']['sqanti']['gff'],
+#         sjs = config['lr']['td_personal']['sqanti']['sjs'],
+#         cl = config['lr']['td_personal']['sqanti']['cl'],
+#
+#
+# use rule sqanti as sqanti_td_hg38 with:
+#     input:
+#         gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+#                        lab_sample=get_df_val(df,
+#                             'lab_sample',
+#                             {'cell_line_id_1000g': wc.cell_line_id})),
+#         fa = config['ref']['fa'],
+#         annot = config['ref']['gtf']
+#     params:
+#         sq_path = config['software']['sqanti_path'],
+#         opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+#         odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
+#     output:
+#         gff = config['lr']['espresso']['sqanti']['gff'],
+#         sjs = config['lr']['espresso']['sqanti']['sjs'],
+#         cl = config['lr']['espresso']['sqanti']['cl']
+
+####################
+# summarize splice junctions / ics
+# rule summarize:
+#     resources:
+#         nodes = 1,
+#         threads = 1
+#     run:
+#         hg38_files = list(input.hg38_files)
+#         td_hap1_files = list(input.td_hap1_files)
+#         td_hap2_files = list(input.td_hap2_files)
+#
+#         genomes = ['hg38', 'hap1', 'hap2']
+#
+#         df = pd.DataFrame()
+#         for genome, files in zip(genomes, [hg38_files, td_hap1_files, td_hap2_files]):
+#             for clid, file in zip(params.cell_line_id, files):
+#                 # quick check to make sure we're looking at the right
+#                 # cell line for each file
+#                 assert clid in file
+#                 temp = pd.read_csv(file, sep='\t')
+#                 temp['genome'] = genome
+#                 temp['cell_line_id'] = clid
+#                 df = pd.concat([df, temp], axis=0)
+#         df.to_csv(output.summary, sep='\t')
+#
+# use rule summarize as sj_summary with:
+#     input:
+#         hg38_files = expand(config['lr']['espresso']['sqanti']['sjs'],
+#                cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                sqanti_genome=sqanti_genomes),
+#         td_hap1_files = expand(config['lr']['td_personal']['sqanti']['sjs'],
+#                    cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                    hap='hap1',
+#                    sqanti_genome=sqanti_genomes),
+#         td_hap2_files = expand(config['lr']['td_personal']['sqanti']['sjs'],
+#                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                   hap='hap2',
+#                   sqanti_genome=sqanti_genomes),
+#     resources:
+#         nodes = 3,
+#         threads = 1
+#     params:
+#         cell_line_id = df['cell_line_id_1000g'].tolist()
+#     output:
+#         summary = config['lr']['td_personal']['sqanti']['sj_summary']
+#
+# use rule summarize as ic_summary with:
+#     input:
+#         hg38_files = expand(config['lr']['espresso']['cerb']['ics'],
+#                cell_line_id=df['cell_line_id_1000g'].tolist()),
+#         td_hap1_files = expand(config['lr']['td_personal']['cerb']['ics'],
+#                    cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                    hap='hap1'),
+#         td_hap2_files = expand(config['lr']['td_personal']['cerb']['ics'],
+#                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                   hap='hap2'),
+#     params:
+#         cell_line_id = df['cell_line_id_1000g'].tolist()
+#     output:
+#         summary = config['lr']['td_personal']['cerb']['ic_summary']
+#
+# use rule summarize as cl_summary with:
+#     input:
+#         hg38_files = expand(config['lr']['espresso']['sqanti']['cl'],
+#                cell_line_id=df['cell_line_id_1000g'].tolist()),
+#         td_hap1_files = expand(config['lr']['td_personal']['sqanti']['cl'],
+#                    cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                    hap='hap1'),
+#         td_hap2_files = expand(config['lr']['td_personal']['sqanti']['cl'],
+#                   cell_line_id=df['cell_line_id_1000g'].tolist(),
+#                   hap='hap2'),
+#     resources:
+#         nodes = 3,
+#         threads = 1
+#     params:
+#         cell_line_id = df['cell_line_id_1000g'].tolist()
+#     output:
+#         summary = config['lr']['td_personal']['sqanti']['cl_summary']
+#
+
+
+def get_sqanti_ref_fa(wc):
+    if wc['sqanti_genome'] == 'hg38':
+        return config['ref']['fa']
+    else:
+        return expand(config['lr']['td_personal']['ref_fa'],
+                        cell_line_id=wc['cell_line_id'],
+                        hap=wc['sqanti_genome'])[0]
+
+
+# just for the hg38-mapped reads
+use rule sqanti as sqanti_td_hg38 with:
+    input:
+        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+        fa = lambda wc: get_sqanti_ref_fa(wc)
+        annot = config['ref']['gtf']
+    params:
+        sq_path = config['software']['sqanti_path'],
+        opref = config['lr']['espresso']['sqanti']['gff'].split('/')[-1].split('_corrected')[0],
+        odir = '/'.join(config['lr']['espresso']['sqanti']['gff'].split('/')[:-1])+'/'
+    output:
+        gff = config['lr']['espresso']['sqanti']['gff'],
+        sjs = config['lr']['espresso']['sqanti']['sjs'],
+        cl = config['lr']['espresso']['sqanti']['cl']
+
+# sqanti for td mapped genomes
 use rule sqanti as sqanti_td_td with:
     input:
         gtf = config['lr']['td_personal']['espresso']['gtf'],
-        fa = config['lr']['td_personal']['ref_fa'],
+        fa = lambda wc: get_sqanti_ref_fa(wc),
         annot = config['ref']['gtf']
     params:
         sq_path = config['software']['sqanti_path'],
@@ -409,79 +537,3 @@ use rule sqanti as sqanti_td_td with:
         gff = config['lr']['td_personal']['sqanti']['gff'],
         sjs = config['lr']['td_personal']['sqanti']['sjs'],
         cl = config['lr']['td_personal']['sqanti']['cl'],
-
-####################
-# summarize splice junctions / ics
-rule summarize:
-    resources:
-        nodes = 1,
-        threads = 1
-    run:
-        hg38_files = list(input.hg38_files)
-        td_hap1_files = list(input.td_hap1_files)
-        td_hap2_files = list(input.td_hap2_files)
-
-        genomes = ['hg38', 'hap1', 'hap2']
-
-        df = pd.DataFrame()
-        for genome, files in zip(genomes, [hg38_files, td_hap1_files, td_hap2_files]):
-            for clid, file in zip(params.cell_line_id, files):
-                # quick check to make sure we're looking at the right
-                # cell line for each file
-                assert clid in file
-                temp = pd.read_csv(file, sep='\t')
-                temp['genome'] = genome
-                temp['cell_line_id'] = clid
-                df = pd.concat([df, temp], axis=0)
-        df.to_csv(output.summary, sep='\t')
-
-use rule summarize as sj_summary with:
-    input:
-        hg38_files = expand(config['lr']['espresso']['sqanti']['sjs'],
-               cell_line_id=df['cell_line_id_1000g'].tolist()),
-        td_hap1_files = expand(config['lr']['td_personal']['sqanti']['sjs'],
-                   cell_line_id=df['cell_line_id_1000g'].tolist(),
-                   hap='hap1'),
-        td_hap2_files = expand(config['lr']['td_personal']['sqanti']['sjs'],
-                  cell_line_id=df['cell_line_id_1000g'].tolist(),
-                  hap='hap2'),
-    resources:
-        nodes = 3,
-        threads = 1
-    params:
-        cell_line_id = df['cell_line_id_1000g'].tolist()
-    output:
-        summary = config['lr']['td_personal']['sqanti']['sj_summary']
-
-use rule summarize as ic_summary with:
-    input:
-        hg38_files = expand(config['lr']['espresso']['cerb']['ics'],
-               cell_line_id=df['cell_line_id_1000g'].tolist()),
-        td_hap1_files = expand(config['lr']['td_personal']['cerb']['ics'],
-                   cell_line_id=df['cell_line_id_1000g'].tolist(),
-                   hap='hap1'),
-        td_hap2_files = expand(config['lr']['td_personal']['cerb']['ics'],
-                  cell_line_id=df['cell_line_id_1000g'].tolist(),
-                  hap='hap2'),
-    params:
-        cell_line_id = df['cell_line_id_1000g'].tolist()
-    output:
-        summary = config['lr']['td_personal']['cerb']['ic_summary']
-
-use rule summarize as cl_summary with:
-    input:
-        hg38_files = expand(config['lr']['espresso']['sqanti']['cl'],
-               cell_line_id=df['cell_line_id_1000g'].tolist()),
-        td_hap1_files = expand(config['lr']['td_personal']['sqanti']['cl'],
-                   cell_line_id=df['cell_line_id_1000g'].tolist(),
-                   hap='hap1'),
-        td_hap2_files = expand(config['lr']['td_personal']['sqanti']['cl'],
-                  cell_line_id=df['cell_line_id_1000g'].tolist(),
-                  hap='hap2'),
-    resources:
-        nodes = 3,
-        threads = 1
-    params:
-        cell_line_id = df['cell_line_id_1000g'].tolist()
-    output:
-        summary = config['lr']['td_personal']['sqanti']['cl_summary']

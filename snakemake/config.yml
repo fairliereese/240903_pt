@@ -647,9 +647,9 @@ lr:
       gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/04_transcript_discovery_haplotypes/data/espresso_q/{cell_line_id}_{hap}/samples_N2_R0_updated.gtf
 
     sqanti:
-      gff: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_corrected.gtf.cds.gff
-      sjs: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_junctions.txt
-      cl: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_sqanti_classification.txt
+      gff: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_corrected.gtf.cds.gff
+      sjs: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_junctions.txt
+      cl: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_classification.txt
       sj_summary: ../../data/td_personal/sqanti/sj_summary.tsv
       cl_summary: ../../data/td_personal/sqanti/classification_summary.tsv
 
