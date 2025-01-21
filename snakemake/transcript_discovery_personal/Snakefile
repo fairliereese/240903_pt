@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import sys
 import pysam
+import cerberus
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
@@ -75,11 +76,11 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['td_personal']['sqanti']['cl'],
+        expand(config['lr']['espresso']['cerb']['ic_parsed'],
                            cell_line_id=df['cell_line_id_1000g'].tolist(),
                            hap=hap,
                            sqanti_genome=sqanti_genomes),
-        expand(config['lr']['espresso']['sqanti']['cl'],
+        expand(config['lr']['espresso']['cerb']['ic_parsed'],
                        cell_line_id=df['cell_line_id_1000g'].tolist(),
                        sqanti_genome=sqanti_genomes),
         # expand(config['lr']['td_personal']['map']['bam_ind'],
@@ -531,3 +532,56 @@ use rule sqanti as sqanti_td_td with:
         gff = config['lr']['td_personal']['sqanti']['gff'],
         sjs = config['lr']['td_personal']['sqanti']['sjs'],
         cl = config['lr']['td_personal']['sqanti']['cl'],
+
+################
+### summaries for each boi
+###############
+rule summarize_one_exp:
+    resources:
+        threads = 1,
+        nodes = 1
+    conda:
+        'cerberus'
+    shell:
+        """
+        python {params.scripts_dir}get_ic_sj_td_summaries.py \
+          --cl_file {input.cl} \
+          --gtf_file {input.gtf} \
+          --sjs_file {input.sjs} \
+          --sjs_summary {output.sj_summary} \
+          --ic_summary {output.ic_summary} \
+          --cell_line_id {params.cell_line_id} \
+          --map_genome {params.map_genome} \
+          --sqanti_genome {params.sqanti_genome}
+        """
+
+use rule summarize_one_exp as td_summarize_one_exp with:
+    input:
+        gtf = config['lr']['td_personal']['espresso']['gtf'],
+        sjs = config['lr']['td_personal']['sqanti']['sjs'],
+        cl = config['lr']['td_personal']['sqanti']['cl']
+    params:
+        cell_line_id = lambda wc: wc.cell_line_id,
+        hap = lambda wc: wc.hap,
+        sqanti_genome = lambda wc: wc.sqanti_genome,
+        scripts_dir = p
+    output:
+        sj_summary = config['lr']['td_personal']['sqanti']['sj_parsed'],
+        ic_summary = config['lr']['td_personal']['cerb']['ic_parsed']
+
+use rule summarize_one_exp as hg38_summarize_one_exp with:
+    input:
+        gtf = lambda wc: expand(config['lr']['espresso']['gtf'],
+                       lab_sample=get_df_val(df,
+                            'lab_sample',
+                            {'cell_line_id_1000g': wc.cell_line_id})),
+        sjs = config['lr']['td_personal']['sqanti']['sjs'],
+        cl = config['lr']['td_personal']['sqanti']['cl']
+    params:
+        cell_line_id = lambda wc: wc.cell_line_id,
+        hap = 'hg38',
+        sqanti_genome = lambda wc: wc.sqanti_genome,
+        scripts_dir = p
+    output:
+        sj_summary = config['lr']['espresso']['sqanti']['sj_parsed'],
+        ic_summary = config['lr']['espresso']['cerb']['ic_parsed']

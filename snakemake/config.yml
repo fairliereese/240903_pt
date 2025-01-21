@@ -215,13 +215,14 @@ lr:
   espresso:
     gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/espresso/{lab_sample}_espresso.gtf
 
-    cerb:
-      ics: ../../data/espresso/cerb/{cell_line_id}_ics.tsv
-
     sqanti:
       gff: ../../data/espresso/sqanti/{cell_line_id}_{sqanti_genome}_sqanti_corrected.gtf.cds.gff
       sjs: ../../data/espresso/sqanti/{cell_line_id}_{sqanti_genome}_sqanti_junctions.txt
       cl: ../../data/espresso/sqanti/{cell_line_id}_{sqanti_genome}_sqanti_classification.txt
+      sj_parsed: ../../data/espresso/sqanti/{cell_line_id}_{sqanti_genome}_sj_parsed.tsv
+
+    cerb:
+      ic_parsed: ../../data/espresso/sqanti/{cell_line_id}_{sqanti_genome}_ics.tsv
 
   as:
     ase: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/08_allele_specifics/data/ase_results_threeannots.tsv
@@ -650,11 +651,11 @@ lr:
       gff: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_corrected.gtf.cds.gff
       sjs: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_junctions.txt
       cl: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_classification.txt
+      sj_parsed: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sj_parsed.tsv
       sj_summary: ../../data/td_personal/sqanti/sj_summary.tsv
-      cl_summary: ../../data/td_personal/sqanti/classification_summary.tsv
 
     cerb:
-      ics: ../../data/td_personal/cerb/{cell_line_id}_{hap}_ics.tsv
+      ic_parsed: ../../data/td_personal/cerb/{cell_line_id}_{hap}_{sqanti_genome}_ics.tsv
       ic_summary: ../../data/td_personal/cerb/ic_summary.tsv
 
 
