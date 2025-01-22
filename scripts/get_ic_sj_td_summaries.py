@@ -61,13 +61,16 @@ df.to_csv(args.ic_summary, sep='\t', index=False)
 ## SJ DF
 #######################
 df = pd.read_csv(args.sjs_file, sep='\t')
-df = df[['chrom', 'strand', 'genomic_start_coord', 'genomic_end_coord', 'splice_site', 'canonical']]
+df = df[['chrom', 'strand', 'genomic_start_coord', 'genomic_end_coord', 'splice_site', 'canonical', 'junction_category', 'start_site_category', 'end_site_category']]
 df['sj_id'] = df['chrom'].astype(str) + '_' +\
               df['strand'].astype(str) + '_' +\
               df['genomic_start_coord'].astype(str) + '_' +\
               df['genomic_end_coord'].astype(str)
-df = df[['sj_id', 'splice_site', 'canonical']].drop_duplicates()
-df = df.rename({'splice_site': 'splice_motif'}, axis=1)
+df = df[['sj_id', 'splice_site', 'canonical', 'junction_category', 'start_site_category', 'end_site_category']].drop_duplicates()
+df = df.rename({'splice_site': 'splice_motif',
+                'junction_category': 'junction_novelty',
+                'start_site_category': 'start_site_novelty',
+                'end_site_category': 'end_site_category'}, axis=1)
 
 # add sample, map/td genome, sqanti genome metadata and concat
 df['cell_line_id'] = args.cell_line_id

@@ -12,7 +12,7 @@ ref:
       link: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz
       bed: ../../ref/ucscGenePfam.bed
     personal:
-      fa_gz: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.gz
+      fa_gz: ../../ref/personalcl+/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.gz
       fa_mmi: ../../ref/personal/{assembly_sample}_{assembly_haplotype}/{assembly_sample}_{assembly_haplotype}.fa.mmi
 
       v47_kallisto:
@@ -652,11 +652,11 @@ lr:
       sjs: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_junctions.txt
       cl: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_classification.txt
       sj_parsed: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sj_parsed.tsv
-      sj_summary: ../../data/td_personal/sqanti/sj_summary.tsv
+      sj_summary: ../../data/td_personal/sqanti/sj_summary.csv
 
     cerb:
       ic_parsed: ../../data/td_personal/cerb/{cell_line_id}_{hap}_{sqanti_genome}_ics.tsv
-      ic_summary: ../../data/td_personal/cerb/ic_summary.tsv
+      ic_summary: ../../data/td_personal/cerb/ic_summary.csv
 
 
 
