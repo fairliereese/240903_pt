@@ -696,7 +696,7 @@ use rule bcftools_subset_on_samples as get_sample_exon_vcf with:
     input:
         vcf = config['1000g']['exon_vars']
     params:
-        samples = lambda wc: fmt_list_for_cli(wc.cell_line_id)
+        samples = lambda wc: wc.cell_line_id
     output:
         vcf = temporary(config['lr']['td_personal']['exon_vars']['vcf_sample'])
 
