@@ -620,3 +620,42 @@ rule create_summaries:
             temp = pd.read_csv(f, sep='\t')
             df = pd.concat([temp, df], axis=0)
         df.to_csv(output.sj_summary)
+
+# get a bed file of +-10 bp from each SJ
+rule get_10nt_sj_bed:
+    input:
+        sj_summary = config['lr']['td_personal']['sqanti']['sj_summary']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed']
+    run:
+        df = pd.read_csv(input.sj_summary)
+        df.drop('Unnamed: 0', axis=1, inplace=True)
+
+        # remove sqanti genome and drop dupes
+        # the sqanti genome / sqanti metrics SHOULD be irrelevant here
+        df = df.drop(['sqanti_genome', 'canonical', 'splice_motif'], axis=1)
+        print(len(df.index))
+        df = df.drop_duplicates()
+        print(len(df.index))
+
+        df.head()
+
+        # then make sure that there are no dupe. sj+sj nov+sample+map genome
+        temp = df.loc[df[['sj_id', 'junction_novelty',
+                          'cell_line_id', 'map_genome', 'start_site_novelty',
+                          'end_site_category']].duplicated(keep=False)]
+        assert len(temp.index) == 0
+        del temp
+
+        df.rename({'end_site_category': 'end_site_novelty'}, axis=1, inplace=True)
+
+        # transform to be t/f for each ic per genome
+        temp = pd.crosstab(index=[df.sj_id, df.junction_novelty,
+                                         df.start_site_novelty,
+                                         df.end_site_novelty, df.cell_line_id],
+                                  columns=df.map_genome,
+                                  values=df.map_genome,
+                                  aggfunc=lambda x: True).fillna(False).reset_index()
