@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import sys
 import pysam
+import pyranges as pr
 
 p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
 sys.path.append(p)
@@ -75,7 +76,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        config['lr']['td_personal']['sqanti']['sj_summary']
+        config['lr']['td_personal']['sqanti']['sj_10nt_bed']
         # expand(config['lr']['td_personal']['cerb']['ic_parsed'],
         #                    cell_line_id=df['cell_line_id_1000g'].tolist(),
         #                    hap=hap,
@@ -640,8 +641,6 @@ rule get_10nt_sj_bed:
         print(len(df.index))
         df = df.drop_duplicates()
         print(len(df.index))
-
-        df.head()
 
         # then make sure that there are no dupe. sj+sj nov+sample+map genome
         temp = df.loc[df[['sj_id', 'junction_novelty',
