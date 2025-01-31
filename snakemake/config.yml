@@ -885,6 +885,7 @@ software:
   trios_meta: /gpfs/projects/bsc83/Data/1000G/1000G_trios_metadata.tsv
 
   exon_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/1000G_variants_in_exons.vcf
+  exon_vars_header: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/1000G_variants_in_exons_headed.vcf
 
   hla_dpi_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/data/example_HLA_variants_v2.vcf
   hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{population}.vcf

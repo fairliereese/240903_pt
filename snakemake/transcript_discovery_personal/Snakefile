@@ -694,7 +694,7 @@ rule get_10nt_sj_bed:
 
 use rule bcftools_subset_on_samples as get_sample_exon_vcf with:
     input:
-        vcf = config['1000g']['vcf']
+        vcf = config['1000g']['exon_vars_header']
     params:
         samples = lambda wc: wc.cell_line_id
     output:
