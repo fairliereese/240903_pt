@@ -727,7 +727,6 @@ rule bcftool_subset_on_samples_and_bed_intersect:
         bed = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect']
     shell:
         """
-        # inprinciple shold be able to remove wb
         module load bedtools
         bcftools view \
             --samples {params.samples} \
@@ -737,6 +736,5 @@ rule bcftool_subset_on_samples_and_bed_intersect:
         bedtools intersect \
              -a {input.bed} \
              -b stdin \
-             -wa \
-             -wb > {output.bed}
+             -wa > {output.bed}
         """
