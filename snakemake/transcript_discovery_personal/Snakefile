@@ -57,9 +57,9 @@ assert len(df.index) == 30
 # bad_samples = ['NA19328']
 # df = df.loc[df.cell_line_id_1000g.isin(bad_samples)]
 
-# # TODO try on just one cell line
-# test_samples = ['NA12273']
-# df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
+# TODO try on just one cell line
+test_samples = ['NA12273']
+df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
 
 hap = ['hap1', 'hap2']
 
@@ -692,21 +692,50 @@ rule get_10nt_sj_bed:
         temp = pr.PyRanges(temp)
         temp.to_bed(output.bed)
 
-use rule bcftools_subset_on_samples as get_sample_exon_vcf with:
+# use rule bcftools_subset_on_samples as get_sample_exon_vcf with:
+#     input:
+#         vcf = config['1000g']['exon_vars_header']
+#     params:
+#         samples = lambda wc: wc.cell_line_id
+#     output:
+#         vcf = temporary(config['lr']['td_personal']['exon_vars']['vcf_sample'])
+
+#
+# use rule intersect_variants_with_bed as intersect_sj_10nt_vcf with:
+#     input:
+#         bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed'],
+#         vcf = config['lr']['td_personal']['exon_vars']['vcf_sample']
+#     resources:
+#         threads = 16,
+#         nodes = 2
+#     output:
+        # bed = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect']
+
+
+rule bcftool_subset_on_samples_and_bed_intersect:
     input:
-        vcf = config['1000g']['exon_vars_header']
+        vcf = config['1000g']['exon_vars_header'],
+        bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed']
+    resources:
+        threads = 8,
+        nodes = 3
+    conda:
+        'base'
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        vcf = temporary(config['lr']['td_personal']['exon_vars']['vcf_sample'])
-
-
-use rule intersect_variants_with_bed as intersect_sj_10nt_vcf with:
-    input:
-        bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed'],
-        vcf = config['lr']['td_personal']['exon_vars']['vcf_sample']
-    resources:
-        threads = 16,
-        nodes = 2
-    output:
         bed = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect']
+    shell:
+        """
+        # inprinciple shold be able to remove wb
+        module load bedtools
+        bcftools view \
+            --samples {params.samples} \
+            -Oz \
+            {input.vcf} | \
+        bedtools intersect \
+             -a {input.bed} \
+             -b stdin \
+             -wa \
+             -wb > {output.bed}
+        """
