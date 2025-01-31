@@ -731,6 +731,7 @@ rule bcftool_subset_on_samples_and_bed_intersect:
         module load bedtools
         bcftools view \
             --samples {params.samples} \
+            --threads {resources.threads} \
             -Oz \
             {input.vcf} | \
         bedtools intersect \
