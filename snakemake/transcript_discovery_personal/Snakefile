@@ -736,5 +736,6 @@ rule bcftool_subset_on_samples_and_bed_intersect:
         bedtools intersect \
              -a {input.bed} \
              -b stdin \
-             -wa > {output.bed}
+             -wa \
+             -u > {output.bed}
         """
