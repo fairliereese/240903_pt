@@ -732,6 +732,7 @@ rule bcftool_subset_on_samples_and_bed_intersect:
             --samples {params.samples} \
             --threads {resources.threads} \
             -Ov \
+            --min-ac=1 \
             {input.vcf} | \
         bedtools intersect \
              -a {input.bed} \
