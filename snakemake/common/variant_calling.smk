@@ -201,7 +201,7 @@ rule bcftools_subset_on_samples:
         """
         bcftools view \
         --samples {params.samples} \
-        -Ov \
+        -Oz \
         {input.vcf} > {output.vcf}
         """
 rule vcftools_calc_af:
