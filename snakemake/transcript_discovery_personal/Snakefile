@@ -57,9 +57,9 @@ assert len(df.index) == 30
 # bad_samples = ['NA19328']
 # df = df.loc[df.cell_line_id_1000g.isin(bad_samples)]
 
-# TODO try on just one cell line
-test_samples = ['NA12273']
-df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
+# # TODO try on just one cell line
+# test_samples = ['NA12273']
+# df = df.loc[df.cell_line_id_1000g.isin(test_samples)]
 
 hap = ['hap1', 'hap2']
 
