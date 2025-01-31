@@ -211,6 +211,7 @@ lr:
 
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
+  gtf_gc_poder_biotypes: ../../data/v47_poder_merge_t_biotypes.tsv
 
   espresso:
     gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/espresso/{lab_sample}_espresso.gtf

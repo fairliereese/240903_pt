@@ -251,6 +251,21 @@ use rule compute_gene_level_tsv as gene_level_counts with:
     output:
         tsv = config['mage']['v47_kallisto']['gene_tsv']
 
+rule get_enh_v47_biotypes:
+    input:
+        gtf = config['lr']['gtf_gc_poder']
+    resources:
+        nodes = 1,
+        threads = 1
+    output:
+        tsv = config['lr']['gtf_gc_poder_biotypes']
+    run:
+        import pyranges as pr
+        df = pr.read_gtf(input.gtf)
+        df = df.df
+        df = df[['transcript_id', 'gene_type']].drop_duplicates()
+        df.to_csv(output.tsv, sep='\t', index=False)
+
 ## v47 enh kallisto
 use rule short_kallisto_build_ind as enh_v47_sr_kallisto_ind with:
     input:
