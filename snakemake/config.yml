@@ -655,6 +655,7 @@ lr:
       sj_parsed: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sj_parsed.tsv
       sj_summary: ../../data/td_personal/sqanti/sj_summary.csv
       sj_10nt_bed:  ../../data/td_personal/sqanti/sj_10nt.bed
+      sj_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_12nt.bed
 
     cerb:
       ic_parsed: ../../data/td_personal/cerb/{cell_line_id}_{hap}_{sqanti_genome}_ics.tsv
@@ -663,6 +664,7 @@ lr:
     exon_vars:
       vcf_sample: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars.vcf.gz
       sj_10nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int.bed
+      sj_12nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.bed
 
 
 
