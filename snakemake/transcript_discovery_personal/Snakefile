@@ -663,14 +663,14 @@ rule get_10nt_sj_bed:
 
         temp[['Chromosome', 'Strand', 'Start', 'End']] = temp.sj_id.str.split('_', expand=True)
         temp = temp[['Chromosome', 'Strand', 'Start', 'End',
-                     'cell_line_id']].drop_duplicates()
+                     'cell_line_id', 'sj_id']].drop_duplicates()
 
         temp.Start = temp.Start.astype(int)
         temp.End = temp.End.astype(int)
         assert len(temp.loc[temp.Start>temp.End])==0
 
         # melt to 5' and 3'
-        temp = temp.melt(id_vars=['Chromosome', 'Strand', 'cell_line_id'],
+        temp = temp.melt(id_vars=['Chromosome', 'Strand', 'cell_line_id', 'sj_id'],
                          value_vars=['Start', 'End'])
         temp['sj_loc'] = ''
         temp.loc[temp.map_genome=='Start', 'sj_loc'] = 'start'
@@ -688,6 +688,8 @@ rule get_10nt_sj_bed:
         temp.loc[temp.sj_loc=='start', 'Start'] = temp.loc[temp.sj_loc=='start', 'Start']-9
         temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+14
         temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']+2
+
+        temp.drop(['cell_line_id', 'map_genome'], axis=1, inplace=True)
 
         temp = pr.PyRanges(temp)
         temp.to_bed(output.bed)
@@ -718,7 +720,7 @@ rule bcftool_subset_on_samples_and_bed_intersect:
         bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed']
     resources:
         threads = 8,
-        nodes = 3
+        nodes = 2
     conda:
         'base'
     params:
