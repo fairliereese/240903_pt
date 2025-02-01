@@ -686,12 +686,16 @@ rule get_10nt_sj_bed:
         # add 10 to start, rm 10 from end
         # verified https://trello.com/c/qzMAZpAm
         temp.loc[temp.sj_loc=='start', 'Start'] = temp.loc[temp.sj_loc=='start', 'Start']-9
-        temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+14
+        temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+11
         temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']+2
 
         temp.drop(['cell_line_id', 'map_genome'], axis=1, inplace=True)
 
+        temp['len'] = temp.End-temp.Start
+        assert len(temp.loc[temp.len!=10]) == 0
+
         temp = pr.PyRanges(temp)
+
         temp.to_bed(output.bed)
 
 # use rule bcftools_subset_on_samples as get_sample_exon_vcf with:
