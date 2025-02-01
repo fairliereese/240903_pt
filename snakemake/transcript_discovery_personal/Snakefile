@@ -790,15 +790,14 @@ rule get_12nt_sj_ss_bed:
 
 
         temp[['Chromosome', 'Strand', 'Start', 'End']] = temp.sj_id.str.split('_', expand=True)
-        temp = temp[['Chromosome', 'Strand', 'Start', 'End',
-                     'cell_line_id', 'sj_id']].drop_duplicates()
+        temp = temp[['Chromosome', 'Strand', 'Start', 'End', 'sj_id']].drop_duplicates()
 
         temp.Start = temp.Start.astype(int)
         temp.End = temp.End.astype(int)
         assert len(temp.loc[temp.Start>temp.End])==0
 
         # melt to 5' and 3'
-        temp = temp.melt(id_vars=['Chromosome', 'Strand', 'cell_line_id', 'sj_id'],
+        temp = temp.melt(id_vars=['Chromosome', 'Strand', 'sj_id'],
                          value_vars=['Start', 'End'])
         temp['sj_loc'] = ''
         temp.loc[temp.map_genome=='Start', 'sj_loc'] = 'start'
@@ -819,7 +818,7 @@ rule get_12nt_sj_ss_bed:
         temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+11
         temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']
 
-        temp.drop(['cell_line_id', 'map_genome'], axis=1, inplace=True)
+        temp.drop(['map_genome'], axis=1, inplace=True)
 
         temp['len'] = temp.End-temp.Start
         assert len(temp.loc[temp.len!=12]) == 0
@@ -827,6 +826,7 @@ rule get_12nt_sj_ss_bed:
         temp = pr.PyRanges(temp)
         temp.to_bed(output.bed)
 
+# eventually I will also want to run this on all 1000g samples!!
 use rule bcftool_subset_on_samples_and_bed_intersect as sample_12bp_sj_ss_var with:
     input:
         vcf = config['1000g']['exon_vars_header'],
