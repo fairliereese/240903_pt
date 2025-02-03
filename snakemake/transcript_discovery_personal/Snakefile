@@ -70,14 +70,11 @@ sqanti_df['sqanti_genome'] = [sqanti_genomes] * len(df)
 sqanti_df = sqanti_df.explode('sqanti_genome').reset_index(drop=True)
 
 # get all of the IDs for the 1000g
-# get all of the IDs for the 1000g
-df_1kg = pd.read_csv(proc_cfg(config['1000g']['meta'],od),
+df_1kg = pd.read_csv(config['1000g']['meta'],
     sep='\t', comment='#', header=None)
 df_1kg = df_1kg[[9,10]]
 len(df_1kg.cell_line_id.unique())
-
-# get all of the IDs for the 1000g
-temp = pd.read_csv(proc_cfg(config['1000g']['trios_meta'],od),
+temp = pd.read_csv(config['1000g']['trios_meta'],
     sep='\t', comment='#', header=None)
 temp = temp[[9,10]]
 temp.columns = ['cell_line_id', 'population']
