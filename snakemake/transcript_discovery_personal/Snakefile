@@ -87,7 +87,8 @@ assert len(df_1kg.cell_line_id.unique()) == 3202
 df_1kg = df_1kg.head(1)
 
 wildcard_constraints:
-    cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
+    cell_line_id='|'.join(df_1kg['cell_line_id'].unique()),
+    # cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
     hap='|'.join([re.escape(x) for x in hap]),
     ref='|'.join([re.escape(x) for x in sqanti_genomes]),
 
@@ -935,5 +936,4 @@ use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_10
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        vcf = lambda wc: expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
-                     cell_line_id=wc.cell_line_id)
+        vcf = config['1000g']['sj_12nt_vcf_intersect_vcf']
