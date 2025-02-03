@@ -35,6 +35,7 @@ ref:
   fa: ../../ref/hg38.fa
   fa_mmi: ../../ref/hg38.fa.mmi
   gtf: ../../ref/annot.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
+  sj_12nt_bed:  ../../ref/sj_ss_12nt.bed
 
   sqanti:
     gff: ../../ref/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
@@ -665,10 +666,6 @@ lr:
     exon_vars:
       sj_10nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int.bed
       sj_12nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.bed
-      sj_12nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.vcf
-
-
-
 
 
 mage:
@@ -895,3 +892,5 @@ software:
   hla_dpi_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/data/example_HLA_variants_v2.vcf
   hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{population}.vcf
   hla_dpi_pop_af: ../../data/1000g/example_HLA_variants_v2_{population}_afs.frq
+
+  sj_12nt_vcf_intersect_vcf: ../../data/1000g/{cell_line_id}_exon_ss_vars_int.vcf
