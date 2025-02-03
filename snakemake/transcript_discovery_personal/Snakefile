@@ -886,7 +886,7 @@ use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var wi
 
 # get annotated bed regions from 10bp+- sjs and the SSs
 rule get_annot_sj_ss_12nt_bed:
-    input
+    input:
         gtf = config['ref']['gtf']
     resources:
         nodes = 2,
