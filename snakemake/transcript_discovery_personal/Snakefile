@@ -852,38 +852,6 @@ use rule bcftool_subset_on_samples_and_bed_intersect as sample_12bp_sj_ss_var wi
     output:
         bed = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect']
 
-
-rule bcftool_subset_on_samples_and_vcf_intersect:
-    resources:
-        threads = 8,
-        nodes = 2
-    conda:
-        'base'
-    shell:
-        """
-        module load bedtools
-        bcftools view \
-            --samples {params.samples} \
-            --threads {resources.threads} \
-            -Ov \
-            --min-ac=1 \
-            {input.vcf} | \
-        bedtools intersect \
-             -a stdin \
-             -b {input.bed} \
-             -wa \
-             -u > {output.vcf}
-        """
-# get the variants per sample that intersect w/ +-10bp exons or SS
-use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_1000g with:
-    input:
-        vcf = config['1000g']['vcf'],
-        bed = config['ref']['sj_12nt_bed']
-    params:
-        samples = lambda wc: wc.cell_line_id
-    output:
-        vcf = config['1000g']['sj_12nt_vcf_intersect_vcf']
-
 # get annotated bed regions from 10bp+- sjs and the SSs
 rule get_annot_sj_ss_12nt_bed:
     input:
@@ -933,3 +901,34 @@ rule get_annot_sj_ss_12nt_bed:
         temp = pr.PyRanges(temp)
 
         temp.to_bed(output.bed)
+
+rule bcftool_subset_on_samples_and_vcf_intersect:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        module load bedtools
+        bcftools view \
+            --samples {params.samples} \
+            --threads {resources.threads} \
+            -Ov \
+            --min-ac=1 \
+            {input.vcf} | \
+        bedtools intersect \
+             -a stdin \
+             -b {input.bed} \
+             -wa \
+             -u > {output.vcf}
+        """
+# get the variants per sample that intersect w/ +-10bp exons or SS
+use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_1000g with:
+    input:
+        vcf = config['1000g']['vcf'],
+        bed = config['ref']['sj_12nt_bed']
+    params:
+        samples = lambda wc: wc.cell_line_id
+    output:
+        vcf = config['1000g']['sj_12nt_vcf_intersect_vcf']
