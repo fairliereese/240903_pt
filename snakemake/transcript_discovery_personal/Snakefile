@@ -91,12 +91,14 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf'],
-               cell_line_id=df_1kg['cell_line_id'].tolist()), # this guy for all the samples in here
         expand(config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist())
+
+        # expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf'],
+        #        cell_line_id=df_1kg['cell_line_id'].tolist()), # this guy for all the samples in here
+
         # config['lr']['td_personal']['sqanti']['sj_10nt_bed']
         # expand(config['lr']['td_personal']['cerb']['ic_parsed'],
         #                    cell_line_id=df['cell_line_id_1000g'].tolist(),
