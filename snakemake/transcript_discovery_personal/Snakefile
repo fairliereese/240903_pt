@@ -910,7 +910,7 @@ rule get_annot_sj_ss_12nt_bed:
 rule bcftool_subset_on_samples_and_vcf_intersect:
     resources:
         threads = 8,
-        nodes = 2
+        nodes = 3
     conda:
         'base'
     shell:
