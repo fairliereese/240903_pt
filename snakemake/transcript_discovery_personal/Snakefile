@@ -98,8 +98,8 @@ rule all:
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         config['ref']['sj_12nt_bed'],
-        # expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
-        #        cell_line_id=df_1kg['cell_line_id'].tolist()) # this guy for all the samples in here
+        expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
+               cell_line_id=df_1kg['cell_line_id'].tolist()) # this guy for all the samples in here
 
         # config['lr']['td_personal']['sqanti']['sj_10nt_bed']
         # expand(config['lr']['td_personal']['cerb']['ic_parsed'],
@@ -935,4 +935,5 @@ use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_10
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        vcf = config['1000g']['sj_12nt_vcf_intersect_vcf']
+        vcf = expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
+                     cell_line_id=wc.cell_line_id)
