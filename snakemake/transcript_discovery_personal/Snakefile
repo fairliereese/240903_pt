@@ -875,7 +875,7 @@ rule bcftool_subset_on_samples_and_vcf_intersect:
              -u > {output.vcf}
         """
 # get the variants per sample that intersect w/ +-10bp exons or SS
-use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var with:
+use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_1000g with:
     input:
         vcf = config['1000g']['vcf'],
         bed = config['ref']['sj_12nt_bed']
