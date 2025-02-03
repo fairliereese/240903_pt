@@ -882,7 +882,7 @@ use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var wi
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        vcf = config['lr']['1000g']['sj_12nt_vcf_intersect_vcf']
+        vcf = config['1000g']['sj_12nt_vcf_intersect_vcf']
 
 # get annotated bed regions from 10bp+- sjs and the SSs
 rule get_annot_sj_ss_12nt_bed:
