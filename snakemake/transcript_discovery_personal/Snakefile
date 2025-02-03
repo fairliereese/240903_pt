@@ -83,8 +83,8 @@ df_1kg = pd.concat([df_1kg, temp], axis=0)
 len(df_1kg.cell_line_id.unique())
 assert len(df_1kg.cell_line_id.unique()) == 3202
 
-# TODO
-df_1kg = df_1kg.head(1)
+# # TODO
+# df_1kg = df_1kg.head(1)
 
 wildcard_constraints:
     cell_line_id='|'.join(df_1kg['cell_line_id'].unique()),
