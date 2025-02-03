@@ -836,7 +836,7 @@ rule get_12nt_sj_ss_bed:
         temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+11
         temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']
 
-        temp.drop(['cell_line_id', 'map_genome'], axis=1, inplace=True)
+        temp.drop(['map_genome'], axis=1, inplace=True)
 
         temp['len'] = temp.End-temp.Start
         assert len(temp.loc[temp.len!=12]) == 0
