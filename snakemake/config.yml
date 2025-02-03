@@ -656,6 +656,7 @@ lr:
       sj_summary: ../../data/td_personal/sqanti/sj_summary.csv
       sj_10nt_bed:  ../../data/td_personal/sqanti/sj_10nt.bed
       sj_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_12nt.bed
+      sj_annot_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_annot_12nt.bed # only annot. sjs+ss
 
     cerb:
       ic_parsed: ../../data/td_personal/cerb/{cell_line_id}_{hap}_{sqanti_genome}_ics.tsv
@@ -664,6 +665,8 @@ lr:
     exon_vars:
       sj_10nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int.bed
       sj_12nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.bed
+      sj_12nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.vcf
+
 
 
 
@@ -883,8 +886,8 @@ software:
   vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
   vcf_chr: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.chr{chrom}.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
 
-  meta: /gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
-  trios_meta: /gpfs/projects/bsc83/Data/1000G/1000G_trios_metadata.tsv
+  meta: ../../data/1000g/1000g_meta.tsv #/gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
+  trios_meta: ../../data/1000g/1000g_trios_meta.tsv #/gpfs/projects/bsc83/Data/1000G/1000G_trios_metadata.tsv
 
   exon_vars: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/1000G_variants_in_exons.vcf
   exon_vars_header: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/1000G_variants_in_exons_headed.vcf

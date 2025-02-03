@@ -69,6 +69,21 @@ sqanti_df = df.copy(deep=True)
 sqanti_df['sqanti_genome'] = [sqanti_genomes] * len(df)
 sqanti_df = sqanti_df.explode('sqanti_genome').reset_index(drop=True)
 
+# get all of the IDs for the 1000g
+# get all of the IDs for the 1000g
+df_1kg = pd.read_csv(proc_cfg(config['1000g']['meta'],od),
+    sep='\t', comment='#', header=None)
+df_1kg = df_1kg[[9,10]]
+len(df_1kg.cell_line_id.unique())
+
+# get all of the IDs for the 1000g
+temp = pd.read_csv(proc_cfg(config['1000g']['trios_meta'],od),
+    sep='\t', comment='#', header=None)
+temp = temp[[9,10]]
+temp.columns = ['cell_line_id', 'population']
+df_1kg = pd.concat([df_1kg, temp], axis=0)
+len(df_1kg.cell_line_id.unique())
+
 wildcard_constraints:
     cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
     hap='|'.join([re.escape(x) for x in hap]),
@@ -76,6 +91,8 @@ wildcard_constraints:
 
 rule all:
     input:
+        expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf'],
+               cell_line_id=df_1kg['cell_line_id'].tolist()), # this guy for all the samples in here
         expand(config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect'],
@@ -818,9 +835,7 @@ rule get_12nt_sj_ss_bed:
         temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+11
         temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']
 
-        temp.drop(['map_genome'], axis=1, inplace=True)
-
-        temp['len'] = temp.End-temp.Start
+        temp.drop(['map_genome']emp.Start
         assert len(temp.loc[temp.len!=12]) == 0
 
         temp = pr.PyRanges(temp)
@@ -829,9 +844,43 @@ rule get_12nt_sj_ss_bed:
 # eventually I will also want to run this on all 1000g samples!!
 use rule bcftool_subset_on_samples_and_bed_intersect as sample_12bp_sj_ss_var with:
     input:
-        vcf = config['1000g']['exon_vars_header'],
+        vcf = config['1000g']['vcf'],
         bed = config['lr']['td_personal']['sqanti']['sj_12nt_bed']
     params:
         samples = lambda wc: wc.cell_line_id
     output:
         bed = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect']
+
+
+rule bcftool_subset_on_samples_and_vcf_intersect:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        module load bedtools
+        bcftools view \
+            --samples {params.samples} \
+            --threads {resources.threads} \
+            -Ov \
+            --min-ac=1 \
+            {input.vcf} | \
+        bedtools intersect \
+             -a stdin \
+             -b {input.bed} \
+             -wa \
+             -u > {output.vcf}
+        """
+
+
+# get the variants per sample that intersect w/ +-10bp exons or SS
+use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var with:
+    input:
+        vcf = config['1000g']['vcf'],
+        bed = config['lr']['td_personal']['sqanti']['sj_12nt_bed']
+    params:
+        samples = lambda wc: wc.cell_line_id
+    output:
+        vcf = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf']
