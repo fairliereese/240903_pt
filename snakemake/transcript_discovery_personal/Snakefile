@@ -935,5 +935,5 @@ use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_10
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        vcf = expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
+        vcf = lambda wc: expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
                      cell_line_id=wc.cell_line_id)
