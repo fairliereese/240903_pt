@@ -73,6 +73,7 @@ sqanti_df = sqanti_df.explode('sqanti_genome').reset_index(drop=True)
 df_1kg = pd.read_csv(config['1000g']['meta'],
     sep='\t', comment='#', header=None)
 df_1kg = df_1kg[[9,10]]
+df_1kg.columns = ['cell_line_id', 'population']
 len(df_1kg.cell_line_id.unique())
 temp = pd.read_csv(config['1000g']['trios_meta'],
     sep='\t', comment='#', header=None)
@@ -80,6 +81,7 @@ temp = temp[[9,10]]
 temp.columns = ['cell_line_id', 'population']
 df_1kg = pd.concat([df_1kg, temp], axis=0)
 len(df_1kg.cell_line_id.unique())
+assert len(df_1kg.cell_line_id.unique()) == 3202
 
 wildcard_constraints:
     cell_line_id='|'.join([re.escape(x) for x in df['cell_line_id_1000g'].tolist()]),
