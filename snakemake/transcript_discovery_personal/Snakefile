@@ -876,7 +876,7 @@ use rule bcftool_subset_on_samples_and_bed_intersect as sample_12bp_sj_ss_var wi
 rule bcftool_subset_on_samples_and_vcf_intersect:
     resources:
         threads = 8,
-        nodes = 3
+        nodes = 2
     conda:
         'base'
     shell:
