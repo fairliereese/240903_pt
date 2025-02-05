@@ -160,3 +160,45 @@ def parse_config(fname):
 
 def fmt_list_for_cli(l, sep=','):
     return sep.join(l)
+
+def get_gtf_ss_bed(gtf_file, extend=0):
+    """
+    Get SSs from input GTF file. Extend based on
+    user input
+    """
+    # read in ref. gtf and get SJs from there
+    temp = pr.read_gtf(gtf_file)
+
+    # get the introns
+    temp = temp.features.introns()
+    temp = temp.df
+
+    temp.Start = temp.Start.astype(int)
+    temp.End = temp.End.astype(int)
+    assert len(temp.loc[temp.Start>temp.End])==0
+
+    # melt to 5' and 3'
+    temp = temp.melt(id_vars=['Chromosome', 'Strand'],
+                     value_vars=['Start', 'End'])
+    temp['sj_loc'] = ''
+    temp.loc[temp.variable=='Start', 'sj_loc'] = 'start'
+    temp.loc[temp.variable=='End', 'sj_loc'] = 'end'
+
+    temp.rename({'value':'Start'}, axis=1, inplace=True)
+
+    temp['Start'] = temp.Start-2
+    temp['End'] = temp.Start+1
+
+    # verified
+    temp.loc[temp.sj_loc=='start', 'Start'] = temp.loc[temp.sj_loc=='start', 'Start']+1
+    temp.loc[temp.sj_loc=='start', 'End'] = temp.loc[temp.sj_loc=='start', 'End']+1
+
+
+    temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+2
+    temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']+2
+
+    # extend based on user input
+    temp = pr.PyRanges(temp)
+    temp = temp.extend(extend)
+
+    return temp

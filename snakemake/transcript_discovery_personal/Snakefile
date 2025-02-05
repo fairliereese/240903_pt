@@ -70,6 +70,8 @@ sqanti_df['sqanti_genome'] = [sqanti_genomes] * len(df)
 sqanti_df = sqanti_df.explode('sqanti_genome').reset_index(drop=True)
 
 # get all of the IDs for the 1000g
+# TODO there's a space in one of these values that's causing errors
+# when running on all samples!
 df_1kg = pd.read_csv(config['1000g']['meta'],
     sep='\t', comment='#', header=None)
 df_1kg = df_1kg[[9,10]]
@@ -99,8 +101,9 @@ rule all:
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         config['ref']['sj_12nt_bed'],
-        expand(config['1000g']['sj_12nt_vcf_intersect_vcf'],
-               cell_line_id=df_1kg['cell_line_id'].tolist()) # this guy for all the samples in here
+        expand(config['1000g']['ss_intersect_vcf'],
+               cell_line_id=df['cell_line_id_1000g'].tolist()) # this guy for all the samples in here
+               # cell_line_id=df_1kg['cell_line_id'].tolist()) # this guy for all the samples in here
 
         # config['lr']['td_personal']['sqanti']['sj_10nt_bed']
         # expand(config['lr']['td_personal']['cerb']['ic_parsed'],
@@ -857,55 +860,19 @@ use rule bcftool_subset_on_samples_and_bed_intersect as sample_12bp_sj_ss_var wi
     output:
         bed = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect']
 
-# get annotated bed regions from 10bp+- sjs and the SSs
-rule get_annot_sj_ss_12nt_bed:
+rule get_ref_gtf_ss_bed:
     input:
         gtf = config['ref']['gtf']
     resources:
-        nodes = 2,
-        threads = 1
+        threads = 1,
+        nodes = 2
+    params:
+        extend = 1600
     output:
-        bed = config['ref']['sj_12nt_bed']
+        bed = config['ref']['ss_extension_bed']
     run:
-        # read in ref. gtf and get SJs from there
-        temp = pr.read_gtf(input.gtf)
-
-        # get the introns
-        temp = temp.features.introns()
-        temp = temp.df
-
-        temp.Start = temp.Start.astype(int)
-        temp.End = temp.End.astype(int)
-        assert len(temp.loc[temp.Start>temp.End])==0
-
-        # melt to 5' and 3'
-        temp = temp.melt(id_vars=['Chromosome', 'Strand'],
-                         value_vars=['Start', 'End'])
-        temp['sj_loc'] = ''
-        temp.loc[temp.variable=='Start', 'sj_loc'] = 'start'
-        temp.loc[temp.variable=='End', 'sj_loc'] = 'end'
-
-        temp.rename({'value':'Start'}, axis=1, inplace=True)
-        # need to verify that this is working using like one motif or something make
-        # sure I don't have off-by-one errors
-        # verified
-        temp['Start'] = temp.Start-2
-        temp['End'] = temp.Start+1
-
-        # need to verify
-        temp.loc[temp.sj_loc=='start', 'Start'] = temp.loc[temp.sj_loc=='start', 'Start']-9
-        temp.loc[temp.sj_loc=='start', 'End'] = temp.loc[temp.sj_loc=='start', 'End']+2
-
-
-        temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+11
-        temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']
-
-        temp['len'] = temp.End-temp.Start
-        assert len(temp.loc[temp.len!=12]) == 0
-
-        temp = pr.PyRanges(temp)
-
-        temp.to_bed(output.bed)
+        bed = get_gtf_ss_bed(input.gtf, extend=params.extend)
+        bed.to_bed(output.bed)
 
 rule bcftool_subset_on_samples_and_vcf_intersect:
     resources:
@@ -928,12 +895,12 @@ rule bcftool_subset_on_samples_and_vcf_intersect:
              -wa \
              -u > {output.vcf}
         """
-# get the variants per sample that intersect w/ +-10bp exons or SS
-use rule bcftool_subset_on_samples_and_vcf_intersect as sample_12bp_sj_ss_var_1000g with:
+# get the variants per sample that intersect w/i the range
+use rule bcftool_subset_on_samples_and_vcf_intersect as sample_v47_ss_proximal_vars with:
     input:
         vcf = config['1000g']['vcf'],
         bed = config['ref']['sj_12nt_bed']
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        vcf = config['1000g']['sj_12nt_vcf_intersect_vcf']
+        vcf = config['1000g']['ss_intersect_vcf']

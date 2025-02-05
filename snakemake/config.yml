@@ -35,7 +35,9 @@ ref:
   fa: ../../ref/hg38.fa
   fa_mmi: ../../ref/hg38.fa.mmi
   gtf: ../../ref/annot.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
-  sj_12nt_bed:  ../../ref/sj_ss_12nt.bed
+  # sj_12nt_bed:  ../../ref/sj_ss_12nt.bed
+  ss_extension_bed:  ../../ref/ss_extension.bed
+
 
   sqanti:
     gff: ../../ref/compare_external/{annot}_sqanti_corrected.gtf.cds.gff
@@ -895,4 +897,4 @@ software:
   hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{population}.vcf
   hla_dpi_pop_af: ../../data/1000g/example_HLA_variants_v2_{population}_afs.frq
 
-  sj_12nt_vcf_intersect_vcf: ../../data/1000g/{cell_line_id}_exon_ss_vars_int.vcf
+  ss_intersect_vcf: ../../data/1000g/{cell_line_id}_annot_ss_proximal_vars.vcf
