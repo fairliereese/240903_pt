@@ -100,7 +100,6 @@ rule all:
                cell_line_id=df['cell_line_id_1000g'].tolist()),
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),
-        config['ref']['sj_12nt_bed'],
         expand(config['1000g']['ss_intersect_vcf'],
                cell_line_id=df['cell_line_id_1000g'].tolist()) # this guy for all the samples in here
                # cell_line_id=df_1kg['cell_line_id'].tolist()) # this guy for all the samples in here
