@@ -897,4 +897,4 @@ software:
   hla_dpi_pop_vars: ../../data/1000g/example_HLA_variants_v2_{population}.vcf
   hla_dpi_pop_af: ../../data/1000g/example_HLA_variants_v2_{population}_afs.frq
 
-  ss_intersect_vcf: ../../data/1000g/{cell_line_id}_annot_ss_proximal_vars.vcf
+  ss_intersect_vcf: ../../data/1000g/{cell_line_id}_v47_ss_proximal_vars.vcf

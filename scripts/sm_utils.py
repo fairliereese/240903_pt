@@ -161,7 +161,7 @@ def parse_config(fname):
 def fmt_list_for_cli(l, sep=','):
     return sep.join(l)
 
-def get_gtf_ss_bed(gtf_file, extend=0):
+def get_gtf_ss_bed(gtf_file, extension=0):
     """
     Get SSs from input GTF file. Extend based on
     user input
@@ -199,6 +199,6 @@ def get_gtf_ss_bed(gtf_file, extend=0):
 
     # extend based on user input
     temp = pr.PyRanges(temp)
-    temp = temp.extend(extend)
+    temp = temp.extend(extension)
 
     return temp

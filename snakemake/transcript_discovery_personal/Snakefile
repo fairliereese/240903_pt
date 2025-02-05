@@ -866,11 +866,11 @@ rule get_ref_gtf_ss_bed:
         threads = 1,
         nodes = 2
     params:
-        extend = 1600
+        extension = 1600
     output:
         bed = config['ref']['ss_extension_bed']
     run:
-        bed = get_gtf_ss_bed(input.gtf, extend=params.extend)
+        bed = get_gtf_ss_bed(input.gtf, extend=params.extension)
         bed.to_bed(output.bed)
 
 rule bcftool_subset_on_samples_and_vcf_intersect:
