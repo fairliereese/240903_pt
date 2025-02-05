@@ -859,19 +859,19 @@ use rule bcftool_subset_on_samples_and_bed_intersect as sample_12bp_sj_ss_var wi
     output:
         bed = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect']
 
-rule get_ref_gtf_ss_bed:
-    input:
-        gtf = config['ref']['gtf']
-    resources:
-        threads = 1,
-        nodes = 2
-    params:
-        extension = 1600
-    output:
-        bed = config['ref']['ss_extension_bed']
-    run:
-        bed = get_gtf_ss_bed(input.gtf, extension=params.extension)
-        bed.to_bed(output.bed)
+# rule get_ref_gtf_ss_bed:
+#     input:
+#         gtf = config['ref']['gtf']
+#     resources:
+#         threads = 1,
+#         nodes = 2
+#     params:
+#         extension = 1600
+#     output:
+#         bed = config['ref']['ss_extension_bed']
+#     run:
+#         bed = get_gtf_ss_bed(input.gtf, extension=params.extension)
+#         bed.to_bed(output.bed)
 
 rule bcftool_subset_on_samples_and_vcf_intersect:
     resources:
