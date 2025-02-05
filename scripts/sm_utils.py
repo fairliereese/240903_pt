@@ -1,5 +1,6 @@
 import pandas as pd
 from pyfaidx import Fasta
+import pyranges as pr
 
 def get_lr_encid(wc, df, kind):
     """
