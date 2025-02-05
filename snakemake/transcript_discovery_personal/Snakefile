@@ -898,7 +898,7 @@ rule bcftool_subset_on_samples_and_vcf_intersect:
 use rule bcftool_subset_on_samples_and_vcf_intersect as sample_v47_ss_proximal_vars with:
     input:
         vcf = config['1000g']['vcf'],
-        bed = config['ref']['sj_12nt_bed']
+        bed = config['ref']['ss_extension_bed']
     params:
         samples = lambda wc: wc.cell_line_id
     output:
