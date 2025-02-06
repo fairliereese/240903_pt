@@ -1,0 +1,57 @@
+import pandas as pd
+import os
+import sys
+import pyranges as pr
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+include: f'{c_dir}kallisto.smk'
+include: f'{c_dir}suppa.smk'
+
+# sample information
+meta_file = '../config.tsv'
+
+meta_df = load_meta()
+meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
+                      meta_df['lab_sampleid'].astype(str)+'_'+\
+                      meta_df['cell_line_id'].astype(str)
+rule all:
+    config['lr']['exon_info']
+
+# get details about each unique poder exom
+rule get_poder_exon_info:
+    input:
+        poder_gtf = config['lr']['gtf_filt_with_genes'],
+        ref_gtf = config['ref']['gtf']
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['lr']['exon_info']
+    run:
+        df = get_internal_exon_info(input.poder_gtf, input.ref_gtf)
+        df.to_csv(output.tsv, sep='\t', index=False)

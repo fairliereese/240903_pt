@@ -212,6 +212,8 @@ lr:
   nov_gtf_filt_with_genes: ../../data/transcripts_nov_filt_with_gene.gtf
   nov_tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/05_mastertable/data/240909merge_filtered_novel_transcriptid.tsv
 
+  exon_info: ../../data/poder_exon_novelty_tid.tsv # exon novelty wrt. v47 and assc. tids
+
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
   gtf_gc_poder_biotypes: ../../data/v47_poder_merge_t_biotypes.tsv

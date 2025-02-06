@@ -203,3 +203,78 @@ def get_gtf_ss_bed(gtf_file, extension=0):
     temp = temp.extend(extension)
 
     return temp
+
+def get_internal_exon_info(gtf, ref_gtf):
+    """
+    Get novelty and eid<->tid info for each exon
+    """
+
+    def make_exon_id(df):
+        """
+        Get an ID for each unique exon using
+        Chromosome, Strand, Start, End
+        """
+        df['eid'] = df['Chromosome'].astype(str)+'_'+\
+                    df['Strand'].astype(str)+'_'+\
+                    df['Start'].astype(str)+'_'+\
+                    df['End'].astype(str)
+        return df
+
+    # PODER
+    df = pr.read_gtf(gtf).df
+    df = df.loc[df.Feature=='exon']
+
+    # remove first and last exons
+    df['first_or_last_exon'] = (~df.duplicated('transcript_id', keep='first'))|\
+                               (~df.duplicated('transcript_id', keep='last'))
+    df = df.loc[~df.first_or_last_exon]
+    df = make_exon_id(df)
+
+    # only keep unique exons
+    df = df[['Chromosome', 'Strand', 'Start', 'End', 'eid']].drop_duplicates(keep='first')
+
+    # GENCODE
+    ref_df = pr.read_gtf(ref_gtf).df
+    ref_df = ref_df.loc[ref_df.Feature=='exon']
+
+    # remove first and last exons
+    ref_df['first_or_last_exon'] = (~ref_df.duplicated('transcript_id', keep='first'))|\
+                               (~ref_df.duplicated('transcript_id', keep='last'))
+    ref_df = ref_df.loc[~ref_df.first_or_last_exon]
+    ref_df = make_exon_id(ref_df)
+
+    # only keep unique exons
+    ref_df = ref_df[['Chromosome', 'Strand', 'Start', 'End', 'eid']].drop_duplicates(keep='first')
+
+    # do a pyranges left join w/ PODER
+    df = pr.PyRanges(df)
+    ref_df = pr.PyRanges(ref_df)
+    df = df.join(ref_df,
+                 strandedness='same',
+                 how='left',
+                 report_overlap=True,
+                 slack=0, suffix='_gc')
+
+    # get exon end_site_novelty
+    df = df.df
+    temp = df[['eid']].drop_duplicates()
+    temp['novelty'] = 'Novel'
+    temp.loc[temp.eid.isin(df.loc[df.Overlap>=1].eid.tolist()), 'novelty'] = "Novel 5'/3'"
+    temp.loc[temp.eid.isin(df.eid_gc.tolist()), 'novelty'] = 'Known'
+
+    # now get eid<->tid mapping
+    df = pr.read_gtf(gtf).df
+    df = df.loc[df.Feature=='exon']
+
+    # remove first and last exons
+    df['first_or_last_exon'] = (~df.duplicated('transcript_id', keep='first'))|\
+                               (~df.duplicated('transcript_id', keep='last'))
+    df = df.loc[~df.first_or_last_exon]
+    df = make_exon_id(df)
+    df = df[['eid', 'transcript_id']]
+
+    df = df.merge(temp,
+                  how='inner',
+                  on='eid')
+
+    return df
