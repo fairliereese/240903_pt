@@ -40,7 +40,8 @@ meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
                       meta_df['lab_sampleid'].astype(str)+'_'+\
                       meta_df['cell_line_id'].astype(str)
 rule all:
-    config['lr']['exon_info']
+    input:
+        config['lr']['exon_info']
 
 # get details about each unique poder exom
 rule get_poder_exon_info:
