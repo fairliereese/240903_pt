@@ -217,6 +217,8 @@ lr:
   exon_info: ../../data/poder_exon_novelty_tid.tsv # exon novelty wrt. v47 and assc. tids
   exons_in_pops_bed: ../../data/{pop1}_{pop2}_exons.bed # exons that are either in pop1 or pop2
   exons_in_pops_fsts: ../../data/{pop1}_{pop2}_exons_fsts.tsv # exons that are either in pop1 or pop2 and fst scores
+  exons_in_pops_fsts_summary: ../../data/exons_fsts_summary.tsv
+
 
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf

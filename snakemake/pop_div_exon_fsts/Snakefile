@@ -1,3 +1,4 @@
+
 import pandas as pd
 import os
 import sys
@@ -50,10 +51,11 @@ c_df = c_df.loc[c_df.pop1!= 'HAC']
 rule all:
     input:
         config['lr']['exon_info'],
-        expand(config['lr']['exons_in_pops_fsts'],
-               zip,
-               pop1=c_df.pop1.tolist(),
-               pop2=c_df.pop2.tolist())
+        config['lr']['exons_in_pops_fsts_summary'],
+        # expand(config['lr']['exons_in_pops_fsts'],
+        #        zip,
+        #        pop1=c_df.pop1.tolist(),
+        #        pop2=c_df.pop2.tolist())
         # expand(config['1000g']['fst']['no_nan_fst'],
         #        zip,
         #        pop1=c_df.pop1.tolist(),
@@ -169,4 +171,20 @@ rule get_pop_exon_fsts:
         df['pop2'] = wildcards.pop2
         df.to_csv(output.tsv, sep='\t', index=False)
 
-rule
+rule get_summary:
+    input:
+        tsvs = expand(config['lr']['exons_in_pops_fsts'],
+               zip,
+               pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist())
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = s
+    run:
+        summ_df = pd.DataFrame()
+        for f in tsvs:
+            temp = pd.read_tsv(f, sep='\t')
+            summ_df = pd.concat([summ_df, temp], axis=0)
+        summ_df.to_csv(output.tsv, sep='\t', index=False)
