@@ -309,7 +309,7 @@ rule calc_fst:
 rule rm_nan_fst:
     resources:
         threads = 1,
-        nodes = 2
+        nodes = 1
     shell:
         """
         awk '$3 ~ /nan/ {{ next }} {{ print }}' {input.fst} > {output.fst}
