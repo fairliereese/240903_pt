@@ -168,7 +168,7 @@ rule get_pop_exon_fsts:
         fst_df['Start'] = fst_df['End']-1
         fst_df = pr.PyRanges(fst_df)
 
-        exon_df = pd.read_csv(input.tsv)
+        exon_df = pd.read_csv(input.tsv, sep='\t')
         exon_df = pr.PyRanges(exon_df)
 
         # add coordinates to encompass splice sites
