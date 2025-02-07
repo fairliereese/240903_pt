@@ -126,7 +126,6 @@ def get_det_exons_bed(exon_info_file,
     assert len(df.loc[(df[pop1]==False)&(df[pop2]==False)]) == 0
 
     df[['Chromosome', 'Strand', 'Start', 'End']] = df.eid.str.split('_', expand=True)
-    df = pr.PyRanges(df)
     return df
 
 rule get_pop_det_exon_bed:
@@ -137,17 +136,17 @@ rule get_pop_det_exon_bed:
         nodes = 1,
         threads = 1
     output:
-        bed = config['lr']['exons_in_pops_bed']
+        tsv = config['lr']['exons_in_pops_bed']
     run:
         df = get_det_exons_bed(input.exon_info,
                               input.mt,
                               wildcards.pop1,
                               wildcards.pop2)
-        df.to_bed(output.bed)
+        df.to_csv(output.tsv, sep='\t', index=False)
 
 rule get_pop_exon_fsts:
     input:
-        bed = config['lr']['exons_in_pops_bed'],
+        tsv = config['lr']['exons_in_pops_bed'],
         fst = config['1000g']['fst']['no_nan_fst']
     resources:
         threads = 1,
@@ -162,7 +161,8 @@ rule get_pop_exon_fsts:
         fst_df['Start'] = fst_df['End']-1
         fst_df = pr.PyRanges(fst_df)
 
-        exon_df = pr.read_bed(input.bed)
+        exon_df = pr.read_csv(input.tsv)
+        exon_df = pr.PyRanges()
 
         # add coordinates to encompass splice sites
         # as well!
