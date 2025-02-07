@@ -163,6 +163,10 @@ rule get_pop_exon_fsts:
         fst_df = pr.PyRanges(fst_df)
 
         exon_df = pr.read_bed(input.bed)
+
+        # add coordinates to encompass splice sites
+        # as well!
+        exon_df = exon_df.extend(2)
         df = exon_df.join(fst_df,
                           how='left',
                           strandedness=False)
