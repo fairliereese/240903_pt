@@ -181,7 +181,7 @@ rule get_summary:
         nodes = 2,
         threads = 1
     output:
-        tsv = s
+        tsv = config['lr']['exons_in_pops_fsts_summary']
     run:
         summ_df = pd.DataFrame()
         for f in tsvs:
