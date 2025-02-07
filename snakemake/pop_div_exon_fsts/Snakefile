@@ -184,7 +184,7 @@ rule get_summary:
         tsv = config['lr']['exons_in_pops_fsts_summary']
     run:
         summ_df = pd.DataFrame()
-        for f in tsvs:
+        for f in list(input.tsvs):
             temp = pd.read_tsv(f, sep='\t')
             summ_df = pd.concat([summ_df, temp], axis=0)
         summ_df.to_csv(output.tsv, sep='\t', index=False)
