@@ -135,6 +135,6 @@ rule get_pop_det_exon_bed:
     run:
         df = get_det_exons_bed(input.exon_info,
                               input.mt,
-                              wc.pop1,
-                              wc.pop2)
+                              wildcards.pop1,
+                              wildcards.pop2)
         df.to_bed(output.bed, sep='\t', index=False)
