@@ -51,7 +51,7 @@ c_df = c_df.loc[c_df.pop1!= 'HAC']
 rule all:
     input:
         config['lr']['exon_info'],
-        config['lr']['exons_in_pops_fsts_summary'],
+        config['lr']['exons_ss_in_pops_fsts_summary'],
         # expand(config['lr']['exons_in_pops_fsts'],
         #        zip,
         #        pop1=c_df.pop1.tolist(),
@@ -185,7 +185,7 @@ rule get_summary:
         nodes = 2,
         threads = 1
     output:
-        tsv = config['lr']['exons_in_pops_fsts_summary']
+        tsv = config['lr']['exons_ss_in_pops_fsts_summary']
     run:
         summ_df = pd.DataFrame()
         for f in list(input.tsvs):
