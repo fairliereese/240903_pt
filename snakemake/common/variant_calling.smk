@@ -312,5 +312,5 @@ rule rm_nan_fst:
         nodes = 2
     shell:
         """
-        awk '$3 ~ /nan/ { next } { print }' {input.fst} > {output.fst}
+        awk '$3 ~ /nan/ {{ next }} {{ print }}' {input.fst} > {output.fst}
         """
