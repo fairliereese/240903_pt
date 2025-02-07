@@ -50,6 +50,10 @@ rule all:
         expand(config['1000g']['fst']['no_nan_fst'],
                zip,
                pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist()),
+        expand(config['lr']['exons_in_pops_bed'],
+               zip,
+               pop1=c_df.pop1.tolist(),
                pop2=c_df.pop2.tolist())
 
 # get details about each unique poder exom
@@ -72,3 +76,65 @@ use rule rm_nan_fst as rm_nan_fsts with:
         fst = config['1000g']['fst']['raw_fst']
     output:
         fst = config['1000g']['fst']['no_nan_fst']
+
+# get exon bed for each contrast where each reported exons is seen
+# at least once in the populations
+def get_det_exons_bed(exon_info_file,
+                  mt_file,
+                  pop1,
+                  pop2):
+    # get exon / transcript / novelty info from the table that
+    # already ran
+    df = pd.read_csv(exon_info_file, sep='\t')
+
+    meta = load_meta()
+    meta = meta.loc[meta.merged_run_mode==True]
+    meta = meta.loc[meta.mixed_samples == False]
+    pops = meta['population'].tolist()
+
+    mt_df = pd.read_csv(mt_file, sep='\t')
+    _, pops = get_population_colors()
+    mt_df = mt_df[['isoform']+pops]
+    mt_df.rename({'isoform':'transcript_id'},
+                 inplace=True,
+                 axis=1)
+
+    # set index and just say t/f
+    mt_df = mt_df.set_index('transcript_id')
+    mt_df = mt_df>0
+    mt_df.reset_index(inplace=True)
+
+    # merge novelty info w/ detection info
+    df = df.merge(mt_df,
+                  how='left',
+                  on='transcript_id')
+
+    # dedupe eids, take max. of each population to
+    # see if it's det or not
+    df.drop('transcript_id', axis=1, inplace=True)
+    df = df.groupby(['eid', 'novelty']).max().reset_index()
+
+    # for each pair of populations, get the exons that are in them
+    df = df[['eid', 'novelty', pop1, pop2]]
+    df = df.loc[df[[pop1, pop2]].sum(axis=1)>=1]
+    assert len(df.loc[(df[pop1]==False)&(df[pop2]==False)]) == 0
+
+    df[['Chromosome', 'Strand', 'Start', 'End']] = df.eid.str.split('_', expand=True)
+    df = pr.PyRanges(df)
+    return df
+
+rule get_pop_det_exon_bed:
+    input:
+        mt = config['lr']['mt'],
+        exon_info = config['lr']['exon_info']
+    resources:
+        nodes = 1,
+        threads = 1
+    output:
+        bed = config['lr']['exons_in_pops_bed']
+    run:
+        df = get_det_exons_bed(input.exon_info,
+                              input.mt,
+                              wc.pop1,
+                              wc.pop2)
+        df.to_bed(output.bed, sep='\t', index=False)
