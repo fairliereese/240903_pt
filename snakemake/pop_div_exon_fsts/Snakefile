@@ -39,9 +39,18 @@ meta_df = load_meta()
 meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
                       meta_df['lab_sampleid'].astype(str)+'_'+\
                       meta_df['cell_line_id'].astype(str)
+
+# contrasts
+c_df = pd.read_csv('fst_files.txt', header=None, names=['contrast'])
+c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
+
 rule all:
     input:
-        config['lr']['exon_info']
+        config['lr']['exon_info'],
+        expand(config['1000']['fst']['no_nan_fst'],
+               zip,
+               pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist())
 
 # get details about each unique poder exom
 rule get_poder_exon_info:
@@ -56,3 +65,10 @@ rule get_poder_exon_info:
     run:
         df = get_internal_exon_info(input.poder_gtf, input.ref_gtf)
         df.to_csv(output.tsv, sep='\t', index=False)
+
+# remove nans
+use rule rm_nan_fst as rm_nan_fsts with:
+    input:
+        fst = config['1000']['fst']['raw_fst']
+    output:
+        fst = config['1000']['fst']['no_nan_fst']

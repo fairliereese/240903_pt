@@ -294,3 +294,23 @@ rule rm_indels:
         --output-type v \
         --output {output.vcf}
         """
+
+rule calc_fst:
+    shell:
+        """
+        vcftools \
+            --gzvcf ${VCF} \
+            --weir-fst-pop /nfs/users/rg/fdegalez/data/variants/metadata/${list_pop_1}_samples.txt \
+            --weir-fst-pop /nfs/users/rg/fdegalez/data/variants/metadata/${list_pop_2}_samples.txt \
+            --stdout |\
+            sort | uniq > ./${list_pop_1}_${list_pop_2}.FST.txt
+        """
+
+rule rm_nan_fst:
+    resources:
+        threads = 1,
+        nodes = 2
+    shell:
+        """
+        awk '$3 ~ /nan/ { next } { print }' {input.fst} > {output.fst}
+        """

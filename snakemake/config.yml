@@ -902,3 +902,7 @@ software:
   ss_intersect_vcf: ../../data/1000g/{cell_line_id}_v47_ss_proximal_vars.vcf
   n_ss_intersect: ../../data/1000g/{cell_line_id}_n_v47_ss_proximal_vars.txt
   n_ss_intersect_summary: ../../data/1000g/n_v47_ss_proximal_vars_summary.tsv
+
+  fst:
+    raw_fst: ../../data/1000g/fst/{pop1}_{pop2}.FST.txt
+    no_nan_fst: ../../data/1000g/fst/{pop1}_{pop2}.FST.noNAN.txt
