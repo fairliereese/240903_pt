@@ -69,6 +69,6 @@ rule get_poder_exon_info:
 # remove nans
 use rule rm_nan_fst as rm_nan_fsts with:
     input:
-        fst = config['1000']['fst']['raw_fst']
+        fst = config['1000g']['fst']['raw_fst']
     output:
-        fst = config['1000']['fst']['no_nan_fst']
+        fst = config['1000g']['fst']['no_nan_fst']
