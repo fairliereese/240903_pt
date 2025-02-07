@@ -185,6 +185,6 @@ rule get_summary:
     run:
         summ_df = pd.DataFrame()
         for f in list(input.tsvs):
-            temp = pd.read_tsv(f, sep='\t')
+            temp = pd.read_csv(f, sep='\t')
             summ_df = pd.concat([summ_df, temp], axis=0)
         summ_df.to_csv(output.tsv, sep='\t', index=False)
