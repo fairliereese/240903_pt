@@ -47,14 +47,15 @@ c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 rule all:
     input:
         config['lr']['exon_info'],
-        expand(config['1000g']['fst']['no_nan_fst'],
-               zip,
-               pop1=c_df.pop1.tolist(),
-               pop2=c_df.pop2.tolist()),
-        expand(config['lr']['exons_in_pops_bed'],
+        expand(config['lr']['exons_in_pops_fsts'],
                zip,
                pop1=c_df.pop1.tolist(),
                pop2=c_df.pop2.tolist())
+        # expand(config['1000g']['fst']['no_nan_fst'],
+        #        zip,
+        #        pop1=c_df.pop1.tolist(),
+        #        pop2=c_df.pop2.tolist()),
+
 
 # get details about each unique poder exom
 rule get_poder_exon_info:
@@ -138,3 +139,27 @@ rule get_pop_det_exon_bed:
                               wildcards.pop1,
                               wildcards.pop2)
         df.to_bed(output.bed)
+
+rule get_pop_exon_fsts:
+    input:
+        bed = config['lr']['exons_in_pops_bed'],
+        fst = config['1000g']['no_nan_fst']
+    resources:
+        threads = 1,
+        nodes = 2
+    output:
+        tsv = config['lr']['exons_in_pops_fsts']
+    run:
+        fst_df = pd.read_csv(input.fst, sep='\t',
+                    header=None, names=['Chromosome', 'End', 'fst'])
+        fst_df = fst_df.loc[fst_df.End!='POS']
+        fst_df['End'] = fst_df['End'].astype(int)
+        fst_df['Start'] = fst_df['End']-1
+        fst_df = pr.PyRanges(fst_df)
+
+        exon_df = pr.read_bed(input.bed)
+        df = exon_df.join(fst_df,
+                          how='left',
+                          strandedness=False)
+        df = df.df
+        df.to_csv(output.tsv, sep='\t', index=False)
