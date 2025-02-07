@@ -126,6 +126,13 @@ def get_det_exons_bed(exon_info_file,
     assert len(df.loc[(df[pop1]==False)&(df[pop2]==False)]) == 0
 
     df[['Chromosome', 'Strand', 'Start', 'End']] = df.eid.str.split('_', expand=True)
+
+    # rename the populations to just pop1 and pop2; also add them
+    # as columns
+    df.rename({pop1:'pop1',
+               pop2:'pop2'}, axis=1, inplace=True)
+    df['pop1'] = pop1
+    df['pop2'] = pop2
     return df
 
 rule get_pop_det_exon_bed:
@@ -171,8 +178,6 @@ rule get_pop_exon_fsts:
                           how='left',
                           strandedness=False)
         df = df.df
-        df['pop1'] = wildcards.pop1
-        df['pop2'] = wildcards.pop2
         df.to_csv(output.tsv, sep='\t', index=False)
 
 rule get_summary:
