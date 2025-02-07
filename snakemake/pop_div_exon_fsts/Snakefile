@@ -44,6 +44,9 @@ meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
 c_df = pd.read_csv('fst_files.txt', header=None, names=['contrast'])
 c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 
+# TODO remove
+c_df = c_df.loc[c_df.pop1!= 'HAC']
+
 rule all:
     input:
         config['lr']['exon_info'],
@@ -162,4 +165,8 @@ rule get_pop_exon_fsts:
                           how='left',
                           strandedness=False)
         df = df.df
+        df['pop1'] = wildcards.pop1
+        df['pop2'] = wildcards.pop2
         df.to_csv(output.tsv, sep='\t', index=False)
+
+rule
