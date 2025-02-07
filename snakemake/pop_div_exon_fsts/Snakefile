@@ -47,7 +47,7 @@ c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 rule all:
     input:
         config['lr']['exon_info'],
-        expand(config['1000']['fst']['no_nan_fst'],
+        expand(config['1000g']['fst']['no_nan_fst'],
                zip,
                pop1=c_df.pop1.tolist(),
                pop2=c_df.pop2.tolist())
