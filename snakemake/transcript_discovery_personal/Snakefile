@@ -956,7 +956,7 @@ rule get_ss_2nt:
         nodes = 2,
         threads = 1
     output:
-        bed = config['lr']['td_personal']['sqanti']['ss_2nt']
+        bed = config['lr']['td_personal']['sqanti']['ss_2nt_bed']
     run:
         df = pd.read_csv(input.tsv)
 
