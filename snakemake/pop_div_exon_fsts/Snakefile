@@ -143,7 +143,7 @@ rule get_pop_det_exon_bed:
 rule get_pop_exon_fsts:
     input:
         bed = config['lr']['exons_in_pops_bed'],
-        fst = config['1000g']['no_nan_fst']
+        fst = config['1000g']['fst']['no_nan_fst']
     resources:
         threads = 1,
         nodes = 2
