@@ -669,6 +669,7 @@ lr:
       sj_summary: ../../data/td_personal/sqanti/sj_summary.csv
       sj_10nt_bed:  ../../data/td_personal/sqanti/sj_10nt.bed
       sj_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_12nt.bed
+      ss_2nt_bed: ../../data/td_personal/sqanti/ss_2nt.bed
       sj_annot_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_annot_12nt.bed # only annot. sjs+ss
 
     cerb:
@@ -678,7 +679,7 @@ lr:
     exon_vars:
       sj_10nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int.bed
       sj_12nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.bed
-
+      ss_2nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_ss_vars_int.bed
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
