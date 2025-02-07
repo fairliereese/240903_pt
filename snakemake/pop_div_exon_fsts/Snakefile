@@ -137,4 +137,4 @@ rule get_pop_det_exon_bed:
                               input.mt,
                               wildcards.pop1,
                               wildcards.pop2)
-        df.to_bed(output.bed, sep='\t', index=False)
+        df.to_bed(output.bed)
