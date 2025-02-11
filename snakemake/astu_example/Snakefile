@@ -68,10 +68,10 @@ meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
 # df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ase_results_threeannots.tsv', sep='\t')
 # df = pd.read_csv(config['lr']['as']['ase'], sep='\t')
 
-df = df.loc[(df.annot=='PODER')&\
-            (df.FDR<=0.05)]
-df['gid'] = cerberus.get_stable_gid(df, 'geneid.v')
-ase_gids = df.gid.tolist()
+# df = df.loc[(df.annot=='PODER')&\
+#             (df.FDR<=0.05)]
+# df['gid'] = cerberus.get_stable_gid(df, 'geneid.v')
+# ase_gids = df.gid.tolist()
 
 # astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
 # astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
