@@ -115,8 +115,8 @@ astu_df = astu_df.merge(meta_df,
 config_df = astu_df.copy(deep=True)
 nts  = ['a', 'c', 'g', 't']
 
-# TODO
-config_df = config_df.head(1)
+# # TODO
+# config_df = config_df.head(1)
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
