@@ -118,7 +118,7 @@ nts  = ['a', 'c', 'g', 't']
 
 # TODO
 config_df = config_df.loc[(config_df['geneid.v'] == 'ENSG00000181991.16')&\
-                          (config_df['sample'] = 'YRI5')]
+                          (config_df['sample'] == 'YRI5')]
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
