@@ -245,10 +245,10 @@ lr:
 
   # finding astu examples
   astu_example:
-    read_ids: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}_read_ids.txt
-    bam: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}.bam
-    bam_sorted: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}_sorted.bam
-    bam_sorted_ind: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}_sorted.bam.bai
+    read_ids: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}_read_ids.txt
+    bam: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}.bam
+    bam_sorted: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}_sorted.bam
+    bam_sorted_ind: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}_sorted.bam.bai
 
   cerb:
     ics: ../../data/cerb/ics.tsv
