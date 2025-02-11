@@ -78,7 +78,7 @@ astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
 
 astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
                       (astu_df.gene_testable==True)]
-astu_df['gid'] = cerberus.get_stable_gid(astu_df, 'geneid.v')
+# astu_df['gid'] = cerberus.get_stable_gid(astu_df, 'geneid.v')
 
 # # remove ase genes
 # print(len(astu_df.index))
