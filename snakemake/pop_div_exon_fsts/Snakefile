@@ -45,8 +45,8 @@ meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
 c_df = pd.read_csv('fst_files.txt', header=None, names=['contrast'])
 c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 
-# TODO remove
-c_df = c_df.loc[c_df.pop1!= 'HAC']
+# # TODO remove
+# c_df = c_df.loc[c_df.pop1!= 'HAC']
 
 rule all:
     input:
