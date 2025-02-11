@@ -74,7 +74,7 @@ meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
 # ase_gids = df.gid.tolist()
 
 # astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
-# astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
+astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
 
 astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
                       (astu_df.gene_testable==True)]
