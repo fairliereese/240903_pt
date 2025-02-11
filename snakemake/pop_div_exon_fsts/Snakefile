@@ -157,7 +157,7 @@ rule get_pop_exon_fsts:
         fst = config['1000g']['fst']['no_nan_fst']
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     output:
         tsv = config['lr']['exons_in_pops_fsts']
     run:

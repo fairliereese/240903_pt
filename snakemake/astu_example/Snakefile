@@ -112,7 +112,7 @@ astu_df = astu_df.merge(meta_df,
                         how='left',
                         on='sample')
 
-config_df = astu_df.copy(deep=True)
+config_df = astu_df.copy(deep=True/)
 nts  = ['a', 'c', 'g', 't']
 
 config_df = config_df[['chrom', 'position', 'sample', 'lab_sample', 'geneid.v']].drop_duplicates()
