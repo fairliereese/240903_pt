@@ -56,6 +56,7 @@ def get_stable_gid(df, col):
 
 
 # sample information
+# sample information
 meta_file = '../config.tsv'
 
 meta_df = load_meta()
@@ -64,43 +65,43 @@ meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
                       meta_df['cell_line_id'].astype(str)
 
 # ase genes to remove
-# df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ase_results_threeannots.tsv', sep='\t')
-df = pd.read_csv(config['lr']['as']['ase'], sep='\t')
+df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ase_results_threeannots.tsv', sep='\t')
+# df = pd.read_csv(config['lr']['as']['ase'], sep='\t')
 
 df = df.loc[(df.annot=='PODER')&\
             (df.FDR<=0.05)]
-df['gid'] = get_stable_gid(df, 'geneid.v')
+df['gid'] = cerberus.get_stable_gid(df, 'geneid.v')
 ase_gids = df.gid.tolist()
 
-# astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
-astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
+astu_df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTS_results_threeannots.tsv', sep='\t')
+# astu_df = pd.read_csv(config['lr']['as']['astu'], sep='\t')
 
 astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
                       (astu_df.gene_testable==True)]
-astu_df['gid'] = get_stable_gid(astu_df, 'geneid.v')
+astu_df['gid'] = cerberus.get_stable_gid(astu_df, 'geneid.v')
 
-# remove ase genes
-print(len(astu_df.index))
-astu_df = astu_df.loc[~(astu_df.gid.isin(ase_gids))]
-print(len(astu_df.index))
+# # remove ase genes
+# print(len(astu_df.index))
+# astu_df = astu_df.loc[~(astu_df.gid.isin(ase_gids))]
+# print(len(astu_df.index))
 
 # limit to astu gwas thing
 # df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTU_GWAS_PODER.tsv', sep='\t')
-df = pd.read_csv(config['lr']['as']['gwas'], sep='\t')
+# # df = pd.read_csv(config['lr']['as']['gwas'], sep='\t')
 
-# explode gene id
-df['geneID'] = df.geneID.str.split('/')
-df = df.explode('geneID')
+# # explode gene id
+# df['geneID'] = df.geneID.str.split('/')
+# df = df.explode('geneID')
 
-print(len(astu_df.index))
-astu_df = astu_df.loc[astu_df['gid'].isin(df.geneID.tolist())]
-print(len(astu_df.index))
+# print(len(astu_df.index))
+# astu_df = astu_df.loc[astu_df['gid'].isin(df.geneID.tolist())]
+# print(len(astu_df.index))
 
-# add in trait
-astu_df = astu_df.merge(df[['ID', 'geneID']],
-                        how='left',
-                        left_on='gid',
-                        right_on='geneID')
+# # add in trait
+# astu_df = astu_df.merge(df[['ID', 'geneID']],
+#                         how='left',
+#                         left_on='gid',
+#                         right_on='geneID')
 
 # {gid}_{tid}_{var}_{chr}_{position}_{sample}.bam
 astu_df['chrom'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[0]
@@ -115,9 +116,8 @@ astu_df = astu_df.merge(meta_df,
 config_df = astu_df.copy(deep=True)
 nts  = ['a', 'c', 'g', 't']
 
-# # TODO
-# config_df = config_df.head(1)
-
+# TODO
+config_df = config_df.loc[config_df['geneid.v'] == 'ENSG00000181991.16']
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
 
