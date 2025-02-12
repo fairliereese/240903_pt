@@ -130,7 +130,7 @@ def get_det_exons_bed(exon_info_file,
     # rename the populations to just pop1 and pop2; also add them
     # as columns
     df.rename({pop1:'pop1_det',
-               pop2:'pop2_der'}, axis=1, inplace=True)
+               pop2:'pop2_det'}, axis=1, inplace=True)
     df['pop1'] = pop1
     df['pop2'] = pop2
     return df

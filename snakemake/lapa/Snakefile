@@ -1,0 +1,42 @@
+
+import pandas as pd
+import os
+import sys
+import pyranges as pr
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+include: f'{c_dir}lr-kallisto.smk'
+include: f'{c_dir}kallisto.smk'
+include: f'{c_dir}suppa.smk'
+
+# sample information
+meta_file = '../config.tsv'
+
+meta_df = load_meta()
+meta_df['lab_sample'] = meta_df['lab_number_sample'].astype(str)+'_'+\
+                      meta_df['lab_sampleid'].astype(str)+'_'+\
+                      meta_df['cell_line_id'].astype(str)
