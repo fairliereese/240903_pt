@@ -219,6 +219,8 @@ lr:
   exons_in_pops_fsts: ../../data/exons/{pop1}_{pop2}_exons_fsts.tsv # exons that are either in pop1 or pop2 and fst scores
   exons_ss_in_pops_fsts_summary: ../../data/exons/exons_fsts_summary.tsv # fsts for variants in exons or in sss
 
+  exons_in_pops_fsts_60nt: ../../data/exons/{pop1}_{pop2}_60nt_exons_fsts.tsv # exons that are either in pop1 or pop2 and fst scores
+  exons_ss_in_pops_fsts_summary_60nt: ../../data/exons/exons_60nt_fsts_summary.tsv # fsts for variants in exons or in sss
 
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
@@ -248,7 +250,7 @@ lr:
     read_ids: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}_read_ids.txt
     bam: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}.bam
     bam_sorted: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}_sorted.bam
-    bam_sorted_ind: ../../data/astu_example/{gid}_{var}_{chrom}_{position}_{sample}_sorted.bam.bai
+    bam_sorted_ind: ../../data/astu_example/{gid}_{tid}_{var}_{chrom}_{position}_{sample}_sorted.bam.bai
 
   cerb:
     ics: ../../data/cerb/ics.tsv

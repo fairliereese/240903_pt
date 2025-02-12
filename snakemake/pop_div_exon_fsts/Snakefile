@@ -52,6 +52,7 @@ rule all:
     input:
         config['lr']['exon_info'],
         config['lr']['exons_ss_in_pops_fsts_summary'],
+        config['lr']['exons_ss_in_pops_fsts_summary_60nt']
         # expand(config['lr']['exons_in_pops_fsts'],
         #        zip,
         #        pop1=c_df.pop1.tolist(),
@@ -158,6 +159,8 @@ rule get_pop_exon_fsts:
     resources:
         threads = 1,
         nodes = 2
+    params:
+        extension = 2
     output:
         tsv = config['lr']['exons_in_pops_fsts']
     run:
@@ -173,12 +176,21 @@ rule get_pop_exon_fsts:
 
         # add coordinates to encompass splice sites
         # as well!
-        exon_df = exon_df.extend(2)
+        exon_df = exon_df.extend(params.extension)
         df = exon_df.join(fst_df,
                           how='left',
                           strandedness=False)
         df = df.df
         df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule get_pop_exon_fsts as get_pop_exon_60nt_fsts with:
+    input:
+        tsv = config['lr']['exons_in_pops_bed'],
+        fst = config['1000g']['fst']['no_nan_fst']
+    params:
+        extension = 60
+    output:
+        tsv = config['lr']['exons_in_pops_fsts_60nt']
 
 rule get_summary:
     input:
@@ -197,3 +209,15 @@ rule get_summary:
             temp = pd.read_csv(f, sep='\t')
             summ_df = pd.concat([summ_df, temp], axis=0)
         summ_df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule get_summary as get_summary_60nt with:
+    input:
+        tsvs = expand(config['lr']['exons_in_pops_fsts_60nt'],
+               zip,
+               pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist())
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['lr']['exons_ss_in_pops_fsts_summary_60nt']
