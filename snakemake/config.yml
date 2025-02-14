@@ -692,6 +692,9 @@ lr:
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
   r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
+  r1_fq_n_reads: ../../data/mage/raw/{sample}_r1_n_reads.txt
+  r1_fq_n_reads_summary: ../../data/mage/raw/r1_n_reads_summary.txt
+
   samples: ../../data/mage/samples.txt
 
   # filter based on sample that has highest counts / cell line

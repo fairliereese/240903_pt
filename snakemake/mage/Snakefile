@@ -76,6 +76,7 @@ wildcard_constraints:
 
 rule all:
     input:
+        config['enc']['lr']['fastq_n_reads_summary']
         # expand(config['mage']['r1_fq'],
         #        sample=df['sample'].tolist()),
         # expand(config['mage']['r2_fq'],
@@ -107,7 +108,7 @@ rule all:
         # config['mage']['enh_v47_kallisto']['sqtl']['genotype_tsv'],
         # config['mage']['poder_kallisto']['sqtlseeker']['results'],
         # config['mage']['enh_v47_kallisto']['sqtlseeker']['results'],
-        config['mage']['v47_kallisto']['sqtlseeker']['results']
+        # config['mage']['v47_kallisto']['sqtlseeker']['results']
 
 
 
@@ -133,6 +134,21 @@ use rule wget as dl_r2_fq with:
                                      {'sample': wc.sample})
     output:
         out = config['mage']['r2_fq']
+
+use rule fq_count_reads as count_raw_reads with:
+    input:
+        fq = config['mage']['r1_fq']
+    output:
+        txt = temporary(config['mage']['r1_fq_n_reads'])
+
+use rule count_reads_summary as fq_count_reads_summary with:
+    input:
+        txts = expand(config['mage']['r1_fq_n_reads'],
+                      sample=df['sample'].tolist()),
+    params:
+        samples = df['sample'].tolist()
+    output:
+        summ = config['enc']['lr']['fastq_n_reads_summary']
 
 rule merge_matrices:
     resources:
