@@ -288,7 +288,7 @@ rule get_pop_spec_exon_bed:
                               input.mt)
         df.to_csv(output.tsv, sep='\t', index=False)
 
-use rule get_pop_exon_fsts as get_pop_exon_60nt_fsts with:
+use rule get_pop_exon_fsts as get_pop_spec_fsts with:
     input:
         tsv = config['lr']['exons_pop_spec'],
         fst = config['1000g']['fst']['no_nan_fst']
