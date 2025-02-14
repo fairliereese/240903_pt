@@ -274,7 +274,7 @@ def get_pop_spec_exons(exon_info_file,
 
     return df
 
-rule get_pop_det_exon_bed:
+rule get_pop_spec_exon_bed:
     input:
         mt = config['lr']['mt'],
         exon_info = config['lr']['exon_info']
