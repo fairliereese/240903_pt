@@ -50,7 +50,7 @@ c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 
 rule all:
     input:
-        config['lr']['exons_pop_spec_fsts']
+        config['lr']['exons_pop_spec_fsts'],
         config['lr']['exon_info'],
         config['lr']['exons_ss_in_pops_fsts_summary'],
         config['lr']['exons_ss_in_pops_fsts_summary_60nt']
