@@ -263,6 +263,7 @@ def get_pop_spec_exons(exon_info_file,
 
     df = df.set_index(['eid', 'novelty'])
     df = df.drop(samples, axis=1)
+    pops = meta.population.unique().tolist()
     df['n_pop'] = (df>0).sum(axis=1)
     df['pop_spec'] = (df.n_pop==1)&(df[pops]>=2).any(axis=1)
     df['pop_spec_pop'] = df[pops].idxmax(axis=1)
