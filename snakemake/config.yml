@@ -201,6 +201,8 @@ lr:
   fastq_n_reads_summary: ../../data/fastq_n_reads.txt
 
   q7_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic/{lab_sample}.bam
+  q7_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic/{lab_sample}.bam
+
 
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf
   gtf_chr_renamed: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged_withoutchrEBV.gtf # whole post-merge GTF
@@ -212,7 +214,7 @@ lr:
   nov_gtf_filt_with_genes: ../../data/transcripts_nov_filt_with_gene.gtf
   nov_tids: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/04_transcriptome_assembly/04_evaluation/05_mastertable/data/240909merge_filtered_novel_transcriptid.tsv
 
-  mt: ../../data/05_mastertable/data/29102024_PODER_mastertable.tsv
+  mt: ../../data/05_mastertable/29102024_PODER_mastertable.tsv
 
   exon_info: ../../data/exons/poder_exon_novelty_tid.tsv # exon novelty wrt. v47 and assc. tids
   exons_in_pops_bed: ../../data/exons/{pop1}_{pop2}_exons.tsv # exons that are either in pop1 or pop2
