@@ -50,6 +50,7 @@ c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 
 rule all:
     input:
+        config['lr']['exons_pop_spec_fsts']
         config['lr']['exon_info'],
         config['lr']['exons_ss_in_pops_fsts_summary'],
         config['lr']['exons_ss_in_pops_fsts_summary_60nt']
@@ -221,3 +222,77 @@ use rule get_summary as get_summary_60nt with:
         threads = 1
     output:
         tsv = config['lr']['exons_ss_in_pops_fsts_summary_60nt']
+
+###################################
+####### Another try, in pop-spec exons
+###################################
+
+def get_pop_spec_exons(exon_info_file,
+                       mt_file):
+    # get exon / transcript / novelty info from the table that
+    # already ran
+    df = pd.read_csv(exon_info_file, sep='\t')
+
+    meta = load_meta()
+    meta = meta.loc[meta.merged_run_mode==True]
+    meta = meta.loc[meta.mixed_samples == False]
+    samples = meta['sample'].tolist()
+
+    mt_df = pd.read_csv(mt_file, sep='\t')
+    mt_df = mt_df[['isoform']+samples]
+    mt_df.rename({'isoform':'transcript_id'},
+                 inplace=True,
+                 axis=1)
+
+    # merge novelty info w/ detection info
+    df = df.merge(mt_df,
+                  how='left',
+                  on='transcript_id')
+
+    # dedupe eids, take max. of each population to
+    # see if it's det or not
+    df.drop('transcript_id', axis=1, inplace=True)
+    df = df.groupby(['eid', 'novelty']).max().reset_index()
+
+    # define population specificity
+    for pop in meta.population.unique().tolist():
+        df[pop] = df[meta.loc[meta.population==pop,
+                              'sample'].tolist()].sum(axis=1)
+
+    df = df.set_index(['eid', 'novelty'])
+    df = df.drop(samples, axis=1)
+    df['n_pop'] = (df>0).sum(axis=1)
+    df['pop_spec'] = (df.n_pop==1)&(df[pops]>=2).any(axis=1)
+    df['pop_spec_pop'] = df[pops].idxmax(axis=1)
+
+    print(len(df.loc[df.pop_spec==True]))
+
+    df = df.reset_index()
+    df[['Chromosome', 'Strand', 'Start', 'End']] = df.eid.str.split('_', expand=True)
+    df = df[['Chromosome', 'Strand', 'Start',
+             'End', 'novelty', 'eid', 'pop_spec', 'pop_spec_pop']]
+
+    return df
+
+rule get_pop_det_exon_bed:
+    input:
+        mt = config['lr']['mt'],
+        exon_info = config['lr']['exon_info']
+    resources:
+        nodes = 1,
+        threads = 1
+    output:
+        tsv = config['lr']['exons_pop_spec']
+    run:
+        df = get_pop_spec_exons(input.exon_info,
+                              input.mt)
+        df.to_csv(output.tsv, sep='\t', index=False)
+
+use rule get_pop_exon_fsts as get_pop_exon_60nt_fsts with:
+    input:
+        tsv = config['lr']['exons_pop_spec'],
+        fst = config['1000g']['fst']['no_nan_fst']
+    params:
+        extension = 2
+    output:
+        tsv = config['lr']['exons_pop_spec_fsts']
