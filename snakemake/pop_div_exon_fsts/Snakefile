@@ -50,7 +50,7 @@ c_df[['pop1','pop2']] = c_df.contrast.str.split('_', expand=True)
 
 rule all:
     input:
-        config['lr']['exons_pop_spec_fsts'],
+        config['lr']['exons_pop_spec_ss_fsts_summary'],
         config['lr']['exon_info'],
         config['lr']['exons_ss_in_pops_fsts_summary'],
         config['lr']['exons_ss_in_pops_fsts_summary_60nt']
@@ -182,6 +182,8 @@ rule get_pop_exon_fsts:
                           how='left',
                           strandedness=False)
         df = df.df
+        df['pop1'] = wildcards.pop1
+        df['pop2'] = wildcards.pop2
         df.to_csv(output.tsv, sep='\t', index=False)
 
 use rule get_pop_exon_fsts as get_pop_exon_60nt_fsts with:
@@ -296,3 +298,15 @@ use rule get_pop_exon_fsts as get_pop_spec_fsts with:
         extension = 2
     output:
         tsv = config['lr']['exons_pop_spec_fsts']
+
+use rule get_summary as get_summary_pop_spec with:
+    input:
+        tsvs = expand(config['lr']['exons_pop_spec_fsts'],
+               zip,
+               pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist())
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['lr']['exons_pop_spec_ss_fsts_summary']

@@ -225,9 +225,8 @@ lr:
   exons_ss_in_pops_fsts_summary_60nt: ../../data/exons/exons_60nt_fsts_summary.tsv # fsts for variants in exons or in sss
 
   exons_pop_spec: ../../data/exons/pop_spec_exons.tsv # exons with mdtadata + population specificity
-  exons_pop_spec_fsts: ../../data/exons/pop_spec_exons_fsts.tsv # exons with mdtadata + population specificity
-  # exons_pop_spec_ss_fsts_summary: ../../data/exons/pop_spec_exons_fsts_summary.tsv # fsts for variants in exons or in sss
-
+  exons_pop_spec_fsts: ../../data/exons/{pop1}_{pop2}_pop_spec_exons_fsts.tsv # exons with mdtadata + population specificity
+  exons_pop_spec_ss_fsts_summary: ../../data/exons/pop_spec_exons_fsts_summary.tsv # fsts for variants in exons or in sss
 
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
