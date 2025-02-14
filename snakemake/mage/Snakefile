@@ -76,7 +76,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        config['mage']['fastq_n_reads_summary']
+        config['mage']['r1_fq_n_reads_summary']
         # expand(config['mage']['r1_fq'],
         #        sample=df['sample'].tolist()),
         # expand(config['mage']['r2_fq'],
@@ -148,7 +148,7 @@ use rule count_reads_summary as fq_count_reads_summary with:
     params:
         samples = df['sample'].tolist()
     output:
-        summ = config['enc']['lr']['fastq_n_reads_summary']
+        summ = config['mage']['r1_fq_n_reads_summary']
 
 rule merge_matrices:
     resources:
