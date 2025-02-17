@@ -330,7 +330,7 @@ def get_novel_part_exons(ref_gtf, gtf,
     df.Start_og = df.Start_og.astype(int)
     df.End_og = df.End_og.astype(int)
 
-    exon_info = pd.read_csv(exon_info_file, od), sep='\t')
+    exon_info = pd.read_csv(exon_info_file, sep='\t')
     exon_info = exon_info.drop('transcript_id', axis=1)
     exon_info = exon_info.drop_duplicates()
     df = df.merge(exon_info, how='left', on='eid')
