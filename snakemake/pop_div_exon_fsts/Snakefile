@@ -338,7 +338,7 @@ rule get_known_exons_bed:
                                    (~ref_df.duplicated('transcript_id', keep='last'))
         ref_df = ref_df.loc[~ref_df.first_or_last_exon]
         ref_df = make_exon_id(ref_df)
-        ref_df = ref_df[['Chromosome', 'Strand', 'Start', 'End', 'eid', 'novelty']]
+        ref_df = ref_df[['Chromosome', 'Strand', 'Start', 'End', 'eid']]
         ref_df.to_csv(output.tsv, sep='\t')
 
 # get novel parts of novel exons
