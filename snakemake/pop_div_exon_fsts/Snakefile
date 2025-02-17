@@ -330,7 +330,7 @@ rule get_known_exons_bed:
         tsv = config['ref']['exons']
     run:
         # GENCODE
-        ref_df = pr.read_gtf(ref_gtf).df
+        ref_df = pr.read_gtf(input.ref_gtf).df
         ref_df = ref_df.loc[ref_df.Feature=='exon']
 
         # remove first and last exons
