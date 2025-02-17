@@ -54,7 +54,9 @@ rule all:
         config['lr']['exon_info'],
         config['lr']['exons_ss_in_pops_fsts_summary'],
         config['lr']['exons_ss_in_pops_fsts_summary_60nt'],
-        config['lr']['exons_novel_part']
+        config['lr']['exons_novel_part_fsts_summary'],
+        config['ref']['exons_fsts_summary']
+
         # expand(config['lr']['exons_in_pops_fsts'],
         #        zip,
         #        pop1=c_df.pop1.tolist(),
@@ -316,6 +318,30 @@ use rule get_summary as get_summary_pop_spec with:
 ###################################
 ####### Another try, novel parts of exons only
 ###################################
+
+# get known exons
+rule get_known_exons_bed:
+    input:
+        ref_gtf = config['ref']['gtf']
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['ref']['exons']
+    run:
+        # GENCODE
+        ref_df = pr.read_gtf(ref_gtf).df
+        ref_df = ref_df.loc[ref_df.Feature=='exon']
+
+        # remove first and last exons
+        ref_df['first_or_last_exon'] = (~ref_df.duplicated('transcript_id', keep='first'))|\
+                                   (~ref_df.duplicated('transcript_id', keep='last'))
+        ref_df = ref_df.loc[~ref_df.first_or_last_exon]
+        ref_df = make_exon_id(ref_df)
+        df = df[['Chromosome', 'Strand', 'Start', 'End', 'eid', 'novelty']]
+        df.to_csv(output.tsv, sep='\t')
+
+# get novel parts of novel exons
 rule get_novel_part_exons_bed:
     input:
         exon_info = config['lr']['exon_info'],
@@ -332,23 +358,45 @@ rule get_novel_part_exons_bed:
                               input.exon_info)
         df.to_csv(output.tsv, sep='\t', index=False)
 
-# use rule get_pop_exon_fsts as get_pop_spec_fsts with:
-#     input:
-#         tsv = config['lr']['exons_pop_spec'],
-#         fst = config['1000g']['fst']['no_nan_fst']
-#     params:
-#         extension = 2
-#     output:
-#         tsv = config['lr']['exons_pop_spec_fsts']
-#
-# use rule get_summary as get_summary_pop_spec with:
-#     input:
-#         tsvs = expand(config['lr']['exons_pop_spec_fsts'],
-#                zip,
-#                pop1=c_df.pop1.tolist(),
-#                pop2=c_df.pop2.tolist())
-#     resources:
-#         nodes = 2,
-#         threads = 1
-#     output:
-#         tsv = config['lr']['exons_pop_spec_ss_fsts_summary']
+use rule get_pop_exon_fsts as get_novel_part_fsts with:
+    input:
+        tsv = config['lr']['exons_novel_part'],
+        fst = config['1000g']['fst']['no_nan_fst']
+    params:
+        extension = 0 # no extension for this one
+    output:
+        tsv = config['lr']['exons_novel_part_fsts']
+
+use rule get_summary as get_summary_novel_part_fsts with:
+    input:
+        tsvs = expand(config['lr']['exons_novel_part_fsts'],
+               zip,
+               pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist())
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['lr']['exons_novel_part_fsts_summary']
+
+# for annotated exons
+use rule get_pop_exon_fsts as get_known_exon_fsts with:
+    input:
+        tsv = config['ref']['exons'],
+        fst = config['1000g']['fst']['no_nan_fst']
+    params:
+        extension = 0 # no extension for this one
+    output:
+        tsv = config['ref']['exons_fsts']
+
+use rule get_summary as get_known_exon_fsts_summary with:
+    input:
+        tsvs = expand(config['ref']['exons_fsts'],
+               zip,
+               pop1=c_df.pop1.tolist(),
+               pop2=c_df.pop2.tolist())
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['ref']['exons_fsts_summary']

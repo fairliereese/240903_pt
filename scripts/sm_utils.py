@@ -279,18 +279,19 @@ def get_internal_exon_info(gtf, ref_gtf):
 
     return df
 
+def make_exon_id(df):
+    """
+    Get an ID for each unique exon using
+    Chromosome, Strand, Start, End
+    """
+    df['eid'] = df['Chromosome'].astype(str)+'_'+\
+                df['Strand'].astype(str)+'_'+\
+                df['Start'].astype(str)+'_'+\
+                df['End'].astype(str)
+    return df
+
 def get_novel_part_exons(ref_gtf, gtf,
                          exon_info_file):
-    def make_exon_id(df):
-        """
-        Get an ID for each unique exon using
-        Chromosome, Strand, Start, End
-        """
-        df['eid'] = df['Chromosome'].astype(str)+'_'+\
-                    df['Strand'].astype(str)+'_'+\
-                    df['Start'].astype(str)+'_'+\
-                    df['End'].astype(str)
-        return df
 
     # PODER
     df = pr.read_gtf(gtf).df

@@ -37,6 +37,10 @@ ref:
   gtf: ../../ref/annot.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
   # sj_12nt_bed:  ../../ref/sj_ss_12nt.bed
   ss_extension_bed:  ../../ref/ss_extension.bed
+  exons: ../../ref/exons.bed
+  exons_fsts: ../../ref/exons/{pop1}_{pop2}_exons_fsts.tsv # exons w/ completely untranscrbed regions as compared to v47
+  exons_fsts_summary: ../../ref/exons/exons_fsts_summary.tsv # fsts for variants in exons or in sss
+
 
 
   sqanti:
@@ -229,6 +233,9 @@ lr:
   exons_pop_spec_ss_fsts_summary: ../../data/exons/pop_spec_exons_fsts_summary.tsv # fsts for variants in exons or in sss
 
   exons_novel_part: ../../data/exons/novel_part_exons.tsv # exons w/ completely untranscrbed regions as compared to v47
+  exons_novel_part_fsts: ../../data/exons/{pop1}_{pop2}_novel_part_exons_fsts.tsv # exons w/ completely untranscrbed regions as compared to v47
+  exons_novel_part_fsts_summary: ../../data/exons/novel_part_exons_fsts_summary.tsv # fsts for variants in exons or in sss
+
 
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
