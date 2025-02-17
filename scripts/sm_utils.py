@@ -297,13 +297,6 @@ def get_novel_part_exons(ref_gtf, gtf,
     df = pr.read_gtf(gtf).df
     df = df.loc[df.Feature=='exon']
 
-    # get uniq genomic ranges that are in poder compared to gencode
-    df = pr.PyRanges(df)
-    ref_df = pr.PyRanges(ref_df)
-
-    df = df.subtract(ref_df,
-                  strandedness='same')
-
     # remove first and last exons
     df['first_or_last_exon'] = (~df.duplicated('transcript_id', keep='first'))|\
                                (~df.duplicated('transcript_id', keep='last'))
@@ -326,6 +319,13 @@ def get_novel_part_exons(ref_gtf, gtf,
     # only keep unique exons
     ref_df = ref_df[['Chromosome', 'Strand', 'Start', 'End', 'eid']].drop_duplicates(keep='first')
 
+    # get uniq genomic ranges that are in poder compared to gencode
+    df = pr.PyRanges(df)
+    ref_df = pr.PyRanges(ref_df)
+
+    df = df.subtract(ref_df,
+                  strandedness='same')
+
     df = df.df
     df[['Chromosome_og', 'Strand_og', 'Start_og', 'End_og']] = df.eid.str.split('_', expand=True)
     df.Start_og = df.Start_og.astype(int)
@@ -337,6 +337,5 @@ def get_novel_part_exons(ref_gtf, gtf,
     df = df.merge(exon_info, how='left', on='eid')
 
     assert len(df.loc[(df.novelty=='Novel')].index) == len(df.loc[(df.Start==df.Start_og)&(df.End==df.End_og)].index)
-
     df = df[['Chromosome', 'Strand', 'Start', 'End', 'eid', 'novelty']]
     return df
