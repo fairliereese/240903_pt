@@ -278,3 +278,64 @@ def get_internal_exon_info(gtf, ref_gtf):
                   on='eid')
 
     return df
+
+def get_novel_part_exons(ref_gtf, gtf,
+                         exon_info_file):
+    def make_exon_id(df):
+    """
+    Get an ID for each unique exon using
+    Chromosome, Strand, Start, End
+    """
+    df['eid'] = df['Chromosome'].astype(str)+'_'+\
+                df['Strand'].astype(str)+'_'+\
+                df['Start'].astype(str)+'_'+\
+                df['End'].astype(str)
+    return df
+
+    # PODER
+    df = pr.read_gtf(gtf).df
+    df = df.loc[df.Feature=='exon']
+
+    # get uniq genomic ranges that are in poder compared to gencode
+    df = pr.PyRanges(df)
+    ref_df = pr.PyRanges(ref_df)
+
+    df = df.subtract(ref_df,
+                  strandedness='same')
+
+    # remove first and last exons
+    df['first_or_last_exon'] = (~df.duplicated('transcript_id', keep='first'))|\
+                               (~df.duplicated('transcript_id', keep='last'))
+    df = df.loc[~df.first_or_last_exon]
+    df = make_exon_id(df)
+
+    # only keep unique exons
+    df = df[['Chromosome', 'Strand', 'Start', 'End', 'eid']].drop_duplicates(keep='first')
+
+    # GENCODE
+    ref_df = pr.read_gtf(ref_gtf).df
+    ref_df = ref_df.loc[ref_df.Feature=='exon']
+
+    # remove first and last exons
+    ref_df['first_or_last_exon'] = (~ref_df.duplicated('transcript_id', keep='first'))|\
+                               (~ref_df.duplicated('transcript_id', keep='last'))
+    ref_df = ref_df.loc[~ref_df.first_or_last_exon]
+    ref_df = make_exon_id(ref_df)
+
+    # only keep unique exons
+    ref_df = ref_df[['Chromosome', 'Strand', 'Start', 'End', 'eid']].drop_duplicates(keep='first')
+
+    df = df.df
+    df[['Chromosome_og', 'Strand_og', 'Start_og', 'End_og']] = df.eid.str.split('_', expand=True)
+    df.Start_og = df.Start_og.astype(int)
+    df.End_og = df.End_og.astype(int)
+
+    exon_info = pd.read_csv(exon_info_file, od), sep='\t')
+    exon_info = exon_info.drop('transcript_id', axis=1)
+    exon_info = exon_info.drop_duplicates()
+    df = df.merge(exon_info, how='left', on='eid')
+
+    assert len(df.loc[(df.novelty=='Novel')].index) == len(df.loc[(df.Start==df.Start_og)&(df.End==df.End_og)].index)
+
+    df = df[['Chromosome', 'Strand', 'Start', 'End', 'eid', 'novelty']]
+    return df

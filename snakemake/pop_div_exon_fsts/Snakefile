@@ -53,7 +53,8 @@ rule all:
         config['lr']['exons_pop_spec_ss_fsts_summary'],
         config['lr']['exon_info'],
         config['lr']['exons_ss_in_pops_fsts_summary'],
-        config['lr']['exons_ss_in_pops_fsts_summary_60nt']
+        config['lr']['exons_ss_in_pops_fsts_summary_60nt'],
+        config['lr']['exons_novel_part']
         # expand(config['lr']['exons_in_pops_fsts'],
         #        zip,
         #        pop1=c_df.pop1.tolist(),
@@ -311,3 +312,43 @@ use rule get_summary as get_summary_pop_spec with:
         threads = 1
     output:
         tsv = config['lr']['exons_pop_spec_ss_fsts_summary']
+
+###################################
+####### Another try, novel parts of exons only
+###################################
+rule get_novel_part_exons_bed:
+    input:
+        exon_info = config['lr']['exon_info'],
+        ref_gtf = config['ref']['gtf'],
+        gtf = config['lr']['gtf_filt_with_genes']
+    resources:
+        nodes = 2,
+        threads = 1
+    output:
+        tsv = config['lr']['exons_novel_part']
+    run:
+        df = get_novel_part_exons(input.ref_gtf,
+                              input.gtf,
+                              input.exon_info)
+        df.to_csv(output.tsv, sep='\t', index=False)
+
+# use rule get_pop_exon_fsts as get_pop_spec_fsts with:
+#     input:
+#         tsv = config['lr']['exons_pop_spec'],
+#         fst = config['1000g']['fst']['no_nan_fst']
+#     params:
+#         extension = 2
+#     output:
+#         tsv = config['lr']['exons_pop_spec_fsts']
+#
+# use rule get_summary as get_summary_pop_spec with:
+#     input:
+#         tsvs = expand(config['lr']['exons_pop_spec_fsts'],
+#                zip,
+#                pop1=c_df.pop1.tolist(),
+#                pop2=c_df.pop2.tolist())
+#     resources:
+#         nodes = 2,
+#         threads = 1
+#     output:
+#         tsv = config['lr']['exons_pop_spec_ss_fsts_summary']

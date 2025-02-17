@@ -228,6 +228,8 @@ lr:
   exons_pop_spec_fsts: ../../data/exons/{pop1}_{pop2}_pop_spec_exons_fsts.tsv # exons with mdtadata + population specificity
   exons_pop_spec_ss_fsts_summary: ../../data/exons/pop_spec_exons_fsts_summary.tsv # fsts for variants in exons or in sss
 
+  exons_novel_part: ../../data/exons/novel_part_exons.tsv # exons w/ completely untranscrbed regions as compared to v47
+
   # merged annotation
   gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
   gtf_gc_poder_biotypes: ../../data/v47_poder_merge_t_biotypes.tsv
