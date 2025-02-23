@@ -1063,7 +1063,7 @@ use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_10bp_sj_v
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        bed = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_vcf']
+        vcf = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_vcf']
 
 use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_12bp_sj_ss_var_vcf with:
     input:
@@ -1072,7 +1072,7 @@ use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_12bp_sj_s
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        bed = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf']
+        vcf = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf']
 
 use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_2bp_ss_var_vcf with:
     input:
@@ -1081,4 +1081,4 @@ use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_2bp_ss_va
     params:
         samples = lambda wc: wc.cell_line_id
     output:
-        bed = config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_vcf']
+        vcf = config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_vcf']
