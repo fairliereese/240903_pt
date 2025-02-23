@@ -1050,9 +1050,9 @@ rule bcftool_subset_on_samples_and_bed_intersect_get_vcf:
             --min-ac=1 \
             {input.vcf} | \
         bedtools intersect \
-             -a {input.bed} \
-             -b stdin \
-             -wb \
+             -a stdin \
+             -b {input.bed} \
+             -wa \
              -u > {output.vcf}
         """
 
