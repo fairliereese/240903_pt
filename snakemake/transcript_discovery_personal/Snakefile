@@ -100,7 +100,7 @@ rule all:
                cell_line_id='HG00621'),
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf'],
               cell_line_id='HG00621'),
-       expand(config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_vcf'],
+        expand(config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_vcf'],
               cell_line_id='HG00621'),
         expand(config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect'],
                cell_line_id=df['cell_line_id_1000g'].tolist()),

@@ -59,6 +59,5 @@ snakemake \
   -j 100 \
   --latency-wait 120 -n
 
-  snakemake --forceall --rulegraph | dot -Tpdf > dag.pdf
-
+c
   snakemake --forceall --dag | dot -Tpdf > dag.pdf
