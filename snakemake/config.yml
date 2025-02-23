@@ -694,9 +694,16 @@ lr:
       ic_summary: ../../data/td_personal/cerb/ic_summary.csv
 
     exon_vars:
+
+      # bed files that intersect w/ variants
       sj_10nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int.bed
       sj_12nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.bed
       ss_2nt_vcf_intersect: ../../data/td_personal/exonic_snps/{cell_line_id}_ss_vars_int.bed
+
+      # vcf files of variants that intersect w/ sj / exons
+      sj_10nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int.vcf
+      sj_12nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.vcf
+      ss_2nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_ss_vars_int.vcf
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
