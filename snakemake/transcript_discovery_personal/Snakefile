@@ -1056,7 +1056,7 @@ rule bcftool_subset_on_samples_and_bed_intersect_get_vcf:
              -u > {output.vcf}
         """
 
-use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_10bp_sj_var with:
+use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_10bp_sj_var_vcf with:
     input:
         vcf = config['1000g']['exon_vars_header'],
         bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed']
@@ -1065,7 +1065,7 @@ use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_10bp_sj_v
     output:
         bed = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_vcf']
 
-use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_12bp_sj_ss_var with:
+use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_12bp_sj_ss_var_vcf with:
     input:
         vcf = config['1000g']['vcf'],
         bed = config['lr']['td_personal']['sqanti']['sj_12nt_bed']
@@ -1074,7 +1074,7 @@ use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_12bp_sj_s
     output:
         bed = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf']
 
-use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_2bp_ss_var with:
+use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_2bp_ss_var_vcf with:
     input:
         vcf = config['1000g']['vcf'],
         bed = config['lr']['td_personal']['sqanti']['ss_2nt_bed']
