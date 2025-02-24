@@ -96,6 +96,12 @@ wildcard_constraints:
 
 rule all:
     input:
+        expand(config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_loj'],
+               cell_line_id='HG00621'),
+        expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_loj'],
+              cell_line_id='HG00621'),
+        expand(config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_loj'],
+              cell_line_id='HG00621'),
         expand(config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_vcf'],
                cell_line_id='HG00621'),
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_vcf'],
@@ -1082,3 +1088,52 @@ use rule bcftool_subset_on_samples_and_bed_intersect_get_vcf as sample_2bp_ss_va
         samples = lambda wc: wc.cell_line_id
     output:
         vcf = config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_vcf']
+
+
+rule bcftool_subset_on_samples_and_vcf_intersect_loj:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    shell:
+        """
+        module load bedtools
+        bcftools view \
+            --samples {params.samples} \
+            --threads {resources.threads} \
+            -Ov \
+            --min-ac=1 \
+            {input.vcf} | \
+        bedtools intersect \
+             -a stdin \
+             -b {input.bed} \
+             -loj > {output.bed}
+        """
+
+use rule bcftool_subset_on_samples_and_vcf_intersect_loj as sample_10bp_sj_var_loj with:
+    input:
+        vcf = config['1000g']['exon_vars_header'],
+        bed = config['lr']['td_personal']['sqanti']['sj_10nt_bed']
+    params:
+        samples = lambda wc: wc.cell_line_id
+    output:
+        vcf = config['lr']['td_personal']['exon_vars']['sj_10nt_vcf_intersect_loj']
+
+use rule bcftool_subset_on_samples_and_vcf_intersect_loj as sample_12bp_sj_ss_var_loj with:
+    input:
+        vcf = config['1000g']['vcf'],
+        bed = config['lr']['td_personal']['sqanti']['sj_12nt_bed']
+    params:
+        samples = lambda wc: wc.cell_line_id
+    output:
+        vcf = config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_loj']
+
+use rule bcftool_subset_on_samples_and_vcf_intersect_loj as sample_2bp_ss_var_loj with:
+    input:
+        vcf = config['1000g']['vcf'],
+        bed = config['lr']['td_personal']['sqanti']['ss_2nt_bed']
+    params:
+        samples = lambda wc: wc.cell_line_id
+    output:
+        vcf = config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_loj']

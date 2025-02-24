@@ -705,6 +705,11 @@ lr:
       sj_12nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int.vcf
       ss_2nt_vcf_intersect_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_ss_vars_int.vcf
 
+      # loj of bed files that intersect w/ variants
+      sj_10nt_vcf_intersect_loj: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int_loj.bed
+      sj_12nt_vcf_intersect_loj: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int_loj.bed
+      ss_2nt_vcf_intersect_loj: ../../data/td_personal/exonic_snps/{cell_line_id}_ss_vars_int_loj.bed
+
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
   r2_fq: ../../data/mage/raw/{sample}_r2.fq.gz
