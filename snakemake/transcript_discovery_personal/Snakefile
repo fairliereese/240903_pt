@@ -96,6 +96,8 @@ wildcard_constraints:
 
 rule all:
     input:
+        expand(config['lr']['td_personal']['exon_vars']['wha_happen_vcf'],
+               cell_line_id='HG00621'),
         expand(config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_loj'],
                cell_line_id='HG00621'),
         expand(config['lr']['td_personal']['exon_vars']['sj_12nt_vcf_intersect_loj'],
@@ -703,8 +705,7 @@ rule get_10nt_sj_bed:
                                   aggfunc=lambda x: True).fillna(False).reset_index()
 
         temp[['Chromosome', 'Strand', 'Start', 'End']] = temp.sj_id.str.split('_', expand=True)
-        temp = temp[['Chromosome', 'Strand', 'Start', 'End',
-                     'cell_line_id', 'sj_id']].drop_duplicates()
+        temp = temp[['Chromosome', 'Strand', 'Start', 'End', 'sj_id']].drop_duplicates()
 
         temp.Start = temp.Start.astype(int)
         temp.End = temp.End.astype(int)
@@ -730,7 +731,7 @@ rule get_10nt_sj_bed:
         temp.loc[temp.sj_loc=='end', 'End'] = temp.loc[temp.sj_loc=='end', 'End']+11
         temp.loc[temp.sj_loc=='end', 'Start'] = temp.loc[temp.sj_loc=='end', 'Start']+2
 
-        temp.drop(['cell_line_id', 'map_genome'], axis=1, inplace=True)
+        temp.drop(['map_genome'], axis=1, inplace=True)
 
         temp['len'] = temp.End-temp.Start
         assert len(temp.loc[temp.len!=10]) == 0
@@ -1137,3 +1138,25 @@ use rule bcftool_subset_on_samples_and_vcf_intersect_loj as sample_2bp_ss_var_lo
         samples = lambda wc: wc.cell_line_id
     output:
         bed = config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_loj']
+
+rule wha_happen:
+    input:
+        vcf = config['1000g']['vcf']
+    params:
+        samples = lambda wc: wc.cell_line_id
+    resources:
+        threads = 8,
+        nodes = 2
+    output:
+        vcf =
+    shell:
+        """
+        module load bedtools
+        bcftools view \
+            --samples {params.samples} \
+            --threads {resources.threads} \
+            -Ov \
+            --min-ac=1 \
+            --regions chr10:60791471-60792700 \
+            {input.vcf} > {output.vcf}
+        """

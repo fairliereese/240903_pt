@@ -684,9 +684,11 @@ lr:
       cl: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sqanti_classification.txt
       sj_parsed: ../../data/td_personal/sqanti/{cell_line_id}_{hap}_{sqanti_genome}_sj_parsed.tsv
       sj_summary: ../../data/td_personal/sqanti/sj_summary.csv
+
       sj_10nt_bed:  ../../data/td_personal/sqanti/sj_10nt.bed
       sj_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_12nt.bed
       ss_2nt_bed: ../../data/td_personal/sqanti/ss_2nt.bed
+
       sj_annot_12nt_bed:  ../../data/td_personal/sqanti/sj_ss_annot_12nt.bed # only annot. sjs+ss
 
     cerb:
@@ -709,6 +711,10 @@ lr:
       sj_10nt_vcf_intersect_loj: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_vars_int_loj.bed
       sj_12nt_vcf_intersect_loj: ../../data/td_personal/exonic_snps/{cell_line_id}_exon_ss_vars_int_loj.bed
       ss_2nt_vcf_intersect_loj: ../../data/td_personal/exonic_snps/{cell_line_id}_ss_vars_int_loj.bed
+
+      # vcf files of variants that intersect w/ the weird region where
+      # i'm getting inconsistent results
+      wha_happen_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_wha_happen.vcf
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
