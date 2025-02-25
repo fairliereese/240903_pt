@@ -1148,7 +1148,7 @@ rule wha_happen:
         threads = 8,
         nodes = 2
     output:
-        vcf =
+        vcf = config['lr']['td_personal']['exon_vars']['wha_happen_vcf']
     shell:
         """
         module load bedtools
