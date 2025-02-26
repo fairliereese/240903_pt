@@ -36,9 +36,9 @@ sj_10nt_bed=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_10nt.bed
 sj_12nt_bed=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_ss_12nt.bed
 ss_2nt_bed=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/ss_2nt.bed
 
-sj_10nt_bed_int=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_10nt_int.txt
-sj_12nt_bed_int=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_ss_12nt_int.txt
-ss_2nt_bed_int=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/ss_2nt_int.txt
+sj_10nt_bed_int=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_10nt_int.bed
+sj_12nt_bed_int=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_ss_12nt_int.bed
+ss_2nt_bed_int=~/mele_lab/projects/240903_pt/data/td_personal/sqanti/ss_2nt_int.bed
 
 # # this workds fine; I get results
 # bedtools intersect \
@@ -60,6 +60,33 @@ bedtools intersect \
     -b stdin \
     -wa \
     -u > $sj_10nt_bed_int
+
+
+
+
+# this works fine too; I get results
+module load bedtools
+module load bcftools
+bcftools view \
+   --samples HG00621 \
+   -Ov \
+   --min-ac=1 \
+   $vcf | \
+bedtools intersect \
+    -a $sj_10nt_bed \
+    -b stdin \
+    -wa \
+    -u > $sj_10nt_bed_int
+
+# try without header
+module load bedtools
+module load bcftools
+bedtools intersect \
+    -a $sj_10nt_bed \
+    -b stdin \
+    -wa \
+    -u > $sj_10nt_bed_int
+
 
 
 # this is not empty but does not contain the 2 variants that it should be overlapping that I get above
