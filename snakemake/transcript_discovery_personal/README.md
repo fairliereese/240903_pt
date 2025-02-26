@@ -25,7 +25,7 @@ vcf=~/mele_lab/projects/240903_pt/data/td_personal/exonic_snps/HG00621_wha_happe
 
 module load bedtools
 bcftools view \
-    --samples {params.samples} \
+    --samples HG00621 \
     --threads {resources.threads} \
     -Ov \
     --min-ac=1 \
