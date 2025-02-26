@@ -15,3 +15,12 @@ grep 60792131 $fname > ${fname}_pos
 fname=HG00621_ss_vars_int_loj.bed
 grep 60792131 $fname > ${fname}_pos
 ```
+
+
+I have no idea what's going on with these dumb intersections:
+```bash
+# vcf for one sampel encompassing region that seems to be missing an SNP
+vcf=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/exonic_snps/HG00621_wha_happen.vcf
+
+
+```
