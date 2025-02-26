@@ -1144,12 +1144,6 @@ use rule bcftools_vcf_index as index_1000_vcf with:
         vcf = config['1000g']['vcf']
     output:
         ind = config['1000g']['vcf_ind']
-    shell:
-        """
-        bcftools index \
-            {input.vcf} \
-            --threads {resources.threads}
-        """
 
 rule wha_happen:
     input:
