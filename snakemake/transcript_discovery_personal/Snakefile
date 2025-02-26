@@ -1139,9 +1139,22 @@ use rule bcftool_subset_on_samples_and_vcf_intersect_loj as sample_2bp_ss_var_lo
     output:
         bed = config['lr']['td_personal']['exon_vars']['ss_2nt_vcf_intersect_loj']
 
-rule wha_happen:
+use rule bcftools_vcf_index as index_1000_vcf with:
     input:
         vcf = config['1000g']['vcf']
+    output:
+        ind = config['1000g']['vcf_ind']
+    shell:
+        """
+        bcftools index \
+            {input.vcf} \
+            --threads {resources.threads}
+        """
+
+rule wha_happen:
+    input:
+        vcf = config['1000g']['vcf'],
+        vcf = config['1000g']['vcf_ind'],
     params:
         samples = lambda wc: wc.cell_line_id
     resources:

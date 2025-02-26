@@ -932,6 +932,7 @@ software:
 1000g:
   # vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel_biallelic.vcf.gz # i think this is actually the subset vcf of just our samples
   vcf: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
+  vcf_ind: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.csi
   vcf_chr: /gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.chr{chrom}.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
 
   meta: ../../data/1000g/1000g_meta.tsv #/gpfs/projects/bsc83/Data/1000G/1000G_metadata.tsv
