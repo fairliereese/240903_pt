@@ -26,9 +26,13 @@ sj_10nt_bed=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_p
 sj_12nt_bed=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_ss_12nt.bed
 ss_2nt_bed=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/ss_2nt.bed
 
+sj_10nt_bed_int=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/sqanti/sj_10nt_int.txt
+sj_12nt_bed_int=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_ss_12nt_int.txt
+ss_2nt_bed_int=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/ss_2nt_int.txt
+
 bedtools intersect \
-         -a stdin \
-         -b {input.bed} \
-         -wa -wb > {output.bed}
+         -a $sj_10nt_bed \
+         -b $vcf \
+         -wa -wb > $sj_10nt_bed_int
 
 ```
