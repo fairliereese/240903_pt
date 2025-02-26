@@ -22,5 +22,13 @@ I have no idea what's going on with these dumb intersections:
 # vcf for one sampel encompassing region that seems to be missing an SNP
 vcf=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/exonic_snps/HG00621_wha_happen.vcf
 
+sj_10nt_bed=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/sqanti/sj_10nt.bed
+sj_12nt_bed=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/sj_ss_12nt.bed
+ss_2nt_bed=/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/td_personal/sqanti/ss_2nt.bed
+
+bedtools intersect \
+         -a stdin \
+         -b {input.bed} \
+         -wa -wb > {output.bed}
 
 ```

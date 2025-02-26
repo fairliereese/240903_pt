@@ -690,7 +690,7 @@ rule get_10nt_sj_bed:
 
         # then make sure that there are no dupe. sj+sj nov+sample+map genome
         temp = df.loc[df[['sj_id', 'junction_novelty',
-                          'cell_line_id', 'map_genome', 'start_site_novelty',
+                          'map_genome', 'start_site_novelty',
                           'end_site_category']].duplicated(keep=False)]
         assert len(temp.index) == 0
         del temp
