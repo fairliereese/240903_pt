@@ -705,6 +705,7 @@ rule get_10nt_sj_bed:
                                   values=df.map_genome,
                                   aggfunc=lambda x: True).fillna(False).reset_index()
 
+
         temp[['Chromosome', 'Strand', 'Start', 'End']] = temp.sj_id.str.split('_', expand=True)
         temp = temp[['Chromosome', 'Strand', 'Start', 'End', 'sj_id']].drop_duplicates()
 
@@ -713,7 +714,7 @@ rule get_10nt_sj_bed:
         assert len(temp.loc[temp.Start>temp.End])==0
 
         # melt to 5' and 3'
-        temp = temp.melt(id_vars=['Chromosome', 'Strand', 'cell_line_id', 'sj_id'],
+        temp = temp.melt(id_vars=['Chromosome', 'Strand', 'sj_id'],
                          value_vars=['Start', 'End'])
         temp['sj_loc'] = ''
         temp.loc[temp.map_genome=='Start', 'sj_loc'] = 'start'
