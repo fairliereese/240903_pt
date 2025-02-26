@@ -88,8 +88,8 @@ assert len(df_1kg.cell_line_id.unique()) == 3202
 # # TODO
 # df_1kg = df_1kg.head(1)
 
-# TODO only one cell line first
-df = df.loc[df.cell_line_id_1000g=='HG00621']
+# # TODO only one cell line first
+# df = df.loc[df.cell_line_id_1000g=='HG00621']
 
 wildcard_constraints:
     cell_line_id='|'.join(df_1kg['cell_line_id'].unique()),
