@@ -1148,7 +1148,7 @@ use rule bcftools_vcf_index as index_1000_vcf with:
 rule wha_happen:
     input:
         vcf = config['1000g']['vcf'],
-        vcf = config['1000g']['vcf_ind'],
+        vcf_ind = config['1000g']['vcf_ind'],
     params:
         samples = lambda wc: wc.cell_line_id
     resources:
