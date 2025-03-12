@@ -15,7 +15,7 @@ In each subdirectory, the important files which are usually there are as follows
 
 ## Subfolder descriptions
 
-Subfolders that are not listed here to not contains analyses / processing that was ultimately used to write this manuscript.
+Subfolders that are not listed here don't contains analyses / processing for this manuscript.
 
 <!-- * [1000g](https://github.com/fairliereese/240903_pt/tree/main/snakemake/1000g):  -->
 <!-- * [lapa](https://github.com/fairliereese/240903_pt/tree/main/snakemake/lapa): Quantification / identification of TSS usage from LR-RNA-seq -->
