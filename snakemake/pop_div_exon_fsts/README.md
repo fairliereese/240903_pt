@@ -1,4 +1,4 @@
-I'm too lazy / in a rush to write good rules to do this so I am renaming the chinese populations to HAC using symlinks manually:
+I am renaming the chinese populations to HAC using symlinks manually:
 ```bash
 cd ../../data/1000g/fst/
 ln -s CHB_CEU.FST.noNAN.txt HAC_CEU.FST.noNAN.txt
