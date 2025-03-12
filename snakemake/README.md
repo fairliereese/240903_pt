@@ -15,7 +15,7 @@ In each subdirectory, the important files which are usually there are as follows
 
 ## Subfolder descriptions
 
-Subfolders that are not listed here to not contains analyses / processing that was ultimately used to write this manuscript. 
+Subfolders that are not listed here to not contains analyses / processing that was ultimately used to write this manuscript.
 
 <!-- * [1000g](https://github.com/fairliereese/240903_pt/tree/main/snakemake/1000g):  -->
 <!-- * [lapa](https://github.com/fairliereese/240903_pt/tree/main/snakemake/lapa): Quantification / identification of TSS usage from LR-RNA-seq -->
@@ -36,6 +36,11 @@ Subfolders that are not listed here to not contains analyses / processing that w
 * [novel_annotation_add_gene](https://github.com/fairliereese/240903_pt/blob/main/snakemake/novel_annotation_add_gene): Add gene entries to PODER GTF which only had transcript and exon entries, and a gene ID tag.
 * [novel_gene](https://github.com/fairliereese/240903_pt/tree/main/snakemake/novel_gene): Add novel gene IDs to intergenic transcripts found in PODER using [buildLoci](https://github.com/julienlag/buildLoci).
 <!-- * [personal_genome](https://github.com/fairliereese/240903_pt/tree/main/snakemake/personal_genome): What is this -->
+<!-- * [personal_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/personal_lr-kallisto): Run lr-kallisto on personal assembly-mapped 6 samples. -->
+* [pfam](https://github.com/fairliereese/240903_pt/blob/main/snakemake/pfam): Run PFAM protein domain finder on GENCODE v47 reference annotation and PODER.
+* [poder_protein](https://github.com/fairliereese/240903_pt/tree/main/snakemake/poder_protein): Run protein prediction pipeline on PODER.
+* [pop_div_exon_fsts](https://github.com/fairliereese/240903_pt/tree/main/snakemake/pop_div_exon_fsts): Find known exons and novel transcribed regions of novel exons. Compute the Fst values pairwise between each set of populations in the 1000G that overlap ours for the SNP variants that fall within these regions.
+
 
 
 ## Snakemake calls
