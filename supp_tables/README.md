@@ -44,3 +44,8 @@ tau_df = pd.read_csv(f'../analysis/250127_{min_cpm}_{min_samples}_mage_populatio
 tau_df.rename({'tid':'isoform'}, axis=1, inplace=True)
 tau_df.to_csv('13_mage_tau.tsv', sep='\t', index=False)
 ```
+
+## Enh. GENCODE:   
+```
+gtf_gc_poder: ../../data/v47_poder_merge.gtf # /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/241018_v47_poder_merge.gtf
+```
