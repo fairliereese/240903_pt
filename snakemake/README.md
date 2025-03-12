@@ -10,12 +10,33 @@ In the parent directory, there are a few shared resources
 
 In each subdirectory, the important files which are usually there are as follows:
 * `Snakefile`: Used to run the data processing / analysis workflow
-* `snakefile_dev.ipynb`: Jupyter notebook used to debug input / output Snakemake files or other tasks that are run during `Snakefile` execution.
+* `snakefile_dev.ipynb` (and other `*dev.ipynb`): Jupyter notebooks used to debug input / output Snakemake files or other tasks that are run during `Snakefile` execution.
 * Oftentimes there are additional `*.txt`, `*.md`, or `*.tsv` files that help outline additional input / output information (especially related to external dataset use) or other information / code used to run the `Snakefile`.
 
 ## Subfolder descriptions
 
+Subfolders that are not listed here to not contains analyses / processing that was ultimately used to write this manuscript. 
+
 <!-- * [1000g](https://github.com/fairliereese/240903_pt/tree/main/snakemake/1000g):  -->
+<!-- * [lapa](https://github.com/fairliereese/240903_pt/tree/main/snakemake/lapa): Quantification / identification of TSS usage from LR-RNA-seq -->
+
+* [ics_inter_catalog](https://github.com/fairliereese/240903_pt/tree/main/snakemake/ics_inter_catalog): Extract unique intron chains from each catalog (CHESS3, ENCODE4, GTEx) and run SQANTI on them.
+* [astu_example](https://github.com/fairliereese/240903_pt/tree/main/snakemake/astu_example): Systematically output LR-RNA-seq BAM files split by allele to facilitate visualization of allele-specific transcript usage (ASTU).
+* [encode](https://github.com/fairliereese/240903_pt/tree/main/snakemake/encode): Dertermine genetic ancestry (if annotated) of ENCODE LR-RNA-seq catalog. (Not Snakemake).
+* [gtex_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/gtex_lr-kallisto): Re-quantify the GTEx LR-RNA-seq dataset from FASTQ using lr-kallisto and PODER.
+* [lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/lr-kallisto): Quantification of our LR-RNA-seq dataset with lr-kallisto and PODER.
+* [mage](https://github.com/fairliereese/240903_pt/tree/main/snakemake/mage): Quantification of [MAGE](https://github.com/mccoy-lab/MAGE) RNA-seq dataset using kallisto and multiple annotations (PODER, GENCODE, Enhanced GENCODE).
+<!-- Also attempt at running sQTLseeker and suppa -->
+<!-- * [map](https://github.com/fairliereese/240903_pt/tree/main/snakemake/map): Run mapping and compute mapping statistics using T2T, GRCh38, and [African CAAPA contigs](https://www.biorxiv.org/content/10.1101/2023.11.04.564839v1). -->
+* [map_personal](https://github.com/fairliereese/240903_pt/tree/main/snakemake/map_personal): Download of personal assemblies from pangenome matching our LR-RNA-seq samples.
+<!-- Also mapping but we ended up using Fabien's -->
+* [merge_espresso](https://github.com/fairliereese/240903_pt/tree/main/snakemake/merge_espresso): Merging ESPRESSO transcripts from downsampling experiment when using GENCODE v47 as the annotation by intron chain.
+* [merge_espresso_refseq](https://github.com/fairliereese/240903_pt/tree/main/snakemake/merge_espresso_refseq): Merging ESPRESSO transcripts from downsampling experiment when using RefSeq v110 as the annotation by intron chain.
+* [merge_v47_poder](https://github.com/fairliereese/240903_pt/blob/main/snakemake/merge_v47_poder): Merge novel PODER transcript GTF with GENCODE v47 GTF to create the Enhanced GENCODE annotation.
+* [novel_annotation_add_gene](https://github.com/fairliereese/240903_pt/blob/main/snakemake/novel_annotation_add_gene): Add gene entries to PODER GTF which only had transcript and exon entries, and a gene ID tag.
+* [novel_gene](https://github.com/fairliereese/240903_pt/tree/main/snakemake/novel_gene): Add novel gene IDs to intergenic transcripts found in PODER using [buildLoci](https://github.com/julienlag/buildLoci).
+<!-- * [personal_genome](https://github.com/fairliereese/240903_pt/tree/main/snakemake/personal_genome): What is this -->
+
 
 ## Snakemake calls
 
