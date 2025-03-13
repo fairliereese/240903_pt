@@ -57,5 +57,5 @@ use rule dl_aws as dl_hprc_kinnex with:
     params:
         link = lambda wc: get_df_val(df, 'path',
                                      {'sample_rep':wc.sample_rep})
-    out:
-        bam = config['hprc']['kinnex']['flnc_bam']
+    output:
+        out = config['hprc']['kinnex']['flnc_bam']
