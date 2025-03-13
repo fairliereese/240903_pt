@@ -124,7 +124,7 @@ use rule count_bam as hprc_count_raw_reads with:
 
 use rule count_reads_summary as hprc_count_reads_summary with:
     input:
-        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+        txts = lambda wc: expand(config['hprc']['kinnex']['flnc_bam_n_reads'],
                                 sample_rep=df['sample_rep'].tolist()),
     params:
         samples = df['sample_rep'].tolist()
