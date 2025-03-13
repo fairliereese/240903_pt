@@ -64,7 +64,7 @@ use rule dl_aws as dl_hprc_kinnex with:
 
 use rule minimap2_with_index_pacbio as hprc_map with:
     input:
-        bam = config['hprc']['kinnex']['flnc_bam']
+        bam = config['hprc']['kinnex']['flnc_bam'],
         ind = config['ref']['fa_mmi']
     resources:
         threads = 8,
