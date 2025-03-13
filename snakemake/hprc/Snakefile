@@ -62,6 +62,13 @@ use rule dl_aws as dl_hprc_kinnex with:
     output:
         out = config['hprc']['kinnex']['flnc_bam']
 
+### index genome
+use rule minimap2_index as ind_alt_assembly with:
+    input:
+        fa = config['ref']['fa']
+    output:
+        ind = config['ref']['fa_mmi']
+
 use rule minimap2_with_index_pacbio as hprc_map with:
     input:
         bam = config['hprc']['kinnex']['flnc_bam'],
