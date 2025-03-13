@@ -954,3 +954,7 @@ software:
   fst:
     raw_fst: ../../data/1000g/fst/{pop1}_{pop2}.FST.txt
     no_nan_fst: ../../data/1000g/fst/{pop1}_{pop2}.FST.noNAN.txt
+
+hprc:
+  kinnex:
+    flnc_bam: ../../data/hprc/kinnex/{sample_rep}.flnc.bam

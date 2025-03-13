@@ -1,0 +1,61 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+# from vcf_utils import *
+
+c_dir = '../common/'
+
+meta_file = '../config.tsv'
+meta_file_2 = 'config.tsv'
+genomes_file = 'genomes_config.tsv'
+configfile: '../config.yml'
+
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}bedtools.smk'
+include: f'{c_dir}transdecoder.smk'
+include: f'{c_dir}protein.smk'
+include: f'{c_dir}minimap2.smk'
+include: f'{c_dir}stats.smk'
+
+df = pd.read_csv('data_kinnex_pre_release.index.csv', sep=',')
+df['sample_rep'] = df['sample_id']+'_'+(df.sort_values(by=['sample_id']).groupby(['sample_id']).cumcount()+1).astype(str)
+
+def get_df_val(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    assert len(val) == 1
+    return val[0]
+
+
+wildcard_constraints:
+    sample_rep='|'.join(df['sample_rep'].unique()),
+    sample='|'.join(df['sample_id'].unique())
+
+rule all:
+    input:
+        expand(config['hprc']['kinnex']['flnc_bam'],
+               sample_rep=df.sample_rep.tolist())
+
+use rule dl_aws as dl_hprc_kinnex with:
+    params:
+        link = lambda wc: get_df_val(df, 'path',
+                                     {'sample_rep':wc.sample_rep})
+    out:
+        bam = config['hprc']['kinnex']['flnc_bam']

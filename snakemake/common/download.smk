@@ -20,6 +20,7 @@ rule wget:
         """
         wget "{params.link}" -O {output.out}
         """
+
 rule dl_aws:
     resources:
         nodes = 1,
