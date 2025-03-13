@@ -958,3 +958,16 @@ software:
 hprc:
   kinnex:
     flnc_bam: ../../data/hprc/kinnex/{sample_rep}.flnc.bam
+
+    flnc_bam_n_reads: ../../data/hprc/kinnex/{sample_rep}_n_reads.txt
+    flnc_bam_n_reads_summary: ../../data/hprc/kinnex/flnc_bam_n_reads.txt
+
+    map:
+      sam: ../../data/hprc/kinnex/map/{sample_rep}.sam
+      sam_filt: ../../data/hprc/kinnex/map/{sample_rep}_filt.sam
+      bam: ../../data/hprc/kinnex/map/{sample_rep}_filt.bam
+      bam_sort: ../../data/hprc/kinnex/map/{sample_rep}_sort.bam
+      bam_ind: ../../data/hprc/kinnex/map/{sample_rep}_sort.bam.bai
+      bam_n_reads: ../../data/hprc/kinnex/map/{sample_rep}_n_reads.txt
+
+      bam_n_reads_summary: ../../data/hprc/kinnex/map/mapped_n_reads.txt

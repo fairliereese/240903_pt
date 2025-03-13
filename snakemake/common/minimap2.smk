@@ -39,3 +39,23 @@ rule minimap2_index:
         module load minimap2
         minimap2 -x map-ont -t 112 -d {output.ind} {input.fa}
         """
+
+# pacbio
+rule minimap2_with_index_pacbio:
+    resources:
+        threads = 8,
+        nodes = 32
+    shell:
+        """
+        module load minimap2
+        minimap2 \
+            -ax splice:hq \
+            -uf \
+            -t {resources.threads} \
+            --MD \
+            --secondary=no \
+            -L \
+            -o {output.sam} \
+            -a {input.ind} \
+            {input.bam}
+        """

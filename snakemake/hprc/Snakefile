@@ -50,8 +50,10 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['hprc']['kinnex']['flnc_bam'],
-               sample_rep=df.sample_rep.tolist())
+        config['hprc']['kinnex']['map']['bam_n_reads_summary'],
+        config['hprc']['kinnex']['flnc_bam_n_reads_summary']
+        # expand(config['hprc']['kinnex']['flnc_bam'],
+        #        sample_rep=df.sample_rep.tolist())
 
 use rule dl_aws as dl_hprc_kinnex with:
     params:
@@ -59,3 +61,81 @@ use rule dl_aws as dl_hprc_kinnex with:
                                      {'sample_rep':wc.sample_rep})
     output:
         out = config['hprc']['kinnex']['flnc_bam']
+
+use rule minimap2_with_index_pacbio as hprc_map with:
+    input:
+        bam = config['hprc']['kinnex']['flnc_bam']
+        ind = config['ref']['fa_mmi']
+    resources:
+        threads = 8,
+        nodes = 2
+    output:
+        sam = temporary(config['hprc']['kinnex']['map']['sam'])
+
+use rule filt_non_prim_unmap_supp as hprc_filt_map with:
+    input:
+        align = config['hprc']['kinnex']['map']['sam']
+    output:
+        align = temporary(config['hprc']['kinnex']['map']['sam_filt'])
+
+use rule sam_to_bam as sam_to_bam with:
+    input:
+        sam = config['hprc']['kinnex']['map']['sam_filt']
+    output:
+        bam = temporary(config['hprc']['kinnex']['map']['bam'])
+
+# index and sort bam
+use rule sort_bam as hprc_sort_bam with:
+    input:
+        bam = config['hprc']['kinnex']['map']['bam']
+    output:
+        bam = config['hprc']['kinnex']['map']['bam_sort']
+
+use rule index_bam as alt_index_bam with:
+    input:
+        bam = config['hprc']['kinnex']['map']['bam_sort']
+    output:
+        ind = config['hprc']['kinnex']['map']['bam_ind']
+#
+# # ### statistics
+# # rule all_stats:
+# #     input:
+# #         config['lr']['fastq_n_reads_summary'],
+# #         expand(config['hprc']['kinnex']['map']['bam_n_reads_summary'],
+# #                assembly=assemblies),
+# #         expand(config['hprc']['kinnex']['map']['bam_mapqs_summary'],
+# #               assembly=assemblies)
+# #
+# #
+
+# raw flnc bam counts
+use rule count_bam as hprc_count_raw_reads with:
+    input:
+        bam = config['hprc']['kinnex']['flnc_bam']
+    output:
+        txt = temporary(config['hprc']['kinnex']['flnc_bam_n_reads'])
+
+use rule count_reads_summary as hprc_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['lr']['fastq_n_reads'],
+                                sample_rep=df['sample_rep'].tolist()),
+    params:
+        samples = df['sample_rep'].tolist()
+    output:
+        summ = config['hprc']['kinnex']['flnc_bam_n_reads_summary']
+
+# filtered bam counts
+use rule count_bam as hprc_count_mapped_reads with:
+    input:
+        align = config['hprc']['kinnex']['map']['bam_sort']
+    output:
+        txt = config['hprc']['kinnex']['map']['bam_n_reads']
+
+use rule count_reads_summary as sam_count_reads_summary with:
+    input:
+        txts = lambda wc: expand(config['hprc']['kinnex']['map']['bam_n_reads'],
+                                sample=df['sample_rep'].tolist()),
+    params:
+        samples = df['sample_rep'].tolist()
+    output:
+        summ = config['hprc']['kinnex']['map']['bam_n_reads_summary']
