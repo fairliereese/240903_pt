@@ -134,7 +134,7 @@ use rule count_bam as hprc_count_mapped_reads with:
 use rule count_reads_summary as sam_count_reads_summary with:
     input:
         txts = lambda wc: expand(config['hprc']['kinnex']['map']['bam_n_reads'],
-                                sample=df['sample_rep'].tolist()),
+                                sample_rep=df['sample_rep'].tolist()),
     params:
         samples = df['sample_rep'].tolist()
     output:
