@@ -78,7 +78,7 @@ use rule filt_non_prim_unmap_supp as hprc_filt_map with:
     output:
         align = temporary(config['hprc']['kinnex']['map']['sam_filt'])
 
-use rule sam_to_bam as sam_to_bam with:
+use rule sam_to_bam as hprc_sam_to_bam with:
     input:
         sam = config['hprc']['kinnex']['map']['sam_filt']
     output:
@@ -91,7 +91,7 @@ use rule sort_bam as hprc_sort_bam with:
     output:
         bam = config['hprc']['kinnex']['map']['bam_sort']
 
-use rule index_bam as alt_index_bam with:
+use rule index_bam as hprc_index_bam with:
     input:
         bam = config['hprc']['kinnex']['map']['bam_sort']
     output:
