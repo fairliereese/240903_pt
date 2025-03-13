@@ -118,7 +118,7 @@ use rule index_bam as hprc_index_bam with:
 # raw flnc bam counts
 use rule count_bam as hprc_count_raw_reads with:
     input:
-        bam = config['hprc']['kinnex']['flnc_bam']
+        align = config['hprc']['kinnex']['flnc_bam']
     output:
         txt = temporary(config['hprc']['kinnex']['flnc_bam_n_reads'])
 
