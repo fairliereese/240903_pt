@@ -1,6 +1,8 @@
 ref/*
 data/*tsv
 analysis/*tsv
+analysis/archive/*tsv
+supp_tables/*tsv
 *pdf
 *.p
 *gtf

@@ -1,4 +1,4 @@
-## too lazy to do this w/ snakemake
+## debugging some weird vcf + bed region intersection behavior
 ```bash
 head -20000 /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/02_prepare_vep_inputs/1000G_variants_in_exons_headed.vcf |grep ^#  > ~/mele_lab/projec
 ts/240903_pt/data/1000g/1000G_vcf_header.vcf
@@ -17,7 +17,7 @@ grep 60792131 $fname > ${fname}_pos
 ```
 
 
-I have no idea what's going on with these dumb intersections:
+I have no idea what's going on with these intersections:
 ```bash
 # vcf for one sampel encompassing region that seems to be missing an SNP
 1000g_vcf=/gpfs/projects/bsc83/Data/1000G/x30_vcf/original_data/1kGP_high_coverage_Illumina.all_chr.filtered.SNV_INDEL_SV_phased_panel.vcf.gz

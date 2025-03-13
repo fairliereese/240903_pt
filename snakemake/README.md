@@ -15,7 +15,7 @@ In each subdirectory, the important files which are usually there are as follows
 
 ## Subfolder descriptions
 
-Subfolders that are not listed here don't contains analyses / processing for this manuscript.
+Subfolders that are not listed here don't contain analyses / processing for this manuscript.
 
 <!-- * [1000g](https://github.com/fairliereese/240903_pt/tree/main/snakemake/1000g):  -->
 <!-- * [lapa](https://github.com/fairliereese/240903_pt/tree/main/snakemake/lapa): Quantification / identification of TSS usage from LR-RNA-seq -->
@@ -45,7 +45,7 @@ Subfolders that are not listed here don't contains analyses / processing for thi
 * [pop_div_exon_fsts](https://github.com/fairliereese/240903_pt/tree/main/snakemake/pop_div_exon_fsts): Find known exons and novel transcribed regions of novel exons. Compute the Fst values pairwise between each set of populations in the 1000G that overlap ours for the SNP variants that fall within these regions.
 * [protein](https://github.com/fairliereese/240903_pt/tree/main/snakemake/protein): Run protein prediction pipeline on UMA.
 * [transcript_discovery_personal](https://github.com/fairliereese/240903_pt/tree/main/snakemake/transcript_discovery_personal): Map our LR-RNA-seq data from the 30 1000G-overlapping samples to their corresponding 2 personalized-GRCh38 haplotypes (ie GRCh38 with the SNPs from each sample incorporated). Run SQANTI on the ESPRESSO results to get splice junctions from each mapping (personalized-GRCh38s and GRCh38 alone). Intersect biallelic SNPs with splice-junction proximal exonic SNPs and splice site intronic SNPs to determine how splice junctions' discovery is affected by genetics.
-* [merge_ics](https://github.com/fairliereese/240706_pantranscriptome_cerberus_gtf_merge/tree/594b554f0235b5c0d1f40f789e7e0ecacecbbb9c/merge_only_ics): Merge intron chains across samples and tools (ESPRESSO, LyRic, IsoQuant, FLAIR) to generate the UMA. 
+* [merge_ics](https://github.com/fairliereese/240706_pantranscriptome_cerberus_gtf_merge/tree/594b554f0235b5c0d1f40f789e7e0ecacecbbb9c/merge_only_ics): Merge intron chains across samples and tools (ESPRESSO, LyRic, IsoQuant, FLAIR) to generate the UMA.
 
 
 
