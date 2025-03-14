@@ -136,7 +136,7 @@ use rule count_bam as hprc_count_mapped_reads with:
     input:
         align = config['hprc']['kinnex']['map']['bam_sort']
     output:
-        txt = config['hprc']['kinnex']['map']['bam_n_reads']
+        txt = temporary(config['hprc']['kinnex']['map']['bam_n_reads'])
 
 use rule count_reads_summary as sam_count_reads_summary with:
     input:

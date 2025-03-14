@@ -44,7 +44,7 @@ rule minimap2_index:
 rule minimap2_with_index_pacbio:
     resources:
         threads = 8,
-        nodes = 32
+        nodes = 2
     shell:
         """
         module load minimap2
