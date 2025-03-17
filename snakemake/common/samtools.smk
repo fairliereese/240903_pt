@@ -74,7 +74,9 @@ rule merge_alignment:
     shell:
         """
         module load samtools
-        samtools merge -o {output.bam} {input.files}
+        samtools merge \
+            -@ {resources.threads} \
+            -o {output.bam} {input.files}
         """
 
 rule count_primary_mappings:

@@ -968,6 +968,10 @@ hprc:
       bam: ../../data/hprc/kinnex/map/{sample_rep}_filt.bam
       bam_sort: ../../data/hprc/kinnex/map/{sample_rep}_sort.bam
       bam_ind: ../../data/hprc/kinnex/map/{sample_rep}_sort.bam.bai
-      bam_n_reads: ../../data/hprc/kinnex/map/{sample_rep}_n_reads.txt
 
+      bam_n_reads: ../../data/hprc/kinnex/map/{sample_rep}_n_reads.txt
       bam_n_reads_summary: ../../data/hprc/kinnex/map/mapped_n_reads.txt
+
+      # merged across technical replicates of the same cell line
+      merge_bam: ../../data/hprc/kinnex/map/{sample_id}_sort.bam
+      merge_bam_ind: ../../data/hprc/kinnex/map/{sample_id}_sort.bam.bai

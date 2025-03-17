@@ -33,6 +33,7 @@ include: f'{c_dir}stats.smk'
 df = pd.read_csv('data_kinnex_pre_release.index.csv', sep=',')
 df['sample_rep'] = df['sample_id']+'_'+(df.sort_values(by=['sample_id']).groupby(['sample_id']).cumcount()+1).astype(str)
 
+# if there should be a 1:1 relationship
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
 
@@ -43,6 +44,16 @@ def get_df_val(df, col1, col_dict):
     assert len(val) == 1
     return val[0]
 
+# if you're doing a merge / gather
+def get_df_vals(df, col1, col_dict):
+    temp = df.copy(deep=True)
+
+    for key, item in col_dict.items():
+        temp = temp.loc[temp[key] == item]
+
+    val = temp[col1].unique()
+    return val
+
 
 wildcard_constraints:
     sample_rep='|'.join(df['sample_rep'].unique()),
@@ -51,7 +62,9 @@ wildcard_constraints:
 rule all:
     input:
         config['hprc']['kinnex']['map']['bam_n_reads_summary'],
-        config['hprc']['kinnex']['flnc_bam_n_reads_summary']
+        config['hprc']['kinnex']['flnc_bam_n_reads_summary'],
+        expand(config['hprc']['kinnex']['map']['merge_bam_ind'],
+               sample_id=df.sample_id.tolist())
         # expand(config['hprc']['kinnex']['flnc_bam'],
         #        sample_rep=df.sample_rep.tolist())
 
@@ -96,13 +109,13 @@ use rule sort_bam as hprc_sort_bam with:
     input:
         bam = config['hprc']['kinnex']['map']['bam']
     output:
-        bam = config['hprc']['kinnex']['map']['bam_sort']
+        bam = temporary(config['hprc']['kinnex']['map']['bam_sort'])
 
 use rule index_bam as hprc_index_bam with:
     input:
         bam = config['hprc']['kinnex']['map']['bam_sort']
     output:
-        ind = config['hprc']['kinnex']['map']['bam_ind']
+        ind = temporary(config['hprc']['kinnex']['map']['bam_ind'])
 #
 # # ### statistics
 # # rule all_stats:
@@ -146,3 +159,18 @@ use rule count_reads_summary as sam_count_reads_summary with:
         samples = df['sample_rep'].tolist()
     output:
         summ = config['hprc']['kinnex']['map']['bam_n_reads_summary']
+
+# merge alignments from the same cell line
+use rule merge_alignment as hprc_merge_sample_reps with:
+    input:
+        files = lambda wc: expand(config['hprc']['kinnex']['map']['bam_sort'],
+                           get_df_vals(df, 'sample_rep',
+                           {'sample_id':wc['sample_id']})
+    output:
+        bam = config['hprc']['kinnex']['map']['merge_bam']
+
+use rule index_bam as hprc_index_bam_merge with:
+    input:
+        bam = config['hprc']['kinnex']['map']['merge_bam']
+    output:
+        ind = temporary(config['hprc']['kinnex']['map']['merge_bam_ind'])
