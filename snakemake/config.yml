@@ -975,5 +975,5 @@ hprc:
       bam_n_reads_summary: ../../data/hprc/kinnex/map/mapped_n_reads.txt
 
       # merged across technical replicates of the same cell line
-      merge_bam: ../../data/hprc/kinnex/map/{sample_id}_sort.bam
-      merge_bam_ind: ../../data/hprc/kinnex/map/{sample_id}_sort.bam.bai
+      merge_bam: ../../data/hprc/kinnex/map/merge/{sample_id}_sort.bam
+      merge_bam_ind: ../../data/hprc/kinnex/map/merge/{sample_id}_sort.bam.bai
