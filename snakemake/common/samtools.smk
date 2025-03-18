@@ -73,7 +73,7 @@ ped' -e 'reads unmapped' -e 'average length' -e 'maximum length' | sed '/reads m
 rule merge_alignment:
     resources:
         threads = 32,
-        nodes = 1
+        nodes = 1,
         time = "2:00:00"
     shell:
         """
