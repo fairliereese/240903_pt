@@ -172,7 +172,7 @@ use rule merge_alignment as hprc_merge_sample_reps with:
     input:
         files = lambda wc: expand(config['hprc']['kinnex']['map']['bam_sort'],
                            get_df_vals(df, 'sample_rep',
-                           {'sample_id':wc['sample_id']})
+                           {'sample_id':wc['sample_id']}))
     output:
         bam = config['hprc']['kinnex']['map']['merge_bam']
 
