@@ -21,7 +21,9 @@ rule fq_get_read_ids:
 rule count_reads_summary:
     resources:
         nodes = 2,
-        threads = 1
+        threads = 1,
+        time = "1:00:00"
+
     run:
         df = pd.DataFrame()
         for f,d in zip(input.txts, params.samples):
@@ -39,7 +41,8 @@ rule count_reads_summary:
 rule count_bam:
     resources:
         threads = 8,
-        nodes = 1
+        nodes = 1,
+        time = "1:00:00"
     shell:
         """
         module load samtools

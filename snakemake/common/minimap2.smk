@@ -44,7 +44,8 @@ rule minimap2_index:
 rule minimap2_with_index_pacbio:
     resources:
         threads = 8,
-        nodes = 2
+        nodes = 2,
+        time = "4:00:00"
     shell:
         """
         module load minimap2
@@ -57,5 +58,5 @@ rule minimap2_with_index_pacbio:
             -L \
             -o {output.sam} \
             -a {input.ind} \
-            {input.bam}
+            {input.fq}
         """

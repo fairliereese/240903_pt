@@ -75,6 +75,24 @@ use rule dl_aws as dl_hprc_kinnex with:
     output:
         out = config['hprc']['kinnex']['flnc_bam']
 
+# convert to fastq
+use rule bam_to_fastq as hprc_bam_to_fastq with:
+    input:
+        bam = config['hprc']['kinnex']['flnc_bam']
+    output:
+        fq = temporary(config['hprc']['kinnex']['fq'])
+    resources:
+        threads = 1,
+        nodes = 1,
+        time = "1:00:00"
+    shell:
+        """
+        module load bedtools
+        bedtools bamtofastq \
+            -i {input.bam} \
+            -fq {output.fq}
+        """
+
 ### index genome
 use rule minimap2_index as ind_alt_assembly with:
     input:
@@ -84,7 +102,7 @@ use rule minimap2_index as ind_alt_assembly with:
 
 use rule minimap2_with_index_pacbio as hprc_map with:
     input:
-        bam = config['hprc']['kinnex']['flnc_bam'],
+        fq = config['hprc']['kinnex']['fq'],
         ind = config['ref']['fa_mmi']
     resources:
         threads = 8,

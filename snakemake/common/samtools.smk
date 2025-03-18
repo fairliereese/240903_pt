@@ -11,7 +11,8 @@ rule fa_to_bam:
 rule sam_to_bam:
     resources:
         threads = 16,
-        nodes = 1
+        nodes = 1,
+        time = "1:00:00"
     shell:
         """
         module load samtools
@@ -37,7 +38,8 @@ rule add_rg:
 rule sort_bam:
     resources:
         threads = 16,
-        nodes = 1
+        nodes = 1,
+        time = "1:00:00"
     shell:
         """
         module load samtools
@@ -49,7 +51,8 @@ rule sort_bam:
 rule index_bam:
     resources:
         threads = 16,
-        nodes = 1
+        nodes = 1,
+        time = "1:00:00"
     shell:
         """
         module load samtools
@@ -71,6 +74,7 @@ rule merge_alignment:
     resources:
         threads = 32,
         nodes = 1
+        time = "2:00:00"
     shell:
         """
         module load samtools
@@ -128,7 +132,8 @@ rule count_lines_summary:
 rule primary_mappings_filt:
     resources:
         threads = 8,
-        nodes = 1
+        nodes = 1,
+        time = "1:00:00"
     shell:
         """
         module load samtools
