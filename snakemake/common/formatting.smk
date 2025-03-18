@@ -47,3 +47,16 @@ rule fa_get_chr_lens:
             -i chromsizes \
             > {output.chr_lens}
         """
+
+rule bam_to_fastq:
+    resources:
+        threads = 1,
+        nodes = 1,
+        time = "1:00:00"
+    shell:
+        """
+        module load bedtools
+        bedtools bamtofastq \
+            -i {input.bam} \
+            -fq {output.fq}
+        """

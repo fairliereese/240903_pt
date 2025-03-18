@@ -81,17 +81,6 @@ use rule bam_to_fastq as hprc_bam_to_fastq with:
         bam = config['hprc']['kinnex']['flnc_bam']
     output:
         fq = temporary(config['hprc']['kinnex']['fq'])
-    resources:
-        threads = 1,
-        nodes = 1,
-        time = "1:00:00"
-    shell:
-        """
-        module load bedtools
-        bedtools bamtofastq \
-            -i {input.bam} \
-            -fq {output.fq}
-        """
 
 ### index genome
 use rule minimap2_index as ind_alt_assembly with:
