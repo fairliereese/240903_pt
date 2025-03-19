@@ -963,6 +963,7 @@ hprc:
     flnc_bam_n_reads_summary: ../../data/hprc/kinnex/flnc_bam_n_reads.txt
 
     fq: ../../data/hprc/kinnex/{sample_rep}.fq
+    fq_gz: ../../data/hprc/kinnex/{sample_rep}.fq.gz
 
     map:
       sam: ../../data/hprc/kinnex/map/{sample_rep}.sam

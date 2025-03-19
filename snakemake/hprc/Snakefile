@@ -82,6 +82,12 @@ use rule bam_to_fastq as hprc_bam_to_fastq with:
     output:
         fq = temporary(config['hprc']['kinnex']['fq'])
 
+use rule gzip as hprc_gzip_fq with:
+    input:
+        ifile = config['hprc']['kinnex']['fq']
+    output:
+        ofile = temporary(config['hprc']['kinnex']['fq_gz'])
+
 ### index genome
 use rule minimap2_index as ind_alt_assembly with:
     input:
@@ -91,7 +97,7 @@ use rule minimap2_index as ind_alt_assembly with:
 
 use rule minimap2_with_index_pacbio as hprc_map with:
     input:
-        fq = config['hprc']['kinnex']['fq'],
+        fq = config['hprc']['kinnex']['fq_gz'],
         ind = config['ref']['fa_mmi']
     resources:
         threads = 8,
