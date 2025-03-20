@@ -718,8 +718,8 @@ lr:
       # i'm getting inconsistent results
       wha_happen_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_wha_happen.vcf
 
-    lapa:
-      config: ../../data/lapa/config.csv
+  lapa:
+    config: ../../data/lapa/config.csv
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
