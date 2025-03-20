@@ -76,7 +76,7 @@ rule lapa_config:
 
         df = pd.DataFrame()
         df['sample'] = samples_2
-        df['dataset'] samples_2
+        df['dataset'] = samples_2
         df['path'] = files
         df.to_csv(output.config, sep=',', index=False)
 
