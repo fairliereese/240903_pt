@@ -207,6 +207,8 @@ lr:
   q7_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic/{lab_sample}.bam
   q7_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic/{lab_sample}.bam
 
+  q10_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/assembly_mapping/genomic/{lab_sample}.bam
+
 
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf
   gtf_chr_renamed: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged_withoutchrEBV.gtf # whole post-merge GTF
@@ -715,6 +717,9 @@ lr:
       # vcf files of variants that intersect w/ the weird region where
       # i'm getting inconsistent results
       wha_happen_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_wha_happen.vcf
+
+    lapa:
+      config: ../../data/lapa/config.csv
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz

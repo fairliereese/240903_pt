@@ -56,7 +56,7 @@ Subfolders that are not listed here don't contain analyses / processing for this
 conda activate pt_snakemake
 snakemake \
   -s Snakefile \
-  -j 100 \
+  -j 300 \
   --latency-wait 120 \
   --use-conda \
   --cluster \
@@ -67,7 +67,7 @@ snakemake \
     -c {resources.threads}  \
     --mail-user=freese@bsc.es \
     --mail-type=START,END,FAIL \
-    --time={resources.time}" \
+    --time=12:00:00" \
     -n
 
 
