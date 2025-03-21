@@ -57,7 +57,8 @@ def get_df_val(df, col1, col_dict):
 
 rule all:
     input:
-        config['lr']['lapa']['odir']
+        config['lr']['lapa']['odir'],
+        config['ccre']['pls_bed']
         # config['lr']['lapa']['config']
 
 rule lapa_config:
@@ -111,3 +112,11 @@ rule lapa_tss:
         	--chrom_sizes {input.chrom_sizes} \
         	--output_dir {output}
         """
+
+
+############## ccres
+use rule wget as dl_ccre_pls with:
+    params:
+        link = config['ccre']['pls_link']
+    output:
+        out = config['ccre']['pls_bed']
