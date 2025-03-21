@@ -68,8 +68,8 @@ rule lapa_config:
         samples = df['lab_sample'].tolist(),
         df = df
     resources:
-        threads = 1,
-        mem_gb = 1
+        nodes = 1,
+        threads = 1
     output:
         config = config['lr']['lapa']['config']
     run:
