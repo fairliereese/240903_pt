@@ -100,8 +100,8 @@ use rule minimap2_with_index_pacbio as hprc_map with:
         fq = config['hprc']['kinnex']['fq_gz'],
         ind = config['ref']['fa_mmi']
     resources:
-        threads = 8,
-        nodes = 2
+        threads = 16,
+        nodes = 3
     output:
         sam = temporary(config['hprc']['kinnex']['map']['sam'])
 
