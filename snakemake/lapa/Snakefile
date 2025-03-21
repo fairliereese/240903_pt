@@ -57,8 +57,8 @@ def get_df_val(df, col1, col_dict):
 
 rule all:
     input:
-        config['lr']['lapa']['odir'],
-        config['ccre']['pls_bed']
+        config['ccre']['pls_bed'],
+        # config['lr']['lapa']['odir'],
         # config['lr']['lapa']['config']
 
 rule lapa_config:
@@ -91,11 +91,28 @@ use rule fa_get_chr_lens as hg38_get_chr_lens with:
     output:
         chr_lens = config['ref']['fa_chr_lens']
 
+rule gtf_utr_fix:
+    input:
+        gtf = config['ref']['gtf']
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        gtf = config['ref']['gtf_utr_fix']
+    conda:
+        'lapa'
+    shell:
+        """
+        gencode_utr_fix \
+            --input_gtf {input.gtf} \
+            --output_gtf {output.gtf}
+        """
+
 rule lapa_tss:
     input:
         config = config['lr']['lapa']['config'],
         fa = config['ref']['fa'],
-        annot = config['ref']['gtf'],
+        annot = config['ref']['gtf_utr_fix'],
         chrom_sizes = config['ref']['fa_chr_lens']
     resources:
         nodes = 2,

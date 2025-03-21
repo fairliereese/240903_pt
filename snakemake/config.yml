@@ -36,6 +36,8 @@ ref:
   fa_mmi: ../../ref/hg38.fa.mmi
   fa_chr_lens: ../../ref/hg38_chrom_sizes.tsv
   gtf: ../../ref/annot.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
+  gtf_utr_fix: ../../ref/annot_utr_fix.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
+
   # sj_12nt_bed:  ../../ref/sj_ss_12nt.bed
   ss_extension_bed:  ../../ref/ss_extension.bed
   exons: ../../ref/exons.bed
