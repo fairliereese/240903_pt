@@ -64,7 +64,8 @@ rule lapa_config:
         files = expand(config['lr']['q10_bam'],
                lab_sample=df['lab_sample'].tolist())
     params:
-        samples = df['lab_sample'].tolist()
+        samples = df['lab_sample'].tolist(),
+        df = df
     resources:
         threads = 1,
         mem_gb = 1
@@ -74,7 +75,7 @@ rule lapa_config:
         samples_2 = []
         for f,s in zip(input.files, params.samples):
             assert s in f
-            samples_2 += [get_df_val(df, 'sample', {'lab_sample':s})]
+            samples_2 += [get_df_val(params.df, 'sample', {'lab_sample':s})]
 
         df = pd.DataFrame()
         df['sample'] = samples_2
