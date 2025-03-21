@@ -34,6 +34,7 @@ ref:
   # fa: /gpfs/projects/bsc83/Data/assemblies/GRCh38/modified/GRCh38.primary_assembly.sirvset4.genome.fa
   fa: ../../ref/hg38.fa
   fa_mmi: ../../ref/hg38.fa.mmi
+  fa_chr_lens: ../../ref/hg38_chrom_sizes.tsv
   gtf: ../../ref/annot.gtf # /gpfs/projects/bsc83/Data/gene_annotations/gencode/v47/gencode.v47.primary_assembly.annotation.gtf
   # sj_12nt_bed:  ../../ref/sj_ss_12nt.bed
   ss_extension_bed:  ../../ref/ss_extension.bed
@@ -720,6 +721,8 @@ lr:
 
   lapa:
     config: ../../data/lapa/config.csv
+    odir: ../../data/lapa/
+
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz

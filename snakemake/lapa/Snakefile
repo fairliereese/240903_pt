@@ -57,7 +57,8 @@ def get_df_val(df, col1, col_dict):
 
 rule all:
     input:
-        config['lr']['lapa']['config']
+        config['lr']['lapa']['odir']
+        # config['lr']['lapa']['config']
 
 rule lapa_config:
     input:
@@ -83,22 +84,30 @@ rule lapa_config:
         df['path'] = list(input.files)
         df.to_csv(output.config, sep=',', index=False)
 
-# rule lapa_tss:
-#     input:
-#         samples = ,
-#         fa = ,
-#         annot = ,
-#         chrom_sizes =
-#     resources:
-#     output:
-#         directory()
-#     conda:
-#         "lapa"
-#     shell:
-#         """
-#         lapa_tss --alignment {input.config} \
-#         	--fasta {input.fa} \
-#         	--annotation {input.annot} \
-#         	--chrom_sizes {input.chrom_sizes} \
-#         	--output_dir {output}
-#         """
+use rule fa_get_chr_lens as hg38_get_chr_lens with:
+    input:
+        fa = config['ref']['fa']
+    output:
+        chr_lens = config['ref']['fa_chr_lens']
+
+rule lapa_tss:
+    input:
+        config = config['lr']['lapa']['config'],
+        fa = config['ref']['fa'],
+        annot = config['ref']['gtf'],
+        chrom_sizes = config['ref']['fa_chr_lens']
+    resources:
+        nodes = 2,
+        threads = 16
+    output:
+        directory(config['lr']['lapa']['odir'])
+    conda:
+        "lapa"
+    shell:
+        """
+        lapa_tss --alignment {input.config} \
+        	--fasta {input.fa} \
+        	--annotation {input.annot} \
+        	--chrom_sizes {input.chrom_sizes} \
+        	--output_dir {output}
+        """
