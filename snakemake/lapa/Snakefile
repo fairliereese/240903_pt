@@ -72,7 +72,7 @@ rule lapa_config:
         config = config['lr']['lapa']['config']
     run:
         samples_2 = []
-        for f,s in zip(files, samples):
+        for f,s in zip(input.files, params.samples):
             assert s in f
             samples_2 += [get_df_val(df, 'sample', {'lab_sample':s})]
 
