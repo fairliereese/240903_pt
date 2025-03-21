@@ -41,7 +41,9 @@ df = df.loc[~df['sample'].str.contains('_')]
 df['lab_sample'] = df['lab_number_sample'].astype(str)+'_'+\
                       df['lab_sampleid'].astype(str)+'_'+\
                       df['cell_line_id'].astype(str)
+df = df.loc[df.mixed_samples==False]
 df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
+
 
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
