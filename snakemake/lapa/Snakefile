@@ -58,8 +58,8 @@ def get_df_val(df, col1, col_dict):
 rule all:
     input:
         config['ref']['ccre']['pls_bed'],
-        # config['lr']['lapa']['odir'],
-        # config['lr']['lapa']['config']
+        config['lr']['lapa']['odir'],
+        config['lr']['lapa']['config']
 
 rule lapa_config:
     input:
