@@ -720,7 +720,7 @@ lr:
       wha_happen_vcf: ../../data/td_personal/exonic_snps/{cell_line_id}_wha_happen.vcf
 
   lapa:
-    config: ../../data/lapa/config.csv
+    config: ../../data/lapa_config.csv
     odir: ../../data/lapa/
 
 
