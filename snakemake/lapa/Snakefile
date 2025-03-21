@@ -134,6 +134,6 @@ rule lapa_tss:
 ############## ccres
 use rule wget as dl_ccre_pls with:
     params:
-        link = config['ccre']['pls_link']
+        link = config['ref']['ccre']['pls_link']
     output:
-        out = config['ccre']['pls_bed']
+        out = config['ref']['ccre']['pls_bed']
