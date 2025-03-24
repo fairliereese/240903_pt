@@ -96,7 +96,7 @@ rule gtf_utr_fix:
         gtf = config['ref']['gtf']
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     output:
         gtf = config['ref']['gtf_utr_fix']
     conda:
