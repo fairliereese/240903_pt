@@ -186,4 +186,4 @@ use rule index_bam as hprc_index_bam_merge with:
     input:
         bam = config['hprc']['kinnex']['map']['merge_bam']
     output:
-        ind = temporary(config['hprc']['kinnex']['map']['merge_bam_ind'])
+        ind = config['hprc']['kinnex']['map']['merge_bam_ind']
