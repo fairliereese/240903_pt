@@ -115,7 +115,7 @@ rule lapa_tss:
         annot = config['ref']['gtf_utr_fix'],
         chrom_sizes = config['ref']['fa_chr_lens']
     resources:
-        nodes = 2,
+        nodes = 3,
         threads = 16
     output:
         directory(config['lr']['lapa']['odir'])
