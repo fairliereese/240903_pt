@@ -30,8 +30,10 @@ include: f'{c_dir}protein.smk'
 include: f'{c_dir}minimap2.smk'
 include: f'{c_dir}stats.smk'
 
-df = pd.read_csv('data_kinnex_pre_release.index.csv', sep=',')
-df['sample_rep'] = df['sample_id']+'_'+(df.sort_values(by=['sample_id']).groupby(['sample_id']).cumcount()+1).astype(str)
+# df = pd.read_csv('data_kinnex_pre_release.index.csv', sep=',')
+# df['sample_rep'] = df['sample_id']+'_'+(df.sort_values(by=['sample_id']).groupby(['sample_id']).cumcount()+1).astype(str)
+
+df = pd.read_csv('kinnex_metadata_2.tsv', sep='\t')
 
 # if there should be a 1:1 relationship
 def get_df_val(df, col1, col_dict):
