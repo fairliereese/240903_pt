@@ -127,7 +127,7 @@ rule lapa_tss:
         nodes = 3,
         threads = 16
     output:
-        directory(config['lr']['lapa']['odir']),
+        odir = directory(config['lr']['lapa']['odir']),
         sample_beds = expand(config['lr']['lapa']['sample_tss'],
                              sample=df['sample'].tolist())
     conda:
@@ -138,7 +138,7 @@ rule lapa_tss:
         	--fasta {input.fa} \
         	--annotation {input.annot} \
         	--chrom_sizes {input.chrom_sizes} \
-        	--output_dir {output}
+        	--output_dir {output.odir}
         """
 
 
