@@ -63,12 +63,19 @@ rule all:
         expand(config['lr']['lapa']['pls_int'],
                sample=df['sample'].tolist())
 
+use rule flip_reads as lapa_flip_reads with:
+    input:
+        bam = lambda wc: expand(config['lr']['q10_bam'],
+               lab_sample=get_df_val(df, 'lab_sample', {'sample': wc.sample}))[0]
+    output:
+        bam = temporary(config['lr']['lapa']['flip'])
+
 rule lapa_config:
     input:
-        files = expand(config['lr']['q10_bam'],
-               lab_sample=df['lab_sample'].tolist())
+        files = expand(config['lr']['lapa']['flip'],
+               sample=df['sample'].tolist())
     params:
-        samples = df['lab_sample'].tolist(),
+        samples = df['sample'].tolist(),
         df = df
     resources:
         nodes = 1,
@@ -79,7 +86,7 @@ rule lapa_config:
         samples_2 = []
         for f,s in zip(input.files, params.samples):
             assert s in f
-            samples_2 += [get_df_val(params.df, 'sample', {'lab_sample':s})]
+            samples_2 += [get_df_val(params.df, 'sample', {'sample':s})]
 
         df = pd.DataFrame()
         df['sample'] = samples_2

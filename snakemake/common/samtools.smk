@@ -380,3 +380,23 @@ rule get_bam_from_read_ids:
             --qname-file {input.read_ids} \
             -o {output.align}
         """
+
+# fwd strand orient all reads
+rule flip_reads:
+    resources:
+        threads = 8,
+        nodes = 2
+    run:
+        import pysam
+        reverse_strand = {0: 16, 16: 0}
+        with pysam.AlignmentFile(input.bam, "rb",
+                threads=resources.threads) as input_bam:
+            with pysam.AlignmentFile(output.bam, "wb",
+                                     template=input.bam,
+                                     threads=resources.threads) as output_bam:
+                for read in input_bam:
+                    if read.has_tag('ts') and read.flag in reverse_strand:
+                        if read.get_tag('ts') == '-':
+                            read.flag = reverse_strand[read.flag]
+                            read.set_tag('ts', '+')
+                        output_bam.write(read)

@@ -731,6 +731,8 @@ lr:
     sample_tss: ../../data/lapa/sample/{sample}.bed
     pls_int: ../../data/tss/{sample}_pls_overlap.tsv
 
+    flip: ../../data/flipped_reads/{sample}.bam
+
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
