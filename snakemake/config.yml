@@ -729,7 +729,7 @@ lr:
     config: ../../data/lapa_config.csv
     odir: ../../data/lapa/
     sample_tss: ../../data/lapa/sample/{sample}.bed
-    pls_int: ../../data/lapa/pls/{sample}_pls_overlap.tsv
+    pls_int: ../../data/tss/{sample}_pls_overlap.tsv
 
 
 mage:
