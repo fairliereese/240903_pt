@@ -392,7 +392,7 @@ rule flip_reads:
         with pysam.AlignmentFile(input.bam, "rb",
                 threads=resources.threads) as input_bam:
             with pysam.AlignmentFile(output.bam, "wb",
-                                     template=input.bam,
+                                     template=input_bam,
                                      threads=resources.threads) as output_bam:
                 for read in input_bam:
                     if read.has_tag('ts') and read.flag in reverse_strand:
