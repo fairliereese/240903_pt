@@ -68,7 +68,7 @@ use rule flip_reads as lapa_flip_reads with:
         bam = lambda wc: expand(config['lr']['q10_bam'],
                lab_sample=get_df_val(df, 'lab_sample', {'sample': wc.sample}))[0]
     output:
-        bam = config['lr']['lapa']['flip']
+        bam = temporary(config['lr']['lapa']['flip'])
 
 rule lapa_config:
     input:
@@ -122,7 +122,9 @@ rule lapa_tss:
         config = config['lr']['lapa']['config'],
         fa = config['ref']['fa'],
         annot = config['ref']['gtf_utr_fix'],
-        chrom_sizes = config['ref']['fa_chr_lens']
+        chrom_sizes = config['ref']['fa_chr_lens'],
+        bams = expand(config['lr']['lapa']['flip'],
+               sample=df['sample'].tolist())
     resources:
         nodes = 3,
         threads = 16
