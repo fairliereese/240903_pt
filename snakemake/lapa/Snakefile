@@ -163,7 +163,7 @@ rule int_pls_tss_bed:
         tss['rid'] = tss['Chromosome'].astype(str)+'_'+\
                      tss['Start'].astype(str)+'_'+\
                      tss['End'].astype(str)
-        tss = tss[['Chromosome', 'Start', 'End', 'Strand', 'tpm', 'rid']]
+        tss = tss[['Chromosome', 'Start', 'End', 'tpm', 'rid']]
         tss = tss.drop_duplicates()
         l1 = len(tss.index)
         assert len(tss) == len(tss.rid.unique())
