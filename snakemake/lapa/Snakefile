@@ -68,7 +68,7 @@ use rule flip_reads as lapa_flip_reads with:
         bam = lambda wc: expand(config['lr']['q10_bam'],
                lab_sample=get_df_val(df, 'lab_sample', {'sample': wc.sample}))[0]
     output:
-        bam = temporary(config['lr']['lapa']['flip'])
+        bam = config['lr']['lapa']['flip']
 
 rule lapa_config:
     input:
