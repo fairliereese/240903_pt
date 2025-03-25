@@ -59,7 +59,9 @@ rule all:
     input:
         config['ref']['ccre']['pls_bed'],
         config['lr']['lapa']['odir'],
-        config['lr']['lapa']['config']
+        config['lr']['lapa']['config'],
+        expand(config['lr']['lapa']['pls_int'],
+               sample=df['sample'].tolist())
 
 rule lapa_config:
     input:
@@ -118,7 +120,9 @@ rule lapa_tss:
         nodes = 3,
         threads = 16
     output:
-        directory(config['lr']['lapa']['odir'])
+        directory(config['lr']['lapa']['odir']),
+        sample_beds = expand(config['lr']['lapa']['sample_tss'],
+                             sample=df['sample'].tolist())
     conda:
         "lapa"
     shell:
@@ -137,3 +141,51 @@ use rule wget as dl_ccre_pls with:
         link = config['ref']['ccre']['pls_link']
     output:
         out = config['ref']['ccre']['pls_bed']
+
+############## ccres intersction
+rule int_pls_tss_bed:
+    input:
+        pls = config['ref']['ccre']['pls_bed'],
+        tss = config['lr']['lapa']['sample_tss']
+    resources:
+        threads = 8,
+        nodes = 1
+    output:
+        tsv = config['lr']['lapa']['pls_int']
+    run:
+        pls = pr.read_bed(input.pls)
+        tss = pr.read_bed(input.tss)
+
+        # deduplicate -- arises from assingment of
+        # several genes to the same tss
+        tss = tss.df
+        tss.rename({'ItemRGB': 'tpm'}, axis=1, inplace=True)
+        tss['rid'] = tss['Chromosome'].astype(str)+'_'+\
+                     tss['Start'].astype(str)+'_'+\
+                     tss['End'].astype(str)
+        tss = tss[['Chromosome', 'Start', 'End', 'Strand', 'tpm', 'rid']]
+        tss = tss.drop_duplicates()
+        l1 = len(tss.index)
+        assert len(tss) == len(tss.rid.unique())
+
+        # merge w/ pls
+        tss = pr.PyRanges(tss)
+        tss = tss.join(pls,
+                       strandedness=None,
+                       how='left')
+
+        # deduplicate entries from original TSSs by whether the intersect
+        # at least one ccre
+        tss = tss.df
+        tss['int_pls'] = False
+        tss.loc[tss.Start_b != -1, 'int_pls'] = True
+        gb_cols = ['Chromosome', 'Start', 'End', 'Strand', 'tpm', 'rid']
+        keep_cols = gb_cols+['int_pls']
+        tss = tss[keep_cols].groupby(gb_cols, observed=True).max().reset_index()
+
+        # make sure there are no dupes
+        assert len(tss) == len(tss.rid.unique())
+        l2 = len(tss.index)
+        assert l1 == l2
+
+        tss.to_csv(output.tsv, sep='\t', index=False)
