@@ -171,8 +171,9 @@ rule int_pls_tss_bed:
         tss.rename({'ItemRGB': 'tpm'}, axis=1, inplace=True)
         tss['rid'] = tss['Chromosome'].astype(str)+'_'+\
                      tss['Start'].astype(str)+'_'+\
+                     tss['Strand'].astype(str)+'_'+\
                      tss['End'].astype(str)
-        tss = tss[['Chromosome', 'Start', 'End', 'tpm', 'rid']]
+        tss = tss[['Chromosome', 'Start', 'End', 'Strand', 'tpm', 'rid']]
         tss = tss.drop_duplicates()
         l1 = len(tss.index)
         assert len(tss) == len(tss.rid.unique())
@@ -191,7 +192,7 @@ rule int_pls_tss_bed:
         gb_cols = ['Chromosome', 'Start', 'End', 'Strand', 'tpm', 'rid']
         keep_cols = gb_cols+['int_pls']
         tss = tss[keep_cols].groupby(gb_cols, observed=True).max().reset_index()
-
+        
         # make sure there are no dupes
         assert len(tss) == len(tss.rid.unique())
         l2 = len(tss.index)
