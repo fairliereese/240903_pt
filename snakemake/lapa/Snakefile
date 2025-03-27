@@ -60,8 +60,8 @@ rule all:
         config['ref']['ccre']['pls_bed'],
         config['lr']['lapa']['odir'],
         config['lr']['lapa']['config'],
-        # expand(config['lr']['lapa']['pls_int'],
-        #        sample=df['sample'].tolist())
+        expand(config['lr']['lapa']['pls_int'],
+               sample=df['sample'].tolist())
 
 use rule flip_reads as lapa_flip_reads with:
     input:
