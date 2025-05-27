@@ -408,11 +408,11 @@ rule bam_to_tss_bed:
     shell:
         """
         module load bedtools
-        bedtools bamtobed -i {input.bam} | awk '{
-            if ($6 == "+") {
-                print $1"\t"$2"\t"($2+1)"\t"$4"\t"$5"\t"$6
-            } else {
-                print $1"\t"($3-1)"\t"$3"\t"$4"\t"$5"\t"$6
-            }
-        }' > {output.bed}
+        bedtools bamtobed -i {input.bam} | awk '{{
+            if ($6 == "+") {{
+                print $1"\\t"$2"\\t"($2+1)"\\t"$4"\\t"$5"\\t"$6
+            }} else {{
+                print $1"\\t"($3-1)"\\t"$3"\\t"$4"\\t"$5"\\t"$6
+            }}
+        }}' > {output.bed}
         """
