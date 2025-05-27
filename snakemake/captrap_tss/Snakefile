@@ -45,6 +45,10 @@ df = df.loc[df.mixed_samples==False]
 df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
 
 
+hprc_df = pd.read_csv('kinnex_metadata_2.tsv', sep='\t')
+
+
+
 def get_df_val(df, col1, col_dict):
     temp = df.copy(deep=True)
 
@@ -58,7 +62,10 @@ def get_df_val(df, col1, col_dict):
 rule all:
     input:
         expand(config['lr']['q10_tss_bed'],
-               sample=df['sample'].tolist())
+               sample=df['sample'].tolist()),
+        expand(config['hprc']['kinnex']['map']['q10_tss_bed'],
+               sample_id=hprc_df.sample_id.tolist())
+
 
 use rule bam_to_tss_bed as captrap_bam_to_tss_bed with:
     input:
