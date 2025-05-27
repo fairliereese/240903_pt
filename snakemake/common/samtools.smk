@@ -400,3 +400,19 @@ rule flip_reads:
                             read.flag = reverse_strand[read.flag]
                             read.set_tag('ts', '+')
                         output_bam.write(read)
+
+rule bam_to_tss_bed:
+    resources:
+        threads = 1,
+        nodes = 1
+    shell:
+        """
+        module load bedtools
+        bedtools bamtobed -i {input.bam} | awk '{
+            if ($6 == "+") {
+                print $1"\t"$2"\t"($2+1)"\t"$4"\t"$5"\t"$6
+            } else {
+                print $1"\t"($3-1)"\t"$3"\t"$4"\t"$5"\t"$6
+            }
+        }' > {output.bed}
+        """

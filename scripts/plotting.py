@@ -21,6 +21,22 @@ def rm_color_cats(palette, order, cats):
 #######################################
 ############# Color palettes
 
+def get_afr_colors(cats=None):
+    palette = {'AFR': "#D5AC4B",
+               'OOA': "#259069"}
+    order = ['AFR', 'OOA']
+
+    palette, order = rm_color_cats(palette, order, cats)
+    return palette, order
+
+def get_eur_colors(cats=None):
+    palette = {'European': "#466995",
+               'Non-European': "A53860"}
+    order = ['European', 'Non-European']
+
+    palette, order = rm_color_cats(palette, order, cats)
+    return palette, order
+
 def get_novelty_colors(cats=None):
     palette = {'FSM': "#61814B",
                'ISM': "#8EDE95", 
