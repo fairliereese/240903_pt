@@ -66,3 +66,9 @@ use rule bam_to_tss_bed as captrap_bam_to_tss_bed with:
                lab_sample=get_df_val(df, 'lab_sample', {'sample': wc.sample}))[0]
     output:
         bed = config['lr']['q10_tss_bed']
+
+use rule bam_to_tss_bed as hprc_bam_to_tss_bed with:
+    input:
+        bam = config['hprc']['kinnex']['map']['q10_bam']
+    output:
+        bed = config['hprc']['kinnex']['map']['q10_tss_bed']

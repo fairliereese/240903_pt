@@ -996,3 +996,8 @@ hprc:
       # merged across technical replicates of the same cell line
       merge_bam: ../../data/hprc/kinnex/map/merge/{sample_id}_sort.bam
       merge_bam_ind: ../../data/hprc/kinnex/map/merge/{sample_id}_sort.bam.bai
+
+      # q10 mapping filger
+      q10_bam: ../../data/hprc/kinnex/map/merge/{sample_id}_q10.bam
+      q10_bam_ind: ../../data/hprc/kinnex/map/merge/{sample_id}_q10.bam.bai
+      q10_tss_bed: ../../data/hprc/kinnex/map/merge/{sample_id}_q10_tss.bed

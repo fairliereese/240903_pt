@@ -66,6 +66,8 @@ rule all:
         config['hprc']['kinnex']['map']['bam_n_reads_summary'],
         config['hprc']['kinnex']['flnc_bam_n_reads_summary'],
         expand(config['hprc']['kinnex']['map']['merge_bam_ind'],
+               sample_id=df.sample_id.tolist()),
+        expand(config['hprc']['kinnex']['map']['q10_bam_ind'],
                sample_id=df.sample_id.tolist())
         # expand(config['hprc']['kinnex']['flnc_bam'],
         #        sample_rep=df.sample_rep.tolist())
@@ -189,3 +191,17 @@ use rule index_bam as hprc_index_bam_merge with:
         bam = config['hprc']['kinnex']['map']['merge_bam']
     output:
         ind = config['hprc']['kinnex']['map']['merge_bam_ind']
+
+# filt for q10; sort and ind
+use rule filt_mapq as hprc_filt_mapq with:
+    input:
+        align = config['hprc']['kinnex']['map']['merge_bam']
+    params:
+        mapq = 10
+    output:
+        align = config['hprc']['kinnex']['map']['q10_bam']
+use rule index_bam as hprc_index_bam_q10 with:
+    input:
+        bam = config['hprc']['kinnex']['map']['q10_bam']
+    output:
+        ind = config['hprc']['kinnex']['map']['q10_bam_ind']

@@ -416,3 +416,15 @@ rule bam_to_tss_bed:
             }}
         }}' > {output.bed}
         """
+
+rule sort_ind_bam:
+    resources:
+        threads = 8,
+        nodes = 1
+    shell:
+        """
+        module load intel/2023.0
+        module load samtools
+        samtools sort -@ {resources.threads} -o {output.bam}
+        samtools index {output.bam}
+        """
