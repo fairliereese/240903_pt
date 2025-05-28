@@ -61,9 +61,9 @@ def get_df_val(df, col1, col_dict):
 
 rule all:
     input:
-        expand(config['lr']['q10_tss_bed'],
+        expand(config['lr']['tss_pls_int'],
                sample=df['sample'].tolist()),
-        expand(config['hprc']['kinnex']['map']['q10_tss_bed'],
+        expand(config['hprc']['kinnex']['map']['tss_pls_int'],
                sample_id=hprc_df.sample_id.tolist())
 
 
@@ -79,3 +79,31 @@ use rule bam_to_tss_bed as hprc_bam_to_tss_bed with:
         bam = config['hprc']['kinnex']['map']['q10_bam']
     output:
         bed = config['hprc']['kinnex']['map']['q10_tss_bed']
+
+rule pls_ccre_int:
+    resources:
+        threads = 8,
+        nodes = 1
+    shell:
+        """
+        module load bedtools
+        bedtools intersect -loj \ # keep all reads
+                           -wa \ # report all reads
+                           -a {input.bed} \
+                           -b {input.pls} > \
+                           {output.tsv}
+        """
+
+use rule pls_ccre_int as captrap_pls_ccre_int with:
+    input:
+        pls = config['ref']['ccre']['pls_bed'],
+        bed = config['lr']['q10_tss_bed']
+    output:
+        tsv = config['lr']['tss_pls_int']
+
+use rule pls_ccre_int as hprc_pls_ccre_int with:
+    input:
+        pls = config['ref']['ccre']['pls_bed'],
+        bed = config['hprc']['kinnex']['map']['q10_tss_bed']
+    output:
+        tsv = config['hprc']['kinnex']['map']['tss_pls_int']
