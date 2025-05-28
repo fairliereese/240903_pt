@@ -59,6 +59,12 @@ def get_df_val(df, col1, col_dict):
     assert len(val) == 1
     return val[0]
 
+wildcard_constraints:
+    sample_rep='|'.join(hprc_df['sample_rep'].unique()),
+    sample_id='|'.join(hprc_df['sample_id'].unique()),
+    sample='|'.join(df['sample'].unique())
+
+
 rule all:
     input:
         expand(config['lr']['tss_pls_int'],

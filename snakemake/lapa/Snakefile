@@ -192,7 +192,7 @@ rule int_pls_tss_bed:
         gb_cols = ['Chromosome', 'Start', 'End', 'Strand', 'tpm', 'rid']
         keep_cols = gb_cols+['int_pls']
         tss = tss[keep_cols].groupby(gb_cols, observed=True).max().reset_index()
-        
+
         # make sure there are no dupes
         assert len(tss) == len(tss.rid.unique())
         l2 = len(tss.index)
