@@ -184,7 +184,7 @@ use rule merge_alignment as hprc_merge_sample_reps with:
                            sample_rep=get_df_vals(df, 'sample_rep',
                            {'sample_id':wc['sample_id']}))
     output:
-        bam = config['hprc']['kinnex']['map']['merge_bam']
+        bam = protected(config['hprc']['kinnex']['map']['merge_bam'])
 
 use rule index_bam as hprc_index_bam_merge with:
     input:
