@@ -67,9 +67,9 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['tss_pls_int'],
+        expand(config['lr']['tss_pls_int_count'],
                sample=df['sample'].tolist()),
-        expand(config['hprc']['kinnex']['map']['tss_pls_int'],
+        expand(config['hprc']['kinnex']['map']['tss_pls_int_count'],
                sample_id=hprc_df.sample_id.tolist())
 
 
@@ -105,11 +105,48 @@ use rule pls_ccre_int as captrap_pls_ccre_int with:
         pls = config['ref']['ccre']['pls_bed'],
         bed = config['lr']['q10_tss_bed']
     output:
-        tsv = config['lr']['tss_pls_int']
+        tsv = temporary(config['lr']['tss_pls_int'])
 
 use rule pls_ccre_int as hprc_pls_ccre_int with:
     input:
         pls = config['ref']['ccre']['pls_bed'],
         bed = config['hprc']['kinnex']['map']['q10_tss_bed']
     output:
+        tsv = temporary(config['hprc']['kinnex']['map']['tss_pls_int'])
+
+
+rule count_pls_int_reads:
+    resources:
+        threads = 1,
+        nodes = 1
+    run:
+        df = pd.read_csv(input.tsv, sep='\t', header=None)
+        df = df[[3, 7, 9]]
+        df.columns = ['read_name', 'intersect', 'pls_id']
+
+        # assumptions about intersection formatting
+        # from bedtools are OK
+        assert len(df.loc[(df.intersect==-1)&(df.pls_id!='.')].index) == 0
+
+        # only reporting one per read
+        assert len(df.read_name.unique()) == len(df.index)
+
+        df['int_pls'] = df.pls_id!='.'
+        df = df[['read_name', 'int_pls']].groupby('int_pls').nunique().reset_index()
+
+        df.rename({'read_name':'n_reads'}, axis=1, inplace=True)
+        df['n_total_reads'] = df.n_reads.sum(axis=0)
+        df['perc_reads'] = (df['n_reads']/df['n_total_reads'])*100
+
+        df.to_csv(output.tsv, sep='\t')
+
+use rule count_pls_int_reads as hprc_count_pls_int_reads with:
+    input:
         tsv = config['hprc']['kinnex']['map']['tss_pls_int']
+    output:
+        tsv = config['hprc']['kinnex']['map']['tss_pls_int_count']
+use rule count_pls_int_reads as captrap_count_pls_int_reads with:
+    input:
+        tsv = config['lr']['tss_pls_int']
+    output:
+        tsv = config['lr']['tss_pls_int_count']
