@@ -269,3 +269,7 @@ nextflow run /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/sqtlseek
   --min_proportion 0.8 \
   --with-singularity /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/runs/sqtlseeker2-nf.sif
 ```
+
+```bash
+bedtools intersect -loj -wa  -a ../../data/hprc/kinnex/map/merge/HG03704_q10_tss.bed -b ../../ref/ccre/pls.bed.gz > ../../data/hprc/kinnex/map/merge/HG03704_tss_pls_int.tsv
+```

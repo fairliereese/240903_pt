@@ -93,8 +93,8 @@ rule pls_ccre_int:
     shell:
         """
         module load bedtools
-        bedtools intersect -loj \ # keep all reads
-                           -wa \ # report all reads
+        bedtools intersect -loj \
+                           -wa \
                            -a {input.bed} \
                            -b {input.pls} > \
                            {output.tsv}
