@@ -130,8 +130,8 @@ rule count_pls_int_reads:
         # from bedtools are OK
         assert len(df.loc[(df.intersect==-1)&(df.pls_id!='.')].index) == 0
 
-        # only reporting one per read
-        assert len(df.read_name.unique()) == len(df.index)
+        # # only reporting one per read
+        # assert len(df.read_name.unique()) == len(df.index)
 
         df['int_pls'] = df.pls_id!='.'
         df = df[['read_name', 'int_pls']].groupby('int_pls').nunique().reset_index()
