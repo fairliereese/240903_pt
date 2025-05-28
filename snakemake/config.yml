@@ -217,7 +217,9 @@ lr:
   q10_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/assembly_mapping/genomic/{lab_sample}.bam
   q10_tss_bed: ../../data/{sample}_q10_tss.bed
   tss_pls_int: ../../data/{sample}_tss_pls_int.tsv
-  tss_pls_int_count: ../../data/{sample}__tss_pls_int_count.tsv
+  tss_pls_int_count: ../../data/{sample}_tss_pls_int_count.tsv
+  tss_pls_int_count_summary: ../../data/tss_pls_int_count_summary.tsv
+
 
   gtf: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged.gtf
   gtf_chr_renamed: /gpfs/projects/bsc83/Projects/pantranscriptome/novelannotations/merged/240909_merged_withoutchrEBV.gtf # whole post-merge GTF
@@ -1005,3 +1007,4 @@ hprc:
       q10_tss_bed: ../../data/hprc/kinnex/map/merge/{sample_id}_q10_tss.bed
       tss_pls_int: ../../data/hprc/kinnex/map/merge/{sample_id}_tss_pls_int.tsv
       tss_pls_int_count: ../../data/hprc/kinnex/map/merge/{sample_id}_tss_pls_int_count.tsv
+      tss_pls_int_count_summary: ../../data/hprc/kinnex/map/merge/tss_pls_int_count_summary.tsv

@@ -67,10 +67,12 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['tss_pls_int_count'],
-               sample=df['sample'].tolist()),
-        expand(config['hprc']['kinnex']['map']['tss_pls_int_count'],
-               sample_id=hprc_df.sample_id.tolist())
+        config['lr']['tss_pls_int_count_summary'],
+        config['hprc']['kinnex']['map']['tss_pls_int_count_summary']
+        # expand(config['lr']['tss_pls_int_count'],
+        #        sample=df['sample'].tolist()),
+        # expand(config['hprc']['kinnex']['map']['tss_pls_int_count'],
+        #        sample_id=hprc_df.sample_id.tolist())
 
 
 use rule bam_to_tss_bed as captrap_bam_to_tss_bed with:
@@ -118,7 +120,7 @@ use rule pls_ccre_int as hprc_pls_ccre_int with:
 rule count_pls_int_reads:
     resources:
         threads = 1,
-        nodes = 1
+        nodes = 2
     run:
         df = pd.read_csv(input.tsv, sep='\t', header=None)
         df = df[[3, 7, 9]]
@@ -150,3 +152,22 @@ use rule count_pls_int_reads as captrap_count_pls_int_reads with:
         tsv = config['lr']['tss_pls_int']
     output:
         tsv = config['lr']['tss_pls_int_count']
+
+use rule df_summary as hprc_get_pls_int_summary with:
+    input:
+        tsvs = lambda wc: expand(config['hprc']['kinnex']['map']['tss_pls_int_count'],
+                                 sample_id=hprc_df.sample_id.tolist()),
+    params:
+        samples = hprc_df.sample_id.tolist(),
+        col = 'sample'
+    output:
+        summ = config['hprc']['kinnex']['map']['tss_pls_int_count_summary']
+use rule df_summary as captrap_get_pls_int_summary with:
+    input:
+        tsvs = lambda wc: expand(config['lr']['tss_pls_int_count'],
+                          sample=df['sample'].tolist())
+    params:
+        samples = df['sample'].tolist(),
+        col = 'sample'
+    output:
+        summ = config['lr']['tss_pls_int_count_summary']
