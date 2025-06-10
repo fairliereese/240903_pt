@@ -215,6 +215,7 @@ lr:
   q7_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/pantrx_general_mapping/genomic/{lab_sample}.bam
 
   q10_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/assembly_mapping/genomic/{lab_sample}.bam
+  q10_flip_bam: ../../data/{sample}_q10_flip.bam
   q10_tss_bed: ../../data/{sample}_q10_tss.bed
   tss_pls_int: ../../data/{sample}_tss_pls_int.tsv
   tss_pls_int_count: ../../data/{sample}_tss_pls_int_count.tsv
@@ -1004,6 +1005,7 @@ hprc:
       # q10 mapping filter
       q10_bam: ../../data/hprc/kinnex/map/merge/{sample_id}_q10.bam
       q10_bam_ind: ../../data/hprc/kinnex/map/merge/{sample_id}_q10.bam.bai
+      q10_flip_bam: ../../data/hprc/kinnex/map/merge/{sample_id}_q10_flip.bam
       q10_tss_bed: ../../data/hprc/kinnex/map/merge/{sample_id}_q10_tss.bed
       tss_pls_int: ../../data/hprc/kinnex/map/merge/{sample_id}_tss_pls_int.tsv
       tss_pls_int_count: ../../data/hprc/kinnex/map/merge/{sample_id}_tss_pls_int_count.tsv
