@@ -84,17 +84,17 @@ use rule flip_reads as captrap_flip_reads with:
 
 use rule flip_reads as hprc_flip_reads with:
     input:
-        bam = lconfig['hprc']['kinnex']['map']['q10_bam']
+        bam = config['hprc']['kinnex']['map']['q10_bam']
     output:
         bam = config['hprc']['kinnex']['map']['q10_flip_bam']
 
-use rule bam_to_tss_bed as captrap_bam_to_tss_bed with:
+use rule oriented_bam_to_tss_bed as captrap_bam_to_tss_bed with:
     input:
         bam = config['lr']['q10_flip_bam']
     output:
         bed = config['lr']['q10_tss_bed']
 
-use rule bam_to_tss_bed as hprc_bam_to_tss_bed with:
+use rule oriented_bam_to_tss_bed as hprc_bam_to_tss_bed with:
     input:
         bam = config['hprc']['kinnex']['map']['q10_flip_bam']
     output:
