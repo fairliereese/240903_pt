@@ -28,25 +28,24 @@ Subfolders that are not listed here don't contain analyses / processing for this
 <!-- * [unmerged_v47_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/unmerged_v47_lr-kallisto): Running lr-kallisto on FASTQs before they were merged across sequencing runs for the same sample... for some reason. Using GENCODE v47 as reference annotation. -->
 <!-- * [v47_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/v47_lr-kallisto): Quantification of our LR-RNA-seq dataset with lr-kallisto and GENCODE v47.  -->
 <!-- * [v47_personal_lr-kallisto](https://github.com/fairliereese/240903_pt/blob/main/snakemake/v47_personal_lr-kallisto): Run lr-kallisto on personal assembly-mapped 6 samples using GENCODE v47 liftOff to personal assembly. -->
-* [ics_inter_catalog](https://github.com/fairliereese/240903_pt/tree/main/snakemake/ics_inter_catalog): Extract unique intron chains from each catalog (CHESS3, ENCODE4, GTEx) and run SQANTI on them.
+* [merge_ics](https://github.com/fairliereese/240706_pantranscriptome_cerberus_gtf_merge/tree/594b554f0235b5c0d1f40f789e7e0ecacecbbb9c/merge_only_ics): Merge intron chains across samples and tools (ESPRESSO, LyRic, IsoQuant, FLAIR) to generate the UMA.
+* [novel_gene](https://github.com/fairliereese/240903_pt/tree/main/snakemake/novel_gene): Add novel gene IDs to intergenic transcripts found in PODER using [buildLoci](https://github.com/julienlag/buildLoci).
+* [novel_annotation_add_gene](https://github.com/fairliereese/240903_pt/blob/main/snakemake/novel_annotation_add_gene): Add gene entries to PODER GTF which only had transcript and exon entries, and a gene ID tag.
+* [protein](https://github.com/fairliereese/240903_pt/tree/main/snakemake/protein): Run protein prediction pipeline on UMA.
+* [poder_protein](https://github.com/fairliereese/240903_pt/tree/main/snakemake/poder_protein): Run protein prediction pipeline on PODER.
+* [pfam](https://github.com/fairliereese/240903_pt/blob/main/snakemake/pfam): Run PFAM protein domain finder on GENCODE v47 reference annotation and PODER predicted proteins.
 * [astu_example](https://github.com/fairliereese/240903_pt/tree/main/snakemake/astu_example): Systematically output LR-RNA-seq BAM files split by allele to facilitate visualization of allele-specific transcript usage (ASTU).
-* [encode](https://github.com/fairliereese/240903_pt/tree/main/snakemake/encode): Dertermine genetic ancestry (if annotated) of ENCODE LR-RNA-seq catalog. (Not Snakemake).
+* [ics_inter_catalog](https://github.com/fairliereese/240903_pt/tree/main/snakemake/ics_inter_catalog): Extract unique intron chains from each catalog (CHESS3, ENCODE4, GTEx) and run SQANTI on them.
+* [encode](https://github.com/fairliereese/240903_pt/tree/main/snakemake/encode): Determine genetic ancestry (if annotated) of ENCODE LR-RNA-seq catalog. (Not Snakemake).
 * [gtex_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/gtex_lr-kallisto): Re-quantify the GTEx LR-RNA-seq dataset from FASTQ using lr-kallisto and PODER.
 * [lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/lr-kallisto): Quantification of our LR-RNA-seq dataset with lr-kallisto and PODER.
 * [mage](https://github.com/fairliereese/240903_pt/tree/main/snakemake/mage): Quantification of [MAGE](https://github.com/mccoy-lab/MAGE) RNA-seq dataset using kallisto and multiple annotations (PODER, GENCODE, Enhanced GENCODE).
-* [map_personal](https://github.com/fairliereese/240903_pt/tree/main/snakemake/map_personal): Download of personal assemblies from pangenome matching our LR-RNA-seq samples. <!-- Also mapping but we ended up using Fabien's -->
 * [merge_espresso](https://github.com/fairliereese/240903_pt/tree/main/snakemake/merge_espresso): Merging ESPRESSO transcripts from downsampling experiment when using GENCODE v47 as the annotation by intron chain.
 * [merge_espresso_refseq](https://github.com/fairliereese/240903_pt/tree/main/snakemake/merge_espresso_refseq): Merging ESPRESSO transcripts from downsampling experiment when using RefSeq v110 as the annotation by intron chain.
+* [map_personal](https://github.com/fairliereese/240903_pt/tree/main/snakemake/map_personal): Download of personal assemblies from pangenome matching our LR-RNA-seq samples. <!-- Also mapping but we ended up using Fabien's -->
 * [merge_v47_poder](https://github.com/fairliereese/240903_pt/blob/main/snakemake/merge_v47_poder): Merge novel PODER transcript GTF with GENCODE v47 GTF to create the Enhanced GENCODE annotation.
-* [novel_annotation_add_gene](https://github.com/fairliereese/240903_pt/blob/main/snakemake/novel_annotation_add_gene): Add gene entries to PODER GTF which only had transcript and exon entries, and a gene ID tag.
-* [novel_gene](https://github.com/fairliereese/240903_pt/tree/main/snakemake/novel_gene): Add novel gene IDs to intergenic transcripts found in PODER using [buildLoci](https://github.com/julienlag/buildLoci).
-* [pfam](https://github.com/fairliereese/240903_pt/blob/main/snakemake/pfam): Run PFAM protein domain finder on GENCODE v47 reference annotation and PODER predicted proteins.
-* [poder_protein](https://github.com/fairliereese/240903_pt/tree/main/snakemake/poder_protein): Run protein prediction pipeline on PODER.
 * [pop_div_exon_fsts](https://github.com/fairliereese/240903_pt/tree/main/snakemake/pop_div_exon_fsts): Find known exons and novel transcribed regions of novel exons. Compute the Fst values pairwise between each set of populations in the 1000G that overlap ours for the SNP variants that fall within these regions.
-* [protein](https://github.com/fairliereese/240903_pt/tree/main/snakemake/protein): Run protein prediction pipeline on UMA.
 * [transcript_discovery_personal](https://github.com/fairliereese/240903_pt/tree/main/snakemake/transcript_discovery_personal): Map our LR-RNA-seq data from the 30 1000G-overlapping samples to their corresponding 2 personalized-GRCh38 haplotypes (ie GRCh38 with the SNPs from each sample incorporated). Run SQANTI on the ESPRESSO results to get splice junctions from each mapping (personalized-GRCh38s and GRCh38 alone). Intersect biallelic SNPs with splice-junction proximal exonic SNPs and splice site intronic SNPs to determine how splice junctions' discovery is affected by genetics.
-* [merge_ics](https://github.com/fairliereese/240706_pantranscriptome_cerberus_gtf_merge/tree/594b554f0235b5c0d1f40f789e7e0ecacecbbb9c/merge_only_ics): Merge intron chains across samples and tools (ESPRESSO, LyRic, IsoQuant, FLAIR) to generate the UMA.
-
 
 
 ## Snakemake calls
