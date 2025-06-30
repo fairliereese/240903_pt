@@ -6,6 +6,24 @@ import seaborn as sns
 
 from .utils import *
 
+def mute_color(hex_color, factor=1.4):
+    """Lighten a hex color by increasing its lightness in HLS space."""
+    r, g, b = to_rgb(hex_color)
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    l = min(1.0, l * factor)  # Lighten
+    r_muted, g_muted, b_muted = colorsys.hls_to_rgb(h, l, s)
+    return to_hex((r_muted, g_muted, b_muted))
+
+def adjust_lightness(color, amount=0.5):
+    import matplotlib.colors as mc
+    import colorsys
+    try:
+        c = mc.cnames[color]
+    except:
+        c = color
+    c = colorsys.rgb_to_hls(*mc.to_rgb(c))
+    return colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
+
 def rm_color_cats(palette, order, cats):
     if cats:
         keys = palette.keys()

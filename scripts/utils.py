@@ -396,3 +396,19 @@ def get_transcript_info(gtf):
 
 def fmt_for_cli(l, sep=' '):
     return sep.join(l)
+
+# def load_mt(kind='poder'):
+#     """
+#     kind (str): {'poder', 'uma'}
+#     """
+#     # load master table
+#     if kind == 'poder':
+#         f = '../data/05_mastertable/poder_master_table_fixed_genics.tsv'
+#     elif kind == 'uma':
+#         print('u need to implement this')
+#         return
+#     mt_df = pd.read_csv(f, sep='\t')
+#     # mt_df = mt_df.loc[mt_df['filter']=='pass']
+#     mt_df['pop_spec_t'] = (mt_df.population_sharing==1)&\
+#                           (mt_df.sample_sharing>1)
+#     mt_df['det_pop'] = mt_df[get_population_colors()[1]].idxmax(axis=1)

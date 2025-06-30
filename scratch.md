@@ -273,3 +273,21 @@ nextflow run /gpfs/projects/bsc83/Projects/scRNAseq/imestres/sQTLseeker/sqtlseek
 ```bash
 bedtools intersect -loj -wa  -a ../../data/hprc/kinnex/map/merge/HG03704_q10_tss.bed -b ../../ref/ccre/pls.bed.gz > ../../data/hprc/kinnex/map/merge/HG03704_tss_pls_int.tsv
 ```
+
+
+240611 testing flip reads + call tss bed locations code
+```bash
+bam=/gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/03_mapping/data/assembly_mapping/genomic/25_IS2_GM22299.bam
+module load samtools
+samtools view -c $bam # 13,693,804
+samtools view $bam | grep "ts:" |  wc -l # like 12 million but forgot to copy
+# so these have ts tags
+
+bam=~/mele_lab/projects/240903_pt/data/hprc/kinnex/map/merge/HG03704_q10.bam
+samtools view -c $bam # 40,195,562
+samtools view $bam | grep "ts:" |  wc -l # 31,349,064
+
+
+
+
+```
