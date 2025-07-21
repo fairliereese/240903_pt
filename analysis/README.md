@@ -15,6 +15,11 @@ Plots showing # and % of novel transcripts from PODER, CHESS, GTEx, and ENCODE t
 * [`explore_orfs_aa_3.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/explore_orfs_aa_3.ipynb): Predicted protein-coding sequence results.
 * [`ggtranscript_hlab.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/ggtranscript_hlab.ipynb): Transcript browser plot for `HLA-B`.
 * [`compare_total_mage_counts.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/compare_total_mage_counts.ipynb): Computing number of reads used to quantify MAGE data using Enhanced GENCODE versus GENCODE.
+* [`gene_len.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/gene_len.ipynb): Explore relationship between gene length and different transcript or gene features in PODER.
+* [`transcript_len.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/transcript_len.ipynb): Explore relationship between transcript length and different transcript or gene features in PODER.
+* [`tool_sharing_upset.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/tool_sharing_upset.ipynb): Plot the intersection for tool sharing for transcripts in PODER (ie, post-filtering).
+
+
 
 
 #### *Current gene annotations are less representative of transcriptomes from non-European descent individuals*; (description and characterization of non-European bias).
@@ -22,9 +27,12 @@ Plots showing # and % of novel transcripts from PODER, CHESS, GTEx, and ENCODE t
 * [`tau.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/tau.ipynb): Compute Tau values using PODER lr-kallisto quantification values.
 * [`tau_vs_pop_specific.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/tau_vs_pop_specific.ipynb): Statistical tests for Tau population-specific transcripts versus population-specific discovered transcripts.
 * [`tau_mage_enh_gencode.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/tau_mage_enh_gencode.ipynb): Compute Tau values of population specificity using the kallisto + Enhanced GENCODE quantification of the MAGE RNA-seq dataset. Compare population specificity across our dataset and MAGE.
+* [`pop_shared_t.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/pop_shared_t.ipynb): Examine attributes of sample / population-shared transcripts and their distributions of detection across samples / populations.
+
+#### *A population diverse-annotation enhances discovery of allele-specific transcript usage in non-European populations*; description and characterization of the differential findings for allele-specific analyses using different reference gene annotations.
+* [`n_transcripts_per_annot.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/n_transcripts_per_annot): Compute number of transcripts per reference gene annotation.
 
 #### *Personalized genome reference assemblies enhance novel splice junction discovery*.
 * [`td_personal_ic_n_novel_not_hg38_over_novel_hg38.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/https://github.com/fairliereese/240903_pt/blob/main/analysis/td_personal_ic_n_novel_not_hg38_over_novel_hg38.ipynb): Number of novel ICs we can find using personalized-GRCh38s vs. GRCh38 for 30 1000G samples. UpSet intersections of detection of novel transcripts between personalized-GRCh38s and GRCh38 alone.
-
-
-<!-- * [``](): -->
+* [`td_personal_relative_gain_p9.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/td_personal_relative_gain_p9.ipynb): Look at saturation of transcript discovery with increasing numbers of samples, using either the GRCh38 mapping / transcript discovery strategy or the personalized-GRCh38 strategy.
+* [`td_personal_gain_28_sample_experiment_p9.ipynb.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/td_personal_gain_28_sample_experiment_p9.ipynb.ipynb): Examine the gain in unique transcripts starting from 28 merge_espresso_downsample_refseq discovered based on performing GRCh38 mapping / transcript discovery strategy on 2 samples (2x lrRNA-seq) or the personalized-GRCh38 strategy on 1 sample (1x lrRNA-seq + whole genome sequencing).
