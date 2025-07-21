@@ -3,6 +3,9 @@ import os
 import pandas as pd
 import matplotlib as mpl
 import seaborn as sns
+from matplotlib.colors import to_rgb, to_hex
+import colorsys
+
 
 from .utils import *
 
@@ -38,6 +41,16 @@ def rm_color_cats(palette, order, cats):
 
 #######################################
 ############# Color palettes
+
+def get_annot_colors(cats=None):
+    palette = {'GENCODE': "#6c5a52",
+               'PODER': "#a0ad55",
+               'Enhanced GENCODE': '#a7a9ab',
+               'Enhanced\nGENCODE':'#a7a9ab'}
+    order = ['GENCODE', 'PODER', 'Enhanced GENCODE', 'Enhanced\nGENCODE']
+
+    palette, order = rm_color_cats(palette, order, cats)
+    return palette, order
 
 def get_afr_colors(cats=None):
     palette = {'AFR': "#D5AC4B",
@@ -162,3 +175,53 @@ def get_dataset_colors(cats):
     return palette, order
 
     return c_dict, order
+
+def my_theme(base_size=11, w=4, h=3):
+    """
+    Custom plotnine theme with:
+    - White background
+    - Clean styling
+    - Axes and ticks retained
+
+    Parameters:
+    - base_size: Base font size
+
+    Returns:
+    - plotnine.theme object
+    """
+    return (
+        theme_minimal(base_size=base_size)
+        + theme(
+            # White background
+            panel_background=element_rect(fill='white', color=None),
+            plot_background=element_rect(fill='white', color=None),
+
+            # Remove grid lines
+            panel_grid_major=element_blank(),
+            panel_grid_minor=element_blank(),
+            panel_border=element_blank(),
+
+            # Keep axis lines & ticks (don't blank them)
+            axis_line=element_line(color='black'),
+            axis_ticks=element_line(color='black'),
+
+            plot_title=element_text(hjust=0.5, family='Helvetica'),
+            axis_title_x=element_text(hjust=0.5, family='Helvetica'),
+            axis_title_y=element_text(hjust=0.5, margin={'t':0, 'r':-2, 'b':0, 'l':0}, family='Helvetica'),
+            
+            # Styling text
+            legend_title=element_blank(),
+            axis_title=element_text(size=base_size + 1, family='Helvetica'),
+            legend_text=element_text(size=base_size-2, family='Helvetica'),
+            axis_text=element_text(size=base_size, color='black', family='Helvetica'),
+            strip_text_x=element_text(size=base_size-1),
+            strip_text_y=element_text(size=base_size-1),
+            figure_size=(w, h),  # Controls plot dimensions (width x height in inches)
+            plot_margin=0.05      # Shrinks surrounding white space
+        )
+    )
+
+def clean_figure(ax):
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.tick_params(axis="x", rotation=45)
