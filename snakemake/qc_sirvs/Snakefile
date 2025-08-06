@@ -70,8 +70,7 @@ rule sqanti_reads:
     input:
         ref_gtf = config['ref']['sirv']['gtf'],
         ref_fa = config['ref']['sirv']['fa'],
-        gff = config['lr']['qc_sirvs']['    align_gff: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gff
-'],
+        gff = config['lr']['qc_sirvs']['align_gff'],
         csv = config['lr']['qc_sirvs']['design_csv']
     output:
         who_knows = config['lr']['qc_sirvs']['who_knows']
