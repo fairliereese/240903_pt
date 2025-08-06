@@ -39,7 +39,8 @@ wildcard_constraints:
 rule all:
     input:
         expand(config['lr']['qc_sirvs']['align_gff'],
-               lab_sample=df.lab_sample.tolist())
+               lab_sample=df.lab_sample.tolist(),
+               annot_completeness=['I', 'C', 'O'])
 
 use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     input:
