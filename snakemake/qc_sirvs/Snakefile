@@ -62,7 +62,7 @@ rule make_design_csv:
         csv = config['lr']['qc_sirvs']['design_csv']
     run:
         data = [f'{wildcards.lab_sample}_{wildcards.annot_completeness}',
-                input.gff]
+                input.gff.rsplit('.', maxsplit=1)[0]]
         df = pd.DataFrame(data=[data], columns=['sampleID', 'file_acc'])
         df.to_csv(output.csv, sep=',')
 
