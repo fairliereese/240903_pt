@@ -72,6 +72,13 @@ rule sqanti_reads:
         ref_fa = config['ref']['sirv']['fa'],
         gff = config['lr']['qc_sirvs']['align_gff'],
         csv = config['lr']['qc_sirvs']['design_csv']
+    resources:
+        nodes = 1,
+        threads = 15
+    params:
+        odir = lambda wc: expand(config['lr']['qc_sirvs']['who_knows'].rsplit('/',maxsplit=1)[0],
+                             lab_sample=wc.lab_sample,
+                             annot_completeness=wc.annot_completeness)
     output:
         who_knows = config['lr']['qc_sirvs']['who_knows']
     conda:
@@ -80,6 +87,8 @@ rule sqanti_reads:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.5
         python /gpfs/projects/bsc83/utils/sqanti3/sqanti3_reads.py \
+            --dir {params.odir} \
+            -t {resources.threads} \
             --design {input.csv} \
             --annotation {input.ref_gtf} \
             --genome {input.ref_fa}
