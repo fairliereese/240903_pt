@@ -60,3 +60,19 @@ rule bam_to_fastq:
             -i {input.bam} \
             -fq {output.fq}
         """
+
+rule spliced_bam2gff:
+    resources:
+        threads = 8,
+        nodes = 2
+    conda:
+        'base'
+    run:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/spliced_bam2gff
+        spliced_bam2gff \
+            -M {input.align} \
+            -g \
+            -d 20 \
+            -t {resources.threads} > {output.gff}
+        """

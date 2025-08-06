@@ -1,0 +1,50 @@
+import pandas as pd
+import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.getcwd()))+'/scripts/'
+sys.path.append(p)
+
+from sm_utils import *
+from utils import *
+
+c_dir = '../common/'
+include: f'{c_dir}download.smk'
+include: f'{c_dir}samtools.smk'
+include: f'{c_dir}winnowmap.smk'
+include: f'{c_dir}bigwig.smk'
+include: f'{c_dir}variant_calling.smk'
+include: f'{c_dir}formatting.smk'
+include: f'{c_dir}phasing.smk'
+include: f'{c_dir}cerberus.smk'
+include: f'{c_dir}lr-kallisto.smk'
+
+meta_file = '../config.tsv'
+configfile: '../config.yml'
+
+df = parse_config(meta_file)
+
+df = load_meta()
+df = df.loc[~df['sample'].str.contains('_')]
+df['lab_sample'] = df['lab_number_sample'].astype(str)+'_'+\
+                      df['lab_sampleid'].astype(str)+'_'+\
+                      df['cell_line_id'].astype(str)
+df = df.loc[df.mixed_samples==False]
+df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
+
+wildcard_constraints:
+    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
+    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
+    lab_sample='|'.join([re.escape(x) for x in df.lab_sample.tolist()]),
+    annot_completeness='|'.join([re.escape(x) for x in ['I', 'C', 'O']]),
+
+rule all:
+    input:
+        expand(config['lr']['qc_sirvs']['align_gff'],
+               lab_sample=df.lab_sample.tolist())
+
+use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
+    input:
+        align = config['lr']['qc_sirvs']['bam']
+    output:
+        gff = config['lr']['qc_sirvs']['align_gff']

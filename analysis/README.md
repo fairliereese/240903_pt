@@ -28,6 +28,7 @@ Plots showing # and % of novel transcripts from PODER, CHESS, GTEx, and ENCODE t
 * [`tau_vs_pop_specific.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/tau_vs_pop_specific.ipynb): Statistical tests for Tau population-specific transcripts versus population-specific discovered transcripts.
 * [`tau_mage_enh_gencode.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/tau_mage_enh_gencode.ipynb): Compute Tau values of population specificity using the kallisto + Enhanced GENCODE quantification of the MAGE RNA-seq dataset. Compare population specificity across our dataset and MAGE.
 * [`pop_shared_t.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/pop_shared_t.ipynb): Examine attributes of sample / population-shared transcripts and their distributions of detection across samples / populations.
+- [`perc_nov_pop_spec.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/perc_nov_pop_spec.ipynb): Compute % of novel transcripts per category that are population-specific.
 
 #### *A population diverse-annotation enhances discovery of allele-specific transcript usage in non-European populations*; description and characterization of the differential findings for allele-specific analyses using different reference gene annotations.
 * [`n_transcripts_per_annot.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/n_transcripts_per_annot): Compute number of transcripts per reference gene annotation.
