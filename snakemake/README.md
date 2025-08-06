@@ -28,6 +28,7 @@ Subfolders that are not listed here don't contain analyses / processing for this
 <!-- * [unmerged_v47_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/unmerged_v47_lr-kallisto): Running lr-kallisto on FASTQs before they were merged across sequencing runs for the same sample... for some reason. Using GENCODE v47 as reference annotation. -->
 <!-- * [v47_lr-kallisto](https://github.com/fairliereese/240903_pt/tree/main/snakemake/v47_lr-kallisto): Quantification of our LR-RNA-seq dataset with lr-kallisto and GENCODE v47.  -->
 <!-- * [v47_personal_lr-kallisto](https://github.com/fairliereese/240903_pt/blob/main/snakemake/v47_personal_lr-kallisto): Run lr-kallisto on personal assembly-mapped 6 samples using GENCODE v47 liftOff to personal assembly. -->
+* [qc_sirvs](https://github.com/fairliereese/240903_pt/blob/main/snakemake/qc_sirvs): QC SIRVs from raw mappings.
 * [merge_ics](https://github.com/fairliereese/240706_pantranscriptome_cerberus_gtf_merge/tree/594b554f0235b5c0d1f40f789e7e0ecacecbbb9c/merge_only_ics): Merge intron chains across samples and tools (ESPRESSO, LyRic, IsoQuant, FLAIR) to generate the UMA.
 * [novel_gene](https://github.com/fairliereese/240903_pt/tree/main/snakemake/novel_gene): Add novel gene IDs to intergenic transcripts found in PODER using [buildLoci](https://github.com/julienlag/buildLoci).
 * [novel_annotation_add_gene](https://github.com/fairliereese/240903_pt/blob/main/snakemake/novel_annotation_add_gene): Add gene entries to PODER GTF which only had transcript and exon entries, and a gene ID tag.

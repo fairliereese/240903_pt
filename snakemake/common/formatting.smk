@@ -67,7 +67,7 @@ rule spliced_bam2gff:
         nodes = 2
     conda:
         'base'
-    run:
+    shell:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/spliced_bam2gff
         spliced_bam2gff \
