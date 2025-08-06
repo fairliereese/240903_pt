@@ -71,8 +71,9 @@ rule spliced_bam2gff:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/spliced_bam2gff
         spliced_bam2gff \
-            -M {input.align} \
+            -M \
             -g \
             -d 20 \
-            -t {resources.threads} > {output.gff}
+            -t {resources.threads} \
+            {input.align} > {output.gff}
         """
