@@ -33,8 +33,6 @@ df = df.loc[df.mixed_samples==False]
 df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
 
 wildcard_constraints:
-    sample='|'.join([re.escape(x) for x in df.tech_rep.tolist()]),
-    lab_rep='|'.join([re.escape(x) for x in df.lab_rep.tolist()]),
     lab_sample='|'.join([re.escape(x) for x in df.lab_sample.tolist()]),
     annot_completeness='|'.join([re.escape(x) for x in ['I', 'C', 'O']]),
 
