@@ -32,13 +32,17 @@ df['lab_sample'] = df['lab_number_sample'].astype(str)+'_'+\
 df = df.loc[df.mixed_samples==False]
 df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
 
+# TODO
+df = df.head(1)
+
 wildcard_constraints:
     lab_sample='|'.join([re.escape(x) for x in df.lab_sample.tolist()]),
     annot_completeness='|'.join([re.escape(x) for x in ['I', 'C', 'O']]),
 
+
 rule all:
     input:
-        expand(config['lr']['qc_sirvs']['design_csv'],
+        expand(config['lr']['qc_sirvs']['who_knows'],
                lab_sample=df.lab_sample.tolist(),
                annot_completeness=['I', 'C', 'O'])
 
@@ -62,15 +66,21 @@ rule make_design_csv:
         df = pd.DataFrame(data=[data], columns=['sampleID', 'file_acc'])
         df.to_csv(output.csv, sep=',')
 
-# rule sqanti_reads:
-#     input:
-#         gtf = config['ref']['sirv']['gtf'],
-#         gff = config['lr']['qc_sirvs']['gff']
-#     conda:
-#         'base'
-#     shell:
-#         """
-#         conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.5
-#         python /gpfs/projects/bsc83/utils/sqanti3/sqanti3_reads.py \
-#             {input.gtf}
-#         """
+rule sqanti_reads:
+    input:
+        ref_gtf = config['ref']['sirv']['gtf'],
+        ref_fa = config['ref']['sirv']['fa'],
+        gff = config['lr']['qc_sirvs']['gff'],
+        csv = config['lr']['qc_sirvs']['design_csv']
+    output:
+        who_knows = config['lr']['qc_sirvs']['who_knows']
+    conda:
+        'base'
+    shell:
+        """
+        conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.5
+        python /gpfs/projects/bsc83/utils/sqanti3/sqanti3_reads.py \
+            --design {input.csv} \
+            --annotation {input.ref_gtf} \
+            --genome {input.ref_fa}
+        """

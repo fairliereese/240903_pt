@@ -133,6 +133,7 @@ ref:
     pls_bed: ../../ref/ccre/pls.bed.gz
 
   sirv:
+    fa: /gpfs/projects/bsc83/Data/gene_annotations/sirvome/SIRV_ERCC_longSIRV_multi-fasta_20210507.fasta
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/sirvome/SIRV_ERCC_longSIRV_multi-fasta_20210507.gtf
 
 
@@ -748,6 +749,8 @@ lr:
     bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/{annot_completeness}/sirv/{lab_sample}_SIRV.bam
     align_gff: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gff
     design_csv: ../../data/qc_sirvs/design_csv/{lab_sample}_{annot_completeness}_design.csv
+    who_knows: ../../data/qc_sirvs/sqanti_reads/{lab_sample}_{annot_completeness}_who_knows.tsv
+
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
