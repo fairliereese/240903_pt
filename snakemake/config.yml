@@ -742,7 +742,7 @@ lr:
   # analysis / sqanti reads of the sirvs
   qc_sirvs:
     bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/{annot_completeness}/sirv/{lab_sample}_SIRV.bam
-    align_gff: ../../data/qc_sirvs/align_gff/{lab_sample}.gff
+    align_gff: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gff
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz
