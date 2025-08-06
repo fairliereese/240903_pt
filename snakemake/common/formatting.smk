@@ -64,7 +64,7 @@ rule bam_to_fastq:
 rule spliced_bam2gff:
     resources:
         threads = 8,
-        nodes = 2
+        nodes = 1
     conda:
         'base'
     shell:
