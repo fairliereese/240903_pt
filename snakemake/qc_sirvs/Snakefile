@@ -38,7 +38,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['qc_sirvs']['align_gff'],
+        expand(config['lr']['qc_sirvs']['design_csv'],
                lab_sample=df.lab_sample.tolist(),
                annot_completeness=['I', 'C', 'O'])
 
@@ -47,3 +47,30 @@ use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
         align = config['lr']['qc_sirvs']['bam']
     output:
         gff = config['lr']['qc_sirvs']['align_gff']
+
+rule make_design_csv:
+    input:
+        gff = config['lr']['qc_sirvs']['align_gff']
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        csv = config['lr']['qc_sirvs']['design_csv']
+    run:
+        data = [f'{wildcards.lab_sample}_{wildcards.annot_completeness}',
+                input.gff]
+        df = pd.DataFrame(data=[data], columns=['sampleID', 'file_acc'])
+        df.to_csv(output.csv, sep=',')
+
+# rule sqanti_reads:
+#     input:
+#         gtf = config['ref']['sirv']['gtf'],
+#         gff = config['lr']['qc_sirvs']['gff']
+#     conda:
+#         'base'
+#     shell:
+#         """
+#         conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.5
+#         python /gpfs/projects/bsc83/utils/sqanti3/sqanti3_reads.py \
+#             {input.gtf}
+#         """
