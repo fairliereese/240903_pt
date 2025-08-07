@@ -32,8 +32,8 @@ df['lab_sample'] = df['lab_number_sample'].astype(str)+'_'+\
 df = df.loc[df.mixed_samples==False]
 df = df[['cell_line_id', 'sample', 'hapmap_DNA_ID', 'lab_sample']].drop_duplicates()
 
-# TODO
-df = df.head(1)
+# # TODO
+# df = df.head(1)
 
 wildcard_constraints:
     lab_sample='|'.join([re.escape(x) for x in df.lab_sample.tolist()]),
