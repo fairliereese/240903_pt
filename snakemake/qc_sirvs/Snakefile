@@ -87,9 +87,10 @@ rule sqanti_reads:
         """
         conda activate /gpfs/projects/bsc83/utils/conda_envs/SQANTI3-5.5
         python /gpfs/projects/bsc83/utils/sqanti3/sqanti3_reads.py \
-            --dir {params.odir} \
             -t {resources.threads} \
             --design {input.csv} \
             --annotation {input.ref_gtf} \
             --genome {input.ref_fa}
+            # --dir {params.odir} \
+
         """
