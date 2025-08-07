@@ -132,7 +132,7 @@ rule sqanti_reads:
 use rule df_summary as sqanti_reads_summary with:
     input:
         tsvs = lambda wc: expand(rules.sqanti_reads.output.class_file,
-                                 sample=df.lab_sample.tolist(),
+                                 lab_sample=df.lab_sample.tolist(),
                                  annot_completeness=wc.annot_completeness),
     params:
         samples = df.lab_sample.tolist(),
