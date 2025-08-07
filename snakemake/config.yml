@@ -134,6 +134,7 @@ ref:
 
   sirv:
     fa: /gpfs/projects/bsc83/Data/gene_annotations/sirvome/SIRV_ERCC_longSIRV_multi-fasta_20210507.fasta
+    fmt_fa: /gpfs/projects/bsc83/Data/gene_annotations/sirvome/SIRV_ERCC_longSIRV_multi-fasta_20210507_mod_chr.fasta
     gtf: /gpfs/projects/bsc83/Data/gene_annotations/sirvome/SIRV_ERCC_longSIRV_multi-fasta_20210507.gtf
 
 

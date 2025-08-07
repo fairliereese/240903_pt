@@ -50,7 +50,24 @@ use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     input:
         align = config['lr']['qc_sirvs']['bam']
     output:
-        gff = config['lr']['qc_sirvs']['align_gff']
+        gff = temporary(config['lr']['qc_sirvs']['align_gff'])
+
+# remove hyphens from chr names
+rule refmt_fa:
+    input:
+        fa = config['ref']['sirv']['fa']
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        fa = temporary(config['ref']['sirv']['fmt_fa'])
+    run:
+        from pyfaidx import Fasta
+        fasta = Fasta(input.fa, as_raw=True)
+        with open(output.fa, 'w') as ofile:
+            for record in fasta:
+                new_name = record.name.replace('-', '')
+                ofile.write(f">{new_name}\n{str(record)}\n")
 
 # remove semicolons from transcript ids
 # remove hyphens from chr names
@@ -61,7 +78,7 @@ rule refmt_gff:
         threads = 1,
         nodes = 1
     output:
-        gtf = config['lr']['qc_sirvs']['fmt_gtf']
+        gtf = temporary(config['lr']['qc_sirvs']['fmt_gtf'])
     run:
         df = pr.read_gff(input.gff).df
         df['transcript_id'] = df.transcript_id.str.replace(';', '|')
@@ -86,7 +103,7 @@ rule make_design_csv:
 rule sqanti_reads:
     input:
         ref_gtf = config['ref']['sirv']['gtf'],
-        ref_fa = config['ref']['sirv']['fa'],
+        ref_fa = config['ref']['sirv']['fmt_fa'],
         gff = config['lr']['qc_sirvs']['fmt_gtf'],
         csv = config['lr']['qc_sirvs']['design_csv']
     resources:
@@ -109,5 +126,4 @@ rule sqanti_reads:
             --annotation {input.ref_gtf} \
             --genome {input.ref_fa}
             # --dir {params.odir} \
-
         """

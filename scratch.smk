@@ -47,3 +47,12 @@ python /gpfs/home/bsc/bsc083001/mele_lab/bin/SUPPA/suppa.py generateEvents \
     -f ioe \
     -e SE SS MX RI FL
 """
+
+
+run:
+from pyfaidx import Fasta
+fasta = Fasta(input_fasta, as_raw=True)
+with open(output_fasta, 'w') as out_f:
+    for record in fasta:
+        new_name = record.name.replace('-', '')
+        out_f.write(f">{new_name}\n{str(record)}\n")
