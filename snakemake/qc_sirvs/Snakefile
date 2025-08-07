@@ -109,12 +109,8 @@ rule sqanti_reads:
     resources:
         nodes = 1,
         threads = 15
-    params:
-        odir = lambda wc: expand(config['lr']['qc_sirvs']['who_knows'].rsplit('/',maxsplit=1)[0],
-                             lab_sample=wc.lab_sample,
-                             annot_completeness=wc.annot_completeness)
     output:
-        who_knows = config['lr']['qc_sirvs']['who_knows']
+        class = config['lr']['qc_sirvs']['sqanti_reads']['class']
     conda:
         'base'
     shell:
