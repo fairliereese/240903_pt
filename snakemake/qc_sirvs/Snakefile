@@ -110,7 +110,7 @@ rule sqanti_reads:
         nodes = 1,
         threads = 15
     output:
-        class = config['lr']['qc_sirvs']['sqanti_reads']['class']
+        class_file = config['lr']['qc_sirvs']['sqanti_reads']['class']
     conda:
         'base'
     shell:
@@ -122,4 +122,6 @@ rule sqanti_reads:
             --annotation {input.ref_gtf} \
             --genome {input.ref_fa}
             # --dir {params.odir} \
+            #conda install -c conda-forge gcc=12.1.0
+
         """
