@@ -121,7 +121,4 @@ rule sqanti_reads:
             --design {input.csv} \
             --annotation {input.ref_gtf} \
             --genome {input.ref_fa}
-            # --dir {params.odir} \
-            #conda install -c conda-forge gcc=12.1.0
-
         """
