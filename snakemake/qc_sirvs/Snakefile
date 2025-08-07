@@ -52,7 +52,9 @@ use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     output:
         gff = config['lr']['qc_sirvs']['align_gff']
 
-rule rm_gff_tid_semicolons:
+# remove semicolons from transcript ids
+# remove hyphens from chr names
+rule refmt_gff:
     input:
         gff = config['lr']['qc_sirvs']['align_gff']
     resources:
@@ -63,6 +65,7 @@ rule rm_gff_tid_semicolons:
     run:
         df = pr.read_gff(input.gff).df
         df['transcript_id'] = df.transcript_id.str.replace(';', '|')
+        df['Chromosome'] = df.Chromosome.str.replace('-', '')
         df = pr.PyRanges(df)
         df.to_gtf(output.gtf)
 
