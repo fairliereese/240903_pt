@@ -52,9 +52,23 @@ use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     output:
         gff = config['lr']['qc_sirvs']['align_gff']
 
-rule make_design_csv:
+rule rm_gff_tid_semicolons:
     input:
         gff = config['lr']['qc_sirvs']['align_gff']
+    resources:
+        threads = 1,
+        nodes = 1
+    output:
+        gtf = config['lr']['qc_sirvs']['fmt_gtf']
+    run:
+        df = pr.read_gff(input.gff).df
+        df['transcript_id'] = df.transcript_id.str.replace(';', '|')
+        df = pr.PyRanges(df)
+        df.to_gtf(output.gtf)
+
+rule make_design_csv:
+    input:
+        gff = config['lr']['qc_sirvs']['fmt_gtf']
     resources:
         threads = 1,
         nodes = 1
@@ -70,7 +84,7 @@ rule sqanti_reads:
     input:
         ref_gtf = config['ref']['sirv']['gtf'],
         ref_fa = config['ref']['sirv']['fa'],
-        gff = config['lr']['qc_sirvs']['align_gff'],
+        gff = config['lr']['qc_sirvs']['fmt_gtf'],
         csv = config['lr']['qc_sirvs']['design_csv']
     resources:
         nodes = 1,

@@ -748,6 +748,7 @@ lr:
   qc_sirvs:
     bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/{annot_completeness}/sirv/{lab_sample}_SIRV.bam
     align_gff: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gff
+    fmt_gtf: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gtf
     design_csv: ../../data/qc_sirvs/design_csv/{lab_sample}_{annot_completeness}_design.csv
     who_knows: ../../data/qc_sirvs/sqanti_reads/{lab_sample}_{annot_completeness}/who_knows.tsv
 
