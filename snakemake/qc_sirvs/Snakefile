@@ -42,7 +42,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['qc_sirvs']['who_knows'],
+        expand(config['lr']['qc_sirvs']['sqanti_reads']['class'],
                lab_sample=df.lab_sample.tolist(),
                annot_completeness=['I', 'C', 'O'])
 
