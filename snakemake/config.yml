@@ -752,8 +752,8 @@ lr:
     fmt_gtf: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gtf
     design_csv: ../../data/qc_sirvs/design_csv/{lab_sample}_{annot_completeness}_design.csv
     sqanti_reads:
-      class : ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}/{lab_sample}_{annot_completeness}_reads_classification.txt
-
+      class: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}/{lab_sample}_{annot_completeness}_reads_classification.txt
+      class_summary: ../../data/qc_sirvs/align_gff/sqanti_reads/{annot_completeness}/reads_classification.txt
 
 mage:
   r1_fq: ../../data/mage/raw/{sample}_r1.fq.gz

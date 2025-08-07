@@ -42,9 +42,11 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand(config['lr']['qc_sirvs']['sqanti_reads']['class'],
-               lab_sample=df.lab_sample.tolist(),
+        expand(config['lr']['qc_sirvs']['sqanti_reads']['class_summary'],
                annot_completeness=['I', 'C', 'O'])
+        # expand(config['lr']['qc_sirvs']['sqanti_reads']['class'],
+        #        lab_sample=df.lab_sample.tolist(),
+        #        annot_completeness=['I', 'C', 'O'])
 
 use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     input:
@@ -122,3 +124,16 @@ rule sqanti_reads:
             --annotation {input.ref_gtf} \
             --genome {input.ref_fa}
         """
+
+# get summary per annotation type
+
+use rule df_summary as sqanti_reads_summary with:
+    input:
+        tsvs = lambda wc: expand(rules.sqanti_reads.output.class_file,
+                                 sample=df.lab_sample.tolist(),
+                                 annot_completeness=wc.annot_completeness),
+    params:
+        samples = df.lab_sample.tolist(),
+        col = 'lab_sample'
+    output:
+        summ = config['lr']['qc_sirvs']['sqanti_reads']['class_summary']
