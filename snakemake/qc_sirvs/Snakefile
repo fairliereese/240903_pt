@@ -98,7 +98,7 @@ use rule index_bam as sirv_ind_bam with:
 
 use rule bam_to_bed as sirv_bam_to_bed with:
     input:
-        bam = rules.merge_bam.output.bam
+        bam = rules.sirv_filt_index_bam.output.sort_bam
     output:
         bed = temporary(config['lr']['qc_sirvs']['bed'])
 

@@ -112,8 +112,8 @@ snakemake \
   -j 100 \
   --latency-wait 120 -n
 
-# plotting version
+å# plotting version
 snakemake --forceall --dag | dot -Tpdf > dag.pdf
-snakemake --forceall --dag | dot -Tpdf > dag.pdf
+snakemake --forceall --rulegraph | dot -Tpdf > rulegraph.pdf
 
 ```
