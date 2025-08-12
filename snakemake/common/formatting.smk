@@ -57,7 +57,7 @@ rule bam_to_bed:
         """
         module load bedtools
         bedtools bamtobed \
-            -i {input.bam} >
+            -i {input.bam} > \
             {output.bed}
         """
 
