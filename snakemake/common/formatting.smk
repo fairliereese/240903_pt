@@ -48,6 +48,19 @@ rule fa_get_chr_lens:
             > {output.chr_lens}
         """
 
+# will produce unspliced
+rule bam_to_bed:
+    resources:
+        threads = 8,
+        nodes = 1
+    shell:
+        """
+        module load bedtools
+        bedtools bamtobed \
+            -i {input.bam} >
+            {output.bed}
+        """
+
 rule bam_to_fastq:
     resources:
         threads = 1,

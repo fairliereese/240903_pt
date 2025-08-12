@@ -7,6 +7,7 @@
 
 #### *A population-diverse long-read RNA-seq dataset enables the discovery of many high-confidence novel transcripts*; (ie generation and description of PODER).
 
+* [`spliced_sirv_sqanti_reads.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/spliced_sirv_sqanti_reads.ipynb): Analysis of spliced SIRVs to validate our experimental and bioinformatic pipelines.
 * [`compare_annotation_to_external.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/figure_characterize_poder/compare_annotation_to_external.ipynb): UpSet plots for overlap with external catalogs, including by novelty category.
 Plots showing # and % of novel transcripts from PODER, CHESS, GTEx, and ENCODE that are unsupported between one another.
 * [`external_sqanti_cats.ipynb`](https://github.com/fairliereese/240903_pt/blob/main/analysis/external_sqanti_cats.ipynb): SQANTI categories for the different catalogs (ENCODE, CHESS, GTEx).
