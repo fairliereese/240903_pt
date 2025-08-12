@@ -64,9 +64,9 @@ rule merge_bam:
         threads = 16,
         nodes = 1
     params:
-        cli_bams = fmt_list_for_cli(lambda wc: expand(config['lr']['qc_sirvs']['bam'],
+        cli_bams = fmt_list_for_cli(list(lambda wc: expand(config['lr']['qc_sirvs']['bam'],
                                  lab_sample=df.lab_sample.tolist(),
-                                 annot_completeness=wc.annot_completeness))
+                                 annot_completeness=wc.annot_completeness)))
     output:
         bam = config['lr']['qc_sirvs']['merge_bam']
     shell:
