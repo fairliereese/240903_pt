@@ -46,9 +46,8 @@ rule all:
     input:
         expand(config['lr']['qc_sirvs']['sqanti_reads']['class_summary'],
                annot_completeness=['I', 'C', 'O']),
-        expand(config['lr']['qc_sirvs']['bed'],
-               annot_completeness=['I', 'C', 'O'],
-               lab_sample=df.lab_sample.tolist())
+        expand(config['lr']['qc_sirvs']['bed_summary'],
+               annot_completeness=['I', 'C', 'O'])
         # expand(config['lr']['qc_sirvs']['sqanti_reads']['class'],
         #        lab_sample=df.lab_sample.tolist(),
         #        annot_completeness=['I', 'C', 'O'])
@@ -57,7 +56,20 @@ use rule bam_to_bed as sirv_bam_to_bed with:
     input:
         bam = config['lr']['qc_sirvs']['bam']
     output:
-        bed = config['lr']['qc_sirvs']['bed']
+        bed = temporary(config['lr']['qc_sirvs']['bed'])
+
+# get summary per annotation
+use rule df_summary as sirv_bed_summary with:
+    input:
+        tsvs = lambda wc: expand(rules.sirv_bam_to_bed.output.bed,
+                                 lab_sample=df.lab_sample.tolist(),
+                                 annot_completeness=wc.annot_completeness),
+    params:
+        samples = df.lab_sample.tolist(),
+        col = 'lab_sample'
+    output:
+        summ = config['lr']['qc_sirvs']['bed_summary']
+
 
 use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     input:
