@@ -748,8 +748,14 @@ lr:
   # analysis / sqanti reads of the sirvs
   qc_sirvs:
     bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/{annot_completeness}/sirv/{lab_sample}_SIRV.bam
+
+    filt_bam: ../../data/qc_sirvs/bam/{annot_completeness}_{lab_sample}_filt.bam
+    sort_bam: ../../data/qc_sirvs/bam/{annot_completeness}_{lab_sample}_sort.bam
+    sort_bam_ind: ../../data/qc_sirvs/bam/{annot_completeness}_{lab_sample}_sort.bam.bai
+
     merge_bam: ../../data/qc_sirvs/bam/{annot_completeness}_merged.bam
     merge_bam_ind: ../../data/qc_sirvs/bam/{annot_completeness}_merged.bam.bai
+
     bed: ../../data/qc_sirvs/long_sirvs/{annot_completeness}_{lab_sample}.bed
     bed_summary: ../../data/qc_sirvs/long_sirvs/{annot_completeness}.bed
     align_gff: ../../data/qc_sirvs/align_gff/{annot_completeness}/{lab_sample}.gff

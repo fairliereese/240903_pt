@@ -158,6 +158,9 @@ rule filt_non_prim_unmap_supp:
         """
 
 # filter out non-primary, unmapped, and supp. alignments
+# 256 --> excludes secondary
+# 4 --> excludes unmapped
+# 2048 --> excludes supplementary alignments
 rule filt_non_prim_unmap_supp_contigs:
     resources:
         nodes = 4,
@@ -175,6 +178,19 @@ rule filt_non_prim_unmap_supp_contigs:
             {input.align} > {output.align}
         """
 
+rule sam_to_indexed_bam:
+    resources:
+        threads = 8,
+        nodes = 1
+    shell:
+        """
+        module load intel/2023.0
+        module load samtools
+        samtools view -@ {resources.threads} -hSb {input.sam} | \
+        samtools sort -@ {resources.threads} -o {output.bam}
+        samtools index {output.bam}
+        """
+        
 rule cov_filt_read_ids_min_max:
     resources:
         nodes = 2,

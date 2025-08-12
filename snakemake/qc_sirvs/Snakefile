@@ -55,9 +55,22 @@ rule all:
         #        annot_completeness=['I', 'C', 'O'])
 
 
+# filter
+use rule filt_non_prim_unmap_supp_contigs as filt_sirv_reads with:
+    input:
+        align = config['lr']['qc_sirvs']['bam']
+    output:
+        align = temporary(config['lr']['qc_sirvs']['filt_bam'])
+use rule sam_to_indexed_bam as sirv_filt_index_bam with:
+    input:
+        sam = rules.filt_sirv_reads.output.align
+    output:
+        bam = temporary(config['lr']['qc_sirvs']['sort_bam'])
+
+
 rule merge_bam:
     input:
-        bams = lambda wc: expand(config['lr']['qc_sirvs']['bam'],
+        bams = lambda wc: expand(rules.sirv_filt_index_bam.output.bam,
                                  lab_sample=df.lab_sample.tolist(),
                                  annot_completeness=wc.annot_completeness)
     resources:
