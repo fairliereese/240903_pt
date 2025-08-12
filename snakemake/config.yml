@@ -750,7 +750,7 @@ lr:
     bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/{annot_completeness}/sirv/{lab_sample}_SIRV.bam
 
     # long sirvs stuff
-    g_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/C/sirv/{sample}_genomic_SIRV.bam # genomic mapping
+    g_bam: /gpfs/projects/bsc83/Projects/pantranscriptome/pclavell/09_other_analyses/06_sirv/data/C/sirv/{lab_sample}_genomic_SIRV.bam # genomic mapping
 
     filt_bam: ../../data/qc_sirvs/bam/{annot_completeness}_{lab_sample}_filt.bam
     sort_bam: ../../data/qc_sirvs/bam/{annot_completeness}_{lab_sample}_sort.bam
