@@ -61,6 +61,7 @@ use rule filt_non_prim_unmap_supp as filt_sirv_reads with:
         align = config['lr']['qc_sirvs']['g_bam']
     output:
         align = temporary(config['lr']['qc_sirvs']['filt_bam'])
+
 use rule sam_to_indexed_bam as sirv_filt_index_bam with:
     input:
         sam = rules.filt_sirv_reads.output.align
@@ -98,7 +99,7 @@ use rule index_bam as sirv_ind_bam with:
 
 use rule bam_to_bed as sirv_bam_to_bed with:
     input:
-        bam = config['lr']['qc_sirvs']['bam']
+        bam = config['lr']['qc_sirvs']['g_bam']
     output:
         bed = temporary(config['lr']['qc_sirvs']['bed'])
 
