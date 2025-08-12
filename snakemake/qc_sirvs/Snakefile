@@ -44,6 +44,8 @@ wildcard_constraints:
 
 rule all:
     input:
+        expand(config['lr']['qc_sirvs']['merge_bam_ind'],
+               annot_completeness=['I', 'C', 'O'])
         expand(config['lr']['qc_sirvs']['sqanti_reads']['class_summary'],
                annot_completeness=['I', 'C', 'O']),
         expand(config['lr']['qc_sirvs']['bed_summary'],
@@ -51,6 +53,35 @@ rule all:
         # expand(config['lr']['qc_sirvs']['sqanti_reads']['class'],
         #        lab_sample=df.lab_sample.tolist(),
         #        annot_completeness=['I', 'C', 'O'])
+
+
+rule merge_bam:
+    input:
+        bams = lambda wc: expand(config['lr']['qc_sirvs']['bam'],
+                                 lab_sample=df.lab_sample.tolist(),
+                                 annot_completeness=wc.annot_completeness)
+    resources:
+        threads = 16,
+        nodes = 1
+    params:
+        cli_bams = fmt_list_for_cli(lambda wc: expand(config['lr']['qc_sirvs']['bam'],
+                                 lab_sample=df.lab_sample.tolist(),
+                                 annot_completeness=wc.annot_completeness))
+    output:
+        bam = config['lr']['qc_sirvs']['merge_bam']
+    shell:
+        """
+        module load samtools
+        samtools merge \
+            -o {output.bam} \
+            {params.cli_bams}
+        """
+
+use rule index_bam as sirv_ind_bam with:
+    input:
+        bam = rules.merge_bam.output.bam
+    output:
+        bam = config['lr']['qc_sirvs']['merge_bam_ind']
 
 use rule bam_to_bed as sirv_bam_to_bed with:
     input:
