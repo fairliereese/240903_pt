@@ -54,11 +54,11 @@ rule all:
         #        lab_sample=df.lab_sample.tolist(),
         #        annot_completeness=['I', 'C', 'O'])
 
-
+############ long sirvs
 # filter
 use rule filt_non_prim_unmap_supp as filt_sirv_reads with:
     input:
-        align = config['lr']['qc_sirvs']['bam']
+        align = config['lr']['qc_sirvs']['g_bam']
     output:
         align = temporary(config['lr']['qc_sirvs']['filt_bam'])
 use rule sam_to_indexed_bam as sirv_filt_index_bam with:
@@ -114,7 +114,7 @@ use rule df_summary_no_header as sirv_bed_summary with:
     output:
         summ = config['lr']['qc_sirvs']['bed_summary']
 
-
+############ spliced sirvs
 use rule spliced_bam2gff as qc_sirv_bam_to_gff with:
     input:
         align = config['lr']['qc_sirvs']['bam']
