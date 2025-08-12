@@ -59,7 +59,7 @@ use rule bam_to_bed as sirv_bam_to_bed with:
         bed = temporary(config['lr']['qc_sirvs']['bed'])
 
 # get summary per annotation
-use rule df_summary as sirv_bed_summary with:
+use rule df_summary_no_header as sirv_bed_summary with:
     input:
         tsvs = lambda wc: expand(rules.sirv_bam_to_bed.output.bed,
                                  lab_sample=df.lab_sample.tolist(),

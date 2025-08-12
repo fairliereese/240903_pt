@@ -79,6 +79,22 @@ rule df_summary:
                 temp.to_csv(output.summ, sep='\t', index=False, header=None, mode='a')
             i+=1
 
+rule df_summary_no_header:
+    resources:
+        threads = 1,
+        nodes = 2,
+    run:
+        i = 0
+        for f, d in zip(input.tsvs, params.samples):
+            temp = pd.read_csv(f, sep='\t')
+            temp[params.col] = d
+            if i == 0:
+                temp.to_csv(output.summ, sep='\t', index=False, header=None)
+            else:
+                temp.to_csv(output.summ, sep='\t', index=False, header=None, mode='a')
+            i+=1
+
+
 
 rule bam_get_mapqs:
     resources:
