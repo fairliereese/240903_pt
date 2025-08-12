@@ -45,7 +45,7 @@ wildcard_constraints:
 rule all:
     input:
         expand(config['lr']['qc_sirvs']['merge_bam_ind'],
-               annot_completeness=['I', 'C', 'O'])
+               annot_completeness=['I', 'C', 'O']),
         expand(config['lr']['qc_sirvs']['sqanti_reads']['class_summary'],
                annot_completeness=['I', 'C', 'O']),
         expand(config['lr']['qc_sirvs']['bed_summary'],
