@@ -68,7 +68,6 @@ use rule sam_to_indexed_bam as sirv_filt_index_bam with:
     output:
         bam = temporary(config['lr']['qc_sirvs']['sort_bam'])
 
-
 rule merge_bam:
     input:
         bams = lambda wc: expand(rules.sirv_filt_index_bam.output.bam,
@@ -99,7 +98,7 @@ use rule index_bam as sirv_ind_bam with:
 
 use rule bam_to_bed as sirv_bam_to_bed with:
     input:
-        bam = config['lr']['qc_sirvs']['g_bam']
+        bam = rules.merge_bam.output.bam
     output:
         bed = temporary(config['lr']['qc_sirvs']['bed'])
 

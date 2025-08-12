@@ -114,4 +114,6 @@ snakemake \
 
 # plotting version
 snakemake --forceall --dag | dot -Tpdf > dag.pdf
+snakemake --forceall --dag | dot -Tpdf > dag.pdf
+
 ```
