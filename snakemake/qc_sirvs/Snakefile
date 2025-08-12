@@ -56,7 +56,7 @@ rule all:
 
 
 # filter
-use rule filt_non_prim_unmap_supp_contigs as filt_sirv_reads with:
+use rule filt_non_prim_unmap_supp as filt_sirv_reads with:
     input:
         align = config['lr']['qc_sirvs']['bam']
     output:

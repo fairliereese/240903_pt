@@ -141,6 +141,9 @@ rule primary_mappings_filt:
         """
 
 # filter out non-primary, unmapped, and supp. alignments
+# 256 --> excludes secondary
+# 4 --> excludes unmapped
+# 2048 --> excludes supplementary alignments
 rule filt_non_prim_unmap_supp:
     resources:
         nodes = 4,
@@ -190,7 +193,7 @@ rule sam_to_indexed_bam:
         samtools sort -@ {resources.threads} -o {output.bam}
         samtools index {output.bam}
         """
-        
+
 rule cov_filt_read_ids_min_max:
     resources:
         nodes = 2,
