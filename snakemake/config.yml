@@ -757,6 +757,7 @@ lr:
     sort_bam_ind: ../../data/qc_sirvs/bam/{annot_completeness}_{lab_sample}_sort.bam.bai
     merge_bam: ../../data/qc_sirvs/bam/{annot_completeness}_merged.bam
     merge_bam_ind: ../../data/qc_sirvs/bam/{annot_completeness}_merged.bam.bai
+
     bed: ../../data/qc_sirvs/long_sirvs/{annot_completeness}_{lab_sample}.bed
     bed_summary: ../../data/qc_sirvs/long_sirvs/{annot_completeness}.bed
 
