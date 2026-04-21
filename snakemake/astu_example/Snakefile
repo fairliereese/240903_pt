@@ -100,11 +100,11 @@ astu_df = astu_df.loc[astu_df.variant=='chr1_159073406_C_T']
 # astu_df = astu_df.loc[astu_df['gid'].isin(df.geneID.tolist())]
 # print(len(astu_df.index))
 
-# add in trait
-astu_df = astu_df.merge(df[['ID', 'geneID']],
-                        how='left',
-                        left_on='gid',
-                        right_on='geneID')
+# # add in trait
+# astu_df = astu_df.merge(df[['ID', 'geneID']],
+#                         how='left',
+#                         left_on='gid',
+#                         right_on='geneID')
 
 # {gid}_{tid}_{var}_{chr}_{position}_{sample}.bam
 astu_df['chrom'] = astu_df.transcript_variant.str.split(':', expand=True)[1].str.split('_', expand=True)[0]
