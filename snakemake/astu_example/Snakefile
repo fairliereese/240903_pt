@@ -79,22 +79,26 @@ astu_df = astu_df.loc[(astu_df.annot=='PODER')&\
                       (astu_df.gene_testable==True)]
 astu_df['gid'] = get_stable_gid(astu_df, 'geneid.v')
 
-# remove ase genes
-print(len(astu_df.index))
-astu_df = astu_df.loc[~(astu_df.gid.isin(ase_gids))]
-print(len(astu_df.index))
+# TODO forcing to give the AIM2 results
+astu_df = astu_df.loc[astu_df.variant=='chr1_159073406_C_T']
 
-# limit to astu gwas thing
-# df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTU_GWAS_PODER.tsv', sep='\t')
-df = pd.read_csv(config['lr']['as']['gwas'], sep='\t')
+# TODO removed these to get the aim2
+# # remove ase genes
+# print(len(astu_df.index))
+# astu_df = astu_df.loc[~(astu_df.gid.isin(ase_gids))]
+# print(len(astu_df.index))
 
-# explode gene id
-df['geneID'] = df.geneID.str.split('/')
-df = df.explode('geneID')
-
-print(len(astu_df.index))
-astu_df = astu_df.loc[astu_df['gid'].isin(df.geneID.tolist())]
-print(len(astu_df.index))
+# # limit to astu gwas thing
+# # df = pd.read_csv('/Users/fairliereese/Documents/programming/mele_lab/projects/240903_pt/data/08_allele_specifics/ASTU_GWAS_PODER.tsv', sep='\t')
+# df = pd.read_csv(config['lr']['as']['gwas'], sep='\t')
+#
+# # explode gene id
+# df['geneID'] = df.geneID.str.split('/')
+# df = df.explode('geneID')
+#
+# print(len(astu_df.index))
+# astu_df = astu_df.loc[astu_df['gid'].isin(df.geneID.tolist())]
+# print(len(astu_df.index))
 
 # add in trait
 astu_df = astu_df.merge(df[['ID', 'geneID']],
@@ -112,7 +116,7 @@ astu_df = astu_df.merge(meta_df,
                         how='left',
                         on='sample')
 
-config_df = astu_df.copy(deep=True/)
+config_df = astu_df.copy(deep=True)
 nts  = ['a', 'c', 'g', 't']
 
 config_df = config_df[['chrom', 'position', 'sample', 'lab_sample', 'geneid.v']].drop_duplicates()
